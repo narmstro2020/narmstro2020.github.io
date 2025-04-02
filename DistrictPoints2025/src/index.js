@@ -1,53 +1,45 @@
 import { Team } from "./team.js";
-let storedArray = sessionStorage.getItem('StateTeams');
-let stateTeams;
-if (storedArray) {
-    stateTeams = JSON.parse(storedArray);
-}
-else {
-    stateTeams = [
-        new Team(7457, "suPURDUEper Robotics", 146, 1),
-        new Team(868, "TechHOUNDS", 146, 2, false, true, false),
-        new Team(1501, "Team THRUST", 145, 3),
-        new Team(4272, "Maverick Robotics", 124, 4),
-        new Team(3940, "CyberTooth", 115, 5),
-        new Team(461, "Westside Boiler Invasion", 112, 6, true, false, false),
-        new Team(45, "TechnoKats Robotics Team", 104, 7),
-        new Team(7617, "RoboBlazers", 97, 8),
-        new Team(1741, "Red Alert", 97, 9, true, false, false),
-        new Team(10021, "Guerin Catholic Golden Gears", 93, 10, false, false, true),
-        new Team(135, "Penn Robotics Black Knights", 91, 11, true, true, false),
-        new Team(7454, "Huskies on Hogs", 86, 12, true, false, false),
-        new Team(234, "Cyber Blue", 82, 13, false, true, false),
-        new Team(3494, "The Quadrangles", 82, 14),
-        new Team(3176, "Purple Precision", 77, 15),
-        new Team(829, "The Digital Goats", 75, 16),
-        new Team(10332, "Carroll Charger Robotics", 74, 17),
-        new Team(5010, "Tiger Dynasty", 74, 18),
-        new Team(4485, "Tribe Tech Robotics", 67, 19),
-        new Team(5484, "Career Academy Robotics - Wolf Pack", 67, 20),
-        new Team(1024, "Kil-A-Bytes", 67, 21),
-        new Team(5402, "Wreckless Robotics", 63, 22),
-        new Team(292, "PantherTech", 62, 23),
-        new Team(4926, "GalacTech", 62, 24),
-        new Team(10492, "Bosse BYTEForce", 61, 25, false, false, true),
-        new Team(6721, "Tindley Trailblazers", 59, 26),
-        new Team(8430, "The Hatch Batch", 57, 27),
-        new Team(8103, "Knight Robotics", 55, 28),
-        new Team(6956, "SHAM-ROCK-BOTICS ☘", 53, 29),
-        new Team(328, "Penn Robotics Golden Rooks", 53, 30),
-        new Team(3487, "Red Pride Robotics", 52, 31),
-        new Team(2197, "Las Pumas", 51, 32),
-        new Team(1018, "Pike RoboDevils", 51, 33),
-        new Team(5188, "Area 5188: Classified Robotics", 49, 34),
-        new Team(2171, "RoboDogs", 49, 35),
-        new Team(1747, "Harrison Boiler Robotics", 48, 36),
-        new Team(447, "Team Roboto", 47, 37),
-        new Team(7657, "ThunderBots", 47, 38, false, true, false),
-        new Team(10029, "The Portotypes", NaN, NaN, false, false, true)
-    ]; // Default value if not found
-    sessionStorage.setItem("StateTeams", JSON.stringify(stateTeams));
-}
+const stateTeams = [
+    new Team(7457, "suPURDUEper Robotics", 146, 1),
+    new Team(868, "TechHOUNDS", 146, 2, false, true, false),
+    new Team(1501, "Team THRUST", 145, 3),
+    new Team(4272, "Maverick Robotics", 124, 4),
+    new Team(3940, "CyberTooth", 115, 5),
+    new Team(461, "Westside Boiler Invasion", 112, 6, true, false, false),
+    new Team(45, "TechnoKats Robotics Team", 104, 7),
+    new Team(7617, "RoboBlazers", 97, 8),
+    new Team(1741, "Red Alert", 97, 9, true, false, false),
+    new Team(10021, "Guerin Catholic Golden Gears", 93, 10, false, false, true),
+    new Team(135, "Penn Robotics Black Knights", 91, 11, true, true, false),
+    new Team(7454, "Huskies on Hogs", 86, 12, true, false, false),
+    new Team(234, "Cyber Blue", 82, 13, false, true, false),
+    new Team(3494, "The Quadrangles", 82, 14),
+    new Team(3176, "Purple Precision", 77, 15),
+    new Team(829, "The Digital Goats", 75, 16),
+    new Team(10332, "Carroll Charger Robotics", 74, 17),
+    new Team(5010, "Tiger Dynasty", 74, 18),
+    new Team(4485, "Tribe Tech Robotics", 67, 19),
+    new Team(5484, "Career Academy Robotics - Wolf Pack", 67, 20),
+    new Team(1024, "Kil-A-Bytes", 67, 21),
+    new Team(5402, "Wreckless Robotics", 63, 22),
+    new Team(292, "PantherTech", 62, 23),
+    new Team(4926, "GalacTech", 62, 24),
+    new Team(10492, "Bosse BYTEForce", 61, 25, false, false, true),
+    new Team(6721, "Tindley Trailblazers", 59, 26),
+    new Team(8430, "The Hatch Batch", 57, 27),
+    new Team(8103, "Knight Robotics", 55, 28),
+    new Team(6956, "SHAM-ROCK-BOTICS ☘", 53, 29),
+    new Team(328, "Penn Robotics Golden Rooks", 53, 30),
+    new Team(3487, "Red Pride Robotics", 52, 31),
+    new Team(2197, "Las Pumas", 51, 32),
+    new Team(1018, "Pike RoboDevils", 51, 33),
+    new Team(5188, "Area 5188: Classified Robotics", 49, 34),
+    new Team(2171, "RoboDogs", 49, 35),
+    new Team(1747, "Harrison Boiler Robotics", 48, 36),
+    new Team(447, "Team Roboto", 47, 37),
+    new Team(7657, "ThunderBots", 47, 38, false, true, false),
+    new Team(10029, "The Portotypes", NaN, NaN, false, false, true)
+]; // Default value if not found
 let impactSet = false;
 let eiSet = false;
 let rookieSet = false;
@@ -427,8 +419,6 @@ const updateRows = () => {
             return 0;
         });
     }
-    sessionStorage.removeItem("StateTeams");
-    sessionStorage.setItem("StateTeams", JSON.stringify(stateTeams));
     rowsContainer.innerHTML = "";
     stateTeams.forEach((team, index) => {
         const newRow = document.createElement("div");
@@ -533,7 +523,7 @@ const updateRows = () => {
             newCaptainPoints.innerHTML = String(team.getCaptainPoints());
         }
         const newDraftPick = document.createElement("div");
-        newDraftPick.classList.add("qualifyingRank");
+        newDraftPick.classList.add("draftPick");
         if (isNaN(team.qualifyingRank)) {
             newDraftPick.innerHTML = "";
             newDraftPick.style.setProperty("background-color", "black");

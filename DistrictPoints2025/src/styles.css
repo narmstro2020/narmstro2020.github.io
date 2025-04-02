@@ -2,7 +2,14 @@
     display: grid;
     grid-template-columns: repeat(34, auto);
     background-color: dodgerblue;
-    padding: 10px;
+    padding: 2px;
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body{
+    background-color: lightblue;
 }
 
 .header {
@@ -21,8 +28,8 @@
 .header > div {
     background-color: #706868;
     border: 1px solid black;
-    padding: 20px;
-    font-size: 16px;
+    padding: 5px;
+    font-size: 12px;
     text-align: center;
     align-content: center;
     color: rgba(0, 233, 255, 0.96);
@@ -31,8 +38,8 @@
 .row > div {
     background-color: #f1f1f1;
     border: 1px solid #2544ae;
-    padding: 20px;
-    font-size: 16px;
+    padding: 5px;
+    font-size: 12px;
     text-align: center;
     align-content: center;
 }
@@ -50,11 +57,10 @@
 }
 
 button{
-    font-size: 15px;
-    width: 20px;
+    font-size: 12px;
     text-align: center;
     padding: 0;
-    margin: 0;
+    margin: 2px;
 }
 
 .qualifyingRank{
@@ -66,18 +72,34 @@ button{
 
 .qualifyingRank > p{
     display: block;
-    padding: 15px;
+    padding: 10px;
     margin: 10px;
 }
 
 .ac > p{
     display: block;
     padding: 15px;
-    margin: 10px;
+    margin: 0;
 }
 
 .captainClear{
     width: 100%;
+}
+
+div > .qualifyingRank > input{
+    width: 10%;
+}
+
+div > .draftPick > input{
+    width: 50%;
+}
+
+div > .won > input{
+    width: 50%;
+}
+
+div > .part > input{
+    width: 20%;
 }
 
 
