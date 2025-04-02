@@ -1,6 +1,6 @@
 import {Team} from "./team.js";
 
-let storedArray = sessionStorage.getItem('myArray');
+let storedArray = sessionStorage.getItem('StateTeams');
 let stateTeams;
 if (storedArray) {
     stateTeams = JSON.parse(storedArray) as Team[];
