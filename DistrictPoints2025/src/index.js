@@ -427,6 +427,7 @@ const updateRows = () => {
             return 0;
         });
     }
+    sessionStorage.removeItem("StateTeams");
     sessionStorage.setItem("StateTeams", JSON.stringify(stateTeams));
     rowsContainer.innerHTML = "";
     stateTeams.forEach((team, index) => {

@@ -475,6 +475,7 @@ const updateRows = () => {
         })
     }
 
+    sessionStorage.removeItem("StateTeams");
     sessionStorage.setItem("StateTeams", JSON.stringify(stateTeams));
     rowsContainer.innerHTML = "";
     stateTeams.forEach((team, index) => {
