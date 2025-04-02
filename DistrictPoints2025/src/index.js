@@ -427,6 +427,7 @@ const updateRows = () => {
             return 0;
         });
     }
+    sessionStorage.setItem("StateTeams", JSON.stringify(stateTeams));
     rowsContainer.innerHTML = "";
     stateTeams.forEach((team, index) => {
         const newRow = document.createElement("div");

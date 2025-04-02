@@ -1,4 +1,4 @@
-import {Team} from "./team";
+import {Team} from "./team.js";
 
 let storedArray = sessionStorage.getItem('myArray');
 let stateTeams;
@@ -475,6 +475,7 @@ const updateRows = () => {
         })
     }
 
+    sessionStorage.setItem("StateTeams", JSON.stringify(stateTeams));
     rowsContainer.innerHTML = "";
     stateTeams.forEach((team, index) => {
         const newRow = document.createElement("div");
