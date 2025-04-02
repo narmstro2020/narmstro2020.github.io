@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": false,
+    "emitDeclarationOnly": false,
+    "declaration": false,
+    "target": "es2016",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+
+  },
+  "include": [
+    "DistrictPoints2025/src"
+  ]
+}
