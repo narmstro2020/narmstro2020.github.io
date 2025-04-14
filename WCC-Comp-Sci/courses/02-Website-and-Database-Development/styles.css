@@ -1,0 +1,33 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    background-color: dodgerblue;
+    padding: 10px;
+}
+.container > div {
+    background-color: #f1f1f1;
+    border: 1px solid black;
+    padding: 10px;
+    font-size: 30px;
+    text-align: center;
+}
+
+.container > .mq1{
+    background-color: #ff0d0d;
+    color: #000000;
+}
+
+.container > .mq2{
+    background-color: #ff0d0d;
+    color: #000000;
+}
+
+.container > .mq3{
+    background-color: #ff0d0d;
+    color: #000000;
+}
+
+.container > .mq4{
+    background-color: #ff0d0d;
+    color: #000000;
+}
