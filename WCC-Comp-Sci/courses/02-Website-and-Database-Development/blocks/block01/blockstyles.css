@@ -1,7 +1,8 @@
-h1{
+h1 {
     text-align: center;
 }
-body{
+
+body {
     background-color: rgba(63, 86, 179, 0.62);
 }
 
@@ -13,50 +14,52 @@ body{
     margin: 0 auto;
 
 }
+
 .container > div {
     border: 1px solid black;
 }
 
-.header1{
+.header1 {
+    align-items: center;
+    justify-content: center;
+}
+
+.header2 {
 
 }
 
-.header2{
-
-}
-
-.header3{
+.header3 {
     font-family: 'League Spartan', 'Montserrat', 'Oswald', 'Bebas Neue', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
     font-size: 10pt;
     padding: 5px;
 }
 
-.header4{
+.header4 {
     font-family: 'League Spartan', 'Montserrat', 'Oswald', 'Bebas Neue', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
     font-size: 7pt;
     padding: 5px;
 
 }
 
-.col1{
+.col1 {
     font-family: 'League Spartan', 'Montserrat', 'Oswald', 'Bebas Neue', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
     font-size: 64pt;
     text-align: center;
 }
 
-.col2{
+.col2 {
     font-family: 'League Spartan', 'Montserrat', 'Oswald', sans-serif;
     font-size: 8pt;
     text-align: center;
     padding: 5px;
 }
 
-.col3{
+.col3 {
     align-content: center;
     padding: 5px;
 }
 
-.col4{
+.col4 {
     align-content: center;
     text-align: center;
 
