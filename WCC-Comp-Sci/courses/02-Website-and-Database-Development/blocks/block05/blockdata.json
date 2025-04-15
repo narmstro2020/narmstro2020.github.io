@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cWhat parts of a website do you visit most often\u2014top menu, footer links, main articles? Why?\u201d Students share with a partner and then discuss.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "State the agenda and objective: Understand the role of semantic HTML and implement &lt;header&gt;, &lt;footer&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;section&gt;, and &lt;article&gt; in a web page.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Recap HTML structure from the previous lesson. Ask students about their use of divs and the importance of clear structure.",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture on semantic HTML and its advantages (accessibility, SEO). Live demo in WebStorm using all key semantic tags in a page structure.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students build their own semantic HTML page with a header, navigation, main content (with section and article), and a footer. Use of WebStorm and preview.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students style and personalize their page (optional), push it to GitHub Pages, and submit the live link to Canvas.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: &quot;Why is using semantic tags better than using &lt;div&gt; for everything? Name one benefit.&quot;",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, GitHub account access, projector, optional HTML handout.",
+    "time": "Throughout"
+  }
+}
