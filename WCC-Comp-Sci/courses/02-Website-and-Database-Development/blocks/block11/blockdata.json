@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cHave you ever visited a website that looked really plain or really stylish? What made it look that way\u2014colors, layout, fonts, etc.?\u201d Students will write short responses and then share with a neighbor.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Understand what CSS is, how it styles web pages, and learn the difference between inline, internal, and external CSS. Begin using basic selectors to apply styles.",
+    "time": "5 minutes"
+  },
+  "review": {
+    "data": "Connect to previous lesson on tables. Discuss how HTML provides structure and CSS provides style.",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture with live demo in WebStorm. Cover: What is CSS? Ways to apply CSS (inline, internal, external). Introduce basic selectors like element, class, and ID.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students create an HTML file and apply all three CSS methods (inline, internal, external). Use selectors to style headings, paragraphs, and the page background.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students personalize their page by choosing colors and fonts. Apply both class and ID selectors. Experiment with conflicting styles.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: \u201cWhich CSS method do you think is best for styling a large website? Why?\u201d Students reflect in a short written response.",
+    "time": "3 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, Google Chrome or similar browser, instructor projector, GitHub account for publishing.",
+    "time": "N/A"
+  }
+}

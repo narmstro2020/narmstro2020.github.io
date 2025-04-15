@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-up Prompt: \"When you visit a site with tabular data—like schedules, price charts, or rankings—what do you notice first? The layout? The labels?\" Students write and share.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "State agenda and objective: Understand how to use &lt;table&gt;, &lt;tr&gt;, &lt;td&gt;, &lt;th&gt;, colspan, and rowspan.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Review folder structure and linking concepts from the previous lesson on multi-page websites.",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture and demo: Show how to use basic and advanced table tags in WebStorm. Demonstrate with live HTML coding.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students build a class schedule table with at least 4 rows and 3 columns using colspan and rowspan.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students personalize their table with real or fictional class schedule, add a caption, and push to GitHub.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit ticket: Ask students to reflect on what was tricky and where tables can be used in real sites.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, GitHub accounts, projector, example table demo, internet connection."
+  }
+}

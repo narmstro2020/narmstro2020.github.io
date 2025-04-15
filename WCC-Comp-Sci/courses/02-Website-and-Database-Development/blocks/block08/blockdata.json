@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: “What do you think happens when a website grows from a single page to multiple pages? How would a browser know which file to load?” Students share their ideas in small groups, followed by a short discussion.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Understand how to organize a website into multiple HTML files using folders and relative paths. By the end of the lesson, students will: Organize files in folders for a multi-page website; Link pages together using relative paths.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Connect to Prior Learning: Review  links from Lesson 2.1. Discuss the importance of logical structure in file management from prior lessons.",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Mini-Lecture & Demo: Explain project folder organization. Show how to use relative paths in <a> and <link> tags. Tips: ../ to move up one folder. Avoid absolute paths like C:/Users/...",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Student Activity: Students build a mini multi-page site with folder structure. Each page includes a heading and paragraph, navigation links using relative paths, and a shared CSS file. Instructor checks: pages load correctly, links work, and CSS applies.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Student Extension: Students add a new folder and a custom HTML page (e.g., /gallery/gallery.html). Add a navigation link to that page from index.html. Customize folder name and page content.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Wrap-Up Discussion: Why is folder structure important for real-world websites? How do relative paths keep your code organized and portable?",
+    "time": "3 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, Web browsers, Pre-created starter folder, GitHub setup for pushing projects",
+    "time": "2 minutes"
+  }
+}
