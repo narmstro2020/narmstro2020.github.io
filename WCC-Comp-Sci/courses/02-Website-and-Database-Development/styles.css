@@ -6,9 +6,17 @@ h2{
     text-align: center;
 }
 
+.unit{
+    word-wrap: break-word;
+}
+
+.lesson{
+    word-wrap: break-word;
+}
+
 .container {
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(6, auto);
     background-color: dodgerblue;
     padding: 10px;
 }
