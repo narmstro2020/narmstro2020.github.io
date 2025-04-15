@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-up prompt: \u201cWhat do you already know about how websites are structured?\u201d Students write 1\u20132 sentences.",
+    "time": "5 minutes"
+  },
+  "aim": {
+    "data": "State agenda and objective: Understand HTML structure and create a basic HTML page in WebStorm.",
+    "time": "5 minutes"
+  },
+  "review": {
+    "data": "Ask students what tools were installed last class and their purpose. Recap file management and HTML basics.",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Live coding in WebStorm: Introduce HTML structure (<!DOCTYPE>, <html>, <head>, <body>) and demonstrate file creation and preview.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students build their own HTML page in WebStorm with headings and paragraphs.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students customize their page and push to GitHub. Add headings and related content about themselves.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit ticket: Explain the role of the <head> tag and how it differs from <body>. Share takeaways.",
+    "time": "6 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, internet, projector, GitHub accounts, exit ticket method.",
+    "time": "Throughout"
+  }
+}
