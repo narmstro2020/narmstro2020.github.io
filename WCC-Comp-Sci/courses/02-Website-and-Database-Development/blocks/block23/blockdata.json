@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cThink about a website that looks great on your phone and computer. What design features make it effective on both screens?\u201d Students share examples with partners and then discuss as a class.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Today, you'll learn how to build complex layouts using CSS Grid and Flexbox to create fully responsive websites that adapt smoothly to different screen sizes.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Recap of Previous Learning: Review key differences between Flexbox and Grid. Quick Q&A on media queries and breakpoints. Ask: \u201cWhat layout strategies did we use in our last assignment to handle responsiveness?\u201d",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Mini-Lecture & Demo in WebStorm: Build a responsive layout using a combination of Flexbox and Grid. Implement mobile-first design with media queries. Use nested grids and flex containers for layout sections like navigation, main content, and sidebar. Demonstrate how to hide/reorder items for smaller screens.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Activity: Students build a 5-section layout (header, nav, main, sidebar, footer) that changes between a 2-column layout on desktops and a stacked layout on smaller screens. Requirements: Use Grid for overall layout. Use Flexbox inside the nav and footer for alignment. At least two media query breakpoints (desktop and mobile).",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Independent Challenge: Students refactor a previous multi-page project to include a responsive layout with Grid/Flexbox, consistent navigation/footer, and responsiveness for at least 3 screen sizes (e.g., 1200px, 768px, 480px). Encourage students to push changes to GitHub and preview on their GitHub Pages.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Wrap-Up Discussion: What was most challenging about combining Grid and Flexbox? Where might you apply these skills outside this class (e.g., portfolio, business site)? One takeaway students can write down or share aloud.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, Internet access, Starter project folder, Projector for demo/live coding, GitHub + GitHub Pages access"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \"Look at three of your favorite websites. How do they use color and typography to create a mood or tone? Do fonts or colors affect how 'professional' or 'playful' a site feels?\"",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Use `color`, `font-size`, `font-family`, and `line-height` in CSS to control text appearance and apply appropriate CSS units.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Recall CSS placement (inline, internal, external). Ask: How do we apply styles to all `<p>` elements?",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture and live demo: `color`, `font-size`, `font-family`, `line-height`, units (`px`, `em`, `%`, `rem`), and Google Fonts integration.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students create a mock blog post and style it with fonts, colors, sizes, and line height using CSS. Must use two font families and relative units.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students explore Google Fonts, choose one, apply it to their CSS, comment on unit choices, and push their site to GitHub.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit ticket: 'Which CSS unit do you find most flexible or confusing?' and 'What makes a font effective or ineffective?'",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers, WebStorm, browser, GitHub, projector, Google Fonts, design journal.",
+    "time": "\u2014"
+  }
+}

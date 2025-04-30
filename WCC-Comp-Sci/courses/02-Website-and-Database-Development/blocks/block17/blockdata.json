@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cHave you ever visited a website and noticed the colors or fonts really stand out? What do you think makes them consistent across the entire site?\u201d Students write a 2-sentence response and share with a partner.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Students will learn how to use CSS custom properties (variables) and link external fonts using Google Fonts to create more maintainable and visually appealing websites.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Review how students applied internal and external stylesheets to apply colors and typography across a single page. Ask: \u201cWhat happens if you want to change a site-wide color or font style in multiple places? How could you make that easier?\u201d",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture and demo in WebStorm: Introduce syntax for CSS variables in :root, use with var(), and benefits. Demonstrate Google Fonts import via <link> and usage with font-family.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students fork starter HTML and CSS files. Implement at least three CSS variables, apply a Google Font, and style a button using one of the variables.",
+    "time": "30 minutes"
+  },
+  "ownership": {
+    "data": "Students customize styles with at least one additional variable (e.g., border radius, link color). Push site to GitHub Pages and submit link on Canvas.",
+    "time": "10 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: \u201cWhat is one way CSS variables make site design easier or better?\u201d Students reflect on how fonts/colors can be reused across a site.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, internet access for Google Fonts, GitHub accounts, starter files (HTML and CSS), projector or screen for demo."
+  }
+}

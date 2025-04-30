@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Prompt: \u201cHave you ever seen a row of boxes on a website suddenly stack vertically when the screen size changes? What do you think causes that behavior?\u201d Students reflect and share.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Explore `flex-wrap`, `flex-direction`, and alignment tricks in Flexbox to build responsive layouts.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Review basic Flexbox: `display: flex`, `justify-content`, `align-items`. Discuss behavior when items overflow the row.",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Live demo in WebStorm showing how `flex-wrap`, `flex-direction`, and alignment techniques work in real scenarios.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students build a four-box feature grid layout that wraps responsively, using `flex-wrap`, `flex-basis`, and alignment tricks.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students recreate a real-world layout using advanced Flexbox features, adding at least one alignment trick and nested flex.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit ticket: What layout problem did you solve today with Flexbox?",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, internet, access to https://flexboxfroggy.com, GitHub for submissions",
+    "time": ""
+  }
+}

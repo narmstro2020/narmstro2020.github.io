@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cWhich do you think is harder to style: a table or a form? Why? Think about your experience so far and the different HTML elements involved.\u201d Have students share their answers in pairs and discuss as a class.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Students will learn how to apply CSS styles to both tables and forms to improve readability, accessibility, and design consistency.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Review previous lessons on form and table structure, CSS selectors, and box model. Ask: \u201cWhat do we need to keep in mind when styling input elements or aligning data in a table?\u201d",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture and live demo on styling forms and tables with CSS. Cover padding, borders, zebra-striping, focus effects, and use of WebStorm.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students style a form and table according to a provided mockup. Implement hover, padding, and text alignment with CSS.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students apply CSS styles to their own previous form and table assignments, using professional design principles.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: 'How can CSS improve user experience in forms and tables? What did you find most challenging to style today?'",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, previous form/table HTML files, mockup images (PDF/PNG), instructor CSS solution pack"
+  }
+}

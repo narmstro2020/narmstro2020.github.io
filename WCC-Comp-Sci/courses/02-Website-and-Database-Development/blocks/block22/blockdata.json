@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: “Which do you prefer so far—Flexbox or Grid? Why?” Students discuss in pairs and take a quick poll.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Learn how to combine Flexbox and Grid layouts effectively to create complex, responsive layouts.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Review Flexbox vs. Grid. Ask: 'What types of layouts are better suited for each?' Revisit past examples.",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Explain combining Flexbox and Grid for layout flexibility. Show examples using live coding in WebStorm.",
+    "time": "15 minutes"
+  },
+  "interactive": {
+    "data": "Students build a dashboard layout using Grid for structure and Flexbox for inner alignment (header/sidebar).",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Challenge: Students create a portfolio layout using both Grid and Flexbox. Push to GitHub.",
+    "time": "20 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: Students write where they'd use Grid vs. Flexbox in their own site idea.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, GitHub access, projector, example files."
+  }
+}

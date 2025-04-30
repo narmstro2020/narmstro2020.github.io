@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cVisit a few websites and right-click \u2192 Inspect elements like navigation menus, paragraphs, buttons, or images. What kinds of layout differences do you notice between them?\u201d Students discuss in pairs, then share.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Students will identify and apply different CSS display properties (`block`, `inline`, `inline-block`, `none`) and understand their behavior in webpage layout.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Ask: What happens when you add a `margin`, `padding`, or `width` to an element? Does it always show up? Revisit the box model and how different elements interact with it. Demo: padding on a <span> vs. <div>.",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-Lecture and Demo in WebStorm introducing display types: `block`, `inline`, `inline-block`, `none`. Use DevTools to demonstrate each and inspect behavior live.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students build a layout in WebStorm with four display types and observe changes. Then they comment out the `.none` display to view the hidden element.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students modify a given HTML structure (nav bar, callout, paragraph) to change display types. Optional challenge: use a toggle button to hide/show with display: none.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: 1) What's the difference between `inline` and `inline-block`? 2) Why use `display: none` instead of removing an element? 3) What happens when a `block` becomes `inline`?",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, Internet access, projector/screen, starter and solution HTML/CSS files.",
+    "time": "N/A"
+  }
+}

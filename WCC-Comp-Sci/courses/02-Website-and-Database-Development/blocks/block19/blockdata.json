@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-up Prompt: \u201cWhat do you think happens when the size of the screen changes and your elements are in a row?\u201d Pair-share and class discussion.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Today, we will explore the foundational layout model known as Flexbox and learn how to use justify-content and align-items to control alignment in one-dimensional layouts.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Discuss limitations of block/inline layouts and recap floats. Ask students to explain spacing methods from the last class.",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Live code-along demonstrating display: flex, justify-content, and align-items with HTML and CSS examples in WebStorm.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students create a horizontal navbar using Flexbox. Includes stretch goal for responsiveness.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students create a Flexbox gallery with 6 images and push it to GitHub Pages.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit ticket: 'What is the difference between justify-content and align-items?'",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with WebStorm, GitHub access, projector, CSS snippets, link to CSS-Tricks Flexbox guide.",
+    "time": "3 minutes"
+  }
+}
