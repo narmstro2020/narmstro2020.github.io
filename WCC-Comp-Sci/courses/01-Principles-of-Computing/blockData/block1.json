@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-up discussion: “What is Web Design?” and websites students use often.\t",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "State objectives and agenda: Course intro, careers, tools, GitHub workflow.\t",
+    "time": "3 minutes\n"
+  },
+  "review": {
+    "data": "Poll student experience with coding, websites, or GitHub. Connect to prior knowledge.\t",
+    "time": "5 minutes\n"
+  },
+  "relevant": {
+    "data": "Teach: What is Web Design, Career Paths, Course Overview. Use real examples and job postings.\t",
+    "time": "20 minutes\n"
+  },
+  "interactive": {
+    "data": "Activity: “Design Detective” – evaluate 3 websites using a worksheet or Google Form.\t",
+    "time": "20 minutes\n"
+  },
+  "ownership": {
+    "data": "Tool setup: WebStorm, GitHub, GitHub Pages, HTML starter file push.\t",
+    "time": "20 minutes\n"
+  },
+  "resonate": {
+    "data": "Exit ticket: 1 thing learned, 1 question, GitHub link if finished.\t",
+    "time": "5 minutes\n"
+  },
+  "supplies": {
+    "data": "Computers, WebStorm, GitHub access, projector, worksheet/Google Form, Canvas.\t",
+    "time": "Throughout"
+  }
+}

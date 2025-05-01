@@ -1,0 +1,67 @@
+h1 {
+    text-align: center;
+}
+
+body {
+    background-color: rgba(63, 86, 179, 0.62);
+}
+
+.container {
+    padding: 50px;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 100px 100px auto 100px;
+    margin: 0 auto;
+    max-width: 800px;
+
+}
+
+.container > div {
+    border: 1px solid black;
+}
+
+.header1 {
+    align-items: center;
+    justify-content: center;
+}
+
+.header2 {
+
+}
+
+.header3 {
+    font-family: 'League Spartan', 'Montserrat', 'Oswald', 'Bebas Neue', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    font-size: 11pt;
+    padding: 5px;
+}
+
+.header4 {
+    font-family: 'League Spartan', 'Montserrat', 'Oswald', 'Bebas Neue', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    font-size: 11pt;
+    padding: 5px;
+
+}
+
+.col1 {
+    font-family: 'League Spartan', 'Montserrat', 'Oswald', 'Bebas Neue', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    font-size: 64pt;
+    text-align: center;
+}
+
+.col2 {
+    font-family: 'League Spartan', 'Montserrat', 'Oswald', sans-serif;
+    font-size: 8pt;
+    text-align: center;
+    padding: 5px;
+}
+
+.col3 {
+    align-content: center;
+    padding: 5px;
+}
+
+.col4 {
+    align-content: center;
+    text-align: center;
+
+}
