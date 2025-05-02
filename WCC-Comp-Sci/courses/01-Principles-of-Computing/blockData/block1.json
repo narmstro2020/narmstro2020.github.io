@@ -1,34 +1,34 @@
 {
   "welcome": {
-    "data": "Warm-up discussion: “What is Web Design?” and websites students use often.\t",
+    "data": "Warm-Up Prompt (10 minutes): \u201cWhat do you think a game engine does? Can you name one or two games you think were made using a game engine?\u201d Classroom discussion and responses on the board.",
     "time": "10 minutes"
   },
   "aim": {
-    "data": "State objectives and agenda: Course intro, careers, tools, GitHub workflow.\t",
-    "time": "3 minutes\n"
+    "data": "Objective (3 minutes): Students will understand the goals of the course and be introduced to the Godot 4 interface, preparing to build their first scene.",
+    "time": "3 minutes"
   },
   "review": {
-    "data": "Poll student experience with coding, websites, or GitHub. Connect to prior knowledge.\t",
-    "time": "5 minutes\n"
+    "data": "Since this is the first session, review general computing principles students may have encountered: what a program is, what code does, and what a user interface is. Quick class poll: \"Have you ever used Scratch, Python, or Roblox Studio before?\"",
+    "time": "5 minutes"
   },
   "relevant": {
-    "data": "Teach: What is Web Design, Career Paths, Course Overview. Use real examples and job postings.\t",
-    "time": "20 minutes\n"
+    "data": "Mini-Lecture and Demo (20 minutes): Instructor walks through:<ul><li>What is Godot? Overview and purpose of a game engine.</li><li>Installing and opening Godot 4</li><li>Creating a new project</li><li>Explanation of Godot's node-based system</li></ul><br><strong>Live Demo:</strong> Create a new Godot project titled <code>HelloWorldGame</code>. Show creation of root node <code>Node2D</code>, save the scene as <code>Main.tscn</code>. Explain how scenes and nodes work.",
+    "time": "20 minutes"
   },
   "interactive": {
-    "data": "Activity: “Design Detective” – evaluate 3 websites using a worksheet or Google Form.\t",
-    "time": "20 minutes\n"
+    "data": "Hands-On Activity (25 minutes): Students repeat the steps:<ul><li>Open Godot and create a new project named <code>FirstGame</code></li><li>Add a root <code>Node2D</code> and rename it to <code>Main</code></li><li>Add a <code>Label</code> node as a child, change the text to \u201cHello, Godot!\u201d</li><li>Run the scene</li></ul>Walk around and help students troubleshoot any issues in Godot setup.",
+    "time": "25 minutes"
   },
   "ownership": {
-    "data": "Tool setup: WebStorm, GitHub, GitHub Pages, HTML starter file push.\t",
-    "time": "20 minutes\n"
+    "data": "Student Reflections and Customization (15 minutes): Students change the label text to their name or a custom message. Encourage experimentation: change font size, color, or position of the label. Advanced students can add a second Label or Sprite node and modify its properties.",
+    "time": "15 minutes"
   },
   "resonate": {
-    "data": "Exit ticket: 1 thing learned, 1 question, GitHub link if finished.\t",
-    "time": "5 minutes\n"
+    "data": "Exit Ticket (5 minutes): \u201cWhat\u2019s one thing you found interesting or confusing about Godot today?\u201d Responses can be shared verbally or submitted via Google Form or notecard.",
+    "time": "5 minutes"
   },
   "supplies": {
-    "data": "Computers, WebStorm, GitHub access, projector, worksheet/Google Form, Canvas.\t",
-    "time": "Throughout"
+    "data": "- Computers with Godot 4 installed<br>- Projector for live demonstration<br>- Student notebooks or Google Docs<br>- Access to class LMS or shared folder for resources and exit ticket form",
+    "time": ""
   }
 }

@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cWhat makes a good scene in a game? Think about your favorite game\u2014what's the first thing you saw or interacted with?\u201d Students will share quick thoughts in pairs and then discuss as a class.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Students will create and run a basic scene using Godot 4, including a root node and a simple visual node (e.g., sprite or label), and test their scene in the editor.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Review from Lesson 1.2: Opening the Godot Editor, creating a project and exploring the FileSystem, node and scene basics (node hierarchy, root node, saving scenes). Quick recall quiz: What is a node? What does every scene require?",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture and live demo in Godot: Show how to create a new scene, add a root node and child nodes, set properties like position and text, save the scene, and run it using the Play button.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students will create a new scene with a root node and at least one child node. They will customize basic properties, save the scene, and run it in the Godot editor.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Independent Challenge: Students will design their own Welcome Scene with at least two child nodes and one customized property (e.g., text or color). They will test and refine their scenes independently.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: \u201cWhat was the most challenging part of creating your own scene today? What did you enjoy most?\u201d Students write a brief reflection or submit it digitally.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Godot 4 installed, projector for live demo, optional sample assets (sprite or font), and a reflection submission method (paper or LMS)."
+  }
+}

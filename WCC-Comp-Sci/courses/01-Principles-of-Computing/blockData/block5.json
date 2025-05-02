@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-up Prompt: \u201cWhat do you already know about variables? Where have you seen them before (math, science, etc.)?\u201d Students post 1-2 ideas on a digital whiteboard or shared doc.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Understand how to use variables, constants, and data types in GDScript for Godot 4. Students will write a script that stores and prints data.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Connect to Lesson 1.4: Revisit basic project setup and print() usage. Ask: \u201cHow did we use print() to test our code?\u201d",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Mini-Lesson: Introduce GDScript syntax for declaring variables and constants. Discuss types (int, float, String, bool). Talk about type hints and dynamic typing.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Student Activity: Create a new Godot 4 scene and attach a script to the main node. Task: Declare and use 3 variables and 1 constant: name (String), age (int), is_student (bool), constant for school name. Print the data using print() and str() as needed. Instructor circulates and helps troubleshoot any type or syntax errors.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Challenge: Students add an age_in_5_years variable and calculate the future age using current age + 5. Bonus: Print a statement using the calculated age.",
+    "time": "10 minutes"
+  },
+  "resonate": {
+    "data": "Reflection Prompt: \u201cHow would you explain the difference between a variable and a constant to someone who has never programmed before?\u201d Ask 2-3 students to share.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Godot 4 installed, project files from prior lessons, access to digital notebook or handout, instructor demo code",
+    "time": "5 minutes"
+  }
+}

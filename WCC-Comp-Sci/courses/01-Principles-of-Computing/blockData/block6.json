@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: On your computer, open the last Godot project we created. Once opened, ask yourself: Do you remember what the \"Output\" panel is for? Have you ever used print() or push_error() in your code? Write a quick note in your journal answering: \u201cWhat kind of messages would be helpful to see during gameplay?\u201d",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Today we will learn how to use the Output Panel and the print() and push_error() functions in GDScript to find and fix problems in our code.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Quick Recap Discussion: What are variables? What happens if we try to use a variable that hasn\u2019t been defined yet? How does Godot signal errors? Ask students: \"Have you ever seen a red error at the bottom of Godot? What did it say?\"",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Key Concepts: What is the Output Panel in Godot? Difference between print(), print_debug(), and push_error(). How to locate errors using the Debugger and Output Panel. How to place print statements in your code to trace bugs. Use sample demonstrations to explain error messages and debugging techniques.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Student Challenge: Create a new Godot scene and attach a starter script. Run the scene and observe the Output Panel. Fix the bug using print() statements. Add error-handling code if needed. Goal: Students should be able to use the Output Panel to locate and fix the bug.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Mini Project Debugging Sprint: Give students a broken version of a Godot project with incorrect variable names, undeclared variables, or logic errors. Ask them to use the Output Panel to locate and fix 3 bugs. Annotate their code with print() where useful. Summarize what each error meant and how they solved it.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket Prompts: What\u2019s the difference between print() and push_error()? Why might a developer use print() even after their code is working? Invite a few students to share one bug they fixed and how the Output Panel helped.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Godot 4 installed; previous Godot project or starter scene; projector or screen for live demo; reference slides or handout with print(), push_error(), and print_debug() usage.",
+    "time": "N/A"
+  }
+}

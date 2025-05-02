@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cWhat do you think a script does in a game? Can you think of something a game character does that might need instructions?\u201d Students write examples and share.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Agenda/Objectives: Understand the purpose of GDScript in Godot 4; Learn how to attach and edit scripts using the Godot Script Editor; Write and test basic GDScript code.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Recap from Lesson 1.3 on the Godot editor layout, including scene tree, Inspector, and running a project. Ask: \u201cWhere do you think the logic goes when the player jumps or collects coins?\u201d",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-Lecture & Demo: Introduce GDScript; Compare GDScript syntax to Python; Show how to attach a script to a Node; Demonstrate creating a Label node and writing a script that updates its text.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Guided Practice: Students follow along to create a 2D scene with a Label node; Attach a script to the Label; Modify the text in _ready(); Add a second function that updates the label when called.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Student Application: Students add a Button node to the scene and write a script that changes the Label\u2019s text when clicked. Students test and troubleshoot in pairs.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: Prompt: \u201cWhat does the _ready() function do? Why do we use it in GDScript?\u201d Collect short written responses or use a quick poll on the board.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Godot 4 installed; Projector or screen-sharing setup for demo; Optional starter project with Label and Button; Access to instructor script templates or slides.",
+    "time": ""
+  }
+}

@@ -7,12 +7,12 @@ body {
 }
 
 .container {
-    padding: 50px;
+    padding: 10px;
     background-color: white;
     display: grid;
-    grid-template-columns: 100px 100px auto 100px;
+    grid-template-columns: 100px 100px 400px 100px;
     margin: 0 auto;
-    max-width: 800px;
+    max-width: 700px;
 
 }
 
@@ -21,9 +21,12 @@ body {
 }
 
 .header1 {
-    align-items: center;
-    justify-content: center;
+    text-align: center;
+    align-content: center;
+    font-size: 16pt;
+    font-weight: bold;
 }
+
 
 .header2 {
 
@@ -31,20 +34,20 @@ body {
 
 .header3 {
     font-family: 'League Spartan', 'Montserrat', 'Oswald', 'Bebas Neue', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
-    font-size: 11pt;
+    font-size: 8pt;
     padding: 5px;
 }
 
 .header4 {
     font-family: 'League Spartan', 'Montserrat', 'Oswald', 'Bebas Neue', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
-    font-size: 11pt;
+    font-size: 8pt;
     padding: 5px;
 
 }
 
 .col1 {
     font-family: 'League Spartan', 'Montserrat', 'Oswald', 'Bebas Neue', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
-    font-size: 64pt;
+    font-size: 48pt;
     text-align: center;
 }
 
@@ -64,4 +67,8 @@ body {
     align-content: center;
     text-align: center;
 
+}
+
+span{
+    font-size: 11pt;
 }

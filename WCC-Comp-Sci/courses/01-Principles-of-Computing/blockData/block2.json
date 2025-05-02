@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cThink about the different parts of a video game\u2014characters, platforms, UI. If you had to build one of these, what building blocks might you need?\u201d Students discuss in pairs, then share a few answers.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Today we\u2019ll learn about how Godot organizes game content using nodes and scenes, and we\u2019ll explore the main interface of the Godot 4 editor.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Quick recap of Lesson 1.1: opening a project, project manager, basic Godot terminology. Ask: \u201cWhat did we learn about how a game project is structured in Godot?\u201d",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-Lecture with Live Demo:\n- Node: The fundamental building block in Godot. Every element in your game is a node.\n- Scene: A scene is a collection (tree) of nodes. Scenes can be saved and reused, even nested.\n- Types of Nodes: Node2D, Sprite2D, Label, Button\n- Godot Interface Overview: Scene dock, Viewport, FileSystem, Inspector, Toolbar, Script Editor",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Student Activity \u2013 Build Your First Scene:\n- Open a Godot project.\n- Add a new scene with a Node2D root named Main.\n- Add a Sprite2D and load a built-in image.\n- Add a Label that says \u201cHello, Godot!\u201d\n- Save the scene as main.tscn and play the scene.\n- Share: What did you change in the Inspector? How did it affect the scene?",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Independent Practice:\n- Add a Button to your scene.\n- Change the text and modify the font size and anchor position in the Inspector.\n- Bonus Challenge: Try attaching a script and explore signals (to be explained in detail later).",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket Prompt: \u201cHow do nodes and scenes make it easier to build games in Godot?\u201d Students write responses on paper or digitally.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Godot 4 installed, Projector/instructor demo system, Internet access (optional), Template Godot project, Access to sprite image files or built-in resources.",
+    "time": "3 minutes"
+  }
+}
