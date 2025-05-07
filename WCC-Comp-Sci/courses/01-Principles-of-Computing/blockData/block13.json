@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cName a person you think helped invent modern computing. What did they do?\u201d Students share their answers in pairs, then post responses in a shared Google Doc or on Jamboard.",
+    "time": "5 minutes"
+  },
+  "aim": {
+    "data": "Objective: Explore overlooked contributions of women and minorities in computer science. Identify key historical figures and analyze their impact on the field.",
+    "time": "2 minutes"
+  },
+  "review": {
+    "data": "Recall key milestones from Lesson 4.1. Quick review questions:\n- What was the ENIAC?\n- Who were Charles Babbage and Ada Lovelace?\n- What is Moore\u2019s Law?\nDiscuss how these connect to today\u2019s focus on inclusion.",
+    "time": "7 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture with visuals and video clips introducing:\n- Ada Lovelace, Grace Hopper, ENIAC Programmers\n- Clarence \u201cSkip\u201d Ellis, Mark Dean, Kimberly Bryant\nCover their contributions, historical context, and barriers they overcame.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students in small groups use computers to research an assigned or chosen figure (e.g., Radia Perlman, Margaret Hamilton, Annie Easley, Alan Emtage). Each group prepares a 2-minute presentation on the figure's impact and challenges.",
+    "time": "20 minutes"
+  },
+  "ownership": {
+    "data": "Each student adds a chosen figure to their 'History of Computing Timeline'. Include name, image, achievement, and a short personal reflection on why this contribution matters.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: \u201cWho is one woman or minority you learned about today? What did they contribute, and why does it matter today?\u201d Responses submitted on Google Form or paper.",
+    "time": "10 minutes"
+  },
+  "supplies": {
+    "data": "Computers with internet access, projector and slides, History Timeline templates (digital or printed), exit ticket form or Google Form, whiteboard or Jamboard for warm-up."
+  }
+}

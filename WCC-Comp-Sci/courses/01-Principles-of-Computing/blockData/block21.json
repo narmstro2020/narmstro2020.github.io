@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: &quot;What does it mean to &#39;update&#39; something visually on a computer screen? Can you think of examples from your daily life?&quot;<br>Brief group discussion/sharing of responses.",
+    "time": "5 minutes"
+  },
+  "aim": {
+    "data": "Objective: Understand what blitting is in Pygame. Learn to load and display images on the screen. Understand proper screen updating using <code>pygame.display.flip()</code> and <code>pygame.display.update()</code>.<br>Agenda: 1) Load images 2) Blit images to screen 3) Screen updates.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Review Questions: &quot;What function did we use to create a window/screen in Pygame?&quot; and &quot;Why is it important to keep updating the display during game development?&quot;<br>Quick class recap and discussion.",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Instructor-led demonstration on:<br>- Loading images using <code>pygame.image.load()</code><br>- Blitting images onto the screen using <code>surface.blit()</code><br>- Refreshing the screen using <code>pygame.display.update()</code> and <code>pygame.display.flip()</code><br><br>Example code:<br><pre><code>import pygame<br>pygame.init()<br><br>screen = pygame.display.set_mode((800, 600))<br>image = pygame.image.load(&#39;example.png&#39;)<br><br>running = True<br>while running:<br>&nbsp;&nbsp;&nbsp;&nbsp;for event in pygame.event.get():<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;running = False<br><br>&nbsp;&nbsp;&nbsp;&nbsp;screen.blit(image, (100, 100))<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.display.update()<br><br>pygame.quit()</code></pre>",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Lab Activity:<br>Students load provided images into a basic Pygame project. Practice positioning and using <code>.flip()</code> and <code>.update()</code>.<br><br>Challenge Task: Animate an image across the screen.<br><br>Instructor Solution:<br><pre><code>import pygame<br>pygame.init()<br><br>screen = pygame.display.set_mode((800, 600))<br>image = pygame.image.load(&#39;character.png&#39;)<br>x_pos = 0<br><br>running = True<br>while running:<br>&nbsp;&nbsp;&nbsp;&nbsp;for event in pygame.event.get():<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;running = False<br><br>&nbsp;&nbsp;&nbsp;&nbsp;screen.fill((0, 0, 0))<br>&nbsp;&nbsp;&nbsp;&nbsp;screen.blit(image, (x_pos, 100))<br>&nbsp;&nbsp;&nbsp;&nbsp;x_pos += 1<br><br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.display.flip()<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.time.delay(10)<br><br>pygame.quit()</code></pre>",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students modify animations individually or in pairs:<br>- Experiment with images and movement.<br>- Control speed and add boundary checking.<br><br>Instructor Boundary Checking Solution:<br><pre><code>import pygame<br>pygame.init()<br><br>screen = pygame.display.set_mode((800, 600))<br>image = pygame.image.load(&#39;character.png&#39;)<br>x_pos, speed = 0, 2<br><br>running = True<br>while running:<br>&nbsp;&nbsp;&nbsp;&nbsp;for event in pygame.event.get():<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;running = False<br><br>&nbsp;&nbsp;&nbsp;&nbsp;x_pos += speed<br>&nbsp;&nbsp;&nbsp;&nbsp;if x_pos + image.get_width() &gt; 800 or x_pos &lt; 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed = -speed<br><br>&nbsp;&nbsp;&nbsp;&nbsp;screen.fill((0, 0, 0))<br>&nbsp;&nbsp;&nbsp;&nbsp;screen.blit(image, (x_pos, 100))<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.display.flip()<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.time.delay(10)<br><br>pygame.quit()</code></pre>",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Wrap-up discussion:<br>- Students share animations and challenges.<br>- Reflect on importance of updating screens in game loops.",
+    "time": "8 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Pygame installed, sample image files, example starter and solution code files, projector for demonstration."
+  }
+}

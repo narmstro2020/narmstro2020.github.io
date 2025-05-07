@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cWhat actually happens when you type a URL into a browser and press enter?\u201d Students write 2\u20133 sentences describing what they think happens. Discuss responses in pairs or small groups.",
+    "time": "5 minutes"
+  },
+  "aim": {
+    "data": "Objective: Understand the difference between the Internet and the World Wide Web, and explore how HTML and HTTP work together to deliver web pages. Agenda: 1) Internet vs Web 2) HTML Structure 3) HTTP Requests 4) DevTools Demo 5) Build a Webpage.",
+    "time": "2 minutes"
+  },
+  "review": {
+    "data": "Recall prior knowledge: What is the Internet? Discuss physical infrastructure, IP addresses, and packet switching. Review basic Internet diagram with LAN, router, ISP, and backbone.",
+    "time": "7 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture with visuals and live examples:\n- The Internet vs The Web: Infrastructure vs Service\n- HTML: Markup language for structuring content\n- HTTP: Protocol for transferring HTML and other resources\n- Use browser DevTools to show real request/response behavior.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Hands-on Activity:\n1. Students open a text editor and create a file named \u201cindex.html\u201d\n2. Paste starter HTML and open in a browser\n3. Use browser DevTools to view HTTP GET request and HTML response",
+    "time": "20 minutes"
+  },
+  "ownership": {
+    "data": "Mini-project: Students customize their HTML file to include:\n- A second heading\n- A list of 3 items\n- An image using an external URL\n- A hyperlink to another website\nInstructor circulates to assist and review code.",
+    "time": "20 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket:\n1. What is the difference between the Internet and the Web?\n2. What does HTML do?\n3. What does HTTP do?\n4. What happens when you type in a URL?\nInstructor solutions:\n1. Internet = infrastructure; Web = content using HTTP\n2. HTML structures the content\n3. HTTP transfers resources\n4. DNS lookup \u2192 HTTP request \u2192 Server response",
+    "time": "10 minutes"
+  },
+  "supplies": {
+    "data": "Computers with browser and text editor (VSCode or similar), projector for demonstration, Internet access, DevTools-enabled browser (Chrome or Firefox), access to sample images via URL, exit ticket forms (paper or Google Form)"
+  }
+}

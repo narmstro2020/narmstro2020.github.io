@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cWhich of the following is valid in Python: `and`, `&&`, `or`, `||`? Why do you think so?\u201d Students write their answers, then discuss in pairs and share out.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Students will be able to use logical operators (`and`, `or`, `not`) in Python to evaluate compound conditions and control program flow. Agenda: 1) Review of conditionals 2) Logical operator syntax 3) Code examples 4) Practice tasks 5) Personal challenge 6) Exit ticket.",
+    "time": "2 minutes"
+  },
+  "review": {
+    "data": "Recall previous lesson (6.1): How does an `if` statement work? What happens when a condition is false? Review structure and syntax with a 3-question quiz or class discussion using simple `if/else` examples.",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture with code examples:\n- Logical operator meanings\n- `and`: both must be true\n- `or`: at least one must be true\n- `not`: reverses truth value\n\nExamples:\n```python\nage = 16\nhas_permit = True\nif age >= 16 and has_permit:\n    print(\"You can drive!\")\n```\n```python\nis_raining = False\nhave_umbrella = True\nif not is_raining or have_umbrella:\n    print(\"Go outside.\")\n```",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Pair Programming Tasks:\n1. Ask for user age and membership status. Print \"Access granted\" if age \u226518 and membership is yes.\n```python\nage = int(input(\"Enter your age: \"))\nhas_membership = input(\"Do you have a membership (yes/no)? \")\nif age >= 18 and has_membership.lower() == \"yes\":\n    print(\"Access granted.\")\nelse:\n    print(\"Access denied.\")\n```\n2. Check if student completed homework or attended extra help. If either is yes, print bonus eligibility.",
+    "time": "20 minutes"
+  },
+  "ownership": {
+    "data": "Independent Challenge:\nPrompt: Create a login checker using `and`, `or`, and `not`.\n```python\nusername = input(\"Enter username: \")\npassword = input(\"Enter password: \")\nlocked_out = input(\"Are you locked out (yes/no)? \")\nif username == \"admin\" and (password == \"letmein\" or not locked_out.lower() == \"yes\"):\n    print(\"Welcome!\")\nelse:\n    print(\"Access denied.\")\n```",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket:\n1. What does `not` do in Python?\n2. What will this print?\n```python\nif True and not False:\n    print(\"OK\")\nelse:\n    print(\"Nope\")\n```\n3. Write a real-world example where you'd use `or` in a decision.\n\nInstructor Solutions:\n1. Reverses a boolean value\n2. OK\n3. Checking if a student turned in homework or attended extra help",
+    "time": "8 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Python (or access to Replit), projector or smart board, whiteboard/markers, optional printed walkthroughs, Google Form or paper exit ticket"
+  }
+}

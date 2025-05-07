@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cPredict the output:\n```python\nx = 5\nif x > 0:\n    if x < 10:\n        print(\"Single-digit positive number\")\n```\nStudents write answers, discuss with a partner, then share aloud.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Students will be able to use nested and chained conditionals in Python to solve multi-level decision problems.\nAgenda: 1) Review conditionals 2) Nested vs. chained 3) Syntax and flow 4) Practice with input 5) Creative applications 6) Exit ticket.",
+    "time": "5 minutes"
+  },
+  "review": {
+    "data": "Review Question: \"What\u2019s the difference between multiple `if` statements and using `if-elif-else`?\"\nFacilitate a brief discussion and write summary notes on the board:\n- `if`: all conditions are checked\n- `if-elif-else`: stops when one is True",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture with examples:\n**Nested Conditionals**\n```python\nage = 16\nif age >= 13:\n    if age <= 17:\n        print(\"You are a teenager\")\n```\n**Chained Conditionals**\n```python\ngrade = 87\nif grade >= 90:\n    print(\"A\")\nelif grade >= 80:\n    print(\"B\")\nelif grade >= 70:\n    print(\"C\")\nelse:\n    print(\"Needs Improvement\")\n```\nUse visuals or flowcharts to compare.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Student Task:\nWrite a program that asks for a user's age and prints:\n- \"Child\" if age < 13\n- \"Teen\" if 13\u201317\n- \"Adult\" if 18\u201364\n- \"Senior\" if 65+\n\nThen add a nested conditional to check for voting eligibility within \"Adult\" and \"Senior\".\n\nSample Solution:\n```python\nage = int(input(\"Enter your age: \"))\nif age < 13:\n    print(\"Child\")\nelif age < 18:\n    print(\"Teen\")\nelif age < 65:\n    print(\"Adult\")\n    if age >= 18:\n        print(\"Adult eligible voter\")\nelse:\n    print(\"Senior\")\n    if age >= 18:\n        print(\"Senior eligible voter\")\n```",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Independent Challenge:\nPrompt: Ask for two numbers and identify if they are both even, both odd, or one of each. Use nested conditionals.\n\nInstructor Solution:\n```python\nnum1 = int(input(\"Enter first number: \"))\nnum2 = int(input(\"Enter second number: \"))\nif num1 % 2 == 0:\n    if num2 % 2 == 0:\n        print(\"Both are even\")\n    else:\n        print(\"One is even and one is odd\")\nelse:\n    if num2 % 2 == 0:\n        print(\"One is even and one is odd\")\n    else:\n        print(\"Both are odd\")\n```",
+    "time": "10 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket:\n1. When would you use a nested conditional?\n2. Rewrite a chained conditional as nested, or vice versa.\n3. Predict the output:\n```python\nx = 7\nif x > 0:\n    if x % 2 == 0:\n        print(\"Even\")\n    else:\n        print(\"Odd\")\n```\nAnswers:\n1. When checking sub-conditions\n2. Example answers will vary\n3. \"Odd\"",
+    "time": "6 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Python (IDLE, PyCharm, or Replit), projector, whiteboard/markers, optional printed handouts, Google Form or paper exit ticket"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cIf a computer picks a random number between 1 and 10, do you think each number has an equal chance of appearing? Why or why not?\u201d Students share their thoughts in pairs and post an answer in a shared Google Doc or Jamboard.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Practice arithmetic and modulus operations in Python; explore how to import and use the `random` module; understand pseudo-randomness and its uses.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Recall Python variables and input. Review type conversion using `int()` and `float()`. Quick Check: Ask about the difference between `=` and `==`, and what `input()` returns.",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Mini-lecture and live demo in PyCharm covering arithmetic operators (+, -, *, /, //, %, **), then importing and using the `random` module: `random.randint()`, `random.random()`, `random.choice()`. Discuss pseudo-randomness.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students complete two hands-on exercises: (1) Write a calculator program using arithmetic operators, and (2) build a number guessing game using `random.randint()` and `input()`.",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Students create a 'Random Fortune' generator. Requirements: use a list, `random.choice()`, and user input. Optional bonus: personalize the message using the user\u2019s name.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: \u201cWhat does `random.randint(1, 10)` do exactly?\u201d and \u201cWhat real-world applications can you imagine using the `random` module?\u201d",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Python and PyCharm installed, projector for live coding demo, Google Doc or Jamboard for warm-up and exit ticket sharing."
+  }
+}

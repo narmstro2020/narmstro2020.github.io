@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "data": "Warm-up Prompt: &quot;Think about a video game you&#39;ve played recently. List three ways your inputs (keyboard presses, mouse clicks, etc.) impacted gameplay.&quot;<br>Brief sharing of responses.",
+    "time": "5 minutes"
+  },
+  "aim": {
+    "data": "Objective: Detect key presses and handle collisions using Pygame.<br>Agenda: 1) Review Pygame input basics 2) Implement key press event handling 3) Introduce and implement collision detection 4) Interactive practice creating game interactions.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Review Questions: &quot;What function do we use to capture events in Pygame?&quot; and &quot;How do we update the game screen to reflect changes?&quot;<br>Quick class recap and discussion.",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Instructor-led demonstration on:<br>- Detecting key presses using <code>pygame.event.get()</code> and <code>pygame.key.get_pressed()</code><br>- Collision detection using <code>pygame.Rect</code> and <code>.colliderect()</code><br><br>Example code:<br><pre><code>import pygame, sys<br>pygame.init()<br><br>screen = pygame.display.set_mode((600, 400))<br>clock = pygame.time.Clock()<br>player = pygame.Rect(300, 200, 50, 50)<br>obstacle = pygame.Rect(200, 150, 50, 50)<br>velocity = 5<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;for event in pygame.event.get():<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pygame.quit()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sys.exit()<br><br>&nbsp;&nbsp;&nbsp;&nbsp;keys = pygame.key.get_pressed()<br>&nbsp;&nbsp;&nbsp;&nbsp;if keys[pygame.K_LEFT]: player.x -= velocity<br>&nbsp;&nbsp;&nbsp;&nbsp;if keys[pygame.K_RIGHT]: player.x += velocity<br>&nbsp;&nbsp;&nbsp;&nbsp;if keys[pygame.K_UP]: player.y -= velocity<br>&nbsp;&nbsp;&nbsp;&nbsp;if keys[pygame.K_DOWN]: player.y += velocity<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if player.colliderect(obstacle): print(&quot;Collision!&quot;)<br><br>&nbsp;&nbsp;&nbsp;&nbsp;screen.fill((30,30,30))<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.draw.rect(screen, (0,128,255), player)<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.draw.rect(screen, (255,0,0), obstacle)<br><br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.display.flip()<br>&nbsp;&nbsp;&nbsp;&nbsp;clock.tick(60)</code></pre>",
+    "time": "25 minutes"
+  },
+  "interactive": {
+    "data": "Lab Activity:<br>Students create a program moving a rectangle around using arrow keys and detecting collision with a stationary rectangle.<br><br>Instructor Solution:<br><pre><code>import pygame, sys<br>pygame.init()<br><br>screen = pygame.display.set_mode((600,400))<br>player = pygame.Rect(300, 200, 50, 50)<br>obstacle = pygame.Rect(100,100,50,50)<br>velocity = 5<br>clock = pygame.time.Clock()<br><br>running = True<br>while running:<br>&nbsp;&nbsp;&nbsp;&nbsp;for event in pygame.event.get():<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;running = False<br><br>&nbsp;&nbsp;&nbsp;&nbsp;keys = pygame.key.get_pressed()<br>&nbsp;&nbsp;&nbsp;&nbsp;if keys[pygame.K_LEFT]: player.x -= velocity<br>&nbsp;&nbsp;&nbsp;&nbsp;if keys[pygame.K_RIGHT]: player.x += velocity<br>&nbsp;&nbsp;&nbsp;&nbsp;if keys[pygame.K_UP]: player.y -= velocity<br>&nbsp;&nbsp;&nbsp;&nbsp;if keys[pygame.K_DOWN]: player.y += velocity<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if player.colliderect(obstacle): print(&quot;Collision detected!&quot;)<br><br>&nbsp;&nbsp;&nbsp;&nbsp;screen.fill((0,0,0))<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.draw.rect(screen, (0,255,0), player)<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.draw.rect(screen, (255,0,0), obstacle)<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.display.flip()<br>&nbsp;&nbsp;&nbsp;&nbsp;clock.tick(60)<br><br>pygame.quit()</code></pre>",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Challenge Task:<br>Students add multiple obstacles, randomize obstacle positions after collisions, and display collision counts onscreen. Allow creative enhancements (colors, sounds).<br><br>Instructor circulates to assist students as they work independently.",
+    "time": "12 minutes"
+  },
+  "resonate": {
+    "data": "Wrap-up discussion:<br>- Students share one key takeaway from today’s lesson.<br>- Discuss practical applications in games for collision detection and input handling.<br><br>Exit Ticket:<br>&quot;Write pseudocode describing how you handled collision detection in your program today.&quot;",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with PyCharm and Pygame installed, projector for demonstrating code, example starter files."
+  }
+}
