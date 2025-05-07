@@ -1,34 +1,33 @@
 {
   "welcome": {
-    "data": "Warm-Up Prompt: On your computer, open the last Godot project we created. Once opened, ask yourself: Do you remember what the \"Output\" panel is for? Have you ever used print() or push_error() in your code? Write a quick note in your journal answering: \u201cWhat kind of messages would be helpful to see during gameplay?\u201d",
+    "data": "Warm-Up Prompt: \u201cThink about a photo or video you\u2019ve uploaded or downloaded. Have you ever noticed how file sizes affect quality or speed? Why might compression be important?\u201d Students respond in a journal-style entry or class discussion. Then, pair-share with a partner and identify a file type they believe is heavily compressed and why.",
     "time": "10 minutes"
   },
   "aim": {
-    "data": "Objective: Today we will learn how to use the Output Panel and the print() and push_error() functions in GDScript to find and fix problems in our code.",
+    "data": "State the agenda and objective: \u201cToday we will understand how computers represent data (binary, ASCII, images, etc.) and explore how compression reduces file size using lossless and lossy techniques.\u201d",
     "time": "3 minutes"
   },
   "review": {
-    "data": "Quick Recap Discussion: What are variables? What happens if we try to use a variable that hasn\u2019t been defined yet? How does Godot signal errors? Ask students: \"Have you ever seen a red error at the bottom of Godot? What did it say?\"",
+    "data": "Quick recap from Lesson 2.2 on how computers store text, numbers, and media using binary. Ask: \u201cHow does a computer represent a photo or paragraph of text in binary?\u201d",
     "time": "5 minutes"
   },
   "relevant": {
-    "data": "Key Concepts: What is the Output Panel in Godot? Difference between print(), print_debug(), and push_error(). How to locate errors using the Debugger and Output Panel. How to place print statements in your code to trace bugs. Use sample demonstrations to explain error messages and debugging techniques.",
+    "data": "Mini-lecture and demonstration using slides and live coding. Topics: binary to ASCII mapping, image representation (RGB and pixels), lossless vs. lossy compression. Show examples like ZIP vs MP3, PNG vs JPEG. Demonstrate file size differences using an image compression tool.",
     "time": "20 minutes"
   },
   "interactive": {
-    "data": "Student Challenge: Create a new Godot scene and attach a starter script. Run the scene and observe the Output Panel. Fix the bug using print() statements. Add error-handling code if needed. Goal: Students should be able to use the Output Panel to locate and fix the bug.",
+    "data": "Activity 1 (10 min): Decode ASCII characters from binary using a worksheet. Example: 01001000 01101001 = Hi. Activity 2 (15 min): Manually apply Run-Length Encoding (RLE) to a string like 'AAAAABBBCCDAA'. Expected: '5A3B2C1D2A'.",
     "time": "25 minutes"
   },
   "ownership": {
-    "data": "Mini Project Debugging Sprint: Give students a broken version of a Godot project with incorrect variable names, undeclared variables, or logic errors. Ask them to use the Output Panel to locate and fix 3 bugs. Annotate their code with print() where useful. Summarize what each error meant and how they solved it.",
+    "data": "Students write a basic Python script that compresses strings using RLE. Example code provided. They test it with inputs like 'AAABCCDDDD' and check the output: '3A1B2C4D'.",
     "time": "15 minutes"
   },
   "resonate": {
-    "data": "Exit Ticket Prompts: What\u2019s the difference between print() and push_error()? Why might a developer use print() even after their code is working? Invite a few students to share one bug they fixed and how the Output Panel helped.",
+    "data": "Exit Ticket: \u201cExplain the difference between lossless and lossy compression and give an example of when you\u2019d use each.\u201d Students write a one-paragraph reflection.",
     "time": "5 minutes"
   },
   "supplies": {
-    "data": "Computers with Godot 4 installed; previous Godot project or starter scene; projector or screen for live demo; reference slides or handout with print(), push_error(), and print_debug() usage.",
-    "time": "N/A"
+    "data": "Computers with internet, slide deck on binary and compression, ASCII table handout, image files for compression comparison, worksheet for binary decoding and RLE practice, Python editor or online compiler (e.g., Replit)."
   }
 }

@@ -1,33 +1,33 @@
 {
   "welcome": {
-    "data": "Warm-Up Prompt: \u201cWhat makes a good scene in a game? Think about your favorite game\u2014what's the first thing you saw or interacted with?\u201d Students will share quick thoughts in pairs and then discuss as a class.",
+    "data": "Warm-Up Prompt: \u201cThink of any task you\u2019ve seen a computer do\u2014play a video, calculate a total, or recognize your face. What do you think happens inside the computer to make that possible?\u201d Students respond with a short write-up and discuss in pairs.",
     "time": "10 minutes"
   },
   "aim": {
-    "data": "Objective: Students will create and run a basic scene using Godot 4, including a root node and a simple visual node (e.g., sprite or label), and test their scene in the editor.",
-    "time": "3 minutes"
-  },
-  "review": {
-    "data": "Review from Lesson 1.2: Opening the Godot Editor, creating a project and exploring the FileSystem, node and scene basics (node hierarchy, root node, saving scenes). Quick recall quiz: What is a node? What does every scene require?",
+    "data": "State the agenda and objective: Understand the basic stages of how a computer processes information: Input \u2192 Process \u2192 Storage \u2192 Output.",
     "time": "5 minutes"
   },
+  "review": {
+    "data": "Review the previous lesson's topic on 'What is Computing?' Ask: \u201cWhat are some examples of problems that computers help us solve?\u201d",
+    "time": "6 minutes"
+  },
   "relevant": {
-    "data": "Mini-lecture and live demo in Godot: Show how to create a new scene, add a root node and child nodes, set properties like position and text, save the scene, and run it using the Play button.",
+    "data": "Mini-lecture: Explain the Information Processing Cycle using real-world analogies (e.g., vending machine). Show a visual flowchart. Cover hardware examples like Keyboard (Input), CPU (Process), RAM/Hard Drive (Storage), and Monitor (Output).",
     "time": "20 minutes"
   },
   "interactive": {
-    "data": "Students will create a new scene with a root node and at least one child node. They will customize basic properties, save the scene, and run it in the Godot editor.",
-    "time": "25 minutes"
+    "data": "Activity: Students complete a Sort and Match Task using printed or digital materials. Match items (Mouse, CPU, RAM, Monitor, etc.) to Input, Process, Storage, Output phases.<br><br><strong>Instructor Solution:</strong><br>- Mouse \u2192 Input<br>- CPU \u2192 Process<br>- RAM \u2192 Storage (temporary)<br>- Hard Drive \u2192 Storage (long-term)<br>- Monitor \u2192 Output",
+    "time": "20 minutes"
   },
   "ownership": {
-    "data": "Independent Challenge: Students will design their own Welcome Scene with at least two child nodes and one customized property (e.g., text or color). They will test and refine their scenes independently.",
+    "data": "Group Activity: Students choose a tech scenario (e.g., playing a game, ordering food) and explain how each step of the Information Processing Cycle applies. Use structured prompts to guide thinking.",
     "time": "15 minutes"
   },
   "resonate": {
-    "data": "Exit Ticket: \u201cWhat was the most challenging part of creating your own scene today? What did you enjoy most?\u201d Students write a brief reflection or submit it digitally.",
+    "data": "Class Reflection: \u201cWhy is it important to understand how computers process information?\u201d Students discuss how this knowledge helps in becoming better problem solvers or programmers.",
     "time": "5 minutes"
   },
   "supplies": {
-    "data": "Computers with Godot 4 installed, projector for live demo, optional sample assets (sprite or font), and a reflection submission method (paper or LMS)."
+    "data": "Computers or laptops, projector or display screen, printed or digital sorting activity, visual flowchart slide, timer, and optional vocabulary handout."
   }
 }

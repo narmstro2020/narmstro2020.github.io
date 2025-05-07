@@ -1,34 +1,34 @@
 {
   "welcome": {
-    "data": "Warm-Up Prompt: \u201cWhat do you think a script does in a game? Can you think of something a game character does that might need instructions?\u201d Students write examples and share.",
+    "data": "Warm-Up Prompt (Think-Pair-Share): \u201cHow does a computer understand text, images, or sound? What does it all reduce to?\u201d Students write 1\u20132 sentences, then discuss with a partner.",
     "time": "10 minutes"
   },
   "aim": {
-    "data": "Agenda/Objectives: Understand the purpose of GDScript in Godot 4; Learn how to attach and edit scripts using the Godot Script Editor; Write and test basic GDScript code.",
+    "data": "State the agenda and objective: Understand how binary, decimal, and hexadecimal number systems represent digital data, and how to convert between them.",
     "time": "3 minutes"
   },
   "review": {
-    "data": "Recap from Lesson 1.3 on the Godot editor layout, including scene tree, Inspector, and running a project. Ask: \u201cWhere do you think the logic goes when the player jumps or collects coins?\u201d",
+    "data": "Discuss how computers use electricity and logic gates from the previous unit. Emphasize that binary is the foundation for data representation.",
     "time": "5 minutes"
   },
   "relevant": {
-    "data": "Mini-Lecture & Demo: Introduce GDScript; Compare GDScript syntax to Python; Show how to attach a script to a Node; Demonstrate creating a Label node and writing a script that updates its text.",
+    "data": "Mini-lecture and board or slide demo:\n1. Binary system: base-2 using 0 and 1 (1, 2, 4, 8, etc.).\n2. Decimal system: base-10, standard system.\n3. Hexadecimal: base-16 using 0-9 and A-F.\n4. Conversions: Decimal \u2194 Binary, Binary \u2194 Hexadecimal.\nLive demo: Convert 45 (decimal) to binary (101101) and hex (2D).",
     "time": "20 minutes"
   },
   "interactive": {
-    "data": "Guided Practice: Students follow along to create a 2D scene with a Label node; Attach a script to the Label; Modify the text in _ready(); Add a second function that updates the label when called.",
+    "data": "Part A: In pairs, convert the following:\n- 27 (dec) \u2192 binary and hex\n- 1010 (bin) \u2192 decimal and hex\n- 3F (hex) \u2192 binary and decimal\n\nPart B: In groups, complete a \u201cBinary Mystery Code\u201d worksheet to decode a secret ASCII message.",
     "time": "25 minutes"
   },
   "ownership": {
-    "data": "Student Application: Students add a Button node to the scene and write a script that changes the Label\u2019s text when clicked. Students test and troubleshoot in pairs.",
+    "data": "Students create a Number Systems Cheat Sheet in Google Docs with:\n- Definitions of binary, decimal, hex\n- Conversion examples\n- ASCII table snippet\n\nInstructor solution guide includes:\n- Binary: 101101 = 45 (decimal)\n- Decimal to hex: 45 = 2D\n- ASCII: 01100001 = \u2018a\u2019",
     "time": "15 minutes"
   },
   "resonate": {
-    "data": "Exit Ticket: Prompt: \u201cWhat does the _ready() function do? Why do we use it in GDScript?\u201d Collect short written responses or use a quick poll on the board.",
+    "data": "Exit Ticket Prompt: \u201cIn your own words, how would you explain binary to someone who\u2019s never heard of it? Why do we use hexadecimal in computing?\u201d Students respond via Google Form or shared doc.",
     "time": "5 minutes"
   },
   "supplies": {
-    "data": "Computers with Godot 4 installed; Projector or screen-sharing setup for demo; Optional starter project with Label and Button; Access to instructor script templates or slides.",
-    "time": ""
+    "data": "Computers (desktops or laptops), projector or whiteboard, Binary Mystery Code worksheet (print or digital), ASCII table (https://www.asciitable.com/), Google Docs or drawing tool for cheat sheet",
+    "time": "N/A"
   }
 }

@@ -1,34 +1,34 @@
 {
   "welcome": {
-    "data": "Warm-up Prompt: \u201cWhat do you already know about variables? Where have you seen them before (math, science, etc.)?\u201d Students post 1-2 ideas on a digital whiteboard or shared doc.",
+    "data": "Warm-Up Prompt: \u201cThink about your favorite photo, song, or quote. How do you think a computer stores that information? Write 2\u20133 sentences describing how text, images, or sound might be stored digitally.\u201d",
     "time": "10 minutes"
   },
   "aim": {
-    "data": "Objective: Understand how to use variables, constants, and data types in GDScript for Godot 4. Students will write a script that stores and prints data.",
+    "data": "State the agenda and objective: Learn how computers represent images using RGB, text using ASCII, and sound using sampling techniques.",
     "time": "3 minutes"
   },
   "review": {
-    "data": "Connect to Lesson 1.4: Revisit basic project setup and print() usage. Ask: \u201cHow did we use print() to test our code?\u201d",
+    "data": "Quick quiz review: 1) Convert binary 1010 to decimal. (Answer: 10) 2) How many bits are needed to represent 15? (Answer: 4 bits) 3) What does 'bit' stand for? (Answer: Binary digit).",
     "time": "8 minutes"
   },
   "relevant": {
-    "data": "Mini-Lesson: Introduce GDScript syntax for declaring variables and constants. Discuss types (int, float, String, bool). Talk about type hints and dynamic typing.",
+    "data": "Mini-lecture with slides and demos: (1) RGB Images \u2014 Pixels use values 0\u2013255 for red, green, blue. Example: RGB(255,0,0) is red. (2) ASCII Text \u2014 Characters map to numeric values. Example: 'A' = 65. (3) Sound Sampling \u2014 Show how waveforms are converted to data using sample rates. Demo tools: academo.org, ASCII chart, image pixel grid viewer.",
     "time": "20 minutes"
   },
   "interactive": {
-    "data": "Student Activity: Create a new Godot 4 scene and attach a script to the main node. Task: Declare and use 3 variables and 1 constant: name (String), age (int), is_student (bool), constant for school name. Print the data using print() and str() as needed. Instructor circulates and helps troubleshoot any type or syntax errors.",
+    "data": "Students rotate through 3 media stations: (1) RGB Mixer \u2014 Match colors like purple (RGB(128,0,128)) and orange (RGB(255,165,0)). (2) ASCII Puzzle \u2014 Decode ASCII numbers like 72 101 108 108 111 = 'Hello'. (3) Sound Sampling \u2014 Use online tool or Audacity to change sample rates and observe distortion.",
     "time": "25 minutes"
   },
   "ownership": {
-    "data": "Challenge: Students add an age_in_5_years variable and calculate the future age using current age + 5. Bonus: Print a statement using the calculated age.",
+    "data": "Mini-Challenge (choose one): (a) Create a 5-character ASCII message and convert it, (b) Choose 3 RGB colors and describe where you\u2019d use them, or (c) Explain why high sampling rates matter for audio apps. Submit via Google Form, LMS, or on paper.",
     "time": "10 minutes"
   },
   "resonate": {
-    "data": "Reflection Prompt: \u201cHow would you explain the difference between a variable and a constant to someone who has never programmed before?\u201d Ask 2-3 students to share.",
+    "data": "Class discussion: 'What surprised you about how computers handle media?' Show slide: 'Digital media may look simple, but every color, letter, and sound is made of numbers.' Optional exit ticket: Which format (image, text, sound) was hardest to understand, and why?",
     "time": "5 minutes"
   },
   "supplies": {
-    "data": "Computers with Godot 4 installed, project files from prior lessons, access to digital notebook or handout, instructor demo code",
-    "time": "5 minutes"
+    "data": "Computers with internet, headphones (optional), printable ASCII chart or digital tool, RGB mixer website, sound sampling tool (academo.org or Audacity), slide deck or projector.",
+    "time": ""
   }
 }

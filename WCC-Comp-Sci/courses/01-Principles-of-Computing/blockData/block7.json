@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cWhat comes to mind when you hear the word *coding*? Have you ever seen or written a line of code before?\u201d Students will write a quick response in their notebooks and share their thoughts in pairs, followed by a brief class share-out.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: By the end of class, students will be able to: \n- Set up PyCharm for Python programming \n- Write and run basic Python scripts using print() \n- Declare and use variables in Python",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Connect to prior learning from digital tools or other classes (e.g., block-based programming or HTML). Ask: \u201cWhat do all digital tools have in common when it comes to giving instructions?\u201d",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Mini-Lecture and Demonstration:\n1. Installing PyCharm (Instructor Demo)\n- Go to https://www.jetbrains.com/pycharm/download\n- Install Community Edition\n- Open PyCharm \u2192 New Project \u2192 Pure Python \u2192 Name it python_intro\n\n2. Create Python File\n- File \u2192 New \u2192 Python File \u2192 hello_world.py\n- Type:\n  print(\"Hello, world!\")\n\n3. Variables\n- Explain assignment:\n  name = \"Alice\"\n  age = 16\n  print(name)\n  print(age)",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students:\n1. Install PyCharm and create project\n2. Create file practice.py\n3. Write and run:\n  print(\"My name is John.\")\n  print(\"I am learning Python.\")\n\n4. Add variables:\n  favorite_color = \"blue\"\n  lucky_number = 7\n  print(\"My favorite color is\", favorite_color)\n  print(\"My lucky number is\", lucky_number)",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Extension Task:\nStudents modify code to include their name, grade, and favorite food.\nExample:\n  name = \"Samantha\"\n  grade = 11\n  favorite_food = \"pizza\"\n  print(\"My name is\", name)\n  print(\"I am in grade\", grade)\n  print(\"My favorite food is\", favorite_food)\n\nStudents submit screenshots of their output.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket Prompt: \u201cWhat surprised you about Python today? What do you want to build with code?\u201d Students respond via slip or form.",
+    "time": "3 minutes"
+  },
+  "supplies": {
+    "data": "Computers with internet access, PyCharm (Community Edition), projector for demo, whiteboard/markers for syntax explanation.",
+    "time": "2 minutes"
+  }
+}

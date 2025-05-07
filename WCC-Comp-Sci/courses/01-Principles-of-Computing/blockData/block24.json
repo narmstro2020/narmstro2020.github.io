@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-up Prompt: &quot;What are some ways games use text on screen? Think about fonts, scores, timers, titles, menus, and messages.&quot;<br>Students share responses aloud to spark thinking.",
+    "time": "5 minutes"
+  },
+  "aim": {
+    "data": "Objective: Learn how to load fonts, render text, and create basic UI elements in Pygame.<br>Agenda: 1) Review prior asset integration 2) Explore fonts and text 3) Create scoreboard and button UI 4) Code and customize UI.",
+    "time": "3 minutes"
+  },
+  "review": {
+    "data": "Review Questions: &quot;How did we load and display images and sounds last time?&quot;<br>Quick recap of <code>pygame.image.load()</code> and <code>pygame.mixer.Sound()</code>, and how we positioned/played assets.",
+    "time": "8 minutes"
+  },
+  "relevant": {
+    "data": "Instructor-led demonstration:<br>- Loading system and custom fonts<br>- Using <code>render()</code> to display text<br>- Creating a text-based UI element like a scoreboard or button<br><br>Example code:<br><pre><code>import pygame<br>pygame.init()<br><br>screen = pygame.display.set_mode((800, 600))<br>font = pygame.font.SysFont('Arial', 36)<br>custom_font = pygame.font.Font('Franxurter.ttf', 36)<br><br>text = font.render('Score: 100', True, (255, 255, 255))<br>screen.blit(text, (50, 50))</code></pre>",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Student Activity:<br>Create a scoreboard and button using Pygame fonts.<br>Increase score using keyboard; reset score with a button.<br><br>Instructor Solution:<br><pre><code>import pygame<br>pygame.init()<br>screen = pygame.display.set_mode((800, 600))<br>font = pygame.font.SysFont('Arial', 32)<br>score = 0<br><br>def draw_button(screen, text, x, y, w, h):<br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.draw.rect(screen, (0, 0, 255), (x, y, w, h))<br>&nbsp;&nbsp;&nbsp;&nbsp;font = pygame.font.SysFont('Arial', 24)<br>&nbsp;&nbsp;&nbsp;&nbsp;text_surf = font.render(text, True, (255, 255, 255))<br>&nbsp;&nbsp;&nbsp;&nbsp;text_rect = text_surf.get_rect(center=(x + w // 2, y + h // 2))<br>&nbsp;&nbsp;&nbsp;&nbsp;screen.blit(text_surf, text_rect)<br><br>running = True<br>while running:<br>&nbsp;&nbsp;&nbsp;&nbsp;screen.fill((0, 0, 0))<br>&nbsp;&nbsp;&nbsp;&nbsp;score_text = font.render(f'Score: {score}', True, (255, 255, 255))<br>&nbsp;&nbsp;&nbsp;&nbsp;screen.blit(score_text, (20, 20))<br>&nbsp;&nbsp;&nbsp;&nbsp;draw_button(screen, 'Restart', 650, 500, 120, 50)<br><br>&nbsp;&nbsp;&nbsp;&nbsp;for event in pygame.event.get():<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;running = False<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.KEYDOWN:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score += 10<br><br>&nbsp;&nbsp;&nbsp;&nbsp;pygame.display.flip()<br>pygame.quit()</code></pre>",
+    "time": "25 minutes"
+  },
+  "ownership": {
+    "data": "Individual Challenge:<br>Students customize UI by:<br>- Using a custom font file<br>- Designing their own button layout<br>- Implementing restart logic<br>Encouraged to consider color, placement, and readability.",
+    "time": "15 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket:<br>1. What method did you use to draw text?<br>2. What&apos;s the difference between <code>SysFont</code> and <code>Font</code>?<br>3. Where would you use buttons in your final project?",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Pygame installed, <code>Franxurter.ttf</code> font file, projector or screen-share, example scoreboard/button reference visuals.",
+    "time": ""
+  }
+}

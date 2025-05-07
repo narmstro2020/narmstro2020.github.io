@@ -1,0 +1,34 @@
+{
+  "welcome": {
+    "data": "Warm-Up Prompt: \u201cEstimate the result of 12 \u00f7 5, 7 \u00d7 3 + 2, and 4 - 0.5.\u201d Students record answers in a notebook or document, then share aloud. Instructor ensures all computers are on and Python is ready.",
+    "time": "10 minutes"
+  },
+  "aim": {
+    "data": "Objective: Students will understand how to use integers and floating-point numbers in Python, perform arithmetic operations, and apply type conversion with int() and float().",
+    "time": "2 minutes"
+  },
+  "review": {
+    "data": "Ask students: What is a variable? How do we assign a value to it in Python? Demo: x = 10, y = 3. Print x + y. Discuss how variables can hold numbers.",
+    "time": "5 minutes"
+  },
+  "relevant": {
+    "data": "Instructor-led explanation and demo of int, float, and arithmetic operators: +, -, *, /, //, %, **. Include type casting and order of operations. Code is demonstrated live in PyCharm.",
+    "time": "20 minutes"
+  },
+  "interactive": {
+    "data": "Students open their computers and write code to perform all basic math operations on two variables. Print results with labels. Instructor provides guided support and checks progress.",
+    "time": "20 minutes"
+  },
+  "ownership": {
+    "data": "Challenge: Students write a calculator script that prompts the user for two numbers and prints results of all operations, including float formatting. Instructor shares solution afterward.",
+    "time": "20 minutes"
+  },
+  "resonate": {
+    "data": "Exit Ticket: 1) What does // do in Python? 2) What is the difference between / and //? 3) What does % return? Students submit written or digital answers.",
+    "time": "5 minutes"
+  },
+  "supplies": {
+    "data": "Computers with Python installed (IDLE or PyCharm), projector for code demo, whiteboard (optional), student notebooks or Google Form for exit ticket.",
+    "time": "N/A"
+  }
+}
