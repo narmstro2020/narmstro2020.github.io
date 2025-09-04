@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Margin Collapse Visualizer</title>
+    <link rel="stylesheet" href="visual-aid-styles-2.css">
+
+</head>
+<body>
+    <div class="main-container">
+        <h1>Margin Collapse Visualizer</h1>
+        
+        <div class="demo-grid">
+            <!-- Demo 1: Adjacent Siblings -->
+            <div class="demo-card">
+                <h2>Adjacent Siblings 
+                    <span class="collapse-indicator collapse-yes" id="demo1-indicator">Collapsing</span>
+                </h2>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label>Box 1 - Bottom Margin:</label>
+                        <input type="range" id="box1-margin" min="0" max="60" value="30">
+                        <div class="value-display" id="box1-margin-value">30px</div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Box 2 - Top Margin:</label>
+                        <input type="range" id="box2-margin" min="0" max="60" value="20">
+                        <div class="value-display" id="box2-margin-value">20px</div>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" id="siblings-collapse">Allow Collapse</button>
+                        <button class="toggle-btn" id="siblings-prevent">Prevent (Float)</button>
+                    </div>
+                </div>
+                
+                <div class="demo-area" id="demo1-container">
+                    <div class="ruler"></div>
+                    <div id="demo1-content">
+                        <div class="element-box box1" id="box1">Box 1</div>
+                        <div class="element-box box2" id="box2">Box 2</div>
+                    </div>
+                    <div class="measurement" id="demo1-measurement">Gap: 30px</div>
+                </div>
+                
+                <div class="code-snippet" id="demo1-code">
+.box1 { margin-bottom: 30px; }
+.box2 { margin-top: 20px; }
+/* Actual gap: 30px (collapsed) */</div>
+            </div>
+            
+            <!-- Demo 2: Parent and Child -->
+            <div class="demo-card">
+                <h2>Parent and First Child
+                    <span class="collapse-indicator collapse-yes" id="demo2-indicator">Collapsing</span>
+                </h2>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label>Parent - Top Margin:</label>
+                        <input type="range" id="parent-margin" min="0" max="60" value="40">
+                        <div class="value-display" id="parent-margin-value">40px</div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Child - Top Margin:</label>
+                        <input type="range" id="child-margin" min="0" max="60" value="30">
+                        <div class="value-display" id="child-margin-value">30px</div>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" id="parent-collapse">Allow Collapse</button>
+                        <button class="toggle-btn" id="parent-prevent">Add Padding</button>
+                    </div>
+                </div>
+                
+                <div class="demo-area" id="demo2-container">
+                    <div class="ruler"></div>
+                    <div id="demo2-content">
+                        <div style="background: #ddd; padding: 10px; margin-bottom: 0;">Previous Element</div>
+                        <div class="element-box parent-box" id="parent">
+                            Parent
+                            <div class="element-box child-box" id="child">Child</div>
+                        </div>
+                    </div>
+                    <div class="measurement" id="demo2-measurement">Gap: 40px</div>
+                </div>
+                
+                <div class="code-snippet" id="demo2-code">
+.parent { margin-top: 40px; }
+.child { margin-top: 30px; }
+/* Gap from previous: 40px (collapsed) */</div>
+            </div>
+            
+            <!-- Demo 3: Empty Block -->
+            <div class="demo-card">
+                <h2>Empty Block
+                    <span class="collapse-indicator collapse-yes" id="demo3-indicator">Collapsing</span>
+                </h2>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label>Empty Block - Top Margin:</label>
+                        <input type="range" id="empty-top" min="0" max="60" value="25">
+                        <div class="value-display" id="empty-top-value">25px</div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Empty Block - Bottom Margin:</label>
+                        <input type="range" id="empty-bottom" min="0" max="60" value="35">
+                        <div class="value-display" id="empty-bottom-value">35px</div>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" id="empty-collapse">Empty (Collapse)</button>
+                        <button class="toggle-btn" id="empty-content">Add Content</button>
+                    </div>
+                </div>
+                
+                <div class="demo-area" id="demo3-container">
+                    <div class="ruler"></div>
+                    <div id="demo3-content">
+                        <div class="element-box" style="background: #673AB7;">Before</div>
+                        <div id="empty-block" style="margin-top: 25px; margin-bottom: 35px;"></div>
+                        <div class="element-box" style="background: #009688;">After</div>
+                    </div>
+                    <div class="measurement" id="demo3-measurement">Gap: 35px</div>
+                </div>
+                
+                <div class="code-snippet" id="demo3-code">
+.empty { 
+  margin-top: 25px;
+  margin-bottom: 35px;
+  /* No content */
+}
+/* Gap: 35px (margins collapsed through) */</div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h2>Understanding Margin Collapse</h2>
+            
+            <div class="explanation">
+                <h3>Key Rules:</h3>
+                <ul style="margin-left: 20px; line-height: 1.8;">
+                    <li><strong>Only vertical margins collapse</strong> - Left and right margins never collapse</li>
+                    <li><strong>Largest margin wins</strong> - When margins collapse, the larger value is used</li>
+                    <li><strong>Block elements only</strong> - Inline and inline-block elements don't collapse</li>
+                    <li><strong>Same formatting context</strong> - Elements must be in the same block formatting context</li>
+                </ul>
+            </div>
+            
+            <div class="explanation warning">
+                <h3>Prevention Methods:</h3>
+                <ul style="margin-left: 20px; line-height: 1.8;">
+                    <li><strong>Padding or Border</strong> - Any padding/border prevents parent-child collapse</li>
+                    <li><strong>Float or Position</strong> - Floated or absolutely positioned elements don't collapse</li>
+                    <li><strong>Overflow</strong> - Elements with overflow (other than visible) don't collapse</li>
+                    <li><strong>Display</strong> - Inline-block, flex, or grid containers prevent collapse</li>
+                </ul>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 5px;">
+                <strong>Pro Tip:</strong> Margin collapse isn't a bug—it's a feature! It helps maintain consistent spacing in documents, especially with typography. Understanding when and why it happens helps you use it to your advantage.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Demo 1: Adjacent Siblings
+        const box1Margin = document.getElementById('box1-margin');
+        const box2Margin = document.getElementById('box2-margin');
+        const box1 = document.getElementById('box1');
+        const box2 = document.getElementById('box2');
+        const siblingsCollapse = document.getElementById('siblings-collapse');
+        const siblingsPrevent = document.getElementById('siblings-prevent');
+        let siblings_preventing = false;
+        
+        function updateDemo1() {
+            const margin1 = parseInt(box1Margin.value);
+            const margin2 = parseInt(box2Margin.value);
+            
+            document.getElementById('box1-margin-value').textContent = margin1 + 'px';
+            document.getElementById('box2-margin-value').textContent = margin2 + 'px';
+            
+            box1.style.marginBottom = margin1 + 'px';
+            box2.style.marginTop = margin2 + 'px';
+            
+            let actualGap;
+            if (siblings_preventing) {
+                box2.style.float = 'left';
+                box2.style.clear = 'both';
+                actualGap = margin1 + margin2;
+                document.getElementById('demo1-indicator').className = 'collapse-indicator collapse-no';
+                document.getElementById('demo1-indicator').textContent = 'Not Collapsing';
+            } else {
+                box2.style.float = 'none';
+                box2.style.clear = 'none';
+                actualGap = Math.max(margin1, margin2);
+                document.getElementById('demo1-indicator').className = 'collapse-indicator collapse-yes';
+                document.getElementById('demo1-indicator').textContent = 'Collapsing';
+            }
+            
+            document.getElementById('demo1-measurement').textContent = `Gap: ${actualGap}px`;
+            document.getElementById('demo1-code').textContent = 
+`.box1 { margin-bottom: ${margin1}px; }
+.box2 { margin-top: ${margin2}px;${siblings_preventing ? ' float: left; clear: both;' : ''} }
+/* Actual gap: ${actualGap}px ${siblings_preventing ? '(prevented)' : '(collapsed)'} */`;
+        }
+        
+        box1Margin.addEventListener('input', updateDemo1);
+        box2Margin.addEventListener('input', updateDemo1);
+        
+        siblingsCollapse.addEventListener('click', () => {
+            siblings_preventing = false;
+            siblingsCollapse.classList.add('active');
+            siblingsPrevent.classList.remove('active');
+            updateDemo1();
+        });
+        
+        siblingsPrevent.addEventListener('click', () => {
+            siblings_preventing = true;
+            siblingsPrevent.classList.add('active');
+            siblingsCollapse.classList.remove('active');
+            updateDemo1();
+        });
+        
+        // Demo 2: Parent and Child
+        const parentMargin = document.getElementById('parent-margin');
+        const childMargin = document.getElementById('child-margin');
+        const parent = document.getElementById('parent');
+        const child = document.getElementById('child');
+        const parentCollapse = document.getElementById('parent-collapse');
+        const parentPrevent = document.getElementById('parent-prevent');
+        let parent_preventing = false;
+        
+        function updateDemo2() {
+            const pMargin = parseInt(parentMargin.value);
+            const cMargin = parseInt(childMargin.value);
+            
+            document.getElementById('parent-margin-value').textContent = pMargin + 'px';
+            document.getElementById('child-margin-value').textContent = cMargin + 'px';
+            
+            parent.style.marginTop = pMargin + 'px';
+            child.style.marginTop = cMargin + 'px';
+            
+            let actualGap;
+            if (parent_preventing) {
+                parent.style.paddingTop = '1px';
+                actualGap = pMargin; // Parent margin is used, child margin is inside
+                document.getElementById('demo2-indicator').className = 'collapse-indicator collapse-no';
+                document.getElementById('demo2-indicator').textContent = 'Not Collapsing';
+            } else {
+                parent.style.paddingTop = '0';
+                actualGap = Math.max(pMargin, cMargin);
+                document.getElementById('demo2-indicator').className = 'collapse-indicator collapse-yes';
+                document.getElementById('demo2-indicator').textContent = 'Collapsing';
+            }
+            
+            document.getElementById('demo2-measurement').textContent = `Gap: ${actualGap}px`;
+            document.getElementById('demo2-code').textContent = 
+`.parent { margin-top: ${pMargin}px;${parent_preventing ? ' padding-top: 1px;' : ''} }
+.child { margin-top: ${cMargin}px; }
+/* Gap from previous: ${actualGap}px ${parent_preventing ? '(prevented)' : '(collapsed)'} */`;
+        }
+        
+        parentMargin.addEventListener('input', updateDemo2);
+        childMargin.addEventListener('input', updateDemo2);
+        
+        parentCollapse.addEventListener('click', () => {
+            parent_preventing = false;
+            parentCollapse.classList.add('active');
+            parentPrevent.classList.remove('active');
+            updateDemo2();
+        });
+        
+        parentPrevent.addEventListener('click', () => {
+            parent_preventing = true;
+            parentPrevent.classList.add('active');
+            parentCollapse.classList.remove('active');
+            updateDemo2();
+        });
+        
+        // Demo 3: Empty Block
+        const emptyTop = document.getElementById('empty-top');
+        const emptyBottom = document.getElementById('empty-bottom');
+        const emptyBlock = document.getElementById('empty-block');
+        const emptyCollapse = document.getElementById('empty-collapse');
+        const emptyContent = document.getElementById('empty-content');
+        let has_content = false;
+        
+        function updateDemo3() {
+            const topMargin = parseInt(emptyTop.value);
+            const bottomMargin = parseInt(emptyBottom.value);
+            
+            document.getElementById('empty-top-value').textContent = topMargin + 'px';
+            document.getElementById('empty-bottom-value').textContent = bottomMargin + 'px';
+            
+            emptyBlock.style.marginTop = topMargin + 'px';
+            emptyBlock.style.marginBottom = bottomMargin + 'px';
+            
+            let actualGap;
+            if (has_content) {
+                emptyBlock.innerHTML = '<div style="background: #FFC107; padding: 10px; color: #333;">Content Added</div>';
+                actualGap = topMargin + bottomMargin; // Both margins are used
+                document.getElementById('demo3-indicator').className = 'collapse-indicator collapse-no';
+                document.getElementById('demo3-indicator').textContent = 'Not Collapsing';
+            } else {
+                emptyBlock.innerHTML = '';
+                actualGap = Math.max(topMargin, bottomMargin);
+                document.getElementById('demo3-indicator').className = 'collapse-indicator collapse-yes';
+                document.getElementById('demo3-indicator').textContent = 'Collapsing';
+            }
+            
+            document.getElementById('demo3-measurement').textContent = `Gap: ${actualGap}px`;
+            document.getElementById('demo3-code').textContent = 
+`.empty { 
+  margin-top: ${topMargin}px;
+  margin-bottom: ${bottomMargin}px;
+  ${has_content ? '/* Has content */' : '/* No content */'}
+}
+/* Gap: ${actualGap}px ${has_content ? '(both margins used)' : '(margins collapsed through)'} */`;
+        }
+        
+        emptyTop.addEventListener('input', updateDemo3);
+        emptyBottom.addEventListener('input', updateDemo3);
+        
+        emptyCollapse.addEventListener('click', () => {
+            has_content = false;
+            emptyCollapse.classList.add('active');
+            emptyContent.classList.remove('active');
+            updateDemo3();
+        });
+        
+        emptyContent.addEventListener('click', () => {
+            has_content = true;
+            emptyContent.classList.add('active');
+            emptyCollapse.classList.remove('active');
+            updateDemo3();
+        });
+        
+        // Initialize all demos
+        updateDemo1();
+        updateDemo2();
+        updateDemo3();
+    </script>
+</body>
+</html>

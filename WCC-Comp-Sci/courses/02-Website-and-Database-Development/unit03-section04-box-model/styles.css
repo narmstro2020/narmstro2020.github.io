@@ -1,0 +1,757 @@
+/* ========================================
+   CSS Display Properties and Box Model Lesson
+   ======================================== */
+
+/* Base Styles and Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 0;
+    margin: 0;
+}
+
+/* Layout and Typography */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    background: white;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+section {
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+section:last-child {
+    border-bottom: none;
+}
+
+h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid #3498db;
+}
+
+h3 {
+    color: #34495e;
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem 0;
+}
+
+h4 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin: 1rem 0 0.5rem 0;
+}
+
+p {
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+code {
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #e74c3c;
+}
+
+pre {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+pre code {
+    background: none;
+    color: #ecf0f1;
+    padding: 0;
+}
+
+/* Navigation Styles */
+.table-of-contents {
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    color: white;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+.table-of-contents h2 {
+    color: white;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    margin-bottom: 1rem;
+}
+
+.table-of-contents ul {
+    list-style: none;
+    padding: 0;
+}
+
+.table-of-contents li {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.table-of-contents li:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.table-of-contents a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.table-of-contents a:hover {
+    text-decoration: underline;
+}
+
+.back-to-top {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem;
+    background: #ecf0f1;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.back-to-top:hover {
+    background: #3498db;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Learning Objectives */
+.learning-objectives {
+    background: #e8f5e8;
+    border-left: 4px solid #27ae60;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.learning-objectives h3 {
+    color: #27ae60;
+    margin-top: 0;
+}
+
+/* Vocabulary Styles */
+.vocabulary-section {
+    margin-bottom: 2rem;
+}
+
+dl {
+    margin: 1rem 0;
+}
+
+dt {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 1rem;
+    font-size: 1.1em;
+}
+
+dd {
+    margin: 0.5rem 0 0 1.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid #3498db;
+}
+
+/* Display Properties Examples */
+.display-section {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.characteristics {
+    background: white;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    border-left: 4px solid #17a2b8;
+}
+
+.default-elements {
+    background: #fff3cd;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    border-left: 4px solid #ffc107;
+}
+
+.example {
+    background: white;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    border: 2px dashed #6c757d;
+}
+
+/* Block Elements Examples */
+.block-example {
+    display: block;
+    background-color: lightblue;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid darkblue;
+}
+
+/* Inline Elements Examples */
+.inline-example {
+    display: inline;
+    background-color: yellow;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid orange;
+}
+
+/* Inline-Block Elements Examples */
+.inline-block-example {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-color: lightgreen;
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid darkgreen;
+    text-align: center;
+    vertical-align: top;
+}
+
+/* Display None Examples */
+.hidden {
+    display: none;
+}
+
+.visible {
+    background-color: lightcoral;
+    padding: 10px;
+    margin: 5px;
+}
+
+/* Box Model Components */
+.box-component {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Content Box */
+.content-box {
+    width: 200px;
+    height: 100px;
+    background-color: #e8f4f8;
+    border: 1px solid #ccc;
+    margin: 1rem 0;
+}
+
+/* Padding Examples */
+.padding-demo {
+    background-color: lightblue;
+    border: 2px solid navy;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.padding-varied {
+    background-color: lightgreen;
+    border: 2px solid darkgreen;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 30px;
+    padding-left: 40px;
+}
+
+/* Border Examples */
+.border-solid {
+    border: 3px solid #333;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.border-dashed {
+    border: 2px dashed red;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.border-mixed {
+    border-top: 5px solid blue;
+    border-right: 3px dotted green;
+    border-bottom: 2px dashed orange;
+    border-left: 4px double purple;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+/* Margin Examples */
+.margin-demo {
+    background-color: #ffeb3b;
+    border: 2px solid #f57c00;
+    padding: 10px;
+    margin: 20px;
+}
+
+.centered {
+    width: 300px;
+    background-color: #e1bee7;
+    border: 2px solid #7b1fa2;
+    padding: 20px;
+    margin: 20px auto;
+}
+
+.margin-collapse-1 {
+    background-color: #c8e6c9;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+.margin-collapse-2 {
+    background-color: #ffccbc;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+/* Outline Example */
+.outline-demo {
+    border: 2px solid blue;
+    outline: 3px dashed red;
+    outline-offset: 5px;
+    padding: 10px;
+    margin: 20px;
+}
+
+/* Box-Sizing Examples */
+.content-box-example {
+    box-sizing: content-box;
+    width: 200px;
+    padding: 20px;
+    border: 5px solid black;
+    background-color: lightblue;
+    margin-bottom: 10px;
+}
+
+.border-box-example {
+    box-sizing: border-box;
+    width: 200px;
+    padding: 20px;
+    border: 5px solid black;
+    background-color: lightgreen;
+}
+
+/* Visual Representation */
+.visual-representation {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+/* Margin Collapse Specific Styles */
+.margin-collapse-intro {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.margin-collapse-situations {
+    margin: 2rem 0;
+}
+
+.collapse-example {
+    background: white;
+    border: 1px solid #dee2e6;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+}
+
+/* Adjacent Siblings Example */
+.adjacent-box1 {
+    background-color: lightblue;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid darkblue;
+}
+
+.adjacent-box2 {
+    background-color: lightgreen;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid darkgreen;
+}
+
+/* Parent-Child Collapse Example */
+.parent-collapse {
+    background-color: #ffeb3b;
+    margin-top: 40px;
+    border: 2px solid #f57c00;
+}
+
+.child-collapse {
+    background-color: #ff9800;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+/* Empty Block Example */
+.empty-before {
+    background-color: lightcoral;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.empty-block {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    /* No content, padding, or border */
+}
+
+.empty-after {
+    background-color: lightseagreen;
+    padding: 20px;
+    margin-top: 25px;
+}
+
+/* Margin Rules and Prevention */
+.margin-rules,
+.margin-prevention {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+/* Practical Example Styles */
+.demo-info {
+    padding: 1rem;
+    margin: 15px 0;
+    border-left: 4px solid;
+    border-radius: 0 4px 4px 0;
+}
+
+.demo-info.problem {
+    background: #ffebee;
+    border-color: #f44336;
+    color: #c62828;
+}
+
+.demo-info.solution {
+    background: #e8f5e8;
+    border-color: #4caf50;
+    color: #2e7d32;
+}
+
+.container-problem {
+    background: white;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border: 2px solid #f44336;
+}
+
+.container-fixed {
+    background: white;
+    border-radius: 8px;
+    padding: 1px 20px;
+    margin: 1rem 0;
+    border: 2px solid #4caf50;
+}
+
+.card {
+    background: #e3f2fd;
+    padding: 20px;
+    margin: 30px 20px;
+    border-radius: 4px;
+    border-left: 4px solid #2196f3;
+}
+
+/* Visual Examples Section */
+.visual-demo {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Complete Box Model Demo */
+.box-model-demo {
+    width: 300px;
+    height: 150px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 10px solid #2196F3;
+    background-color: #E3F2FD;
+    position: relative;
+}
+
+.label {
+    position: absolute;
+    background: white;
+    padding: 2px 5px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-weight: bold;
+    color: #333;
+}
+
+.margin-label {
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffeb3b;
+}
+
+.border-label {
+    top: 5px;
+    left: 5px;
+    background: #2196F3;
+    color: white;
+}
+
+.padding-label {
+    top: 20px;
+    left: 20px;
+    background: #4caf50;
+    color: white;
+}
+
+.content-label {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #E3F2FD;
+}
+
+/* Display Property Comparison */
+.container {
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.container h4 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+}
+
+.block-item {
+    display: block;
+    background-color: #ff9800;
+    color: white;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+}
+
+.inline-item {
+    display: inline;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 4px;
+}
+
+.inline-block-item {
+    display: inline-block;
+    background-color: #2196f3;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    width: 100px;
+    text-align: center;
+    border-radius: 4px;
+    vertical-align: top;
+}
+
+/* Summary Section */
+.key-takeaways {
+    margin: 2rem 0;
+}
+
+.takeaway {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #28a745;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.takeaway h4 {
+    color: #28a745;
+    margin-top: 0;
+}
+
+.common-use-cases {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Resources Section */
+.resource-category {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: white;
+    border-left: 4px solid #6f42c1;
+    border-radius: 0 4px 4px 0;
+}
+
+.resource-category h3 {
+    color: #6f42c1;
+    margin-top: 0;
+}
+
+.resource-category a {
+    color: #6f42c1;
+    text-decoration: none;
+}
+
+.resource-category a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    background: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    main {
+        padding: 0 1rem;
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .table-of-contents {
+        margin: 1rem 0;
+        padding: 1rem;
+    }
+    
+    section {
+        padding: 1rem 0;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .box-model-demo {
+        width: 250px;
+        height: 120px;
+        padding: 20px;
+        margin: 30px auto;
+    }
+    
+    .inline-block-example,
+    .inline-block-item {
+        width: 80px;
+        margin: 5px;
+        padding: 8px;
+    }
+    
+    .centered {
+        width: 90%;
+        margin: 20px auto;
+    }
+    
+    pre {
+        font-size: 0.8em;
+        overflow-x: scroll;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+    
+    header {
+        background: none;
+        color: black;
+        page-break-after: avoid;
+    }
+    
+    section {
+        page-break-inside: avoid;
+        border-bottom: 1px solid #ccc;
+    }
+    
+    .back-to-top {
+        display: none;
+    }
+    
+    a {
+        color: black;
+        text-decoration: underline;
+    }
+    
+    .example,
+    .visual-demo {
+        page-break-inside: avoid;
+    }
+}

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Box Model Visualizer</title>
+    <link rel="stylesheet" href="visual-aid-styles-1.css">
+</head>
+<body>
+    <div class="visualizer-container">
+        <h1>Interactive Box Model Visualizer</h1>
+        
+        <div class="controls">
+            <div class="control-row">
+                <div class="control-group">
+                    <label for="content-width">Content Width:</label>
+                    <input type="range" id="content-width" min="50" max="200" value="150">
+                    <div class="value-display" id="content-width-value">150px</div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="content-height">Content Height:</label>
+                    <input type="range" id="content-height" min="50" max="150" value="100">
+                    <div class="value-display" id="content-height-value">100px</div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="padding">Padding:</label>
+                    <input type="range" id="padding" min="0" max="50" value="20">
+                    <div class="value-display" id="padding-value">20px</div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="border">Border Width:</label>
+                    <input type="range" id="border" min="0" max="30" value="10">
+                    <div class="value-display" id="border-value">10px</div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="margin">Margin:</label>
+                    <input type="range" id="margin" min="0" max="50" value="30">
+                    <div class="value-display" id="margin-value">30px</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="box-sizing-control">
+            <label><strong>Box-Sizing:</strong></label>
+            <button class="box-sizing-btn active" id="content-box-btn">content-box (default)</button>
+            <button class="box-sizing-btn" id="border-box-btn">border-box</button>
+        </div>
+        
+        <div class="visualization-area">
+            <div class="box-model-container" id="box-model-container">
+                <div class="margin-box" id="margin-box">
+                    <span class="box-label margin-label">MARGIN</span>
+                    <div class="border-box" id="border-box">
+                        <span class="box-label border-label">BORDER</span>
+                        <div class="padding-box" id="padding-box">
+                            <span class="box-label padding-label">PADDING</span>
+                            <div class="content-box" id="content-box">
+                                <span class="content-label">CONTENT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="display-controls">
+            <button class="display-btn active" id="block-btn">Display: Block</button>
+            <button class="display-btn" id="inline-block-btn">Display: Inline-Block</button>
+            <button class="display-btn" id="none-btn">Display: None</button>
+        </div>
+        
+        <div class="code-output" id="code-output">.element {
+    width: <span id="code-width">150</span>px;
+    height: <span id="code-height">100</span>px;
+    padding: <span id="code-padding">20</span>px;
+    border: <span id="code-border">10</span>px solid #74b9ff;
+    margin: <span id="code-margin">30</span>px;
+    box-sizing: <span id="code-box-sizing">content-box</span>;
+    display: <span id="code-display">block</span>;
+    
+    <span class="code-comment">/* Actual dimensions */</span>
+    <span class="code-comment">/* Total width: <span id="total-width">210</span>px (including padding + border) */</span>
+    <span class="code-comment">/* Total height: <span id="total-height">160</span>px (including padding + border) */</span>
+    <span class="code-comment">/* Space occupied: <span id="space-width">270</span>px × <span id="space-height">220</span>px (including margin) */</span>
+}</div>
+        
+        <div class="info-box">
+            <h3>How the Box Model Works</h3>
+            <p><strong>Content:</strong> The actual content area where text and images appear. This is what width and height properties control.</p>
+            <p><strong>Padding:</strong> Transparent space around the content, inside the border. Background color extends into padding.</p>
+            <p><strong>Border:</strong> A visible line that goes around the padding and content. Has its own color and style.</p>
+            <p><strong>Margin:</strong> Transparent space outside the border. Creates gaps between elements. Background color doesn't extend here.</p>
+            <p><strong>Box-Sizing:</strong> 
+                <br><em>content-box</em>: Width/height only sets content size (default)
+                <br><em>border-box</em>: Width/height includes padding and border
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Get all control elements
+        const contentWidthSlider = document.getElementById('content-width');
+        const contentHeightSlider = document.getElementById('content-height');
+        const paddingSlider = document.getElementById('padding');
+        const borderSlider = document.getElementById('border');
+        const marginSlider = document.getElementById('margin');
+        
+        // Get box elements
+        const contentBox = document.getElementById('content-box');
+        const paddingBox = document.getElementById('padding-box');
+        const borderBox = document.getElementById('border-box');
+        const marginBox = document.getElementById('margin-box');
+        const container = document.getElementById('box-model-container');
+        
+        // Get display buttons
+        const blockBtn = document.getElementById('block-btn');
+        const inlineBlockBtn = document.getElementById('inline-block-btn');
+        const noneBtn = document.getElementById('none-btn');
+        
+        // Get box-sizing buttons
+        const contentBoxBtn = document.getElementById('content-box-btn');
+        const borderBoxBtn = document.getElementById('border-box-btn');
+        
+        // State
+        let currentDisplay = 'block';
+        let currentBoxSizing = 'content-box';
+        
+        function updateBoxModel() {
+            const contentWidth = parseInt(contentWidthSlider.value);
+            const contentHeight = parseInt(contentHeightSlider.value);
+            const padding = parseInt(paddingSlider.value);
+            const border = parseInt(borderSlider.value);
+            const margin = parseInt(marginSlider.value);
+            
+            // Update value displays
+            document.getElementById('content-width-value').textContent = contentWidth + 'px';
+            document.getElementById('content-height-value').textContent = contentHeight + 'px';
+            document.getElementById('padding-value').textContent = padding + 'px';
+            document.getElementById('border-value').textContent = border + 'px';
+            document.getElementById('margin-value').textContent = margin + 'px';
+            
+            // Apply box-sizing logic
+            let actualContentWidth = contentWidth;
+            let actualContentHeight = contentHeight;
+            
+            if (currentBoxSizing === 'border-box') {
+                // In border-box, the specified width includes padding and border
+                actualContentWidth = Math.max(0, contentWidth - (padding * 2) - (border * 2));
+                actualContentHeight = Math.max(0, contentHeight - (padding * 2) - (border * 2));
+            }
+            
+            // Update visual boxes
+            contentBox.style.width = actualContentWidth + 'px';
+            contentBox.style.height = actualContentHeight + 'px';
+            
+            paddingBox.style.padding = padding + 'px';
+            
+            borderBox.style.borderWidth = border + 'px';
+            borderBox.style.borderStyle = 'solid';
+            borderBox.style.borderColor = '#74b9ff';
+            
+            marginBox.style.padding = margin + 'px';
+            
+            // Calculate totals
+            let totalWidth, totalHeight;
+            if (currentBoxSizing === 'content-box') {
+                totalWidth = actualContentWidth + (padding * 2) + (border * 2);
+                totalHeight = actualContentHeight + (padding * 2) + (border * 2);
+            } else {
+                totalWidth = contentWidth;
+                totalHeight = contentHeight;
+            }
+            
+            const spaceWidth = totalWidth + (margin * 2);
+            const spaceHeight = totalHeight + (margin * 2);
+            
+            // Update code display
+            document.getElementById('code-width').textContent = contentWidth;
+            document.getElementById('code-height').textContent = contentHeight;
+            document.getElementById('code-padding').textContent = padding;
+            document.getElementById('code-border').textContent = border;
+            document.getElementById('code-margin').textContent = margin;
+            document.getElementById('code-box-sizing').textContent = currentBoxSizing;
+            document.getElementById('code-display').textContent = currentDisplay;
+            document.getElementById('total-width').textContent = totalWidth;
+            document.getElementById('total-height').textContent = totalHeight;
+            document.getElementById('space-width').textContent = spaceWidth;
+            document.getElementById('space-height').textContent = spaceHeight;
+        }
+        
+        function setDisplay(display) {
+            currentDisplay = display;
+            
+            // Update button states
+            blockBtn.classList.remove('active');
+            inlineBlockBtn.classList.remove('active');
+            noneBtn.classList.remove('active');
+            
+            if (display === 'block') {
+                blockBtn.classList.add('active');
+                container.classList.remove('hidden');
+            } else if (display === 'inline-block') {
+                inlineBlockBtn.classList.add('active');
+                container.classList.remove('hidden');
+            } else if (display === 'none') {
+                noneBtn.classList.add('active');
+                container.classList.add('hidden');
+            }
+            
+            updateBoxModel();
+        }
+        
+        function setBoxSizing(boxSizing) {
+            currentBoxSizing = boxSizing;
+            
+            // Update button states
+            contentBoxBtn.classList.remove('active');
+            borderBoxBtn.classList.remove('active');
+            
+            if (boxSizing === 'content-box') {
+                contentBoxBtn.classList.add('active');
+            } else {
+                borderBoxBtn.classList.add('active');
+            }
+            
+            updateBoxModel();
+        }
+        
+        // Event listeners for sliders
+        contentWidthSlider.addEventListener('input', updateBoxModel);
+        contentHeightSlider.addEventListener('input', updateBoxModel);
+        paddingSlider.addEventListener('input', updateBoxModel);
+        borderSlider.addEventListener('input', updateBoxModel);
+        marginSlider.addEventListener('input', updateBoxModel);
+        
+        // Event listeners for display buttons
+        blockBtn.addEventListener('click', () => setDisplay('block'));
+        inlineBlockBtn.addEventListener('click', () => setDisplay('inline-block'));
+        noneBtn.addEventListener('click', () => setDisplay('none'));
+        
+        // Event listeners for box-sizing buttons
+        contentBoxBtn.addEventListener('click', () => setBoxSizing('content-box'));
+        borderBoxBtn.addEventListener('click', () => setBoxSizing('border-box'));
+        
+        // Initial update
+        updateBoxModel();
+    </script>
+</body>
+</html>

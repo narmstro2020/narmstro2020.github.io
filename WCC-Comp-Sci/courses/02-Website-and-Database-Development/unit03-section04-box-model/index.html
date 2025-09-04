@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Display Properties and the CSS Box Model</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>CSS Display Properties and the CSS Box Model</h1>
+    </header>
+
+    <nav class="table-of-contents">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#introduction">Introduction</a> - Overview of display properties and box model</li>
+            <li><a href="#vocabulary">Vocabulary</a> - Key terms and definitions</li>
+            <li><a href="#css-display-properties">CSS Display Properties</a> - Understanding block, inline, inline-block, and none</li>
+            <li><a href="#the-css-box-model">The CSS Box Model</a> - Margin, padding, border, and content</li>
+            <li><a href="#margin-collapse">Margin Collapse</a> - Understanding vertical margin behavior</li>
+            <li><a href="#visual-examples">Visual Examples</a> - Interactive demonstrations</li>
+            <li><a href="#summary">Summary</a> - Key takeaways</li>
+            <li><a href="#resources">Resources</a> - Additional learning materials</li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>Welcome to our lesson on CSS Display Properties and the CSS Box Model! These are fundamental concepts that control how elements appear and take up space on a webpage. By the end of this lesson, you'll understand how to control element layout and spacing like a professional web developer.</p>
+            
+            <div class="learning-objectives">
+                <h3>What You'll Learn</h3>
+                <ul>
+                    <li>How different display properties affect element behavior</li>
+                    <li>The components of the CSS Box Model</li>
+                    <li>How to control spacing inside and outside elements</li>
+                    <li>Practical techniques for creating layouts</li>
+                </ul>
+            </div>
+            
+            <p><a href="#table-of-contents" class="back-to-top">↑ Back to Top</a></p>
+        </section>
+
+        <section id="vocabulary">
+            <h2>Vocabulary</h2>
+            
+            <div class="vocabulary-section">
+                <h3>Display Properties Terms</h3>
+                <dl>
+                    <dt>Display Property</dt>
+                    <dd>CSS property that determines how an element is displayed in the document flow</dd>
+                    
+                    <dt>Block Element</dt>
+                    <dd>An element that starts on a new line and takes up the full width available</dd>
+                    
+                    <dt>Inline Element</dt>
+                    <dd>An element that flows within text and only takes up as much width as necessary</dd>
+                    
+                    <dt>Inline-Block Element</dt>
+                    <dd>Combines features of both inline and block elements</dd>
+                    
+                    <dt>Document Flow</dt>
+                    <dd>The order in which elements appear in the HTML and how they stack on the page</dd>
+                </dl>
+            </div>
+
+            <div class="vocabulary-section">
+                <h3>Box Model Terms</h3>
+                <dl>
+                    <dt>Content</dt>
+                    <dd>The actual content of the element (text, images, etc.)</dd>
+                    
+                    <dt>Padding</dt>
+                    <dd>Space between the content and the border</dd>
+                    
+                    <dt>Border</dt>
+                    <dd>A line that goes around the padding and content</dd>
+                    
+                    <dt>Margin</dt>
+                    <dd>Space outside the border that separates the element from other elements</dd>
+                    
+                    <dt>Outline</dt>
+                    <dd>A line drawn outside the border that doesn't affect layout</dd>
+                    
+                    <dt>Box-Sizing</dt>
+                    <dd>Property that determines how width and height are calculated</dd>
+                </dl>
+            </div>
+            
+            <p><a href="#table-of-contents" class="back-to-top">↑ Back to Top</a></p>
+        </section>
+
+        <section id="css-display-properties">
+            <h2>CSS Display Properties</h2>
+            
+            <p>The <code>display</code> property is one of the most important CSS properties for controlling layout. It determines how an element behaves in the document flow.</p>
+
+            <div class="display-section">
+                <h3>1. Block Elements (<code>display: block</code>)</h3>
+                <p>Block elements are like paragraphs in a book - they start on a new line and stretch across the entire available width.</p>
+                
+                <div class="characteristics">
+                    <h4>Characteristics:</h4>
+                    <ul>
+                        <li>Start on a new line</li>
+                        <li>Take up full width available</li>
+                        <li>Can have width and height set</li>
+                        <li>Respect all margin and padding values</li>
+                    </ul>
+                </div>
+
+                <div class="default-elements">
+                    <h4>Default Block Elements:</h4>
+                    <p><code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code></p>
+                </div>
+
+                <div class="example">
+                    <h4>Example:</h4>
+                    <div class="block-example">I'm a block element</div>
+                    <div class="block-example">I start on a new line</div>
+                    <p class="block-example">Paragraphs are blocks by default</p>
+                </div>
+            </div>
+
+            <div class="display-section">
+                <h3>2. Inline Elements (<code>display: inline</code>)</h3>
+                <p>Inline elements are like words in a sentence - they flow along with the text and only take up as much space as needed.</p>
+                
+                <div class="characteristics">
+                    <h4>Characteristics:</h4>
+                    <ul>
+                        <li>Do not start on a new line</li>
+                        <li>Only take up as much width as necessary</li>
+                        <li>Cannot have width and height set</li>
+                        <li>Vertical margin and padding don't affect surrounding elements</li>
+                        <li>Horizontal margin and padding work normally</li>
+                    </ul>
+                </div>
+
+                <div class="default-elements">
+                    <h4>Default Inline Elements:</h4>
+                    <p><code>&lt;span&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;img&gt;</code> (special case - accepts width/height)</p>
+                </div>
+
+                <div class="example">
+                    <h4>Example:</h4>
+                    <p>
+                        This is a paragraph with 
+                        <span class="inline-example">inline</span> 
+                        elements that 
+                        <span class="inline-example">flow</span> 
+                        with the text.
+                    </p>
+                </div>
+            </div>
+
+            <div class="display-section">
+                <h3>3. Inline-Block Elements (<code>display: inline-block</code>)</h3>
+                <p>Inline-block elements combine the best of both worlds - they flow like inline elements but accept dimensions like block elements.</p>
+                
+                <div class="characteristics">
+                    <h4>Characteristics:</h4>
+                    <ul>
+                        <li>Flow with text like inline elements</li>
+                        <li>Accept width and height like block elements</li>
+                        <li>Respect all margin and padding values</li>
+                        <li>Do not force a line break</li>
+                    </ul>
+                </div>
+
+                <div class="example">
+                    <h4>Example:</h4>
+                    <div class="inline-block-example">Box 1</div>
+                    <div class="inline-block-example">Box 2</div>
+                    <div class="inline-block-example">Box 3</div>
+                </div>
+            </div>
+
+            <div class="display-section">
+                <h3>4. None (<code>display: none</code>)</h3>
+                <p>Elements with <code>display: none</code> are completely removed from the document flow.</p>
+                
+                <div class="characteristics">
+                    <h4>Characteristics:</h4>
+                    <ul>
+                        <li>Element is not visible</li>
+                        <li>Takes up no space on the page</li>
+                        <li>Different from <code>visibility: hidden</code> (which hides but preserves space)</li>
+                    </ul>
+                </div>
+
+                <div class="example">
+                    <h4>Example:</h4>
+                    <div class="visible">I'm visible</div>
+                    <div class="hidden">I'm completely hidden and take no space</div>
+                    <div class="visible">I appear right after the first div</div>
+                </div>
+            </div>
+            
+            <p><a href="#table-of-contents" class="back-to-top">↑ Back to Top</a></p>
+        </section>
+
+        <section id="the-css-box-model">
+            <h2>The CSS Box Model</h2>
+            
+            <p>Every HTML element is essentially a rectangular box. The CSS Box Model describes how these boxes are structured and how their dimensions are calculated.</p>
+
+            <div class="box-model-visual">
+                <h3>Box Model Components (from inside to outside)</h3>
+                <ol>
+                    <li><strong>Content</strong>: The actual content of the element</li>
+                    <li><strong>Padding</strong>: Space between content and border</li>
+                    <li><strong>Border</strong>: The edge of the element's box</li>
+                    <li><strong>Margin</strong>: Space outside the border</li>
+                </ol>
+            </div>
+
+            <div class="visual-representation">
+                <h3>Visual Representation</h3>
+                <pre><code>+------------------------------------------+
+|              MARGIN (transparent)        |
+|  +------------------------------------+  |
+|  |          BORDER                    |  |
+|  |  +------------------------------+  |  |
+|  |  |        PADDING               |  |  |
+|  |  |  +------------------------+  |  |  |
+|  |  |  |                        |  |  |  |
+|  |  |  |       CONTENT          |  |  |  |
+|  |  |  |                        |  |  |  |
+|  |  |  +------------------------+  |  |  |
+|  |  |                              |  |  |
+|  |  +------------------------------+  |  |
+|  |                                    |  |
+|  +------------------------------------+  |
+|                                          |
++------------------------------------------+</code></pre>
+            </div>
+
+            <div class="box-component">
+                <h3>1. Content Area</h3>
+                <p>The content area contains the actual content - text, images, or other elements.</p>
+                <div class="content-box">
+                    This is the content area. Width: 200px, Height: 100px
+                </div>
+            </div>
+
+            <div class="box-component">
+                <h3>2. Padding</h3>
+                <p>Padding creates space between the content and the border. It's transparent and shows the background color of the element.</p>
+                
+                <div class="padding-demo">
+                    Uniform padding of 20px on all sides
+                </div>
+                <div class="padding-varied">
+                    Different padding on each side
+                </div>
+            </div>
+
+            <div class="box-component">
+                <h3>3. Border</h3>
+                <p>The border surrounds the padding and content. It can have different styles, widths, and colors.</p>
+                
+                <div class="border-solid">Solid border</div>
+                <div class="border-dashed">Dashed border</div>
+                <div class="border-mixed">Mixed border styles</div>
+            </div>
+
+            <div class="box-component">
+                <h3>4. Margin</h3>
+                <p>Margin creates space outside the border, separating the element from other elements.</p>
+                
+                <div class="margin-demo">20px margin on all sides</div>
+                <div class="centered">Centered with margin: 20px auto</div>
+                <div class="margin-collapse-1">Bottom margin: 30px</div>
+                <div class="margin-collapse-2">Top margin: 20px (collapsed to 30px total gap)</div>
+            </div>
+
+            <div class="box-component">
+                <h3>5. Outline (Special Case)</h3>
+                <p>Outline is drawn outside the border but doesn't affect layout or take up space.</p>
+                
+                <div class="outline-demo">
+                    This has both a border (blue) and an outline (red dashed)
+                </div>
+            </div>
+
+            <div class="box-component">
+                <h3>Box-Sizing Property</h3>
+                <p>By default, width and height only set the content area size. The <code>box-sizing</code> property can change this behavior.</p>
+                
+                <div class="content-box-example">
+                    content-box: Total width = 200 + 40 + 10 = 250px
+                </div>
+                <div class="border-box-example">
+                    border-box: Total width = 200px
+                </div>
+            </div>
+            
+            <p><a href="#table-of-contents" class="back-to-top">↑ Back to Top</a></p>
+        </section>
+
+        <section id="margin-collapse">
+            <h2>Margin Collapse: An Important Addendum</h2>
+            
+            <div class="margin-collapse-intro">
+                <h3>What is Margin Collapse?</h3>
+                <p>Margin collapse is a CSS behavior where vertical margins of adjacent block-level elements combine (or "collapse") into a single margin. This only happens with <strong>vertical margins</strong> (top and bottom), never with horizontal margins (left and right).</p>
+            </div>
+
+            <div class="margin-collapse-situations">
+                <h3>When Does Margin Collapse Occur?</h3>
+                
+                <div class="collapse-example">
+                    <h4>1. Adjacent Siblings</h4>
+                    <p>When two block elements are stacked vertically, their touching margins collapse.</p>
+                    <div class="adjacent-box1">Box 1 has margin-bottom: 30px</div>
+                    <div class="adjacent-box2">Box 2 has margin-top: 20px</div>
+                    <p><em>The gap between boxes is 30px (the larger margin), not 50px!</em></p>
+                </div>
+
+                <div class="collapse-example">
+                    <h4>2. Parent and First/Last Child</h4>
+                    <p>If a parent has no padding or border, its margins can collapse with its first or last child's margins.</p>
+                    <div style="background: #ccc; padding: 10px; margin-bottom: 10px;">Previous Element</div>
+                    <div class="parent-collapse">
+                        <div class="child-collapse">
+                            Child with margin-top: 30px inside parent with margin-top: 40px
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse-example">
+                    <h4>3. Empty Blocks</h4>
+                    <p>If a block element has no content, padding, border, or height, its top and bottom margins collapse.</p>
+                    <div class="empty-before">Before element</div>
+                    <div class="empty-block"></div>
+                    <div class="empty-after">After element</div>
+                    <p><em>Gap will be 40px (largest of all margins)</em></p>
+                </div>
+            </div>
+
+            <div class="margin-rules">
+                <h3>Rules of Margin Collapse</h3>
+                <ol>
+                    <li><strong>Only Vertical Margins Collapse</strong> - Top and bottom margins can collapse; Left and right margins NEVER collapse</li>
+                    <li><strong>Largest Margin Wins</strong> - When margins collapse, the larger margin value is used; Smaller margin is ignored</li>
+                    <li><strong>Negative Margins</strong> - If one margin is negative, subtract it from the positive margin; If both are negative, use the most negative value</li>
+                </ol>
+            </div>
+
+            <div class="margin-prevention">
+                <h3>Preventing Margin Collapse</h3>
+                <p>Margins will NOT collapse when elements have:</p>
+                <ul>
+                    <li>Float applied</li>
+                    <li>display: inline-block</li>
+                    <li>position: absolute/fixed</li>
+                    <li>overflow other than visible</li>
+                    <li>padding or border separating them</li>
+                    <li>Different formatting contexts (flexbox, grid)</li>
+                </ul>
+            </div>
+
+            <div class="practical-example">
+                <h3>Practical Example: Card Layout with Margin Collapse</h3>
+                
+                <div class="demo-info problem">
+                    <strong>Problem:</strong> Without padding, first card's top margin collapses with container
+                </div>
+                
+                <div class="container-problem">
+                    <div class="card">
+                        First card - my top margin (30px) escapes the container!
+                    </div>
+                    <div class="card">
+                        Second card - margins between cards collapse to 30px, not 60px
+                    </div>
+                    <div class="card">
+                        Third card - my bottom margin (30px) also escapes!
+                    </div>
+                </div>
+                
+                <div class="demo-info solution">
+                    <strong>Solution:</strong> Adding 1px padding prevents margin collapse
+                </div>
+                
+                <div class="container-fixed">
+                    <div class="card">
+                        First card - now contained properly within parent
+                    </div>
+                    <div class="card">
+                        Second card - margins still collapse between cards (this is often desired)
+                    </div>
+                    <div class="card">
+                        Third card - bottom margin also contained
+                    </div>
+                </div>
+            </div>
+            
+            <p><a href="#table-of-contents" class="back-to-top">↑ Back to Top</a></p>
+        </section>
+
+        <section id="visual-examples">
+            <h2>Visual Examples</h2>
+            
+            <div class="visual-demo">
+                <h3>Complete Box Model Demonstration</h3>
+                <div class="box-model-demo">
+                    <span class="label margin-label">MARGIN: 50px</span>
+                    <span class="label border-label">BORDER: 10px</span>
+                    <span class="label padding-label">PADDING: 30px</span>
+                    <span class="label content-label">CONTENT: 300x150px</span>
+                </div>
+            </div>
+
+            <div class="visual-demo">
+                <h3>Display Property Comparison</h3>
+                
+                <div class="container">
+                    <h4>Block Elements</h4>
+                    <div class="block-item">Block 1</div>
+                    <div class="block-item">Block 2</div>
+                    <div class="block-item">Block 3</div>
+                </div>
+                
+                <div class="container">
+                    <h4>Inline Elements</h4>
+                    <span class="inline-item">Inline 1</span>
+                    <span class="inline-item">Inline 2</span>
+                    <span class="inline-item">Inline 3</span>
+                </div>
+                
+                <div class="container">
+                    <h4>Inline-Block Elements</h4>
+                    <div class="inline-block-item">IB 1</div>
+                    <div class="inline-block-item">IB 2</div>
+                    <div class="inline-block-item">IB 3</div>
+                </div>
+            </div>
+            
+            <p><a href="#table-of-contents" class="back-to-top">↑ Back to Top</a></p>
+        </section>
+
+        <section id="summary">
+            <h2>Summary</h2>
+            
+            <div class="key-takeaways">
+                <h3>Key Takeaways</h3>
+                
+                <div class="takeaway">
+                    <h4>1. Display Properties Control Layout Flow</h4>
+                    <ul>
+                        <li>Block elements stack vertically and take full width</li>
+                        <li>Inline elements flow horizontally and wrap with text</li>
+                        <li>Inline-block combines benefits of both</li>
+                        <li>Display: none removes elements completely</li>
+                    </ul>
+                </div>
+
+                <div class="takeaway">
+                    <h4>2. The Box Model Has Four Main Parts</h4>
+                    <ul>
+                        <li>Content: The actual element content</li>
+                        <li>Padding: Space inside the border</li>
+                        <li>Border: The element's edge</li>
+                        <li>Margin: Space outside the border</li>
+                    </ul>
+                </div>
+
+                <div class="takeaway">
+                    <h4>3. Box-Sizing Changes Calculations</h4>
+                    <ul>
+                        <li>content-box: Width/height applies to content only</li>
+                        <li>border-box: Width/height includes padding and border</li>
+                    </ul>
+                </div>
+
+                <div class="takeaway">
+                    <h4>4. Margins Can Collapse</h4>
+                    <ul>
+                        <li>Vertical margins between elements collapse to the larger value</li>
+                        <li>Horizontal margins never collapse</li>
+                    </ul>
+                </div>
+
+                <div class="takeaway">
+                    <h4>5. Outlines Don't Affect Layout</h4>
+                    <ul>
+                        <li>Useful for highlighting without shifting other elements</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="common-use-cases">
+                <h3>Common Use Cases</h3>
+                <ul>
+                    <li><strong>Navigation Menus:</strong> Use inline or inline-block for horizontal menus</li>
+                    <li><strong>Card Layouts:</strong> Combine padding for internal spacing and margin for separation</li>
+                    <li><strong>Centering:</strong> Use <code>margin: 0 auto</code> for horizontal centering of block elements</li>
+                    <li><strong>Responsive Design:</strong> Box-sizing: border-box makes width calculations predictable</li>
+                </ul>
+            </div>
+            
+            <p><a href="#table-of-contents" class="back-to-top">↑ Back to Top</a></p>
+        </section>
+
+        <section id="resources">
+            <h2>Resources</h2>
+            
+            <div class="resource-category">
+                <h3>Documentation</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/display">MDN Web Docs - CSS Display</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/The_box_model">MDN Web Docs - CSS Box Model</a></li>
+                    <li><a href="https://www.w3schools.com/css/css_display_visibility.asp">W3Schools - CSS Display Property</a></li>
+                    <li><a href="https://www.w3schools.com/css/css_boxmodel.asp">W3Schools - CSS Box Model</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-category">
+                <h3>Practice Tools</h3>
+                <ul>
+                    <li>Use browser DevTools (F12) to inspect and modify box model properties</li>
+                    <li>CSS Box Model Visualizer (available in browser DevTools)</li>
+                </ul>
+            </div>
+
+            <div class="resource-category">
+                <h3>Next Steps</h3>
+                <p>After mastering these concepts, you'll be ready to learn about:</p>
+                <ul>
+                    <li>CSS Positioning (static, relative, absolute, fixed)</li>
+                    <li>Flexbox layout</li>
+                    <li>CSS Grid</li>
+                    <li>Responsive design techniques</li>
+                </ul>
+            </div>
+            
+            <p><a href="#table-of-contents" class="back-to-top">↑ Back to Top</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 CSS Learning Resources. Happy coding!</p>
+    </footer>
+</body>
+</html>
