@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGB Color Image Visualizer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .grid-section {
+            text-align: center;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(8, 45px);
+            grid-template-rows: repeat(8, 45px);
+            gap: 2px;
+            background: #ddd;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 0 auto;
+            width: fit-content;
+        }
+        
+        .pixel {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #999;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            font-weight: bold;
+            background: rgb(0, 0, 0);
+        }
+        
+        .pixel:hover {
+            transform: scale(1.1);
+            border-color: #667eea;
+            border-width: 3px;
+        }
+        
+        .pixel.selected {
+            border-color: #ffd700;
+            border-width: 3px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .color-controls {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .slider-group {
+            display: grid;
+            grid-template-columns: 60px 1fr 80px;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .slider-label {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .slider-label.red { color: #ff0000; }
+        .slider-label.green { color: #00aa00; }
+        .slider-label.blue { color: #0066ff; }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        #redSlider {
+            background: linear-gradient(to right, #000000, #ff0000);
+        }
+        
+        #redSlider::-webkit-slider-thumb {
+            background: #ff0000;
+        }
+        
+        #greenSlider {
+            background: linear-gradient(to right, #000000, #00ff00);
+        }
+        
+        #greenSlider::-webkit-slider-thumb {
+            background: #00ff00;
+        }
+        
+        #blueSlider {
+            background: linear-gradient(to right, #000000, #0000ff);
+        }
+        
+        #blueSlider::-webkit-slider-thumb {
+            background: #0000ff;
+        }
+        
+        .value-display {
+            background: #f0f0f0;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        
+        .current-color {
+            width: 100%;
+            height: 80px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .preset-btn {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .tool-btn {
+            background: #28a745;
+        }
+        
+        .tool-btn:hover {
+            background: #218838;
+        }
+        
+        .clear-btn {
+            background: #dc3545;
+        }
+        
+        .clear-btn:hover {
+            background: #c82333;
+        }
+        
+        .stats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .stat {
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .data-display {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        h2 {
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .mode-btn {
+            padding: 10px 20px;
+            background: #6c757d;
+        }
+        
+        .mode-btn.active {
+            background: #007bff;
+        }
+        
+        .gradient-tools {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 RGB Color Image Visualizer</h1>
+        <p class="subtitle">Create colorful 8×8 pixel art using RGB values!</p>
+        
+        <div class="info-box">
+            <strong>How RGB works:</strong> Each pixel uses 24 bits (3 bytes) - 8 bits each for Red, Green, and Blue channels. 
+            This allows for 16,777,216 different colors! Compare that to just 2 colors in binary images.
+        </div>
+        
+        <div class="main-content">
+            <div class="grid-section">
+                <h3>Canvas</h3>
+                <div class="grid" id="pixelGrid"></div>
+                
+                <div class="controls">
+                    <button onclick="clearCanvas()">Clear Canvas</button>
+                    <button onclick="fillWithColor()">Fill All</button>
+                    <button class="tool-btn" onclick="enableEyedropper()">👁️ Eyedropper</button>
+                </div>
+            </div>
+            
+            <div class="color-section">
+                <h3>Color Picker</h3>
+                <div class="current-color" id="currentColor">RGB(0, 0, 0)</div>
+                
+                <div class="color-controls">
+                    <div class="slider-group">
+                        <span class="slider-label red">Red</span>
+                        <input type="range" id="redSlider" min="0" max="255" value="0">
+                        <div class="value-display" id="redValue">0</div>
+                    </div>
+                    
+                    <div class="slider-group">
+                        <span class="slider-label green">Green</span>
+                        <input type="range" id="greenSlider" min="0" max="255" value="0">
+                        <div class="value-display" id="greenValue">0</div>
+                    </div>
+                    
+                    <div class="slider-group">
+                        <span class="slider-label blue">Blue</span>
+                        <input type="range" id="blueSlider" min="0" max="255" value="0">
+                        <div class="value-display" id="blueValue">0</div>
+                    </div>
+                </div>
+                
+                <h4>Quick Colors</h4>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px;">
+                    <button class="preset-btn" style="background: #000000;" onclick="setColor(0, 0, 0)">Black</button>
+                    <button class="preset-btn" style="background: #ffffff; color: #333;" onclick="setColor(255, 255, 255)">White</button>
+                    <button class="preset-btn" style="background: #ff0000;" onclick="setColor(255, 0, 0)">Red</button>
+                    <button class="preset-btn" style="background: #00ff00;" onclick="setColor(0, 255, 0)">Green</button>
+                    <button class="preset-btn" style="background: #0000ff;" onclick="setColor(0, 0, 255)">Blue</button>
+                    <button class="preset-btn" style="background: #ffff00;" onclick="setColor(255, 255, 0)">Yellow</button>
+                    <button class="preset-btn" style="background: #00ffff;" onclick="setColor(0, 255, 255)">Cyan</button>
+                    <button class="preset-btn" style="background: #ff00ff;" onclick="setColor(255, 0, 255)">Magenta</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="gradient-tools">
+            <h3>🌈 Gradient Tools</h3>
+            <button onclick="createHorizontalGradient()">Horizontal Gradient →</button>
+            <button onclick="createVerticalGradient()">Vertical Gradient ↓</button>
+            <button onclick="createRainbow()">Rainbow 🌈</button>
+            <button onclick="createRadialGradient()">Radial Gradient ⭕</button>
+        </div>
+        
+        <h2>Example Patterns</h2>
+        <div class="controls">
+            <button class="tool-btn" onclick="drawSunset()">🌅 Sunset</button>
+            <button class="tool-btn" onclick="drawOcean()">🌊 Ocean</button>
+            <button class="tool-btn" onclick="drawFlower()">🌸 Flower</button>
+            <button class="tool-btn" onclick="drawFirework()">🎆 Firework</button>
+            <button class="tool-btn" onclick="drawCheckerboard()">♟️ Checkerboard</button>
+        </div>
+        
+        <div class="stats">
+            <h3>Image Statistics</h3>
+            <div class="stat-grid">
+                <div class="stat">
+                    <div class="stat-value" id="uniqueColors">1</div>
+                    <div class="stat-label">Unique Colors</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="totalBits">1536</div>
+                    <div class="stat-label">Total Bits</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="totalBytes">192</div>
+                    <div class="stat-label">Bytes (24-bit RGB)</div>
+                </div>
+            </div>
+        </div>
+        
+        <h2>RGB Data (First 3 Rows)</h2>
+        <div class="data-display" id="rgbData">
+            Row 1: (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0)<br>
+            Row 2: (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0)<br>
+            Row 3: (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0) (0,0,0)
+        </div>
+    </div>
+    
+    <script>
+        // Initialize 8x8 grid with RGB values
+        const grid = [];
+        for (let i = 0; i < 8; i++) {
+            grid[i] = [];
+            for (let j = 0; j < 8; j++) {
+                grid[i][j] = { r: 0, g: 0, b: 0 };
+            }
+        }
+        
+        let currentR = 0;
+        let currentG = 0;
+        let currentB = 0;
+        let eyedropperMode = false;
+        let selectedPixel = null;
+        
+        // Create grid UI
+        function initGrid() {
+            const gridElement = document.getElementById('pixelGrid');
+            gridElement.innerHTML = '';
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const pixel = document.createElement('div');
+                    pixel.className = 'pixel';
+                    pixel.dataset.row = row;
+                    pixel.dataset.col = col;
+                    pixel.onclick = () => handlePixelClick(row, col);
+                    gridElement.appendChild(pixel);
+                }
+            }
+            updateDisplay();
+        }
+        
+        // Handle pixel click
+        function handlePixelClick(row, col) {
+            if (eyedropperMode) {
+                // Pick color from clicked pixel
+                const color = grid[row][col];
+                setColor(color.r, color.g, color.b);
+                eyedropperMode = false;
+                document.body.style.cursor = 'default';
+            } else {
+                // Paint pixel with current color
+                grid[row][col] = { r: currentR, g: currentG, b: currentB };
+                updateDisplay();
+            }
+        }
+        
+        // Update visual display
+        function updateDisplay() {
+            const pixels = document.querySelectorAll('.pixel');
+            const uniqueColors = new Set();
+            let rgbText = '';
+            
+            for (let row = 0; row < 8; row++) {
+                if (row < 3) {
+                    rgbText += `Row ${row + 1}: `;
+                }
+                for (let col = 0; col < 8; col++) {
+                    const index = row * 8 + col;
+                    const pixel = pixels[index];
+                    const color = grid[row][col];
+                    
+                    pixel.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                    
+                    // Show RGB values on hover
+                    pixel.title = `RGB(${color.r}, ${color.g}, ${color.b})`;
+                    
+                    uniqueColors.add(`${color.r},${color.g},${color.b}`);
+                    
+                    if (row < 3) {
+                        rgbText += `(${color.r},${color.g},${color.b}) `;
+                    }
+                }
+                if (row < 3) {
+                    rgbText += '<br>';
+                }
+            }
+            
+            document.getElementById('uniqueColors').textContent = uniqueColors.size;
+            document.getElementById('totalBits').textContent = 64 * 24; // 64 pixels * 24 bits
+            document.getElementById('totalBytes').textContent = 64 * 3; // 64 pixels * 3 bytes
+            document.getElementById('rgbData').innerHTML = rgbText;
+        }
+        
+        // Update current color
+        function updateColor() {
+            currentR = parseInt(document.getElementById('redSlider').value);
+            currentG = parseInt(document.getElementById('greenSlider').value);
+            currentB = parseInt(document.getElementById('blueSlider').value);
+            
+            document.getElementById('redValue').textContent = currentR;
+            document.getElementById('greenValue').textContent = currentG;
+            document.getElementById('blueValue').textContent = currentB;
+            
+            const currentColorDiv = document.getElementById('currentColor');
+            currentColorDiv.style.backgroundColor = `rgb(${currentR}, ${currentG}, ${currentB})`;
+            currentColorDiv.textContent = `RGB(${currentR}, ${currentG}, ${currentB})`;
+            
+            // Adjust text color based on brightness
+            const brightness = (currentR * 299 + currentG * 587 + currentB * 114) / 1000;
+            currentColorDiv.style.color = brightness > 128 ? '#000000' : '#ffffff';
+        }
+        
+        // Set color
+        function setColor(r, g, b) {
+            document.getElementById('redSlider').value = r;
+            document.getElementById('greenSlider').value = g;
+            document.getElementById('blueSlider').value = b;
+            updateColor();
+        }
+        
+        // Clear canvas
+        function clearCanvas() {
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    grid[row][col] = { r: 0, g: 0, b: 0 };
+                }
+            }
+            updateDisplay();
+        }
+        
+        // Fill with current color
+        function fillWithColor() {
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    grid[row][col] = { r: currentR, g: currentG, b: currentB };
+                }
+            }
+            updateDisplay();
+        }
+        
+        // Enable eyedropper
+        function enableEyedropper() {
+            eyedropperMode = true;
+            document.body.style.cursor = 'crosshair';
+        }
+        
+        // Gradient functions
+        function createHorizontalGradient() {
+            const startColor = { r: currentR, g: currentG, b: currentB };
+            const endColor = { r: 255 - currentR, g: 255 - currentG, b: 255 - currentB };
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const t = col / 7;
+                    grid[row][col] = {
+                        r: Math.round(startColor.r + (endColor.r - startColor.r) * t),
+                        g: Math.round(startColor.g + (endColor.g - startColor.g) * t),
+                        b: Math.round(startColor.b + (endColor.b - startColor.b) * t)
+                    };
+                }
+            }
+            updateDisplay();
+        }
+        
+        function createVerticalGradient() {
+            const startColor = { r: currentR, g: currentG, b: currentB };
+            const endColor = { r: 255 - currentR, g: 255 - currentG, b: 255 - currentB };
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const t = row / 7;
+                    grid[row][col] = {
+                        r: Math.round(startColor.r + (endColor.r - startColor.r) * t),
+                        g: Math.round(startColor.g + (endColor.g - startColor.g) * t),
+                        b: Math.round(startColor.b + (endColor.b - startColor.b) * t)
+                    };
+                }
+            }
+            updateDisplay();
+        }
+        
+        function createRainbow() {
+            const colors = [
+                { r: 255, g: 0, b: 0 },     // Red
+                { r: 255, g: 127, b: 0 },   // Orange
+                { r: 255, g: 255, b: 0 },   // Yellow
+                { r: 0, g: 255, b: 0 },     // Green
+                { r: 0, g: 255, b: 255 },   // Cyan
+                { r: 0, g: 0, b: 255 },     // Blue
+                { r: 127, g: 0, b: 255 },   // Purple
+                { r: 255, g: 0, b: 255 }    // Magenta
+            ];
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    grid[row][col] = colors[row];
+                }
+            }
+            updateDisplay();
+        }
+        
+        function createRadialGradient() {
+            const centerX = 3.5;
+            const centerY = 3.5;
+            const maxDist = Math.sqrt(3.5 * 3.5 + 3.5 * 3.5);
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const dx = col - centerX;
+                    const dy = row - centerY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const t = dist / maxDist;
+                    
+                    grid[row][col] = {
+                        r: Math.round(255 * (1 - t)),
+                        g: Math.round(255 * (1 - t)),
+                        b: Math.round(255)
+                    };
+                }
+            }
+            updateDisplay();
+        }
+        
+        // Example patterns
+        function drawSunset() {
+            const sunsetColors = [
+                { r: 25, g: 25, b: 112 },    // Night blue
+                { r: 65, g: 45, b: 130 },    // Dark purple
+                { r: 138, g: 43, b: 226 },   // Purple
+                { r: 255, g: 20, b: 147 },   // Pink
+                { r: 255, g: 69, b: 0 },     // Orange red
+                { r: 255, g: 140, b: 0 },    // Orange
+                { r: 255, g: 215, b: 0 },    // Gold
+                { r: 255, g: 255, b: 100 }   // Light yellow
+            ];
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    grid[row][col] = sunsetColors[row];
+                }
+            }
+            updateDisplay();
+        }
+        
+        function drawOcean() {
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const wave = Math.sin(col * 0.8) * 0.5 + 0.5;
+                    const depth = row / 7;
+                    
+                    grid[row][col] = {
+                        r: Math.round(0 + 50 * (1 - depth)),
+                        g: Math.round(100 + 100 * (1 - depth) * wave),
+                        b: Math.round(200 + 55 * (1 - depth))
+                    };
+                }
+            }
+            updateDisplay();
+        }
+        
+        function drawFlower() {
+            const pattern = [
+                [0,0,1,1,1,1,0,0],
+                [0,1,2,2,2,2,1,0],
+                [1,2,3,3,3,3,2,1],
+                [1,2,3,4,4,3,2,1],
+                [1,2,3,4,4,3,2,1],
+                [0,1,2,3,3,2,1,0],
+                [0,0,5,6,6,5,0,0],
+                [0,0,5,6,6,5,0,0]
+            ];
+            
+            const colors = [
+                { r: 34, g: 139, b: 34 },    // Background green
+                { r: 255, g: 182, b: 193 },  // Light pink
+                { r: 255, g: 105, b: 180 },  // Hot pink
+                { r: 255, g: 20, b: 147 },   // Deep pink
+                { r: 255, g: 255, b: 0 },    // Yellow center
+                { r: 0, g: 128, b: 0 },      // Stem green
+                { r: 0, g: 100, b: 0 }       // Dark green
+            ];
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const colorIndex = pattern[row][col];
+                    grid[row][col] = colors[colorIndex];
+                }
+            }
+            updateDisplay();
+        }
+        
+        function drawFirework() {
+            const centerX = 3.5;
+            const centerY = 3.5;
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const dx = col - centerX;
+                    const dy = row - centerY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const angle = Math.atan2(dy, dx);
+                    
+                    if (dist < 1) {
+                        // Center bright white
+                        grid[row][col] = { r: 255, g: 255, b: 255 };
+                    } else if (dist < 3) {
+                        // Colorful explosion
+                        const hue = (angle + Math.PI) / (2 * Math.PI);
+                        grid[row][col] = hslToRgb(hue, 1, 0.5);
+                    } else {
+                        // Dark background with sparkles
+                        const sparkle = Math.random() > 0.7;
+                        if (sparkle) {
+                            grid[row][col] = { r: 100, g: 100, b: 150 };
+                        } else {
+                            grid[row][col] = { r: 10, g: 10, b: 30 };
+                        }
+                    }
+                }
+            }
+            updateDisplay();
+        }
+        
+        function drawCheckerboard() {
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    if ((row + col) % 2 === 0) {
+                        grid[row][col] = { r: 255, g: 255, b: 255 };
+                    } else {
+                        grid[row][col] = { r: 0, g: 0, b: 0 };
+                    }
+                }
+            }
+            updateDisplay();
+        }
+        
+        // Helper function: HSL to RGB
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+            
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            
+            return {
+                r: Math.round(r * 255),
+                g: Math.round(g * 255),
+                b: Math.round(b * 255)
+            };
+        }
+        
+        // Event listeners
+        document.getElementById('redSlider').addEventListener('input', updateColor);
+        document.getElementById('greenSlider').addEventListener('input', updateColor);
+        document.getElementById('blueSlider').addEventListener('input', updateColor);
+        
+        // Initialize
+        window.onload = () => {
+            initGrid();
+            updateColor();
+        };
+    </script>
+</body>
+</html>

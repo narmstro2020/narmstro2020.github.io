@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGB Color Mixer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .color-display {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            transition: background-color 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .sliders {
+            display: grid;
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .slider-group {
+            display: grid;
+            grid-template-columns: 60px 1fr 80px;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .slider-label {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .slider-label.red { color: #ff0000; }
+        .slider-label.green { color: #00aa00; }
+        .slider-label.blue { color: #0066ff; }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        #redSlider {
+            background: linear-gradient(to right, #000000, #ff0000);
+        }
+        
+        #redSlider::-webkit-slider-thumb {
+            background: #ff0000;
+        }
+        
+        #greenSlider {
+            background: linear-gradient(to right, #000000, #00ff00);
+        }
+        
+        #greenSlider::-webkit-slider-thumb {
+            background: #00ff00;
+        }
+        
+        #blueSlider {
+            background: linear-gradient(to right, #000000, #0000ff);
+        }
+        
+        #blueSlider::-webkit-slider-thumb {
+            background: #0000ff;
+        }
+        
+        .value-display {
+            background: #f0f0f0;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-label {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .preset-colors {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .preset-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .preset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        .gradient-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .gradient-display {
+            height: 60px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+        }
+        
+        .gradient-step {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .gradient-step:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .gradient-step:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .memory-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        h2 {
+            color: #333;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 RGB Color Mixer</h1>
+        <p class="subtitle">Mix Red, Green, and Blue to create any color!</p>
+        
+        <div class="color-display" id="colorDisplay">
+            RGB(0, 0, 0)
+        </div>
+        
+        <div class="sliders">
+            <div class="slider-group">
+                <span class="slider-label red">Red</span>
+                <input type="range" id="redSlider" min="0" max="255" value="0">
+                <div class="value-display" id="redValue">0</div>
+            </div>
+            
+            <div class="slider-group">
+                <span class="slider-label green">Green</span>
+                <input type="range" id="greenSlider" min="0" max="255" value="0">
+                <div class="value-display" id="greenValue">0</div>
+            </div>
+            
+            <div class="slider-group">
+                <span class="slider-label blue">Blue</span>
+                <input type="range" id="blueSlider" min="0" max="255" value="0">
+                <div class="value-display" id="blueValue">0</div>
+            </div>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-box">
+                <div class="info-label">HEX CODE</div>
+                <div class="info-value" id="hexValue">#000000</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">BINARY (24-bit)</div>
+                <div class="info-value" id="binaryValue" style="font-size: 12px;">000000000000000000000000</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">DECIMAL VALUE</div>
+                <div class="info-value" id="decimalValue">0</div>
+            </div>
+        </div>
+        
+        <h2>Preset Colors</h2>
+        <div class="preset-colors">
+            <button class="preset-btn" style="background: #000000;" onclick="setColor(0, 0, 0)">Black</button>
+            <button class="preset-btn" style="background: #ffffff; color: #333;" onclick="setColor(255, 255, 255)">White</button>
+            <button class="preset-btn" style="background: #ff0000;" onclick="setColor(255, 0, 0)">Red</button>
+            <button class="preset-btn" style="background: #00ff00;" onclick="setColor(0, 255, 0)">Green</button>
+            <button class="preset-btn" style="background: #0000ff;" onclick="setColor(0, 0, 255)">Blue</button>
+            <button class="preset-btn" style="background: #ffff00;" onclick="setColor(255, 255, 0)">Yellow</button>
+            <button class="preset-btn" style="background: #00ffff;" onclick="setColor(0, 255, 255)">Cyan</button>
+            <button class="preset-btn" style="background: #ff00ff;" onclick="setColor(255, 0, 255)">Magenta</button>
+            <button class="preset-btn" style="background: #ff8800;" onclick="setColor(255, 136, 0)">Orange</button>
+            <button class="preset-btn" style="background: #8800ff;" onclick="setColor(136, 0, 255)">Purple</button>
+        </div>
+        
+        <div class="gradient-section">
+            <h2>Create a Gradient</h2>
+            <p>Set your current color as the start or end point of a gradient:</p>
+            <button onclick="setGradientStart()">Set as Start Color</button>
+            <button onclick="setGradientEnd()">Set as End Color</button>
+            <button onclick="generateGradient()">Generate Gradient</button>
+            
+            <div class="gradient-display" id="gradientDisplay"></div>
+            
+            <div id="gradientInfo" style="margin-top: 20px;"></div>
+        </div>
+        
+        <div class="memory-info">
+            <h3>Memory Usage for a 100×100 pixel image:</h3>
+            <p><strong>Binary (1-bit):</strong> 1,250 bytes (1.22 KB)</p>
+            <p><strong>This RGB color (24-bit):</strong> 30,000 bytes (29.30 KB)</p>
+            <p>That's 24× more data than a black & white image!</p>
+        </div>
+    </div>
+    
+    <script>
+        let gradientStart = {r: 0, g: 0, b: 0};
+        let gradientEnd = {r: 255, g: 255, b: 255};
+        
+        const redSlider = document.getElementById('redSlider');
+        const greenSlider = document.getElementById('greenSlider');
+        const blueSlider = document.getElementById('blueSlider');
+        
+        function updateColor() {
+            const r = parseInt(redSlider.value);
+            const g = parseInt(greenSlider.value);
+            const b = parseInt(blueSlider.value);
+            
+            // Update value displays
+            document.getElementById('redValue').textContent = r;
+            document.getElementById('greenValue').textContent = g;
+            document.getElementById('blueValue').textContent = b;
+            
+            // Update color display
+            const colorDisplay = document.getElementById('colorDisplay');
+            colorDisplay.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+            colorDisplay.textContent = `RGB(${r}, ${g}, ${b})`;
+            
+            // Determine text color based on brightness
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            colorDisplay.style.color = brightness > 128 ? '#000000' : '#ffffff';
+            
+            // Update hex value
+            const hex = '#' + 
+                r.toString(16).padStart(2, '0').toUpperCase() +
+                g.toString(16).padStart(2, '0').toUpperCase() +
+                b.toString(16).padStart(2, '0').toUpperCase();
+            document.getElementById('hexValue').textContent = hex;
+            
+            // Update binary value
+            const rBinary = r.toString(2).padStart(8, '0');
+            const gBinary = g.toString(2).padStart(8, '0');
+            const bBinary = b.toString(2).padStart(8, '0');
+            document.getElementById('binaryValue').textContent = rBinary + gBinary + bBinary;
+            
+            // Update decimal value
+            const decimal = (r << 16) + (g << 8) + b;
+            document.getElementById('decimalValue').textContent = decimal.toLocaleString();
+        }
+        
+        function setColor(r, g, b) {
+            redSlider.value = r;
+            greenSlider.value = g;
+            blueSlider.value = b;
+            updateColor();
+        }
+        
+        function setGradientStart() {
+            gradientStart = {
+                r: parseInt(redSlider.value),
+                g: parseInt(greenSlider.value),
+                b: parseInt(blueSlider.value)
+            };
+            alert(`Start color set to RGB(${gradientStart.r}, ${gradientStart.g}, ${gradientStart.b})`);
+        }
+        
+        function setGradientEnd() {
+            gradientEnd = {
+                r: parseInt(redSlider.value),
+                g: parseInt(greenSlider.value),
+                b: parseInt(blueSlider.value)
+            };
+            alert(`End color set to RGB(${gradientEnd.r}, ${gradientEnd.g}, ${gradientEnd.b})`);
+        }
+        
+        function generateGradient() {
+            const gradientDisplay = document.getElementById('gradientDisplay');
+            const gradientInfo = document.getElementById('gradientInfo');
+            gradientDisplay.innerHTML = '';
+            
+            const steps = 5;
+            let gradientColors = [];
+            
+            for (let i = 0; i < steps; i++) {
+                const position = i / (steps - 1);
+                
+                const r = Math.round(gradientStart.r + (gradientEnd.r - gradientStart.r) * position);
+                const g = Math.round(gradientStart.g + (gradientEnd.g - gradientStart.g) * position);
+                const b = Math.round(gradientStart.b + (gradientEnd.b - gradientStart.b) * position);
+                
+                const step = document.createElement('div');
+                step.className = 'gradient-step';
+                step.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                
+                const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+                step.style.color = brightness > 128 ? '#000000' : '#ffffff';
+                
+                step.textContent = `${Math.round(position * 100)}%`;
+                gradientDisplay.appendChild(step);
+                
+                gradientColors.push({r, g, b});
+            }
+            
+            // Display gradient info
+            let infoHTML = '<h3>Gradient Colors:</h3>';
+            gradientColors.forEach((color, index) => {
+                const hex = '#' + 
+                    color.r.toString(16).padStart(2, '0').toUpperCase() +
+                    color.g.toString(16).padStart(2, '0').toUpperCase() +
+                    color.b.toString(16).padStart(2, '0').toUpperCase();
+                infoHTML += `<p>Step ${index + 1}: RGB(${color.r}, ${color.g}, ${color.b}) - ${hex}</p>`;
+            });
+            gradientInfo.innerHTML = infoHTML;
+        }
+        
+        // Add event listeners
+        redSlider.addEventListener('input', updateColor);
+        greenSlider.addEventListener('input', updateColor);
+        blueSlider.addEventListener('input', updateColor);
+        
+        // Initialize
+        updateColor();
+    </script>
+</body>
+</html>
