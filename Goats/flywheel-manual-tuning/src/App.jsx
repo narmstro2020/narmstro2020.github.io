@@ -15,17 +15,151 @@ function motorConstants(motor) {
     return { Kt, R, Kv, freeSpeedRadS };
 }
 
-function simulateFlywheel({ motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, setpointRPM, controlMode, durationS = 5 }) {
+// ─── Trapezoidal Motion Profile Generator ────────────────────────────────────
+function generateTrapezoidalProfile({
+                                        startVel,
+                                        endVel,
+                                        cruiseVel,
+                                        maxAccel,
+                                        maxJerk,
+                                        durationS
+                                    }) {
+    const steps = Math.ceil(durationS / DT);
+    const profile = [];
+
+    const direction = endVel >= startVel ? 1 : -1;
+    const deltaV = Math.abs(endVel - startVel);
+
+    if (deltaV < 0.001) {
+        for (let i = 0; i <= steps; i++) {
+            profile.push({ t: i * DT, setpoint: endVel, setpointAccel: 0 });
+        }
+        return profile;
+    }
+
+    const useJerkLimit = maxJerk > 0;
+
+    if (useJerkLimit) {
+        const t_j = maxAccel / maxJerk;
+        let currentVel = startVel;
+        let currentAccel = 0;
+
+        const targetVel = direction > 0
+            ? Math.min(endVel, cruiseVel)
+            : Math.max(endVel, -cruiseVel);
+
+        for (let i = 0; i <= steps; i++) {
+            const t = i * DT;
+            const remainingDeltaV = (targetVel - currentVel) * direction;
+
+            if (remainingDeltaV > 0.001) {
+                const accelStopV = currentAccel > 0 ? (currentAccel * currentAccel) / (2 * maxJerk) : 0;
+
+                if (remainingDeltaV <= accelStopV + 0.001) {
+                    currentAccel = Math.max(0, currentAccel - maxJerk * DT);
+                } else if (currentAccel < maxAccel) {
+                    currentAccel = Math.min(maxAccel, currentAccel + maxJerk * DT);
+                }
+
+                currentVel += direction * currentAccel * DT;
+            } else {
+                currentAccel = 0;
+                currentVel = targetVel;
+            }
+
+            profile.push({ t, setpoint: currentVel, setpointAccel: direction * currentAccel });
+        }
+    } else {
+        let currentVel = startVel;
+
+        const targetVel = direction > 0
+            ? Math.min(endVel, cruiseVel)
+            : Math.max(endVel, -cruiseVel);
+
+        for (let i = 0; i <= steps; i++) {
+            const t = i * DT;
+            const remainingDeltaV = (targetVel - currentVel) * direction;
+
+            if (remainingDeltaV > 0.001) {
+                currentVel += direction * maxAccel * DT;
+                if (direction > 0) currentVel = Math.min(currentVel, targetVel);
+                else currentVel = Math.max(currentVel, targetVel);
+
+                profile.push({ t, setpoint: currentVel, setpointAccel: direction * maxAccel });
+            } else {
+                profile.push({ t, setpoint: targetVel, setpointAccel: 0 });
+            }
+        }
+    }
+
+    return profile;
+}
+
+function simulateFlywheel({
+                              motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, setpointRPM, controlMode, durationS = 5,
+                              profileMode = "none",
+                              cruiseVelRPM = 3000,
+                              maxAccelRPMps = 5000,
+                              maxJerkRPMps2 = 0,
+                              // Plant model parameters
+                              plantMode = "physical", // "physical" | "feedforward"
+                              plantKs = 0,  // Static friction (used as friction torque in sim)
+                              plantKv = 0,  // For feedforward mode: V/(rad/s) or A/(rad/s)
+                              plantKa = 0,  // For feedforward mode
+                              viscousFriction = 0, // N·m/(rad/s) - viscous friction coefficient
+                          }) {
     const mc = motorConstants(motor);
-    const effectiveMOI = moi;
     const setpointRadS = (setpointRPM * 2 * Math.PI) / 60;
     const outputFreeSpeedRadS = mc.freeSpeedRadS / gearing;
-    const totalKt = mc.Kt * numMotors * gearing;
-    const effectiveR = mc.R / numMotors;
+
+    // Plant model parameters - either from physics or direct feedforward constants
+    let effectiveMOI, totalKt, effectiveR, effectiveKv;
+
+    if (plantMode === "physical") {
+        // Derive from motor + gearing + MOI
+        effectiveMOI = moi;
+        totalKt = mc.Kt * numMotors * gearing;
+        effectiveR = mc.R / numMotors;
+        effectiveKv = mc.Kv;
+    } else {
+        // Feedforward constants mode - derive equivalent physical params
+        // From V = kS + kV*ω at steady state, and τ = J*α
+        // kV = R / (Kt * N * G) for voltage mode (approx)
+        // kA = J * R / (Kt * N * G) for voltage mode
+        // So J = kA / kV (if kV != 0)
+        effectiveMOI = plantKv > 0 ? plantKa / plantKv : moi;
+        totalKt = mc.Kt * numMotors * gearing;
+        effectiveR = mc.R / numMotors;
+        effectiveKv = mc.Kv;
+    }
+
+    // Static friction torque derived from plantKs (the control kS value)
+    // In voltage mode: kS [V] → I = kS/R → τ = Kt*I = Kt*kS/R
+    // This is the torque that kS is meant to overcome
+    const staticFrictionTorque = controlMode === "voltage"
+        ? (plantKs * totalKt) / (effectiveR * numMotors)
+        : plantKs * totalKt / numMotors; // current mode: kS [A] → τ = Kt*kS
 
     const steps = Math.ceil(durationS / DT);
     const record = Math.max(1, Math.floor(steps / 2000));
     const history = [];
+
+    // Generate motion profile if enabled
+    let motionProfile = null;
+    if (profileMode === "trapezoidal") {
+        const cruiseVelRadS = (cruiseVelRPM * 2 * Math.PI) / 60;
+        const maxAccelRadSps = (maxAccelRPMps * 2 * Math.PI) / 60;
+        const maxJerkRadSps2 = (maxJerkRPMps2 * 2 * Math.PI) / 60;
+
+        motionProfile = generateTrapezoidalProfile({
+            startVel: 0,
+            endVel: setpointRadS,
+            cruiseVel: cruiseVelRadS,
+            maxAccel: maxAccelRadSps,
+            maxJerk: maxJerkRadSps2,
+            durationS
+        });
+    }
 
     let omega = 0;
     let prevError = setpointRadS;
@@ -35,27 +169,60 @@ function simulateFlywheel({ motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, 
 
     for (let i = 0; i <= steps; i++) {
         const t = i * DT;
-        const error = setpointRadS - omega;
 
-        // feedforward
-        const ffSign = setpointRadS === 0 ? 0 : Math.sign(setpointRadS);
+        // Get current setpoint from profile or use constant
+        let currentSetpointRadS = setpointRadS;
+        let profileAccel = 0;
+
+        if (motionProfile && i < motionProfile.length) {
+            currentSetpointRadS = motionProfile[i].setpoint;
+            profileAccel = motionProfile[i].setpointAccel;
+        } else if (motionProfile) {
+            currentSetpointRadS = motionProfile[motionProfile.length - 1].setpoint;
+            profileAccel = 0;
+        }
+
+        const error = currentSetpointRadS - omega;
+
+        // feedforward (controller output)
+        const ffSign = currentSetpointRadS === 0 ? 0 : Math.sign(currentSetpointRadS);
         const ffKs = ks * ffSign;
-        const ffKv = kv * setpointRadS;
-        const desiredAccel = i === 0 ? 0 : (error - prevError) / DT;
+        const ffKv = kv * currentSetpointRadS;
+
+        // For kA: use profile acceleration if available, otherwise estimate
+        let desiredAccel;
+        if (profileMode === "trapezoidal") {
+            desiredAccel = profileAccel;
+        } else {
+            desiredAccel = i === 0 ? 0 : (error - prevError) / DT;
+        }
         const ffKa = ka * desiredAccel;
 
         // feedback
         const fbP = kp * error;
         const fbD = kd * (i === 0 ? 0 : (error - prevError) / DT);
 
+        // Friction model: static + viscous
+        // Static friction opposes motion initiation, viscous friction opposes motion proportionally
+        let frictionTorque = 0;
+        if (Math.abs(omega) < 0.01) {
+            // Near zero velocity - static friction regime
+            // Static friction opposes any applied torque up to the static friction limit
+            frictionTorque = staticFrictionTorque * (omega === 0 ? 0 : Math.sign(omega));
+        } else {
+            // Moving - static friction is overcome, apply viscous + coulomb
+            frictionTorque = staticFrictionTorque * Math.sign(omega) + viscousFriction * omega;
+        }
+
         if (controlMode === "voltage") {
             const rawV = ffKs + ffKv + ffKa + fbP + fbD;
             appliedVolts = clampVoltage(rawV);
 
-            const backEmf = omega * gearing / mc.Kv;
+            const backEmf = omega * gearing / effectiveKv;
             motorCurrent = numMotors > 0 ? (appliedVolts - backEmf) / effectiveR : 0;
-            const torque = totalKt * (motorCurrent / numMotors);
-            const alpha = effectiveMOI > 0 ? torque / effectiveMOI : 0;
+            const motorTorque = totalKt * (motorCurrent / numMotors);
+            const netTorque = motorTorque - frictionTorque;
+            const alpha = effectiveMOI > 0 ? netTorque / effectiveMOI : 0;
             omega += alpha * DT;
             appliedCurrent = motorCurrent;
         } else {
@@ -63,13 +230,15 @@ function simulateFlywheel({ motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, 
             appliedCurrent = clampCurrent(rawI, motor.stallCurrent * numMotors);
             motorCurrent = appliedCurrent;
 
-            const torque = totalKt * (motorCurrent / numMotors);
-            const alpha = effectiveMOI > 0 ? torque / effectiveMOI : 0;
+            const motorTorque = totalKt * (motorCurrent / numMotors);
+            const netTorque = motorTorque - frictionTorque;
+            const alpha = effectiveMOI > 0 ? netTorque / effectiveMOI : 0;
             omega += alpha * DT;
-            const backEmf = omega * gearing / mc.Kv;
+            const backEmf = omega * gearing / effectiveKv;
             appliedVolts = backEmf + motorCurrent * effectiveR / numMotors;
         }
 
+        // Clamp velocity (can't go negative if setpoint is positive, can't exceed free speed)
         if (omega < 0 && setpointRadS >= 0) omega = 0;
         if (omega > outputFreeSpeedRadS * 1.05) omega = outputFreeSpeedRadS * 1.05;
 
@@ -80,12 +249,15 @@ function simulateFlywheel({ motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, 
                 t,
                 omega,
                 omegaRPM: (omega * 60) / (2 * Math.PI),
-                setpointRPM,
-                setpointRadS,
+                setpointRPM: (currentSetpointRadS * 60) / (2 * Math.PI),
+                finalSetpointRPM: setpointRPM,
+                setpointRadS: currentSetpointRadS,
                 voltage: appliedVolts,
                 current: appliedCurrent,
                 error,
                 errorRPM: (error * 60) / (2 * Math.PI),
+                profileAccelRPMps: (profileAccel * 60) / (2 * Math.PI),
+                frictionTorque,
             });
         }
     }
@@ -168,6 +340,7 @@ const S = {
     unit: { fontSize: 11, opacity: 0.4, fontFamily: MONO, marginLeft: 4 },
     select: { background: "transparent", color: "#e2e8f0", fontFamily: MONO, fontSize: 13, border: "1px solid rgba(255,255,255,0.12)", borderRadius: 4, padding: "4px 8px", outline: "none", cursor: "pointer" },
     btn: (a) => ({ padding: "4px 10px", borderRadius: 4, fontSize: 11, fontFamily: MONO, cursor: "pointer", background: a ? "rgba(249,115,22,0.2)" : "rgba(255,255,255,0.04)", color: a ? "#f97316" : "rgba(255,255,255,0.5)", border: a ? "1px solid rgba(249,115,22,0.4)" : "1px solid rgba(255,255,255,0.06)", transition: "all 0.15s ease" }),
+    btnAlt: (a, color = "#06b6d4") => ({ padding: "4px 10px", borderRadius: 4, fontSize: 11, fontFamily: MONO, cursor: "pointer", background: a ? `${color}22` : "rgba(255,255,255,0.04)", color: a ? color : "rgba(255,255,255,0.5)", border: a ? `1px solid ${color}66` : "1px solid rgba(255,255,255,0.06)", transition: "all 0.15s ease" }),
 };
 
 function NumInput({ label, value, onChange, unit, inputStyle, step, min, max }) {
@@ -205,7 +378,7 @@ function drawGrid(ctx, p, pw, ph, cols = 5, rows = 5) {
 }
 
 // ─── Velocity Chart ─────────────────────────────────────────────────────────
-function VelocityChart({ history, setpointRPM }) {
+function VelocityChart({ history, setpointRPM, profileMode }) {
     const canvasRef = useRef(null), containerRef = useRef(null);
     useChart(containerRef, canvasRef, 280, (ctx, w, h) => {
         const pad = { t: 28, r: 24, b: 50, l: 70 }, pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
@@ -213,25 +386,41 @@ function VelocityChart({ history, setpointRPM }) {
 
         const maxT = history[history.length - 1].t;
         let yMax = setpointRPM * 1.3;
-        for (const pt of history) { if (pt.omegaRPM > yMax) yMax = pt.omegaRPM * 1.1; }
+        for (const pt of history) {
+            if (pt.omegaRPM > yMax) yMax = pt.omegaRPM * 1.1;
+            if (pt.setpointRPM > yMax) yMax = pt.setpointRPM * 1.1;
+        }
         if (yMax < 100) yMax = 100;
         const yMin = 0;
 
         drawGrid(ctx, pad, pw, ph, 5, 5);
 
-        // setpoint line
+        // final setpoint line (dashed)
         const spY = pad.t + ph * (1 - (setpointRPM - yMin) / (yMax - yMin));
         ctx.strokeStyle = "rgba(249,115,22,0.4)"; ctx.lineWidth = 1; ctx.setLineDash([6, 4]);
         ctx.beginPath(); ctx.moveTo(pad.l, spY); ctx.lineTo(pad.l + pw, spY); ctx.stroke(); ctx.setLineDash([]);
         ctx.fillStyle = "rgba(249,115,22,0.5)"; ctx.font = `9px ${MONO}`; ctx.textAlign = "right";
-        ctx.fillText(`Setpoint: ${setpointRPM} RPM`, pad.l + pw - 4, spY - 6);
+        ctx.fillText(`Target: ${setpointRPM} RPM`, pad.l + pw - 4, spY - 6);
 
-        // 2% band
+        // 2% band around final setpoint
         const bandHi = setpointRPM * 1.02, bandLo = setpointRPM * 0.98;
         const bhY = pad.t + ph * (1 - (bandHi - yMin) / (yMax - yMin));
         const blY = pad.t + ph * (1 - (bandLo - yMin) / (yMax - yMin));
         ctx.fillStyle = "rgba(249,115,22,0.04)";
         ctx.fillRect(pad.l, bhY, pw, blY - bhY);
+
+        // Profile setpoint line (if profiling enabled)
+        if (profileMode === "trapezoidal") {
+            ctx.strokeStyle = "#06b6d4"; ctx.lineWidth = 1.5; ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            history.forEach((pt, i) => {
+                const x = pad.l + (pt.t / maxT) * pw;
+                const y = pad.t + ph * (1 - (pt.setpointRPM - yMin) / (yMax - yMin));
+                i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
 
         // velocity curve
         ctx.strokeStyle = "#3b82f6"; ctx.lineWidth = 2.5; ctx.beginPath();
@@ -249,10 +438,17 @@ function VelocityChart({ history, setpointRPM }) {
         for (let i = 0; i <= 5; i++) ctx.fillText(fmt(yMax - (i / 5) * (yMax - yMin), 0), pad.l - 8, pad.t + (i / 5) * ph + 3);
         ctx.save(); ctx.translate(14, pad.t + ph / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = "center"; ctx.fillText("Velocity (RPM)", 0, 0); ctx.restore();
 
-        // title
         ctx.fillStyle = "rgba(255,255,255,0.5)"; ctx.font = `bold 11px ${MONO}`; ctx.textAlign = "left";
         ctx.fillText("VELOCITY RESPONSE", pad.l, pad.t - 10);
-    }, [history, setpointRPM]);
+
+        // Legend
+        ctx.fillStyle = "#3b82f6"; ctx.font = `10px ${MONO}`; ctx.textAlign = "right";
+        ctx.fillText("● Actual", pad.l + pw, pad.t - 10);
+        if (profileMode === "trapezoidal") {
+            ctx.fillStyle = "#06b6d4";
+            ctx.fillText("┅ Profile", pad.l + pw - 70, pad.t - 10);
+        }
+    }, [history, setpointRPM, profileMode]);
     return <div ref={containerRef} style={{ width: "100%" }}><canvas ref={canvasRef} style={{ display: "block" }} /></div>;
 }
 
@@ -437,12 +633,25 @@ export default function FlywheelTunerApp() {
     const [setpointRPM, setSetpointRPM] = useState(3000);
     const [duration, setDuration] = useState(3);
 
+    // Motion profile settings
+    const [profileMode, setProfileMode] = useState("none"); // "none" | "trapezoidal"
+    const [cruiseVelRPM, setCruiseVelRPM] = useState(3000);
+    const [maxAccelRPMps, setMaxAccelRPMps] = useState(5000);
+    const [maxJerkRPMps2, setMaxJerkRPMps2] = useState(0); // 0 = infinite (pure trapezoidal)
+
     // gains
     const [ks, setKs] = useState(0);
     const [kv, setKv] = useState(0);
     const [ka, setKa] = useState(0);
     const [kp, setKp] = useState(0);
     const [kd, setKd] = useState(0);
+
+    // Plant model settings
+    const [plantMode, setPlantMode] = useState("physical"); // "physical" | "feedforward"
+    const [plantKs, setPlantKs] = useState(0.05); // Static friction (V or A that kS must overcome)
+    const [plantKv, setPlantKv] = useState(0); // For feedforward mode
+    const [plantKa, setPlantKa] = useState(0); // For feedforward mode
+    const [viscousFriction, setViscousFriction] = useState(0.0001); // N·m/(rad/s)
 
     const [activeTab, setActiveTab] = useState("velocity");
 
@@ -472,8 +681,13 @@ export default function FlywheelTunerApp() {
     const outputFreeSpeedRPM = useMemo(() => motor.freeSpeed / gearing, [motor, gearing]);
 
     const simResult = useMemo(() => {
-        return simulateFlywheel({ motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, setpointRPM, controlMode, durationS: duration });
-    }, [motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, setpointRPM, controlMode, duration]);
+        return simulateFlywheel({
+            motor, numMotors, gearing, moi, ks, kv, ka, kp, kd,
+            setpointRPM, controlMode, durationS: duration,
+            profileMode, cruiseVelRPM, maxAccelRPMps, maxJerkRPMps2,
+            plantMode, plantKs, plantKv, plantKa, viscousFriction
+        });
+    }, [motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, setpointRPM, controlMode, duration, profileMode, cruiseVelRPM, maxAccelRPMps, maxJerkRPMps2, plantMode, plantKs, plantKv, plantKa, viscousFriction]);
 
     const finalRPM = simResult.history.length > 0 ? simResult.history[simResult.history.length - 1].omegaRPM : 0;
 
@@ -554,10 +768,10 @@ export default function FlywheelTunerApp() {
                     </div>
                 </div>
 
-                {/* Setpoint */}
+                {/* Setpoint & Motion Profile */}
                 <div style={{ ...S.cardSubtle, marginBottom: 20 }}>
-                    <div style={S.label}>Setpoint & Simulation</div>
-                    <div style={{ display: "flex", alignItems: "flex-end", gap: 16, flexWrap: "wrap" }}>
+                    <div style={S.label}>Setpoint & Motion Profile</div>
+                    <div style={{ display: "flex", alignItems: "flex-end", gap: 16, flexWrap: "wrap", marginBottom: 16 }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                             <label style={S.fieldLabel}>Velocity Setpoint</label>
                             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -573,6 +787,73 @@ export default function FlywheelTunerApp() {
                             ))}
                         </div>
                         <NumInput label="Duration" value={duration} onChange={v => setDuration(Math.max(0.5, Math.min(20, v)))} unit="s" step={0.5} inputStyle={{ width: 56 }} />
+                    </div>
+
+                    {/* Profile Mode Selection */}
+                    <div style={{ padding: "12px 16px", background: "rgba(6,182,212,0.04)", borderRadius: 6, border: "1px solid rgba(6,182,212,0.15)" }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                            <div style={{ ...S.fieldLabel, color: "#06b6d4", opacity: 0.8, marginBottom: 0 }}>Motion Profile</div>
+                            <div style={{ display: "flex", gap: 4 }}>
+                                <button onClick={() => setProfileMode("none")} style={S.btnAlt(profileMode === "none", "#06b6d4")}>None (Step)</button>
+                                <button onClick={() => setProfileMode("trapezoidal")} style={S.btnAlt(profileMode === "trapezoidal", "#06b6d4")}>Trapezoidal</button>
+                            </div>
+                        </div>
+
+                        {profileMode === "trapezoidal" && (
+                            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12 }}>
+                                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                    <label style={{ ...S.fieldLabel, color: "#06b6d4", opacity: 0.7 }}>Cruise Velocity</label>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                        <input
+                                            type="number"
+                                            value={cruiseVelRPM}
+                                            min={100}
+                                            step={100}
+                                            onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setCruiseVelRPM(Math.max(100, v)); }}
+                                            style={{ ...S.input, width: 80, borderColor: "rgba(6,182,212,0.3)", color: "#06b6d4" }}
+                                        />
+                                        <span style={{ ...S.unit, color: "#06b6d4" }}>RPM</span>
+                                    </div>
+                                    <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Max velocity during profile</div>
+                                </div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                    <label style={{ ...S.fieldLabel, color: "#06b6d4", opacity: 0.7 }}>Max Acceleration</label>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                        <input
+                                            type="number"
+                                            value={maxAccelRPMps}
+                                            min={100}
+                                            step={500}
+                                            onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setMaxAccelRPMps(Math.max(100, v)); }}
+                                            style={{ ...S.input, width: 80, borderColor: "rgba(6,182,212,0.3)", color: "#06b6d4" }}
+                                        />
+                                        <span style={{ ...S.unit, color: "#06b6d4" }}>RPM/s</span>
+                                    </div>
+                                    <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Rate of velocity change</div>
+                                </div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                    <label style={{ ...S.fieldLabel, color: "#06b6d4", opacity: 0.7 }}>Max Jerk (0 = ∞)</label>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                        <input
+                                            type="number"
+                                            value={maxJerkRPMps2}
+                                            min={0}
+                                            step={1000}
+                                            onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setMaxJerkRPMps2(Math.max(0, v)); }}
+                                            style={{ ...S.input, width: 80, borderColor: "rgba(6,182,212,0.3)", color: "#06b6d4" }}
+                                        />
+                                        <span style={{ ...S.unit, color: "#06b6d4" }}>RPM/s²</span>
+                                    </div>
+                                    <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Rate of accel change (S-curve)</div>
+                                </div>
+                            </div>
+                        )}
+
+                        {profileMode === "none" && (
+                            <div style={{ fontSize: 11, fontFamily: MONO, opacity: 0.5, lineHeight: 1.6 }}>
+                                No motion profile — setpoint steps instantly to target. Good for testing raw controller response.
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -628,7 +909,7 @@ export default function FlywheelTunerApp() {
                     <div style={{ display: "flex", gap: 4, marginBottom: 16, flexWrap: "wrap" }}>
                         {TABS.map(t => <button key={t.id} onClick={() => setActiveTab(t.id)} style={S.btn(activeTab === t.id)}>{t.label}</button>)}
                     </div>
-                    {activeTab === "velocity" && <VelocityChart history={simResult.history} setpointRPM={setpointRPM} />}
+                    {activeTab === "velocity" && <VelocityChart history={simResult.history} setpointRPM={setpointRPM} profileMode={profileMode} />}
                     {activeTab === "effort" && <EffortChart history={simResult.history} controlMode={controlMode} />}
                     {activeTab === "error" && <ErrorChart history={simResult.history} />}
                 </div>
@@ -650,8 +931,15 @@ export default function FlywheelTunerApp() {
                             <span style={{ color: "#eab308" }}>kD·ė</span>
                         </div>
                         <div style={{ marginTop: 10, fontSize: 11, fontFamily: MONO, opacity: 0.35, lineHeight: 1.6 }}>
-                            r = setpoint (rad/s) &nbsp;|&nbsp; e = r − ω &nbsp;|&nbsp; ṙ = setpoint velocity &nbsp;|&nbsp; r̈ = desired accel &nbsp;|&nbsp; ė = de/dt
+                            r = setpoint (rad/s) &nbsp;|&nbsp; e = r − ω &nbsp;|&nbsp; ṙ = setpoint velocity &nbsp;|&nbsp; r̈ = {profileMode === "trapezoidal" ? "profile accel" : "desired accel"} &nbsp;|&nbsp; ė = de/dt
                         </div>
+                        {profileMode === "trapezoidal" && (
+                            <div style={{ marginTop: 8, padding: "8px 12px", background: "rgba(6,182,212,0.06)", borderRadius: 4, border: "1px solid rgba(6,182,212,0.15)" }}>
+                                <div style={{ fontSize: 11, fontFamily: MONO, color: "#06b6d4", opacity: 0.8 }}>
+                                    With trapezoidal profiling: r(t) follows a smooth trajectory from 0 → target, and r̈ comes directly from the profile generator
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -689,6 +977,22 @@ export default function FlywheelTunerApp() {
                             <div>This matches the WPILib SimpleMotorFeedforward + PID controller pattern</div>
                         </div>
                     </div>
+
+                    {profileMode === "trapezoidal" && (
+                        <div style={{ padding: "12px 16px", background: "rgba(6,182,212,0.04)", borderRadius: 6, border: "1px solid rgba(6,182,212,0.15)", marginBottom: 12 }}>
+                            <div style={{ fontSize: 10, opacity: 0.6, fontFamily: MONO, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10, color: "#06b6d4" }}>Trapezoidal Motion Profile</div>
+                            <div style={{ fontSize: 12, fontFamily: MONO, opacity: 0.6, lineHeight: 2 }}>
+                                <div>Profile generates <span style={{ color: "#06b6d4" }}>r(t)</span> trajectory from rest to target velocity</div>
+                                <div>Constraints: <span style={{ color: "#06b6d4" }}>|ṙ| ≤ cruise</span>, <span style={{ color: "#06b6d4" }}>|r̈| ≤ max_accel</span>{maxJerkRPMps2 > 0 && <>, <span style={{ color: "#06b6d4" }}>|r⃛| ≤ max_jerk</span></>}</div>
+                                <div>kA feedforward uses <span style={{ color: "#06b6d4" }}>r̈</span> from profile (not estimated from error)</div>
+                                {maxJerkRPMps2 > 0 ? (
+                                    <div>S-curve profile: acceleration ramps smoothly (jerk-limited)</div>
+                                ) : (
+                                    <div>Pure trapezoidal: acceleration steps instantly (infinite jerk)</div>
+                                )}
+                            </div>
+                        </div>
+                    )}
 
                     <div style={{ padding: "12px 16px", background: "rgba(255,255,255,0.02)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.05)" }}>
                         <div style={{ fontSize: 10, opacity: 0.4, fontFamily: MONO, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }}>Assumptions & Limitations</div>
@@ -796,8 +1100,55 @@ export default function FlywheelTunerApp() {
                     </div>
                 </div>
 
+                {/* Motion Profiling Guide */}
+                <div style={{ ...S.cardSubtle, marginBottom: 20, border: "1px solid rgba(6,182,212,0.15)" }}>
+                    <div style={{ ...S.label, color: "#06b6d4", opacity: 0.7 }}>Motion Profiling Guide</div>
+                    <div style={{ fontSize: 12, fontFamily: MONO, lineHeight: 2.0 }}>
+                        {[
+                            { step: "1", title: "Why use motion profiling?", color: "#06b6d4", lines: [
+                                    "A step setpoint demands infinite acceleration — physically impossible and stresses the system.",
+                                    "Motion profiling generates a smooth trajectory the mechanism can actually follow.",
+                                    "With profiling, kA feedforward becomes much more effective since r̈ is known exactly."
+                                ]},
+                            { step: "2", title: "Set cruise velocity", color: "#3b82f6", lines: [
+                                    "Cruise velocity is the maximum velocity during the profile (before deceleration).",
+                                    "For a flywheel, set this equal to or slightly above your target setpoint.",
+                                    "If cruise < setpoint, the profile will ramp to cruise and stay there (won't reach target)."
+                                ]},
+                            { step: "3", title: "Set max acceleration", color: "#10b981", lines: [
+                                    "This limits how fast velocity can change (RPM per second).",
+                                    "Start conservative (1000–3000 RPM/s) and increase based on available torque.",
+                                    "Too high: controller can't keep up, large tracking error. Too low: slow response."
+                                ]},
+                            { step: "4", title: "Optional: Add jerk limiting", color: "#a855f7", lines: [
+                                    "Jerk = rate of acceleration change. Jerk = 0 means infinite (pure trapezoidal).",
+                                    "Adding jerk limiting creates an S-curve profile — smoother but slower.",
+                                    "Good for reducing mechanical stress, vibration, and current spikes."
+                                ]},
+                            { step: "5", title: "Tune kA for acceleration FF", color: "#f97316", lines: [
+                                    "With profiling, the desired acceleration r̈ comes directly from the profile.",
+                                    "kA should produce the torque needed: kA ≈ J / (Kt · N · G) for current mode.",
+                                    "Good kA feedforward means kP can be lower — less aggressive feedback needed."
+                                ]},
+                            { step: "6", title: "Validate tracking performance", color: "#eab308", lines: [
+                                    "Watch the velocity chart — actual should closely follow the profile (cyan dashed line).",
+                                    "Large gaps mean feedforward is wrong or constraints are too aggressive.",
+                                    "Small steady-state error is normal and corrected by kP feedback."
+                                ]},
+                        ].map(({ step, title, color, lines }) => (
+                            <div key={step} style={{ padding: "10px 14px", background: "rgba(255,255,255,0.015)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.04)", marginBottom: 8 }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                                    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 22, height: 22, borderRadius: 11, background: `${color}22`, color, fontSize: 11, fontWeight: 700, fontFamily: MONO, border: `1px solid ${color}44`, flexShrink: 0 }}>{step}</span>
+                                    <span style={{ fontSize: 12, fontWeight: 600, color, fontFamily: SANS }}>{title}</span>
+                                </div>
+                                {lines.map((line, i) => <div key={i} style={{ fontSize: 11, opacity: 0.55, paddingLeft: 30 }}>{line}</div>)}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Physics Reference */}
-                <div style={{ ...S.cardSubtle, border: "1px solid rgba(255,255,255,0.05)" }}>
+                <div style={{ ...S.cardSubtle, marginBottom: 20, border: "1px solid rgba(255,255,255,0.05)" }}>
                     <div style={S.label}>Flywheel Physics Reference</div>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 8, fontSize: 12, opacity: 0.6, fontFamily: MONO }}>
                         <div>τ_motor = Kt · I_motor · N · G</div>
@@ -806,6 +1157,132 @@ export default function FlywheelTunerApp() {
                         <div>ω_free_output = ω_free_motor / G</div>
                         <div>Kt = τ_stall / I_stall</div>
                         <div>Kv = ω_free / (V − I_free·R)</div>
+                    </div>
+                </div>
+
+                {/* Plant Model Configuration */}
+                <div style={{ ...S.cardSubtle, marginBottom: 20, border: "1px solid rgba(244,63,94,0.2)" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                        <div style={{ ...S.label, color: "#f43f5e", opacity: 0.8, marginBottom: 0 }}>Simulated Plant Model</div>
+                        <div style={{ display: "flex", gap: 4 }}>
+                            <button onClick={() => setPlantMode("physical")} style={S.btnAlt(plantMode === "physical", "#f43f5e")}>Physical</button>
+                            <button onClick={() => setPlantMode("feedforward")} style={S.btnAlt(plantMode === "feedforward", "#f43f5e")}>Feedforward Constants</button>
+                        </div>
+                    </div>
+
+                    <div style={{ fontSize: 11, fontFamily: MONO, opacity: 0.5, marginBottom: 16, lineHeight: 1.6 }}>
+                        {plantMode === "physical"
+                            ? "Plant dynamics derived from motor specs, gearing, and MOI configured above. Friction parameters below add realism."
+                            : "Plant dynamics defined by feedforward constants (like from SysId). Useful for testing gains against characterized system."
+                        }
+                    </div>
+
+                    {plantMode === "physical" ? (
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                <label style={{ ...S.fieldLabel, color: "#f43f5e", opacity: 0.7 }}>Static Friction (plant kS)</label>
+                                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                    <input
+                                        type="number"
+                                        value={plantKs}
+                                        min={0}
+                                        step={0.01}
+                                        onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setPlantKs(Math.max(0, v)); }}
+                                        style={{ ...S.input, width: 80, borderColor: "rgba(244,63,94,0.3)", color: "#f43f5e" }}
+                                    />
+                                    <span style={{ ...S.unit, color: "#f43f5e" }}>{controlMode === "voltage" ? "V" : "A"}</span>
+                                </div>
+                                <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Effort needed to overcome static friction</div>
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                <label style={{ ...S.fieldLabel, color: "#f43f5e", opacity: 0.7 }}>Viscous Friction</label>
+                                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                    <input
+                                        type="number"
+                                        value={viscousFriction}
+                                        min={0}
+                                        step={0.0001}
+                                        onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setViscousFriction(Math.max(0, v)); }}
+                                        style={{ ...S.input, width: 100, borderColor: "rgba(244,63,94,0.3)", color: "#f43f5e" }}
+                                    />
+                                    <span style={{ ...S.unit, color: "#f43f5e" }}>N·m/(rad/s)</span>
+                                </div>
+                                <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Friction proportional to velocity</div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                <label style={{ ...S.fieldLabel, color: "#f43f5e", opacity: 0.7 }}>Plant kS</label>
+                                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                    <input
+                                        type="number"
+                                        value={plantKs}
+                                        min={0}
+                                        step={0.01}
+                                        onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setPlantKs(Math.max(0, v)); }}
+                                        style={{ ...S.input, width: 80, borderColor: "rgba(244,63,94,0.3)", color: "#f43f5e" }}
+                                    />
+                                    <span style={{ ...S.unit, color: "#f43f5e" }}>{controlMode === "voltage" ? "V" : "A"}</span>
+                                </div>
+                                <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Static friction constant</div>
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                <label style={{ ...S.fieldLabel, color: "#f43f5e", opacity: 0.7 }}>Plant kV</label>
+                                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                    <input
+                                        type="number"
+                                        value={plantKv}
+                                        min={0}
+                                        step={0.0001}
+                                        onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setPlantKv(Math.max(0, v)); }}
+                                        style={{ ...S.input, width: 100, borderColor: "rgba(244,63,94,0.3)", color: "#f43f5e" }}
+                                    />
+                                    <span style={{ ...S.unit, color: "#f43f5e" }}>{controlMode === "voltage" ? "V/(rad/s)" : "A/(rad/s)"}</span>
+                                </div>
+                                <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Velocity constant</div>
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                <label style={{ ...S.fieldLabel, color: "#f43f5e", opacity: 0.7 }}>Plant kA</label>
+                                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                    <input
+                                        type="number"
+                                        value={plantKa}
+                                        min={0}
+                                        step={0.0001}
+                                        onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setPlantKa(Math.max(0, v)); }}
+                                        style={{ ...S.input, width: 100, borderColor: "rgba(244,63,94,0.3)", color: "#f43f5e" }}
+                                    />
+                                    <span style={{ ...S.unit, color: "#f43f5e" }}>{controlMode === "voltage" ? "V/(rad/s²)" : "A/(rad/s²)"}</span>
+                                </div>
+                                <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Acceleration constant</div>
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                <label style={{ ...S.fieldLabel, color: "#f43f5e", opacity: 0.7 }}>Viscous Friction</label>
+                                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                    <input
+                                        type="number"
+                                        value={viscousFriction}
+                                        min={0}
+                                        step={0.0001}
+                                        onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setViscousFriction(Math.max(0, v)); }}
+                                        style={{ ...S.input, width: 100, borderColor: "rgba(244,63,94,0.3)", color: "#f43f5e" }}
+                                    />
+                                    <span style={{ ...S.unit, color: "#f43f5e" }}>N·m/(rad/s)</span>
+                                </div>
+                                <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Additional viscous drag</div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div style={{ marginTop: 16, padding: "10px 14px", background: "rgba(244,63,94,0.04)", borderRadius: 6, border: "1px solid rgba(244,63,94,0.1)" }}>
+                        <div style={{ fontSize: 10, opacity: 0.5, fontFamily: MONO, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>Friction Model</div>
+                        <div style={{ fontSize: 11, fontFamily: MONO, opacity: 0.6, lineHeight: 1.8 }}>
+                            <div>τ_friction = <span style={{ color: "#f43f5e" }}>τ_static·sgn(ω)</span> + <span style={{ color: "#f43f5e" }}>β·ω</span></div>
+                            <div style={{ opacity: 0.5, marginTop: 4 }}>
+                                τ_static derived from plant kS: {controlMode === "voltage" ? "τ = Kt·(kS/R)" : "τ = Kt·kS"} &nbsp;|&nbsp; β = viscous friction coefficient
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
