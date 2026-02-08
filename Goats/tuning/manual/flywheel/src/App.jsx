@@ -4,8 +4,8 @@ import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 const DT = 0.001; // 1ms sim step
 const NOMINAL_V = 12;
 
-function clampVoltage(v) { return Math.max(-NOMINAL_V, Math.min(NOMINAL_V, v)); }
-function clampCurrent(c, stallCurrent) { return Math.max(-stallCurrent, Math.min(stallCurrent, c)); }
+function clampVoltage(v, maxV = NOMINAL_V) { return Math.max(-maxV, Math.min(maxV, v)); }
+function clampCurrent(c, maxI) { return Math.max(-maxI, Math.min(maxI, c)); }
 
 function motorConstants(motor) {
     const freeSpeedRadS = (motor.freeSpeed * 2 * Math.PI) / 60;
@@ -96,7 +96,7 @@ function generateTrapezoidalProfile({
 }
 
 function simulateFlywheel({
-                              motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, setpointRPM, controlMode, durationS = 5,
+                              motor, numMotors, gearing, moi, ks, kv, ka, kp, ki, kd, setpointRPM, controlMode, durationS = 5,
                               profileMode = "none",
                               cruiseVelRPM = 3000,
                               maxAccelRPMps = 5000,
@@ -107,6 +107,9 @@ function simulateFlywheel({
                               plantKv = 0,  // For feedforward mode: V/(rad/s) or A/(rad/s)
                               plantKa = 0,  // For feedforward mode
                               viscousFriction = 0, // N·m/(rad/s) - viscous friction coefficient
+                              // Controller limits
+                              maxVoltage = 12,  // Controller voltage saturation limit
+                              maxCurrentLimit = 40, // Controller current saturation limit (A)
                           }) {
     const mc = motorConstants(motor);
     const setpointRadS = (setpointRPM * 2 * Math.PI) / 60;
@@ -163,9 +166,14 @@ function simulateFlywheel({
 
     let omega = 0;
     let prevError = setpointRadS;
+    let errorIntegral = 0; // Integral accumulator
     let appliedVolts = 0;
     let appliedCurrent = 0;
     let motorCurrent = 0;
+    let saturatedSteps = 0;
+
+    // Anti-windup limits for integral (prevent runaway accumulation)
+    const maxIntegral = controlMode === "voltage" ? maxVoltage * 2 : maxCurrentLimit * 2;
 
     for (let i = 0; i <= steps; i++) {
         const t = i * DT;
@@ -184,6 +192,10 @@ function simulateFlywheel({
 
         const error = currentSetpointRadS - omega;
 
+        // Accumulate integral (with anti-windup)
+        errorIntegral += error * DT;
+        errorIntegral = Math.max(-maxIntegral, Math.min(maxIntegral, errorIntegral));
+
         // feedforward (controller output)
         const ffSign = currentSetpointRadS === 0 ? 0 : Math.sign(currentSetpointRadS);
         const ffKs = ks * ffSign;
@@ -198,8 +210,9 @@ function simulateFlywheel({
         }
         const ffKa = ka * desiredAccel;
 
-        // feedback
+        // feedback (PID)
         const fbP = kp * error;
+        const fbI = ki * errorIntegral;
         const fbD = kd * (i === 0 ? 0 : (error - prevError) / DT);
 
         // Friction model: static + viscous
@@ -214,9 +227,12 @@ function simulateFlywheel({
             frictionTorque = staticFrictionTorque * Math.sign(omega) + viscousFriction * omega;
         }
 
+        let saturated = false;
+
         if (controlMode === "voltage") {
-            const rawV = ffKs + ffKv + ffKa + fbP + fbD;
-            appliedVolts = clampVoltage(rawV);
+            const rawV = ffKs + ffKv + ffKa + fbP + fbI + fbD;
+            appliedVolts = clampVoltage(rawV, maxVoltage);
+            saturated = Math.abs(rawV) > maxVoltage;
 
             const backEmf = omega * gearing / effectiveKv;
             motorCurrent = numMotors > 0 ? (appliedVolts - backEmf) / effectiveR : 0;
@@ -226,8 +242,9 @@ function simulateFlywheel({
             omega += alpha * DT;
             appliedCurrent = motorCurrent;
         } else {
-            const rawI = ffKs + ffKv + ffKa + fbP + fbD;
-            appliedCurrent = clampCurrent(rawI, motor.stallCurrent * numMotors);
+            const rawI = ffKs + ffKv + ffKa + fbP + fbI + fbD;
+            appliedCurrent = clampCurrent(rawI, maxCurrentLimit);
+            saturated = Math.abs(rawI) > maxCurrentLimit;
             motorCurrent = appliedCurrent;
 
             const motorTorque = totalKt * (motorCurrent / numMotors);
@@ -237,6 +254,8 @@ function simulateFlywheel({
             const backEmf = omega * gearing / effectiveKv;
             appliedVolts = backEmf + motorCurrent * effectiveR / numMotors;
         }
+
+        if (saturated) saturatedSteps++;
 
         // Clamp velocity (can't go negative if setpoint is positive, can't exceed free speed)
         if (omega < 0 && setpointRadS >= 0) omega = 0;
@@ -258,9 +277,13 @@ function simulateFlywheel({
                 errorRPM: (error * 60) / (2 * Math.PI),
                 profileAccelRPMps: (profileAccel * 60) / (2 * Math.PI),
                 frictionTorque,
+                saturated,
             });
         }
     }
+
+    // Saturation percentage
+    const saturationPct = (saturatedSteps / steps) * 100;
 
     // metrics
     const setRPM = setpointRPM;
@@ -286,23 +309,35 @@ function simulateFlywheel({
         }
     }
 
-    return { history, riseTime, settleTime, overshoot, steadyStateError, finalRPM, maxRPM };
+    return { history, riseTime, settleTime, overshoot, steadyStateError, finalRPM, maxRPM, saturationPct };
 }
 
-// ─── DC Motor Database ──────────────────────────────────────────────────────
+// ─── DC Motor Database (WPILib 2026.2.1) ─────────────────────────────────────
+// Source: https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/system/plant/DCMotor.html
+// Format: (nominalVoltage, stallTorque, stallCurrent, freeCurrent, freeSpeed)
 const DC_MOTORS = [
-    { id: "krakenX60",    label: "Kraken X60",         stallTorque: 7.09,   freeSpeed: 6000, stallCurrent: 366,  freeCurrent: 2,    nominalVoltage: 12 },
-    { id: "krakenX60FOC", label: "Kraken X60 (FOC)",   stallTorque: 9.37,   freeSpeed: 5800, stallCurrent: 483,  freeCurrent: 2,    nominalVoltage: 12 },
-    { id: "krakenX44",    label: "Kraken X44",         stallTorque: 4.28,   freeSpeed: 7530, stallCurrent: 275,  freeCurrent: 1.4,  nominalVoltage: 12 },
-    { id: "falcon500",    label: "Falcon 500",         stallTorque: 4.69,   freeSpeed: 6380, stallCurrent: 257,  freeCurrent: 1.5,  nominalVoltage: 12 },
-    { id: "falcon500FOC", label: "Falcon 500 (FOC)",   stallTorque: 5.84,   freeSpeed: 6080, stallCurrent: 304,  freeCurrent: 1.5,  nominalVoltage: 12 },
-    { id: "neoVortex",    label: "NEO Vortex",         stallTorque: 3.60,   freeSpeed: 6784, stallCurrent: 211,  freeCurrent: 3.6,  nominalVoltage: 12 },
-    { id: "neo",          label: "NEO",                stallTorque: 2.6,    freeSpeed: 5676, stallCurrent: 105,  freeCurrent: 1.8,  nominalVoltage: 12 },
-    { id: "neo550",       label: "NEO 550",            stallTorque: 0.97,   freeSpeed: 11000, stallCurrent: 100, freeCurrent: 1.4,  nominalVoltage: 12 },
-    { id: "cim",          label: "CIM",                stallTorque: 2.41,   freeSpeed: 5330, stallCurrent: 131,  freeCurrent: 2.7,  nominalVoltage: 12 },
-    { id: "miniCim",      label: "Mini CIM",           stallTorque: 1.41,   freeSpeed: 5840, stallCurrent: 89,   freeCurrent: 3,    nominalVoltage: 12 },
-    { id: "bag",          label: "BAG",                stallTorque: 0.43,   freeSpeed: 13180, stallCurrent: 53,  freeCurrent: 1.8,  nominalVoltage: 12 },
-    { id: "775pro",       label: "775pro",             stallTorque: 0.71,   freeSpeed: 18730, stallCurrent: 134, freeCurrent: 0.7,  nominalVoltage: 12 },
+    // Kraken family
+    { id: "krakenX60",    label: "Kraken X60",         stallTorque: 7.09,   freeSpeed: 6000, stallCurrent: 366,  freeCurrent: 2,     nominalVoltage: 12 },
+    { id: "krakenX60FOC", label: "Kraken X60 (FOC)",   stallTorque: 9.37,   freeSpeed: 5800, stallCurrent: 483,  freeCurrent: 2,     nominalVoltage: 12 },
+    { id: "krakenX44",    label: "Kraken X44",         stallTorque: 4.05,   freeSpeed: 7530, stallCurrent: 275,  freeCurrent: 1.4,   nominalVoltage: 12 },
+    { id: "krakenX44FOC", label: "Kraken X44 (FOC)",   stallTorque: 5.35,   freeSpeed: 7290, stallCurrent: 362,  freeCurrent: 1.4,   nominalVoltage: 12 },
+    // Falcon family
+    { id: "falcon500",    label: "Falcon 500",         stallTorque: 4.69,   freeSpeed: 6380, stallCurrent: 257,  freeCurrent: 1.5,   nominalVoltage: 12 },
+    { id: "falcon500FOC", label: "Falcon 500 (FOC)",   stallTorque: 5.84,   freeSpeed: 6080, stallCurrent: 304,  freeCurrent: 1.5,   nominalVoltage: 12 },
+    // REV family
+    { id: "neoVortex",    label: "NEO Vortex",         stallTorque: 3.60,   freeSpeed: 6784, stallCurrent: 211,  freeCurrent: 3.615, nominalVoltage: 12 },
+    { id: "neo",          label: "NEO",                stallTorque: 2.6,    freeSpeed: 5676, stallCurrent: 105,  freeCurrent: 1.8,   nominalVoltage: 12 },
+    { id: "neo550",       label: "NEO 550",            stallTorque: 0.97,   freeSpeed: 11000, stallCurrent: 100, freeCurrent: 1.4,   nominalVoltage: 12 },
+    // CTRE Minion
+    { id: "minion",       label: "Minion",             stallTorque: 3.1,    freeSpeed: 6000, stallCurrent: 211,  freeCurrent: 1.5,   nominalVoltage: 12 },
+    // Legacy/Brushed
+    { id: "cim",          label: "CIM",                stallTorque: 2.41,   freeSpeed: 5330, stallCurrent: 131,  freeCurrent: 2.7,   nominalVoltage: 12 },
+    { id: "miniCim",      label: "Mini CIM",           stallTorque: 1.41,   freeSpeed: 5840, stallCurrent: 89,   freeCurrent: 3,     nominalVoltage: 12 },
+    { id: "bag",          label: "BAG",                stallTorque: 0.43,   freeSpeed: 13180, stallCurrent: 53,  freeCurrent: 1.8,   nominalVoltage: 12 },
+    { id: "775pro",       label: "775 Pro",            stallTorque: 0.71,   freeSpeed: 18730, stallCurrent: 134, freeCurrent: 0.7,   nominalVoltage: 12 },
+    { id: "am9015",       label: "Andymark 9015",      stallTorque: 0.36,   freeSpeed: 14270, stallCurrent: 71,  freeCurrent: 3.7,   nominalVoltage: 12 },
+    { id: "rs550",        label: "Banebots RS550",     stallTorque: 0.38,   freeSpeed: 19000, stallCurrent: 84,  freeCurrent: 0.4,   nominalVoltage: 12 },
+    { id: "rs775",        label: "Banebots RS775",     stallTorque: 0.72,   freeSpeed: 13050, stallCurrent: 97,  freeCurrent: 2.7,   nominalVoltage: 12 },
 ];
 
 const COMMON_GEARINGS = [
@@ -453,9 +488,11 @@ function VelocityChart({ history, setpointRPM, profileMode }) {
 }
 
 // ─── Voltage / Current Chart ────────────────────────────────────────────────
-function EffortChart({ history, controlMode }) {
+function EffortChart({ history, controlMode, maxVoltage, maxCurrentLimit }) {
     const canvasRef = useRef(null), containerRef = useRef(null);
     const isVoltage = controlMode === "voltage";
+    const limit = isVoltage ? maxVoltage : maxCurrentLimit;
+
     useChart(containerRef, canvasRef, 200, (ctx, w, h) => {
         const pad = { t: 28, r: 24, b: 50, l: 70 }, pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
         if (!history || history.length < 2) return;
@@ -464,10 +501,46 @@ function EffortChart({ history, controlMode }) {
         const values = history.map(pt => isVoltage ? pt.voltage : pt.current);
         let yMax = -Infinity, yMin = Infinity;
         for (const v of values) { if (v > yMax) yMax = v; if (v < yMin) yMin = v; }
+
+        // Ensure limits are visible in the chart
+        if (limit > yMax) yMax = limit * 1.1;
+        if (-limit < yMin) yMin = -limit * 1.1;
+
         const range = yMax - yMin;
-        if (range < 0.1) { yMax += 1; yMin -= 1; } else { yMax += range * 0.1; yMin -= range * 0.1; }
+        if (range < 0.1) { yMax += 1; yMin -= 1; } else { yMax += range * 0.05; yMin -= range * 0.05; }
 
         drawGrid(ctx, pad, pw, ph, 5, 4);
+
+        // Saturation limit lines
+        const limitYPos = pad.t + ph * (1 - (limit - yMin) / (yMax - yMin));
+        const limitYNeg = pad.t + ph * (1 - (-limit - yMin) / (yMax - yMin));
+
+        // Saturation zone shading (above positive limit)
+        if (limit < yMax) {
+            ctx.fillStyle = "rgba(244,63,94,0.08)";
+            ctx.fillRect(pad.l, pad.t, pw, limitYPos - pad.t);
+        }
+        // Saturation zone shading (below negative limit)
+        if (-limit > yMin) {
+            ctx.fillStyle = "rgba(244,63,94,0.08)";
+            ctx.fillRect(pad.l, limitYNeg, pw, pad.t + ph - limitYNeg);
+        }
+
+        // Limit lines
+        ctx.strokeStyle = "rgba(244,63,94,0.5)"; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+        if (limit <= yMax) {
+            ctx.beginPath(); ctx.moveTo(pad.l, limitYPos); ctx.lineTo(pad.l + pw, limitYPos); ctx.stroke();
+        }
+        if (-limit >= yMin) {
+            ctx.beginPath(); ctx.moveTo(pad.l, limitYNeg); ctx.lineTo(pad.l + pw, limitYNeg); ctx.stroke();
+        }
+        ctx.setLineDash([]);
+
+        // Limit label
+        ctx.fillStyle = "rgba(244,63,94,0.6)"; ctx.font = `9px ${MONO}`; ctx.textAlign = "left";
+        if (limit <= yMax) {
+            ctx.fillText(`±${limit}${isVoltage ? "V" : "A"} limit`, pad.l + 4, limitYPos - 4);
+        }
 
         // zero line
         if (yMin < 0 && yMax > 0) {
@@ -475,15 +548,33 @@ function EffortChart({ history, controlMode }) {
             ctx.strokeStyle = "rgba(255,255,255,0.12)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad.l, zy); ctx.lineTo(pad.l + pw, zy); ctx.stroke();
         }
 
-        // effort curve
+        // effort curve - draw saturated sections in red
         const effortColor = isVoltage ? "#a855f7" : "#eab308";
+
+        // First pass: draw normal segments
         ctx.strokeStyle = effortColor; ctx.lineWidth = 2; ctx.beginPath();
+        let inSaturation = false;
         history.forEach((pt, i) => {
             const x = pad.l + (pt.t / maxT) * pw;
             const val = isVoltage ? pt.voltage : pt.current;
             const y = pad.t + ph * (1 - (val - yMin) / (yMax - yMin));
-            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-        }); ctx.stroke();
+            const saturated = pt.saturated;
+
+            if (i === 0) {
+                ctx.moveTo(x, y);
+                inSaturation = saturated;
+            } else if (saturated !== inSaturation) {
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.strokeStyle = saturated ? "#f43f5e" : effortColor;
+                ctx.moveTo(x, y);
+                inSaturation = saturated;
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        ctx.stroke();
 
         // axes
         ctx.fillStyle = "rgba(255,255,255,0.4)"; ctx.font = `10px ${MONO}`; ctx.textAlign = "center";
@@ -496,7 +587,7 @@ function EffortChart({ history, controlMode }) {
 
         ctx.fillStyle = "rgba(255,255,255,0.5)"; ctx.font = `bold 11px ${MONO}`; ctx.textAlign = "left";
         ctx.fillText(isVoltage ? "APPLIED VOLTAGE" : "APPLIED CURRENT", pad.l, pad.t - 10);
-    }, [history, controlMode]);
+    }, [history, controlMode, maxVoltage, maxCurrentLimit]);
     return <div ref={containerRef} style={{ width: "100%" }}><canvas ref={canvasRef} style={{ display: "block" }} /></div>;
 }
 
@@ -635,6 +726,7 @@ export default function FlywheelTunerApp() {
 
     // Motion profile settings
     const [profileMode, setProfileMode] = useState("none"); // "none" | "trapezoidal"
+    const [profileStyle, setProfileStyle] = useState("aggressive"); // "aggressive" | "smooth"
     const [cruiseVelRPM, setCruiseVelRPM] = useState(3000);
     const [maxAccelRPMps, setMaxAccelRPMps] = useState(5000);
     const [maxJerkRPMps2, setMaxJerkRPMps2] = useState(0); // 0 = infinite (pure trapezoidal)
@@ -644,6 +736,7 @@ export default function FlywheelTunerApp() {
     const [kv, setKv] = useState(0);
     const [ka, setKa] = useState(0);
     const [kp, setKp] = useState(0);
+    const [ki, setKi] = useState(0);
     const [kd, setKd] = useState(0);
 
     // Plant model settings
@@ -652,6 +745,10 @@ export default function FlywheelTunerApp() {
     const [plantKv, setPlantKv] = useState(0); // For feedforward mode
     const [plantKa, setPlantKa] = useState(0); // For feedforward mode
     const [viscousFriction, setViscousFriction] = useState(0.0001); // N·m/(rad/s)
+
+    // Controller limits
+    const [maxVoltage, setMaxVoltage] = useState(12);
+    const [maxCurrentLimit, setMaxCurrentLimit] = useState(40);
 
     const [activeTab, setActiveTab] = useState("velocity");
 
@@ -669,25 +766,88 @@ export default function FlywheelTunerApp() {
     const setMoiCustom = (v) => { setMoi(v); setPresetId("custom"); };
 
     // compute theoretical kV and kS for hint
+    //
+    // VOLTAGE MODE: V = kS + kV*ω (+ kA*α)
+    //   kV = V_nominal / ω_free (at output shaft)
+    //   kS = R * I_free (voltage to overcome motor losses at no load)
+    //
+    // CURRENT MODE: I = kS + kV*ω (+ kA*α)
+    //   At steady state (α=0), the current must overcome friction to maintain velocity.
+    //   τ_friction = viscous * ω (for viscous friction model)
+    //   I_needed = τ_friction / (Kt * G) = viscous * ω / (Kt * G)
+    //   Therefore: kV = viscous / (Kt * G)
+    //
+    //   kS compensates for static friction: I_static = τ_static / (Kt * G)
+    //
     const theoreticalKv = useMemo(() => {
-        const freeRadS = mc.freeSpeedRadS / gearing;
-        return freeRadS > 0 ? NOMINAL_V / freeRadS : 0;
-    }, [mc, gearing]);
+        if (controlMode === "voltage") {
+            // V/(rad/s) = V_nominal / ω_free_output
+            const freeRadS = mc.freeSpeedRadS / gearing;
+            return freeRadS > 0 ? NOMINAL_V / freeRadS : 0;
+        } else {
+            // Current mode: kV must overcome viscous friction at each velocity
+            // kV [A/(rad/s)] = viscousFriction [N·m/(rad/s)] / (Kt [N·m/A] * G)
+            const totalKt = mc.Kt * gearing; // Effective Kt at output
+            return viscousFriction / totalKt;
+        }
+    }, [mc, gearing, controlMode, viscousFriction]);
 
+    // kS = static friction / motor losses compensation
     const theoreticalKs = useMemo(() => {
-        return mc.R * motor.freeCurrent / (numMotors > 0 ? 1 : 1);
-    }, [mc, motor, numMotors]);
+        if (controlMode === "voltage") {
+            // Voltage to overcome motor internal losses at no-load
+            const motorLossVoltage = mc.R * motor.freeCurrent;
+            // Plus any plant static friction configured
+            return Math.max(motorLossVoltage, plantKs);
+        } else {
+            // Current mode: current to overcome static friction
+            // I_static = τ_static / (Kt * G)
+            // plantKs is in the same units as controller output, so use it directly if set
+            // Otherwise estimate from configured static friction
+            const totalKt = mc.Kt * gearing;
+            // Estimate static friction torque from plantKs (which is configured in controller units)
+            // or use a small default
+            return plantKs > 0 ? plantKs : 0.5; // Default 0.5A for static friction
+        }
+    }, [mc, motor, controlMode, plantKs, gearing]);
+
+    // Theoretical kA: acceleration feedforward
+    // VOLTAGE MODE: kA [V/(rad/s²)] = J * R / (Kt * N * G)
+    //   - To accelerate J at rate α: τ = J*α
+    //   - Torque from voltage: τ = Kt * I * N * G, where I = V / (R/N) = V*N/R
+    //   - So τ = Kt * V * N² * G / R, thus V = J*α*R / (Kt*N²*G)...
+    //   - Wait, each motor sees V, draws I=V/R, produces τ=Kt*V/R
+    //   - N motors produce τ_total = N * Kt * V / R * G
+    //   - For τ_total = J*α: V = J*α*R / (N*Kt*G)
+    //   - kA = J*R / (N*Kt*G)
+    // CURRENT MODE: kA [A/(rad/s²)] = J / (Kt * G)
+    //   - Current commanded produces torque τ = Kt * I * G (total, not per motor)
+    //   - numMotors doesn't appear because we command total stator current
+    const theoreticalKa = useMemo(() => {
+        if (controlMode === "voltage") {
+            // kA [V/(rad/s²)] = J * R / (Kt * N * G)
+            // Each motor: I = V/R, τ = Kt*I*G = Kt*V*G/R
+            // N motors: τ_total = N*Kt*V*G/R
+            // For J*α = N*Kt*V*G/R: V = J*α*R / (N*Kt*G)
+            return (moi * mc.R) / (mc.Kt * numMotors * gearing);
+        } else {
+            // kA [A/(rad/s²)] = J / (Kt * G)
+            // Torque: τ = Kt * I * G, so I = τ / (Kt * G) = J * α / (Kt * G)
+            return moi / (mc.Kt * gearing);
+        }
+    }, [mc, moi, numMotors, gearing, controlMode]);
 
     const outputFreeSpeedRPM = useMemo(() => motor.freeSpeed / gearing, [motor, gearing]);
 
     const simResult = useMemo(() => {
         return simulateFlywheel({
-            motor, numMotors, gearing, moi, ks, kv, ka, kp, kd,
+            motor, numMotors, gearing, moi, ks, kv, ka, kp, ki, kd,
             setpointRPM, controlMode, durationS: duration,
             profileMode, cruiseVelRPM, maxAccelRPMps, maxJerkRPMps2,
-            plantMode, plantKs, plantKv, plantKa, viscousFriction
+            plantMode, plantKs, plantKv, plantKa, viscousFriction,
+            maxVoltage, maxCurrentLimit
         });
-    }, [motor, numMotors, gearing, moi, ks, kv, ka, kp, kd, setpointRPM, controlMode, duration, profileMode, cruiseVelRPM, maxAccelRPMps, maxJerkRPMps2, plantMode, plantKs, plantKv, plantKa, viscousFriction]);
+    }, [motor, numMotors, gearing, moi, ks, kv, ka, kp, ki, kd, setpointRPM, controlMode, duration, profileMode, cruiseVelRPM, maxAccelRPMps, maxJerkRPMps2, plantMode, plantKs, plantKv, plantKa, viscousFriction, maxVoltage, maxCurrentLimit]);
 
     const finalRPM = simResult.history.length > 0 ? simResult.history[simResult.history.length - 1].omegaRPM : 0;
 
@@ -710,11 +870,175 @@ export default function FlywheelTunerApp() {
         { id: "error", label: "Error" },
     ];
 
+    // ─── Auto-Tune Functions ──────────────────────────────────────────────────
+
+    // 1. Basic feedforward from motor model
     const autoTuneFF = useCallback(() => {
         setKs(parseFloat(theoreticalKs.toFixed(4)));
         setKv(parseFloat(theoreticalKv.toFixed(6)));
         setKa(0);
     }, [theoreticalKs, theoreticalKv]);
+
+    // 2. Full feedforward including kA (useful with motion profiling)
+    const autoTuneFFWithKa = useCallback(() => {
+        setKs(parseFloat(theoreticalKs.toFixed(4)));
+        setKv(parseFloat(theoreticalKv.toFixed(6)));
+        setKa(parseFloat(theoreticalKa.toFixed(6)));
+    }, [theoreticalKs, theoreticalKv, theoreticalKa]);
+
+    // 3. Compute optimal motion profile constraints based on motor capability
+    // Style: "aggressive" (jerk=0, fastest) vs "smooth" (S-curve, gentler)
+    const computeOptimalProfile = useCallback(() => {
+        // Max acceleration limited by available torque at current limit
+        const effectiveCurrentLimit = controlMode === "voltage"
+            ? maxVoltage / (mc.R / numMotors) // Max current from voltage
+            : maxCurrentLimit;
+
+        // Limit to breaker or stator limit (whichever is lower)
+        const safeCurrentLimit = Math.min(effectiveCurrentLimit, motor.stallCurrent * numMotors * 0.8);
+
+        // Torque at safe current: τ = Kt * I * G
+        const availableTorque = mc.Kt * safeCurrentLimit * gearing;
+
+        // Max acceleration: α = τ / J (at mechanism)
+        const maxAlphaRadSS = moi > 0 ? availableTorque / moi : 1000;
+        const maxAlphaRPMpS = (maxAlphaRadSS * 60) / (2 * Math.PI);
+
+        if (profileStyle === "aggressive") {
+            // Aggressive: higher cruise, higher accel margin, no jerk limit
+            const cruiseRadS = (mc.freeSpeedRadS / gearing) * 0.92;
+            const cruiseRPM = (cruiseRadS * 60) / (2 * Math.PI);
+
+            setCruiseVelRPM(Math.round(cruiseRPM));
+            setMaxAccelRPMps(Math.round(maxAlphaRPMpS * 0.8)); // 80% of max
+            setMaxJerkRPMps2(0); // Infinite jerk = pure trapezoidal = fastest
+        } else {
+            // Smooth: conservative cruise, lower accel margin, jerk limited S-curve
+            const cruiseRadS = (mc.freeSpeedRadS / gearing) * 0.85;
+            const cruiseRPM = (cruiseRadS * 60) / (2 * Math.PI);
+            const jerkRPMpS2 = maxAlphaRPMpS * 3;
+
+            setCruiseVelRPM(Math.round(cruiseRPM));
+            setMaxAccelRPMps(Math.round(maxAlphaRPMpS * 0.7)); // 70% of max for margin
+            setMaxJerkRPMps2(Math.round(jerkRPMpS2));
+        }
+
+        return { maxAlphaRPMpS };
+    }, [mc, motor, numMotors, gearing, moi, controlMode, maxVoltage, maxCurrentLimit, profileStyle]);
+
+    // 4. Compute optimal kP, kD using pole placement / time-domain specs
+    const computeOptimalPD = useCallback(() => {
+        // Target response: fast settling, minimal overshoot
+        //
+        // VOLTAGE MODE:
+        //   Plant has inherent damping from back-EMF
+        //   Transfer function: G(s) = Kt*G / (J*R*s + Kt*Kv*G²)
+        //   This is first-order with time constant τ = J*R / (Kt*Kv*G²)
+        //   With P control, we get faster response. D adds phase lead.
+        //   Back-EMF provides steady-state holding, so kI usually not needed.
+        //
+        // CURRENT MODE (TorqueCurrentFOC):
+        //   Per CTRE documentation, flywheel tuning with TorqueCurrentFOC:
+        //   - kS overcomes static/rolling friction (tune at LOW setpoint)
+        //   - kV overcomes drag (tune at HIGH setpoint)
+        //   - kP provides error correction (tune LAST, after kS/kV are dialed in)
+        //   - kI is NOT typically used - proper kS/kV eliminates SS error
+        //   - kD is rarely needed for flywheels
+        //
+        //   Starting point per CTRE: kP ≈ 10 / setpoint (in mechanism units)
+        //   This gives 10A output at full error, scaling down as you approach target.
+
+        const desiredSettleTime = 0.4; // seconds - target settling time
+        const omega_n = 4.6 / desiredSettleTime; // natural frequency for 2% settling
+        const zeta = 0.85; // slightly underdamped for faster response
+
+        let optKp, optKi, optKd;
+
+        if (controlMode === "voltage") {
+            // Voltage mode: plant has damping from back-EMF
+            // With N parallel motors, each seeing voltage V:
+            //   I_per_motor = (V - BackEMF) / R = (V - ω*G/Kv) / R
+            //   τ_total = N * Kt * I_per_motor * G = N*Kt*G*(V - ω*G/Kv)/R
+            //
+            // Transfer function: G(s) = K / (J*s + b)  [FIRST ORDER!]
+            //   where K = N*Kt*G/R (system gain, torque per volt)
+            //         b = N*Kt*G² / (Kv*R) (back-EMF damping)
+            //
+            // With P control: closed-loop time constant τ_cl = J / (b + K*kP)
+            // For settling time t_s ≈ 4*τ_cl: kP = (J/τ_cl - b) / K
+
+            const K = (mc.Kt * numMotors * gearing) / mc.R;  // torque per volt
+            const b = (mc.Kt * numMotors * gearing * gearing) / (mc.Kv * mc.R);  // back-EMF damping
+
+            // Target closed-loop time constant for desired settling
+            const tau_cl = desiredSettleTime / 4;  // 4*tau for 2% settling
+
+            // Required loop gain: b + K*kP = J / tau_cl
+            const requiredLoopGain = moi / tau_cl;
+            optKp = (requiredLoopGain - b) / K;
+
+            // If back-EMF already provides enough damping, kP could be negative - clamp to small positive
+            optKp = Math.max(0.01, optKp);
+
+            // kD: For first-order plant, D adds a zero which can help with disturbance rejection
+            // but isn't strictly needed. Keep it small or zero.
+            optKd = 0;
+
+            // Voltage mode usually doesn't need kI (back-EMF handles steady state)
+            optKi = 0;
+
+        } else {
+            // Current mode (TorqueCurrentFOC):
+            // Per CTRE guidance, start with kP = 10 / setpoint
+            // But setpoint is in rad/s, and we want reasonable starting point
+            // Use: kP such that at 10% error we output ~10A
+            // If setpoint is 500 rad/s, 10% error = 50 rad/s
+            // kP = 10A / 50 rad/s = 0.2 A/(rad/s)
+            //
+            // More generally: kP ≈ 10 / (0.1 * typical_setpoint_rad/s)
+            // For a 5000 RPM setpoint = 523 rad/s: kP ≈ 10 / 52.3 ≈ 0.19
+            const typicalSetpointRadS = (5000 * 2 * Math.PI) / 60; // Assume ~5000 RPM typical
+            optKp = 10 / (0.1 * typicalSetpointRadS); // ~0.19 A/(rad/s)
+
+            // kD rarely needed for flywheels - the inertia provides natural smoothing
+            // Only add small kD if oscillation is observed
+            optKd = 0;
+
+            // kI NOT used per CTRE - proper kS/kV tuning eliminates SS error
+            optKi = 0;
+        }
+
+        // Sanity clamps
+        const maxKp = controlMode === "voltage" ? 5 : 2;
+        const maxKi = 1;
+        const maxKd = controlMode === "voltage" ? 0.5 : 0.5;
+
+        optKp = Math.max(0.001, Math.min(optKp, maxKp));
+        optKi = Math.max(0, Math.min(optKi, maxKi));
+        optKd = Math.max(0, Math.min(optKd, maxKd));
+
+        setKp(parseFloat(optKp.toFixed(4)));
+        setKi(parseFloat(optKi.toFixed(4)));
+        setKd(parseFloat(optKd.toFixed(5)));
+
+        return { optKp, optKi, optKd, omega_n, zeta };
+    }, [mc, moi, numMotors, gearing, controlMode]);
+
+    // 5. Full auto-tune: FF + Profile + PD
+    const autoTuneAll = useCallback(() => {
+        // Set feedforward
+        setKs(parseFloat(theoreticalKs.toFixed(4)));
+        setKv(parseFloat(theoreticalKv.toFixed(6)));
+
+        if (profileMode === "trapezoidal") {
+            setKa(parseFloat(theoreticalKa.toFixed(6)));
+            computeOptimalProfile();
+        } else {
+            setKa(0);
+        }
+
+        computeOptimalPD();
+    }, [theoreticalKs, theoreticalKv, theoreticalKa, profileMode, computeOptimalProfile, computeOptimalPD]);
 
     return (
         <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #0c0e14 0%, #111420 50%, #0c0e14 100%)", color: "#c8ced8", fontFamily: SANS }}>
@@ -802,6 +1126,26 @@ export default function FlywheelTunerApp() {
                         {profileMode === "trapezoidal" && (
                             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12 }}>
                                 <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                    <label style={{ ...S.fieldLabel, color: "#06b6d4", opacity: 0.7 }}>Auto-Tune Style</label>
+                                    <div style={{ display: "flex", gap: 4 }}>
+                                        <button
+                                            onClick={() => setProfileStyle("aggressive")}
+                                            style={{ ...S.btn(profileStyle === "aggressive"), fontSize: 10, padding: "4px 10px", color: profileStyle === "aggressive" ? "#fff" : "#06b6d4", borderColor: "#06b6d4" }}
+                                        >
+                                            Aggressive
+                                        </button>
+                                        <button
+                                            onClick={() => setProfileStyle("smooth")}
+                                            style={{ ...S.btn(profileStyle === "smooth"), fontSize: 10, padding: "4px 10px", color: profileStyle === "smooth" ? "#fff" : "#06b6d4", borderColor: "#06b6d4" }}
+                                        >
+                                            Smooth
+                                        </button>
+                                    </div>
+                                    <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>
+                                        {profileStyle === "aggressive" ? "Jerk=0 → fastest response" : "S-curve → gentler on mechanisms"}
+                                    </div>
+                                </div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                                     <label style={{ ...S.fieldLabel, color: "#06b6d4", opacity: 0.7 }}>Cruise Velocity</label>
                                     <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                                         <input
@@ -859,9 +1203,17 @@ export default function FlywheelTunerApp() {
 
                 {/* Gains */}
                 <div style={{ ...S.cardSubtle, marginBottom: 20 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
                         <div style={S.label}>Control Gains ({controlMode === "voltage" ? "Voltage" : "Current"} Mode)</div>
-                        <button onClick={autoTuneFF} style={{ ...S.btn(false), fontSize: 10, padding: "3px 8px" }}>Auto kS/kV from motor model</button>
+                        <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                            <button onClick={autoTuneFF} style={{ ...S.btn(false), fontSize: 10, padding: "3px 8px" }}>Auto kS/kV</button>
+                            <button onClick={autoTuneFFWithKa} style={{ ...S.btn(false), fontSize: 10, padding: "3px 8px" }}>Auto kS/kV/kA</button>
+                            <button onClick={computeOptimalPD} style={{ ...S.btn(false), fontSize: 10, padding: "3px 8px", color: "#f97316" }}>Auto PID</button>
+                            {profileMode === "trapezoidal" && (
+                                <button onClick={computeOptimalProfile} style={{ ...S.btn(false), fontSize: 10, padding: "3px 8px", color: "#06b6d4" }}>Auto Profile</button>
+                            )}
+                            <button onClick={autoTuneAll} style={{ ...S.btn(true), fontSize: 10, padding: "3px 8px" }}>⚡ Tune All</button>
+                        </div>
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 12 }}>
                         <GainInput label="kS (static)" value={ks} onChange={setKs} step={0.01} color="#10b981" />
@@ -872,11 +1224,16 @@ export default function FlywheelTunerApp() {
                             <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>Only effective with motion profiling</div>
                         </div>
                         <GainInput label="kP (proportional)" value={kp} onChange={setKp} step={0.001} color="#f97316" />
+                        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                            <label style={{ ...S.fieldLabel, color: "#ec4899", opacity: 0.8 }}>kI (integral)</label>
+                            <input type="number" value={ki} step={0.01} onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setKi(v); }} style={{ ...S.inputWide, borderColor: "#ec489933", color: "#ec4899" }} />
+                            <div style={{ fontSize: 9, opacity: 0.4, fontFamily: MONO }}>{controlMode === "current" ? "Rarely needed if kS/kV tuned" : "Eliminates steady-state error"}</div>
+                        </div>
                         <GainInput label="kD (derivative)" value={kd} onChange={setKd} step={0.0001} color="#eab308" />
                     </div>
                     <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(255,255,255,0.02)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.05)" }}>
                         <div style={{ fontSize: 10, opacity: 0.4, fontFamily: MONO, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>Theoretical Values (from motor model)</div>
-                        <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+                        <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
                             <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
                                 <span style={{ fontSize: 11, opacity: 0.4, fontFamily: MONO }}>kS ≈</span>
                                 <span style={{ fontSize: 11, fontFamily: MONO, color: "#10b981" }}>{fmt(theoreticalKs, 4)} {controlMode === "voltage" ? "V" : "A"}</span>
@@ -886,8 +1243,58 @@ export default function FlywheelTunerApp() {
                                 <span style={{ fontSize: 11, fontFamily: MONO, color: "#3b82f6" }}>{fmt(theoreticalKv, 6)} {controlMode === "voltage" ? "V/(rad/s)" : "A/(rad/s)"}</span>
                             </div>
                             <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                                <span style={{ fontSize: 11, opacity: 0.4, fontFamily: MONO }}>Output free ω =</span>
+                                <span style={{ fontSize: 11, opacity: 0.4, fontFamily: MONO }}>kA ≈</span>
+                                <span style={{ fontSize: 11, fontFamily: MONO, color: "#a855f7" }}>{fmt(theoreticalKa, 6)} {controlMode === "voltage" ? "V/(rad/s²)" : "A/(rad/s²)"}</span>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                                <span style={{ fontSize: 11, opacity: 0.4, fontFamily: MONO }}>Free ω =</span>
                                 <span style={{ fontSize: 11, fontFamily: MONO, color: "#e2e8f0" }}>{fmt(mc.freeSpeedRadS / gearing, 2)} rad/s ({fmt(outputFreeSpeedRPM, 0)} RPM)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Controller Limits */}
+                    <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(244,63,94,0.03)", borderRadius: 6, border: "1px solid rgba(244,63,94,0.12)" }}>
+                        <div style={{ fontSize: 10, opacity: 0.5, fontFamily: MONO, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10, color: "#f43f5e" }}>Controller Output Limits</div>
+                        <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-end" }}>
+                            {controlMode === "voltage" ? (
+                                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                    <label style={{ ...S.fieldLabel, color: "#f43f5e", opacity: 0.7 }}>Max Voltage</label>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                        <input
+                                            type="number"
+                                            value={maxVoltage}
+                                            min={1}
+                                            max={16}
+                                            step={0.5}
+                                            onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setMaxVoltage(Math.max(1, Math.min(16, v))); }}
+                                            style={{ ...S.input, width: 70, borderColor: "rgba(244,63,94,0.3)", color: "#f43f5e" }}
+                                        />
+                                        <span style={{ ...S.unit, color: "#f43f5e" }}>V</span>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                                    <label style={{ ...S.fieldLabel, color: "#f43f5e", opacity: 0.7 }}>Max Current (Stator)</label>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                        <input
+                                            type="number"
+                                            value={maxCurrentLimit}
+                                            min={1}
+                                            max={500}
+                                            step={5}
+                                            onChange={e => { const v = parseFloat(e.target.value); if (!isNaN(v)) setMaxCurrentLimit(Math.max(1, Math.min(500, v))); }}
+                                            style={{ ...S.input, width: 70, borderColor: "rgba(244,63,94,0.3)", color: "#f43f5e" }}
+                                        />
+                                        <span style={{ ...S.unit, color: "#f43f5e" }}>A</span>
+                                    </div>
+                                </div>
+                            )}
+                            <div style={{ fontSize: 10, opacity: 0.4, fontFamily: MONO, lineHeight: 1.5 }}>
+                                {controlMode === "voltage"
+                                    ? "Controller output clamped to ±max voltage. Lower values simulate brownout or voltage sag."
+                                    : "Stator current limit. Typical FRC values: 40-80A continuous, 120A+ peak."
+                                }
                             </div>
                         </div>
                     </div>
@@ -903,6 +1310,7 @@ export default function FlywheelTunerApp() {
                         <MetricCard label="Settle Time (2%)" value={simResult.settleTime !== null ? fmt(simResult.settleTime, 3) : "—"} unit="s" color={simResult.settleTime !== null && simResult.settleTime < 2 ? "#10b981" : "#eab308"} />
                         <MetricCard label="Overshoot" value={fmt(simResult.overshoot, 1)} unit="%" color={osColor} warn={simResult.overshoot > 10} />
                         <MetricCard label="SS Error" value={fmt(ssErr, 1)} unit="RPM" color={ssColor} warn={ssErr > setpointRPM * 0.05} />
+                        <MetricCard label="Saturation" value={fmt(simResult.saturationPct, 1)} unit="%" color={simResult.saturationPct > 10 ? "#f43f5e" : simResult.saturationPct > 0 ? "#eab308" : "#10b981"} warn={simResult.saturationPct > 20} />
                         <MetricCard label="Final Velocity" value={fmt(finalRPM, 0)} unit="RPM" color="#e2e8f0" />
                         <MetricCard label="Peak Velocity" value={fmt(simResult.maxRPM, 0)} unit="RPM" color="#3b82f6" />
                     </div>
@@ -914,7 +1322,7 @@ export default function FlywheelTunerApp() {
                         {TABS.map(t => <button key={t.id} onClick={() => setActiveTab(t.id)} style={S.btn(activeTab === t.id)}>{t.label}</button>)}
                     </div>
                     {activeTab === "velocity" && <VelocityChart history={simResult.history} setpointRPM={setpointRPM} profileMode={profileMode} />}
-                    {activeTab === "effort" && <EffortChart history={simResult.history} controlMode={controlMode} />}
+                    {activeTab === "effort" && <EffortChart history={simResult.history} controlMode={controlMode} maxVoltage={maxVoltage} maxCurrentLimit={maxCurrentLimit} />}
                     {activeTab === "error" && <ErrorChart history={simResult.history} />}
                 </div>
 
@@ -1124,10 +1532,11 @@ export default function FlywheelTunerApp() {
                                     "Start conservative (1000–3000 RPM/s) and increase based on available torque.",
                                     "Too high: controller can't keep up, large tracking error. Too low: slow response."
                                 ]},
-                            { step: "4", title: "Optional: Add jerk limiting", color: "#a855f7", lines: [
+                            { step: "4", title: "Jerk limiting: when to use it", color: "#a855f7", lines: [
                                     "Jerk = rate of acceleration change. Jerk = 0 means infinite (pure trapezoidal).",
-                                    "Adding jerk limiting creates an S-curve profile — smoother but slower.",
-                                    "Good for reducing mechanical stress, vibration, and current spikes."
+                                    "Aggressive (jerk=0): Fastest rise/settle time. Best for rigid, direct-drive flywheels.",
+                                    "Smooth (jerk>0): S-curve profile. Slower, but reduces mechanical stress and vibration.",
+                                    "Use smooth for: flexible mechanisms, belt/chain drives, gearboxes with backlash, or to limit current spikes."
                                 ]},
                             { step: "5", title: "Tune kA for acceleration FF", color: "#f97316", lines: [
                                     "With profiling, the desired acceleration r̈ comes directly from the profile.",
@@ -1151,16 +1560,217 @@ export default function FlywheelTunerApp() {
                     </div>
                 </div>
 
-                {/* Physics Reference */}
-                <div style={{ ...S.cardSubtle, marginBottom: 20, border: "1px solid rgba(255,255,255,0.05)" }}>
-                    <div style={S.label}>Flywheel Physics Reference</div>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 8, fontSize: 12, opacity: 0.6, fontFamily: MONO }}>
-                        <div>τ_motor = Kt · I_motor · N · G</div>
-                        <div>α = τ_net / J (moment of inertia)</div>
-                        <div>V = I·R + ω/Kv (back-EMF model)</div>
-                        <div>ω_free_output = ω_free_motor / G</div>
-                        <div>Kt = τ_stall / I_stall</div>
-                        <div>Kv = ω_free / (V − I_free·R)</div>
+                {/* TorqueCurrentFOC Tuning Guide */}
+                {controlMode === "current" && (
+                    <div style={{ ...S.cardSubtle, marginBottom: 20, border: "1px solid rgba(236,72,153,0.2)" }}>
+                        <div style={{ ...S.label, color: "#ec4899", opacity: 0.8 }}>Current Mode (TorqueCurrentFOC) Tuning Guide</div>
+                        <div style={{ fontSize: 11, fontFamily: MONO, opacity: 0.6, marginBottom: 12, lineHeight: 1.6 }}>
+                            Based on CTRE Phoenix 6 documentation. In current mode, kS and kV must be tuned empirically — auto-tune provides starting points only.
+                        </div>
+                        <div style={{ fontSize: 12, fontFamily: MONO, lineHeight: 2.0 }}>
+                            {[
+                                { step: "1", title: "Zero all gains", color: "#6b7280", lines: [
+                                        "Start with kS=0, kV=0, kP=0, kI=0, kD=0 to isolate forces."
+                                    ]},
+                                { step: "2", title: "Set HIGH setpoint (~80% of max)", color: "#3b82f6", lines: [
+                                        "High setpoint prioritizes kV tuning (drag dominates at high speed)."
+                                    ]},
+                                { step: "3", title: "Find kS threshold", color: "#10b981", lines: [
+                                        "Increase kS until wheel barely starts moving, then back off slightly.",
+                                        "This is your static/rolling friction threshold."
+                                    ]},
+                                { step: "4", title: "Set small kP", color: "#f97316", lines: [
+                                        "Set kP = 10 / setpoint (e.g., kP ≈ 0.1 for 100 RPS setpoint).",
+                                        "Small kP magnifies the need for good kS/kV tuning."
+                                    ]},
+                                { step: "5", title: "Tune kV at high setpoint", color: "#3b82f6", lines: [
+                                        "Increase kV until flywheel reaches the high setpoint.",
+                                        "kV compensates for aerodynamic drag (increases with speed)."
+                                    ]},
+                                { step: "6", title: "Switch to LOW setpoint (~10% of max)", color: "#06b6d4", lines: [
+                                        "Low setpoint prioritizes kS tuning (friction dominates at low speed)."
+                                    ]},
+                                { step: "7", title: "Tune kS at low setpoint", color: "#10b981", lines: [
+                                        "Adjust kS until flywheel reaches the low setpoint.",
+                                        "If overshooting, decrease kS. If undershooting, increase kS."
+                                    ]},
+                                { step: "8", title: "Iterate steps 5-7", color: "#a855f7", lines: [
+                                        "Go back to high setpoint → adjust kV → low setpoint → adjust kS.",
+                                        "Repeat until gains stabilize and both setpoints are achieved."
+                                    ]},
+                                { step: "9", title: "Increase kP for faster response", color: "#f97316", lines: [
+                                        "With kS/kV dialed in, increase kP until oscillation appears.",
+                                        "Back off to just before oscillation. kD is rarely needed for flywheels."
+                                    ]},
+                                { step: "10", title: "Verify across operating range", color: "#eab308", lines: [
+                                        "Test at various setpoints within your expected range.",
+                                        "Re-tune if needed for specific operating conditions."
+                                    ]},
+                            ].map(({ step, title, color, lines }) => (
+                                <div key={step} style={{ padding: "8px 12px", background: "rgba(255,255,255,0.015)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.04)", marginBottom: 6 }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                                        <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 20, height: 20, borderRadius: 10, background: `${color}22`, color, fontSize: 10, fontWeight: 700, fontFamily: MONO, border: `1px solid ${color}44`, flexShrink: 0 }}>{step}</span>
+                                        <span style={{ fontSize: 11, fontWeight: 600, color, fontFamily: SANS }}>{title}</span>
+                                    </div>
+                                    {lines.map((line, i) => <div key={i} style={{ fontSize: 10, opacity: 0.5, paddingLeft: 28 }}>{line}</div>)}
+                                </div>
+                            ))}
+                        </div>
+                        <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(236,72,153,0.1)", borderRadius: 6, border: "1px solid rgba(236,72,153,0.2)" }}>
+                            <div style={{ fontSize: 11, fontFamily: MONO, color: "#ec4899", fontWeight: 600, marginBottom: 4 }}>Key Insight</div>
+                            <div style={{ fontSize: 11, opacity: 0.7, lineHeight: 1.6 }}>
+                                In TorqueCurrentFOC mode, <strong>kI is typically NOT needed</strong>. Proper kS/kV tuning eliminates steady-state error.
+                                Unlike voltage mode where back-EMF provides natural speed regulation, current mode requires feedforward (kS/kV) to command the exact current needed to overcome friction at each velocity.
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Theoretical Model Documentation */}
+                <div style={{ ...S.cardSubtle, marginBottom: 20, border: "1px solid rgba(139,92,246,0.2)" }}>
+                    <div style={{ ...S.label, color: "#8b5cf6", opacity: 0.8, marginBottom: 16 }}>Theoretical Model & Derivations</div>
+
+                    {/* Motor Constants */}
+                    <div style={{ marginBottom: 20, padding: "12px 16px", background: "rgba(255,255,255,0.02)", borderRadius: 8, border: "1px solid rgba(255,255,255,0.05)" }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#8b5cf6", marginBottom: 10 }}>Motor Constants (from datasheet)</div>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 12, fontSize: 11, fontFamily: MONO, opacity: 0.7, lineHeight: 1.8 }}>
+                            <div>
+                                <div><strong>Torque Constant:</strong> Kt = τ_stall / I_stall [N·m/A]</div>
+                                <div style={{ opacity: 0.6, paddingLeft: 12 }}>Relates current to torque output</div>
+                            </div>
+                            <div>
+                                <div><strong>Velocity Constant:</strong> Kv = ω_free / (V_nom − I_free·R) [rad/s/V]</div>
+                                <div style={{ opacity: 0.6, paddingLeft: 12 }}>Relates voltage to back-EMF</div>
+                            </div>
+                            <div>
+                                <div><strong>Resistance:</strong> R = V_nom / I_stall [Ω]</div>
+                                <div style={{ opacity: 0.6, paddingLeft: 12 }}>Motor winding resistance</div>
+                            </div>
+                            <div>
+                                <div><strong>With N motors:</strong> R_eff = R/N, Kt_total = Kt·N·G</div>
+                                <div style={{ opacity: 0.6, paddingLeft: 12 }}>Parallel motors share current, multiply torque</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Voltage Mode Derivations */}
+                    <div style={{ marginBottom: 20, padding: "12px 16px", background: "rgba(59,130,246,0.05)", borderRadius: 8, border: "1px solid rgba(59,130,246,0.2)" }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#3b82f6", marginBottom: 10 }}>Voltage Mode Derivations</div>
+                        <div style={{ fontSize: 11, fontFamily: MONO, opacity: 0.7, lineHeight: 2.0 }}>
+                            <div style={{ marginBottom: 12 }}>
+                                <div style={{ color: "#3b82f6", fontWeight: 600 }}>Plant Model (N motors in parallel):</div>
+                                <div style={{ paddingLeft: 12 }}>Each motor: I = (V − BackEMF) / R = (V − ω·G/Kv) / R</div>
+                                <div style={{ paddingLeft: 12 }}>Total torque: τ = N·Kt·I·G = N·Kt·G·(V − ω·G/Kv) / R</div>
+                                <div style={{ paddingLeft: 12 }}>Transfer function: G(s) = (N·Kt·G/R) / (J·s + N·Kt·G²/(Kv·R))</div>
+                                <div style={{ paddingLeft: 12, opacity: 0.6 }}>First-order with damping from back-EMF (no explicit D needed)</div>
+                            </div>
+                            <div style={{ marginBottom: 12 }}>
+                                <div style={{ color: "#10b981", fontWeight: 600 }}>kS derivation:</div>
+                                <div style={{ paddingLeft: 12 }}>At zero speed, need voltage to overcome motor losses + friction</div>
+                                <div style={{ paddingLeft: 12 }}>kS = R · I_free (minimum voltage to spin unloaded motor)</div>
+                                <div style={{ paddingLeft: 12 }}>If plant has static friction τ_s: kS ≥ τ_s·R/(N·Kt·G)</div>
+                            </div>
+                            <div style={{ marginBottom: 12 }}>
+                                <div style={{ color: "#3b82f6", fontWeight: 600 }}>kV derivation:</div>
+                                <div style={{ paddingLeft: 12 }}>At steady state: V = BackEMF + I·R ≈ ω·G/Kv (friction I is small)</div>
+                                <div style={{ paddingLeft: 12 }}>kV ≈ G/Kv = V_nom / ω_free_output [V/(rad/s)]</div>
+                            </div>
+                            <div style={{ marginBottom: 12 }}>
+                                <div style={{ color: "#a855f7", fontWeight: 600 }}>kA derivation:</div>
+                                <div style={{ paddingLeft: 12 }}>Torque for acceleration: τ = J·α = N·Kt·G·V/R</div>
+                                <div style={{ paddingLeft: 12 }}>Solving: V = J·α·R / (N·Kt·G)</div>
+                                <div style={{ paddingLeft: 12 }}>kA = J·R / (N·Kt·G) [V/(rad/s²)]</div>
+                            </div>
+                            <div>
+                                <div style={{ color: "#f97316", fontWeight: 600 }}>kP derivation (first-order plant):</div>
+                                <div style={{ paddingLeft: 12 }}>Plant is FIRST ORDER: G(s) = K / (J·s + b)</div>
+                                <div style={{ paddingLeft: 12 }}>System gain: K = N·Kt·G/R [N·m/V]</div>
+                                <div style={{ paddingLeft: 12 }}>Back-EMF damping: b = N·Kt·G²/(Kv·R) [N·m/(rad/s)]</div>
+                                <div style={{ paddingLeft: 12 }}>Closed-loop time constant: τ_cl = J / (b + K·kP)</div>
+                                <div style={{ paddingLeft: 12 }}>For settling t_s ≈ 4·τ_cl: kP = (J/τ_cl − b) / K</div>
+                                <div style={{ paddingLeft: 12 }}>kD = 0 (not needed for first-order plant)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Current Mode Derivations */}
+                    <div style={{ marginBottom: 20, padding: "12px 16px", background: "rgba(236,72,153,0.05)", borderRadius: 8, border: "1px solid rgba(236,72,153,0.2)" }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#ec4899", marginBottom: 10 }}>Current Mode (TorqueCurrentFOC) Derivations</div>
+                        <div style={{ fontSize: 11, fontFamily: MONO, opacity: 0.7, lineHeight: 2.0 }}>
+                            <div style={{ marginBottom: 12 }}>
+                                <div style={{ color: "#ec4899", fontWeight: 600 }}>Plant Model:</div>
+                                <div style={{ paddingLeft: 12 }}>You command stator current I directly → Motor produces τ = Kt·I·G</div>
+                                <div style={{ paddingLeft: 12 }}>Transfer function: G(s) = Kt·G / (J·s) — pure integrator!</div>
+                                <div style={{ paddingLeft: 12, opacity: 0.6 }}>No back-EMF in control loop → no natural damping or speed regulation</div>
+                                <div style={{ paddingLeft: 12, opacity: 0.6 }}>Feedforward must provide exact current to overcome friction</div>
+                            </div>
+                            <div style={{ marginBottom: 12 }}>
+                                <div style={{ color: "#10b981", fontWeight: 600 }}>kS derivation:</div>
+                                <div style={{ paddingLeft: 12 }}>Current to overcome static/coulomb friction τ_static:</div>
+                                <div style={{ paddingLeft: 12 }}>τ_static = Kt·I_s·G → I_s = τ_static / (Kt·G)</div>
+                                <div style={{ paddingLeft: 12 }}>kS = τ_static / (Kt·G) [A]</div>
+                                <div style={{ paddingLeft: 12, opacity: 0.6 }}>In this sim, plantKs is already in amps (controller units)</div>
+                            </div>
+                            <div style={{ marginBottom: 12 }}>
+                                <div style={{ color: "#3b82f6", fontWeight: 600 }}>kV derivation:</div>
+                                <div style={{ paddingLeft: 12 }}>Current to overcome viscous friction (drag) at velocity ω:</div>
+                                <div style={{ paddingLeft: 12 }}>τ_viscous = β·ω (where β = viscous friction coefficient [N·m/(rad/s)])</div>
+                                <div style={{ paddingLeft: 12 }}>I_viscous = β·ω / (Kt·G)</div>
+                                <div style={{ paddingLeft: 12 }}>kV = β / (Kt·G) [A/(rad/s)]</div>
+                                <div style={{ paddingLeft: 12, opacity: 0.6 }}>Unlike voltage mode, kV is typically very small (just friction, not back-EMF)</div>
+                            </div>
+                            <div style={{ marginBottom: 12 }}>
+                                <div style={{ color: "#a855f7", fontWeight: 600 }}>kA derivation:</div>
+                                <div style={{ paddingLeft: 12 }}>Current to accelerate inertia J at rate α:</div>
+                                <div style={{ paddingLeft: 12 }}>τ = J·α = Kt·I·G → I = J·α / (Kt·G)</div>
+                                <div style={{ paddingLeft: 12 }}>kA = J / (Kt·G) [A/(rad/s²)]</div>
+                                <div style={{ paddingLeft: 12, opacity: 0.6 }}>Note: numMotors not in formula — you command total stator current</div>
+                            </div>
+                            <div>
+                                <div style={{ color: "#f97316", fontWeight: 600 }}>kP derivation (per CTRE guidance):</div>
+                                <div style={{ paddingLeft: 12 }}>Starting point: kP ≈ 10 / setpoint [A/(rad/s)]</div>
+                                <div style={{ paddingLeft: 12 }}>At 10% error → outputs ~10A correction</div>
+                                <div style={{ paddingLeft: 12 }}>kD rarely needed for flywheels (inertia provides smoothing)</div>
+                                <div style={{ paddingLeft: 12 }}>kI typically NOT needed — proper kS/kV eliminates SS error</div>
+                                <div style={{ paddingLeft: 12, opacity: 0.6 }}>Tune empirically: iterate kS (low setpoint) and kV (high setpoint)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Friction Model */}
+                    <div style={{ marginBottom: 20, padding: "12px 16px", background: "rgba(244,63,94,0.05)", borderRadius: 8, border: "1px solid rgba(244,63,94,0.2)" }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#f43f5e", marginBottom: 10 }}>Friction Model</div>
+                        <div style={{ fontSize: 11, fontFamily: MONO, opacity: 0.7, lineHeight: 2.0 }}>
+                            <div style={{ paddingLeft: 0 }}>τ_friction = τ_static·sign(ω) + β·ω</div>
+                            <div style={{ paddingLeft: 12, opacity: 0.6 }}>τ_static: Coulomb/static friction — constant opposing torque once moving</div>
+                            <div style={{ paddingLeft: 12, opacity: 0.6 }}>β: Viscous friction coefficient — increases linearly with speed (drag)</div>
+                            <div style={{ paddingLeft: 12, opacity: 0.6 }}>In sim, τ_static derived from plantKs: τ_static = plantKs · Kt · G (current mode)</div>
+                        </div>
+                    </div>
+
+                    {/* Tuning Methodology Summary */}
+                    <div style={{ padding: "12px 16px", background: "rgba(234,179,8,0.05)", borderRadius: 8, border: "1px solid rgba(234,179,8,0.2)" }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#eab308", marginBottom: 10 }}>Auto-Tune Methodology Summary</div>
+                        <div style={{ fontSize: 11, fontFamily: MONO, opacity: 0.7, lineHeight: 1.8 }}>
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                                <div>
+                                    <div style={{ color: "#3b82f6", fontWeight: 600, marginBottom: 4 }}>Voltage Mode:</div>
+                                    <div>1. kS = R·I_free (motor losses)</div>
+                                    <div>2. kV = G/Kv ≈ V_nom/ω_free_out</div>
+                                    <div>3. kA = J·R/(N·Kt·G)</div>
+                                    <div>4. kP = (J/τ_cl − b) / K</div>
+                                    <div>5. kD = 0, kI = 0</div>
+                                </div>
+                                <div>
+                                    <div style={{ color: "#ec4899", fontWeight: 600, marginBottom: 4 }}>Current Mode:</div>
+                                    <div>1. kS = τ_static/(Kt·G) [A]</div>
+                                    <div>2. kV = β/(Kt·G) [A/(rad/s)]</div>
+                                    <div>3. kA = J/(Kt·G) [A/(rad/s²)]</div>
+                                    <div>4. kP ≈ 0.2 A/(rad/s) start</div>
+                                    <div>5. kI = 0, kD = 0, tune empirically</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
