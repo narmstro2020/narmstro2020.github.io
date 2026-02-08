@@ -956,35 +956,38 @@ export default function FlywheelTunerApp() {
 
         if (controlMode === "voltage") {
             // Voltage mode: plant has damping from back-EMF
-            // With N parallel motors, each seeing voltage V:
-            //   I_per_motor = (V - BackEMF) / R = (V - ω*G/Kv) / R
-            //   τ_total = N * Kt * I_per_motor * G = N*Kt*G*(V - ω*G/Kv)/R
+            // The plant is first-order: G(s) = K / (J*s + b)
+            //   K = N*Kt*G/R (torque per volt)
+            //   b = N*Kt*G² / (Kv*R) (back-EMF damping)
             //
-            // Transfer function: G(s) = K / (J*s + b)  [FIRST ORDER!]
-            //   where K = N*Kt*G/R (system gain, torque per volt)
-            //         b = N*Kt*G² / (Kv*R) (back-EMF damping)
+            // Open-loop time constant: τ_ol = J/b
+            // With P control: τ_cl = J / (b + K*kP)
             //
-            // With P control: closed-loop time constant τ_cl = J / (b + K*kP)
-            // For settling time t_s ≈ 4*τ_cl: kP = (J/τ_cl - b) / K
+            // Empirical approach: target a closed-loop bandwidth that gives good response
+            // For t_s ≈ 0.4s settling, we want τ_cl ≈ 0.1s
 
-            const K = (mc.Kt * numMotors * gearing) / mc.R;  // torque per volt
-            const b = (mc.Kt * numMotors * gearing * gearing) / (mc.Kv * mc.R);  // back-EMF damping
+            const K = (mc.Kt * numMotors * gearing) / mc.R;  // N·m/V
+            const b = (mc.Kt * numMotors * gearing * gearing) / (mc.Kv * mc.R);  // N·m/(rad/s)
 
-            // Target closed-loop time constant for desired settling
-            const tau_cl = desiredSettleTime / 4;  // 4*tau for 2% settling
+            // Target closed-loop time constant
+            const tau_cl_target = desiredSettleTime / 4;  // ~0.1s for 0.4s settling
 
-            // Required loop gain: b + K*kP = J / tau_cl
-            const requiredLoopGain = moi / tau_cl;
-            optKp = (requiredLoopGain - b) / K;
+            // Required: J / (b + K*kP) = tau_cl
+            // Solve: kP = (J/tau_cl - b) / K
+            const requiredDamping = moi / tau_cl_target;
+            optKp = Math.max(0.01, (requiredDamping - b) / K);
 
-            // If back-EMF already provides enough damping, kP could be negative - clamp to small positive
-            optKp = Math.max(0.01, optKp);
+            // If the back-EMF damping already exceeds what we need, use a small kP
+            // to avoid making the system too slow
+            if (b >= requiredDamping) {
+                // System is already fast enough open-loop, just add small kP for error correction
+                optKp = 0.05;
+            }
 
-            // kD: For first-order plant, D adds a zero which can help with disturbance rejection
-            // but isn't strictly needed. Keep it small or zero.
+            // kD not needed for first-order plant
             optKd = 0;
 
-            // Voltage mode usually doesn't need kI (back-EMF handles steady state)
+            // Voltage mode doesn't need kI (back-EMF handles steady state)
             optKi = 0;
 
         } else {
