@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a2e" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  
+  <rect width="1200" height="900" fill="#0f0f1a"/>
+  <rect width="1200" height="900" fill="url(#grid)" opacity="0.3"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="80" fill="url(#headerGrad)"/>
+  <rect x="0" y="78" width="1200" height="2" fill="#4ecca3"/>
+  <text x="30" y="52" font-family="'Courier New', monospace" font-size="28" font-weight="bold" fill="#4ecca3">05</text>
+  <text x="80" y="52" font-family="'Segoe UI', sans-serif" font-size="26" font-weight="bold" fill="#e0e0e0">Nested Dictionaries</text>
+  <text x="1170" y="52" font-family="'Courier New', monospace" font-size="16" fill="#555" text-anchor="end">Python Dictionaries</text>
+  
+  <!-- Concept -->
+  <rect x="40" y="110" width="1120" height="80" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="110" width="6" height="80" rx="3" fill="#4ecca3"/>
+  <text x="70" y="145" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#4ecca3">💡 A dictionary value can be ANOTHER dictionary!</text>
+  <text x="70" y="175" font-family="'Segoe UI', sans-serif" font-size="16" fill="#c0c0c0">This lets you represent complex, structured data — like a game with <tspan fill="#ffc107">multiple characters</tspan>, each with their own stats.</text>
+  
+  <!-- Code example -->
+  <rect x="40" y="215" width="680" height="380" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="215" width="680" height="36" rx="12" fill="#7b68ee" opacity="0.2"/>
+  <rect x="40" y="249" width="680" height="2" fill="#7b68ee" opacity="0.3"/>
+  <text x="60" y="240" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="bold" fill="#7b68ee">🎮 A Party of Characters</text>
+  
+  <rect x="55" y="265" width="650" height="315" rx="8" fill="#0a0a15"/>
+  <text x="70" y="290" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">party</tspan> <tspan fill="#e0e0e0">= {</tspan>
+  </text>
+  <text x="90" y="315" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"warrior"</tspan><tspan fill="#e0e0e0">: {</tspan>
+  </text>
+  <text x="110" y="340" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"name"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#ce9178">"Kael"</tspan><tspan fill="#e0e0e0">,</tspan>
+  </text>
+  <text x="110" y="360" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"health"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">150</tspan><tspan fill="#e0e0e0">,</tspan>
+  </text>
+  <text x="110" y="380" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"attack"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">40</tspan>
+  </text>
+  <text x="90" y="400" font-family="'Courier New', monospace" font-size="14"><tspan fill="#e0e0e0">},</tspan></text>
+  <text x="90" y="425" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"mage"</tspan><tspan fill="#e0e0e0">: {</tspan>
+  </text>
+  <text x="110" y="450" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"name"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#ce9178">"Lyra"</tspan><tspan fill="#e0e0e0">,</tspan>
+  </text>
+  <text x="110" y="470" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"health"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">80</tspan><tspan fill="#e0e0e0">,</tspan>
+  </text>
+  <text x="110" y="490" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"attack"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">60</tspan>
+  </text>
+  <text x="90" y="510" font-family="'Courier New', monospace" font-size="14"><tspan fill="#e0e0e0">}</tspan></text>
+  <text x="70" y="535" font-family="'Courier New', monospace" font-size="14"><tspan fill="#e0e0e0">}</tspan></text>
+  <text x="70" y="565" font-family="'Courier New', monospace" font-size="14" fill="#888"># Two levels of keys!</text>
+  
+  <!-- Access patterns -->
+  <rect x="760" y="215" width="400" height="380" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="760" y="215" width="400" height="36" rx="12" fill="#e94560" opacity="0.2"/>
+  <rect x="760" y="249" width="400" height="2" fill="#e94560" opacity="0.3"/>
+  <text x="780" y="240" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="bold" fill="#e94560">🔗 Chain the Brackets</text>
+  
+  <rect x="775" y="265" width="370" height="315" rx="8" fill="#0a0a15"/>
+  <text x="790" y="295" font-family="'Courier New', monospace" font-size="13" fill="#888"># Get the whole inner dict</text>
+  <text x="790" y="318" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">party</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"warrior"</tspan><tspan fill="#e0e0e0">]</tspan>
+  </text>
+  <text x="790" y="340" font-family="'Courier New', monospace" font-size="12" fill="#4ecca3"># → {"name":"Kael", ...}</text>
+  
+  <text x="790" y="375" font-family="'Courier New', monospace" font-size="13" fill="#888"># Drill into a specific value</text>
+  <text x="790" y="398" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">party</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"warrior"</tspan><tspan fill="#e0e0e0">][</tspan><tspan fill="#ce9178">"health"</tspan><tspan fill="#e0e0e0">]</tspan>
+  </text>
+  <text x="790" y="420" font-family="'Courier New', monospace" font-size="12" fill="#4ecca3"># → 150</text>
+  
+  <text x="790" y="455" font-family="'Courier New', monospace" font-size="13" fill="#888"># Modify a nested value</text>
+  <text x="790" y="478" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">party</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"mage"</tspan><tspan fill="#e0e0e0">][</tspan><tspan fill="#ce9178">"health"</tspan><tspan fill="#e0e0e0">] =</tspan> <tspan fill="#b5cea8">60</tspan>
+  </text>
+  <text x="790" y="500" font-family="'Courier New', monospace" font-size="12" fill="#ffc107"># Lyra took damage!</text>
+  
+  <text x="790" y="535" font-family="'Courier New', monospace" font-size="13" fill="#888"># Add a new key to inner dict</text>
+  <text x="790" y="558" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">party</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"warrior"</tspan><tspan fill="#e0e0e0">][</tspan><tspan fill="#ce9178">"shield"</tspan><tspan fill="#e0e0e0">] =</tspan> <tspan fill="#b5cea8">30</tspan>
+  </text>
+  
+  <!-- Looping nested -->
+  <rect x="40" y="620" width="1120" height="245" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="620" width="1120" height="36" rx="12" fill="#ffc107" opacity="0.15"/>
+  <rect x="40" y="654" width="1120" height="2" fill="#ffc107" opacity="0.3"/>
+  <text x="60" y="645" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="bold" fill="#ffc107">🔄 Looping Through Nested Dictionaries</text>
+  
+  <rect x="60" y="670" width="520" height="175" rx="8" fill="#0a0a15"/>
+  <text x="80" y="695" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#c586c0">for</tspan> <tspan fill="#9cdcfe">role</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#9cdcfe">stats</tspan> <tspan fill="#c586c0">in</tspan> <tspan fill="#9cdcfe">party</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#dcdcaa">items</tspan><tspan fill="#e0e0e0">():</tspan>
+  </text>
+  <text x="80" y="720" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">    </tspan><tspan fill="#dcdcaa">print</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#c586c0">f</tspan><tspan fill="#ce9178">"--- {role} ---"</tspan><tspan fill="#e0e0e0">)</tspan>
+  </text>
+  <text x="80" y="745" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">    </tspan><tspan fill="#c586c0">for</tspan> <tspan fill="#9cdcfe">key</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#9cdcfe">val</tspan> <tspan fill="#c586c0">in</tspan> <tspan fill="#9cdcfe">stats</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#dcdcaa">items</tspan><tspan fill="#e0e0e0">():</tspan>
+  </text>
+  <text x="80" y="770" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">        </tspan><tspan fill="#dcdcaa">print</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#c586c0">f</tspan><tspan fill="#ce9178">"  {key}: {val}"</tspan><tspan fill="#e0e0e0">)</tspan>
+  </text>
+  
+  <!-- Output -->
+  <rect x="620" y="670" width="520" height="175" rx="8" fill="#252540"/>
+  <text x="640" y="695" font-family="'Segoe UI', sans-serif" font-size="14" font-weight="bold" fill="#e0e0e0">📺 Output:</text>
+  <text x="640" y="720" font-family="'Courier New', monospace" font-size="14" fill="#ffc107">--- warrior ---</text>
+  <text x="640" y="740" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">  name: Kael</text>
+  <text x="640" y="758" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">  health: 150</text>
+  <text x="640" y="776" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">  attack: 40</text>
+  <text x="640" y="800" font-family="'Courier New', monospace" font-size="14" fill="#ffc107">--- mage ---</text>
+  <text x="640" y="818" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">  name: Lyra</text>
+  <text x="640" y="836" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">  health: 80</text>
+  
+  <!-- Footer -->
+  <rect x="0" y="880" width="1200" height="20" fill="url(#headerGrad)"/>
+  <text x="600" y="894" font-family="'Courier New', monospace" font-size="12" fill="#555" text-anchor="middle">Python Dictionaries — Section 5 of 7</text>
+</svg>

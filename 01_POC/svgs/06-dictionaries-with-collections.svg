@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a2e" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  
+  <rect width="1200" height="900" fill="#0f0f1a"/>
+  <rect width="1200" height="900" fill="url(#grid)" opacity="0.3"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="80" fill="url(#headerGrad)"/>
+  <rect x="0" y="78" width="1200" height="2" fill="#7b68ee"/>
+  <text x="30" y="52" font-family="'Courier New', monospace" font-size="28" font-weight="bold" fill="#7b68ee">06</text>
+  <text x="80" y="52" font-family="'Segoe UI', sans-serif" font-size="26" font-weight="bold" fill="#e0e0e0">Dictionaries + Other Collections</text>
+  <text x="1170" y="52" font-family="'Courier New', monospace" font-size="16" fill="#555" text-anchor="end">Python Dictionaries</text>
+  
+  <!-- Concept -->
+  <rect x="40" y="110" width="1120" height="70" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="110" width="6" height="70" rx="3" fill="#7b68ee"/>
+  <text x="70" y="140" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#7b68ee">Dictionary values can be lists, tuples, sets — any data type!</text>
+  <text x="70" y="165" font-family="'Segoe UI', sans-serif" font-size="16" fill="#c0c0c0">This lets you store <tspan fill="#ffc107">multiple items</tspan> under a single key — perfect for inventories, skill lists, etc.</text>
+  
+  <!-- Dict with Lists as values -->
+  <rect x="40" y="205" width="560" height="290" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="205" width="560" height="36" rx="12" fill="#4ecca3" opacity="0.2"/>
+  <rect x="40" y="239" width="560" height="2" fill="#4ecca3" opacity="0.3"/>
+  <text x="60" y="230" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="bold" fill="#4ecca3">📋 Dict with List Values</text>
+  
+  <rect x="55" y="255" width="530" height="225" rx="8" fill="#0a0a15"/>
+  <text x="70" y="280" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">inventory</tspan> <tspan fill="#e0e0e0">= {</tspan>
+  </text>
+  <text x="90" y="305" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"weapons"</tspan><tspan fill="#e0e0e0">: [</tspan><tspan fill="#ce9178">"sword"</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#ce9178">"bow"</tspan><tspan fill="#e0e0e0">],</tspan>
+  </text>
+  <text x="90" y="330" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#ce9178">"potions"</tspan><tspan fill="#e0e0e0">: [</tspan><tspan fill="#ce9178">"health"</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#ce9178">"mana"</tspan><tspan fill="#e0e0e0">]</tspan>
+  </text>
+  <text x="70" y="355" font-family="'Courier New', monospace" font-size="14"><tspan fill="#e0e0e0">}</tspan></text>
+  <text x="70" y="385" font-family="'Courier New', monospace" font-size="13" fill="#888"># Access the list</text>
+  <text x="70" y="408" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">inventory</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"weapons"</tspan><tspan fill="#e0e0e0">]</tspan> <tspan fill="#888"># ["sword","bow"]</tspan>
+  </text>
+  <text x="70" y="435" font-family="'Courier New', monospace" font-size="13" fill="#888"># Access item IN the list</text>
+  <text x="70" y="458" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">inventory</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"weapons"</tspan><tspan fill="#e0e0e0">][</tspan><tspan fill="#b5cea8">0</tspan><tspan fill="#e0e0e0">]</tspan> <tspan fill="#888"># "sword"</tspan>
+  </text>
+  <text x="70" y="475" font-family="'Courier New', monospace" font-size="13" fill="#888"># Append to the list</text>
+  <text x="70" y="475" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">inventory</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"weapons"</tspan><tspan fill="#e0e0e0">].</tspan><tspan fill="#dcdcaa">append</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#ce9178">"axe"</tspan><tspan fill="#e0e0e0">)</tspan>
+  </text>
+  
+  <!-- List OF Dicts -->
+  <rect x="620" y="205" width="540" height="290" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="620" y="205" width="540" height="36" rx="12" fill="#e94560" opacity="0.2"/>
+  <rect x="620" y="239" width="540" height="2" fill="#e94560" opacity="0.3"/>
+  <text x="640" y="230" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="bold" fill="#e94560">📚 List OF Dictionaries</text>
+  
+  <rect x="635" y="255" width="510" height="225" rx="8" fill="#0a0a15"/>
+  <text x="650" y="280" font-family="'Courier New', monospace" font-size="14" fill="#888"># A list where each item is a dict</text>
+  <text x="650" y="305" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">enemies</tspan> <tspan fill="#e0e0e0">= [</tspan>
+  </text>
+  <text x="670" y="330" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">{</tspan><tspan fill="#ce9178">"name"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#ce9178">"Goblin"</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#ce9178">"hp"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">30</tspan><tspan fill="#e0e0e0">},</tspan>
+  </text>
+  <text x="670" y="355" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">{</tspan><tspan fill="#ce9178">"name"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#ce9178">"Dragon"</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#ce9178">"hp"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">500</tspan><tspan fill="#e0e0e0">}</tspan>
+  </text>
+  <text x="650" y="380" font-family="'Courier New', monospace" font-size="14"><tspan fill="#e0e0e0">]</tspan></text>
+  <text x="650" y="410" font-family="'Courier New', monospace" font-size="13" fill="#888"># Access by list index, then dict key</text>
+  <text x="650" y="433" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">enemies</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#b5cea8">0</tspan><tspan fill="#e0e0e0">][</tspan><tspan fill="#ce9178">"name"</tspan><tspan fill="#e0e0e0">]</tspan> <tspan fill="#888"># "Goblin"</tspan>
+  </text>
+  <text x="650" y="458" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">enemies</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#b5cea8">1</tspan><tspan fill="#e0e0e0">][</tspan><tspan fill="#ce9178">"hp"</tspan><tspan fill="#e0e0e0">]</tspan>   <tspan fill="#888"># 500</tspan>
+  </text>
+  <text x="650" y="478" font-family="'Courier New', monospace" font-size="13" fill="#888"># Loop through the list of dicts</text>
+  
+  <!-- Looping example -->
+  <rect x="40" y="520" width="1120" height="200" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="520" width="1120" height="36" rx="12" fill="#ffc107" opacity="0.15"/>
+  <rect x="40" y="554" width="1120" height="2" fill="#ffc107" opacity="0.3"/>
+  <text x="60" y="545" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="bold" fill="#ffc107">🔄 Looping a List of Dicts</text>
+  
+  <rect x="60" y="570" width="530" height="135" rx="8" fill="#0a0a15"/>
+  <text x="80" y="595" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#c586c0">for</tspan> <tspan fill="#9cdcfe">enemy</tspan> <tspan fill="#c586c0">in</tspan> <tspan fill="#9cdcfe">enemies</tspan><tspan fill="#e0e0e0">:</tspan>
+  </text>
+  <text x="80" y="620" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">    </tspan><tspan fill="#9cdcfe">name</tspan> <tspan fill="#e0e0e0">=</tspan> <tspan fill="#9cdcfe">enemy</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"name"</tspan><tspan fill="#e0e0e0">]</tspan>
+  </text>
+  <text x="80" y="645" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">    </tspan><tspan fill="#9cdcfe">hp</tspan> <tspan fill="#e0e0e0">=</tspan> <tspan fill="#9cdcfe">enemy</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"hp"</tspan><tspan fill="#e0e0e0">]</tspan>
+  </text>
+  <text x="80" y="670" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">    </tspan><tspan fill="#dcdcaa">print</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#c586c0">f</tspan><tspan fill="#ce9178">"{name} has {hp} HP"</tspan><tspan fill="#e0e0e0">)</tspan>
+  </text>
+  <text x="80" y="698" font-family="'Courier New', monospace" font-size="13" fill="#ffc107"># Goblin has 30 HP</text>
+  <text x="80" y="698" font-family="'Courier New', monospace" font-size="13" fill="#ffc107"># Dragon has 500 HP</text>
+  
+  <!-- Visual diagram -->
+  <rect x="620" y="570" width="520" height="135" rx="8" fill="#252540"/>
+  <text x="640" y="598" font-family="'Segoe UI', sans-serif" font-size="15" font-weight="bold" fill="#e0e0e0">🧠 Think of it as:</text>
+  <text x="660" y="628" font-family="'Segoe UI', sans-serif" font-size="14" fill="#a0a0a0">Dict with list values → <tspan fill="#4ecca3">one key, many items</tspan></text>
+  <text x="660" y="653" font-family="'Segoe UI', sans-serif" font-size="14" fill="#a0a0a0">List of dicts → <tspan fill="#e94560">many objects, same structure</tspan></text>
+  <text x="660" y="688" font-family="'Segoe UI', sans-serif" font-size="14" fill="#a0a0a0">Both patterns are <tspan fill="#ffc107">extremely common</tspan> in real</text>
+  <text x="660" y="698" font-family="'Segoe UI', sans-serif" font-size="14" fill="#a0a0a0">programs, APIs, and game development!</text>
+  
+  <!-- Cheat Sheet -->
+  <rect x="40" y="745" width="1120" height="120" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="745" width="6" height="120" rx="3" fill="#4ecca3"/>
+  <text x="70" y="778" font-family="'Segoe UI', sans-serif" font-size="17" font-weight="bold" fill="#4ecca3">📌 Access Pattern Cheat Sheet</text>
+  
+  <text x="90" y="810" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">
+    <tspan fill="#ffc107">dict[key]</tspan>             → single value      <tspan fill="#ffc107">dict[key][index]</tspan>      → item in a list value
+  </text>
+  <text x="90" y="840" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">
+    <tspan fill="#ffc107">dict[key1][key2]</tspan>      → nested dict value  <tspan fill="#ffc107">list[index][key]</tspan>      → dict inside a list
+  </text>
+  
+  <!-- Footer -->
+  <rect x="0" y="880" width="1200" height="20" fill="url(#headerGrad)"/>
+  <text x="600" y="894" font-family="'Courier New', monospace" font-size="12" fill="#555" text-anchor="middle">Python Dictionaries — Section 6 of 7</text>
+</svg>

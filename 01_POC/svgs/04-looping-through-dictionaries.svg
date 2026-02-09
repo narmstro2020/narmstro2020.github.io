@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a2e" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  
+  <rect width="1200" height="900" fill="#0f0f1a"/>
+  <rect width="1200" height="900" fill="url(#grid)" opacity="0.3"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="80" fill="url(#headerGrad)"/>
+  <rect x="0" y="78" width="1200" height="2" fill="#ffc107"/>
+  <text x="30" y="52" font-family="'Courier New', monospace" font-size="28" font-weight="bold" fill="#ffc107">04</text>
+  <text x="80" y="52" font-family="'Segoe UI', sans-serif" font-size="26" font-weight="bold" fill="#e0e0e0">Looping Through Dictionaries</text>
+  <text x="1170" y="52" font-family="'Courier New', monospace" font-size="16" fill="#555" text-anchor="end">Python Dictionaries</text>
+  
+  <!-- Loop over keys -->
+  <rect x="40" y="110" width="540" height="235" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="110" width="540" height="36" rx="12" fill="#4ecca3" opacity="0.2"/>
+  <rect x="40" y="144" width="540" height="2" fill="#4ecca3" opacity="0.3"/>
+  <text x="60" y="135" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="bold" fill="#4ecca3">🔑 Loop Over Keys (default)</text>
+  
+  <rect x="55" y="158" width="510" height="170" rx="8" fill="#0a0a15"/>
+  <text x="70" y="183" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#9cdcfe">inventory</tspan> <tspan fill="#e0e0e0">= {</tspan><tspan fill="#ce9178">"sword"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">1</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#ce9178">"potion"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">5</tspan><tspan fill="#e0e0e0">}</tspan>
+  </text>
+  <text x="70" y="218" font-family="'Courier New', monospace" font-size="14" fill="#888"># Looping gives you KEYS by default</text>
+  <text x="70" y="243" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#c586c0">for</tspan> <tspan fill="#9cdcfe">item</tspan> <tspan fill="#c586c0">in</tspan> <tspan fill="#9cdcfe">inventory</tspan><tspan fill="#e0e0e0">:</tspan>
+  </text>
+  <text x="70" y="268" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">    </tspan><tspan fill="#dcdcaa">print</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#9cdcfe">item</tspan><tspan fill="#e0e0e0">)</tspan>
+  </text>
+  <text x="70" y="298" font-family="'Courier New', monospace" font-size="13" fill="#4ecca3"># Output:</text>
+  <text x="70" y="316" font-family="'Courier New', monospace" font-size="13" fill="#4ecca3"># sword</text>
+  <text x="70" y="328" font-family="'Courier New', monospace" font-size="13" fill="#4ecca3"># potion</text>
+  
+  <!-- Loop over values -->
+  <rect x="620" y="110" width="540" height="235" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="620" y="110" width="540" height="36" rx="12" fill="#7b68ee" opacity="0.2"/>
+  <rect x="620" y="144" width="540" height="2" fill="#7b68ee" opacity="0.3"/>
+  <text x="640" y="135" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="bold" fill="#7b68ee">📦 Loop Over Values</text>
+  
+  <rect x="635" y="158" width="510" height="170" rx="8" fill="#0a0a15"/>
+  <text x="650" y="183" font-family="'Courier New', monospace" font-size="14" fill="#888"># Use .values() to get just the values</text>
+  <text x="650" y="213" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#c586c0">for</tspan> <tspan fill="#9cdcfe">count</tspan> <tspan fill="#c586c0">in</tspan> <tspan fill="#9cdcfe">inventory</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#dcdcaa">values</tspan><tspan fill="#e0e0e0">():</tspan>
+  </text>
+  <text x="650" y="238" font-family="'Courier New', monospace" font-size="14">
+    <tspan fill="#e0e0e0">    </tspan><tspan fill="#dcdcaa">print</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#9cdcfe">count</tspan><tspan fill="#e0e0e0">)</tspan>
+  </text>
+  <text x="650" y="273" font-family="'Courier New', monospace" font-size="13" fill="#7b68ee"># Output:</text>
+  <text x="650" y="291" font-family="'Courier New', monospace" font-size="13" fill="#7b68ee"># 1</text>
+  <text x="650" y="303" font-family="'Courier New', monospace" font-size="13" fill="#7b68ee"># 5</text>
+  
+  <!-- Loop over both — THE BIG ONE -->
+  <rect x="40" y="370" width="1120" height="280" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="370" width="1120" height="40" rx="12" fill="#ffc107" opacity="0.15"/>
+  <rect x="40" y="408" width="1120" height="2" fill="#ffc107" opacity="0.3"/>
+  <text x="60" y="397" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#ffc107">⭐ Loop Over Keys AND Values — .items()</text>
+  <text x="530" y="397" font-family="'Segoe UI', sans-serif" font-size="14" fill="#888">(this is the one you'll use the most!)</text>
+  
+  <rect x="60" y="425" width="520" height="200" rx="8" fill="#0a0a15"/>
+  <text x="80" y="453" font-family="'Courier New', monospace" font-size="14" fill="#888"># .items() gives (key, value) pairs</text>
+  <text x="80" y="478" font-family="'Courier New', monospace" font-size="15">
+    <tspan fill="#c586c0">for</tspan> <tspan fill="#9cdcfe">item</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#9cdcfe">qty</tspan> <tspan fill="#c586c0">in</tspan> <tspan fill="#9cdcfe">inventory</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#dcdcaa">items</tspan><tspan fill="#e0e0e0">():</tspan>
+  </text>
+  <text x="80" y="503" font-family="'Courier New', monospace" font-size="15">
+    <tspan fill="#e0e0e0">    </tspan><tspan fill="#dcdcaa">print</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#c586c0">f</tspan><tspan fill="#ce9178">"{item}: {qty}"</tspan><tspan fill="#e0e0e0">)</tspan>
+  </text>
+  <text x="80" y="543" font-family="'Courier New', monospace" font-size="13" fill="#ffc107"># Output:</text>
+  <text x="80" y="561" font-family="'Courier New', monospace" font-size="13" fill="#ffc107"># sword: 1</text>
+  <text x="80" y="579" font-family="'Courier New', monospace" font-size="13" fill="#ffc107"># potion: 5</text>
+  
+  <!-- Anatomy diagram -->
+  <rect x="620" y="425" width="520" height="200" rx="8" fill="#252540"/>
+  <text x="640" y="455" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="bold" fill="#e0e0e0">🔍 Anatomy of the Loop</text>
+  
+  <text x="660" y="490" font-family="'Courier New', monospace" font-size="16">
+    <tspan fill="#c586c0">for</tspan> <tspan fill="#9cdcfe" text-decoration="underline">item</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#ffc107" text-decoration="underline">qty</tspan> <tspan fill="#c586c0">in</tspan> <tspan fill="#e0e0e0">inventory.</tspan><tspan fill="#dcdcaa">items</tspan><tspan fill="#e0e0e0">():</tspan>
+  </text>
+  
+  <!-- Arrows pointing to labels -->
+  <line x1="710" y1="500" x2="710" y2="530" stroke="#9cdcfe" stroke-width="2"/>
+  <text x="660" y="550" font-family="'Segoe UI', sans-serif" font-size="14" fill="#9cdcfe">↑ key variable</text>
+  <text x="660" y="568" font-family="'Courier New', monospace" font-size="12" fill="#888">"sword", "potion"</text>
+  
+  <line x1="790" y1="500" x2="790" y2="530" stroke="#ffc107" stroke-width="2"/>
+  <text x="780" y="550" font-family="'Segoe UI', sans-serif" font-size="14" fill="#ffc107">↑ value variable</text>
+  <text x="780" y="568" font-family="'Courier New', monospace" font-size="12" fill="#888">1, 5</text>
+  
+  <text x="660" y="605" font-family="'Segoe UI', sans-serif" font-size="13" fill="#a0a0a0">This is called <tspan fill="#e94560" font-weight="bold">tuple unpacking</tspan> — each</text>
+  <text x="660" y="623" font-family="'Segoe UI', sans-serif" font-size="13" fill="#a0a0a0">(key, value) pair is split into two variables.</text>
+  
+  <!-- Quick summary -->
+  <rect x="40" y="675" width="1120" height="90" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="675" width="6" height="90" rx="3" fill="#4ecca3"/>
+  <text x="70" y="708" font-family="'Segoe UI', sans-serif" font-size="17" font-weight="bold" fill="#4ecca3">📌 Which Loop to Use?</text>
+  <text x="70" y="738" font-family="'Segoe UI', sans-serif" font-size="15" fill="#c0c0c0">Need <tspan fill="#4ecca3">just keys</tspan>? → <tspan fill="#ffc107">for k in dict</tspan>    Need <tspan fill="#7b68ee">just values</tspan>? → <tspan fill="#ffc107">for v in dict.values()</tspan>    Need <tspan fill="#e94560">both</tspan>? → <tspan fill="#ffc107">for k, v in dict.items()</tspan></text>
+
+  <!-- Footer -->
+  <rect x="0" y="880" width="1200" height="20" fill="url(#headerGrad)"/>
+  <text x="600" y="894" font-family="'Courier New', monospace" font-size="12" fill="#555" text-anchor="middle">Python Dictionaries — Section 4 of 7</text>
+</svg>

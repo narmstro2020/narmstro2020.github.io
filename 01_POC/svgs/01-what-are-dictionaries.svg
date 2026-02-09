@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ecca3"/>
+      <stop offset="100%" style="stop-color:#3db389"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7b68ee"/>
+      <stop offset="100%" style="stop-color:#6a5acd"/>
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e94560"/>
+      <stop offset="100%" style="stop-color:#c73e54"/>
+    </linearGradient>
+    <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffc107"/>
+      <stop offset="100%" style="stop-color:#e5ad06"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a2e" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#0f0f1a"/>
+  <rect width="1200" height="900" fill="url(#grid)" opacity="0.3"/>
+  
+  <!-- Header Bar -->
+  <rect x="0" y="0" width="1200" height="80" fill="url(#headerGrad)"/>
+  <rect x="0" y="78" width="1200" height="2" fill="#4ecca3"/>
+  <text x="30" y="52" font-family="'Courier New', monospace" font-size="28" font-weight="bold" fill="#4ecca3">01</text>
+  <text x="80" y="52" font-family="'Segoe UI', sans-serif" font-size="26" font-weight="bold" fill="#e0e0e0">What Are Dictionaries?</text>
+  <text x="1170" y="52" font-family="'Courier New', monospace" font-size="16" fill="#555" text-anchor="end">Python Dictionaries</text>
+  
+  <!-- Main Concept Box -->
+  <rect x="40" y="110" width="1120" height="100" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="110" width="6" height="100" rx="3" fill="#4ecca3"/>
+  <text x="70" y="150" font-family="'Segoe UI', sans-serif" font-size="22" font-weight="bold" fill="#4ecca3">💡 Core Concept</text>
+  <text x="70" y="182" font-family="'Segoe UI', sans-serif" font-size="18" fill="#c0c0c0">A <tspan fill="#ffc107" font-weight="bold">dictionary</tspan> stores data as <tspan fill="#e94560" font-weight="bold">key–value pairs</tspan>. Instead of accessing items by index (like a list),</text>
+  <text x="70" y="205" font-family="'Segoe UI', sans-serif" font-size="18" fill="#c0c0c0">you access them by a <tspan fill="#7b68ee" font-weight="bold">unique key</tspan>. Think of it like a real dictionary: word → definition.</text>
+  
+  <!-- Real World Analogy -->
+  <rect x="40" y="235" width="540" height="280" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="235" width="540" height="40" rx="12" fill="#7b68ee" opacity="0.2"/>
+  <rect x="40" y="273" width="540" height="2" fill="#7b68ee" opacity="0.3"/>
+  <text x="60" y="262" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#7b68ee">🎮 Real-World Analogy</text>
+  
+  <text x="60" y="305" font-family="'Segoe UI', sans-serif" font-size="16" fill="#c0c0c0">Imagine a <tspan fill="#ffc107">video game character stats screen</tspan>:</text>
+  <text x="80" y="335" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• "health" → 100        (key → value)</text>
+  <text x="80" y="360" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• "attack" → 25         (key → value)</text>
+  <text x="80" y="385" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• "name"   → "Aria"     (key → value)</text>
+  <text x="80" y="415" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• You don't say "give me item at index 0"</text>
+  <text x="80" y="440" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• You say "give me the <tspan fill="#4ecca3">health</tspan>" → 100</text>
+  
+  <text x="60" y="480" font-family="'Segoe UI', sans-serif" font-size="16" fill="#c0c0c0">Keys are <tspan fill="#e94560">unique labels</tspan>. Values are the <tspan fill="#4ecca3">data they point to</tspan>.</text>
+  
+  <!-- Syntax Box -->
+  <rect x="620" y="235" width="540" height="280" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="620" y="235" width="540" height="40" rx="12" fill="#e94560" opacity="0.2"/>
+  <rect x="620" y="273" width="540" height="2" fill="#e94560" opacity="0.3"/>
+  <text x="640" y="262" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#e94560">⌨️ Dictionary Syntax</text>
+  
+  <!-- Code block -->
+  <rect x="640" y="290" width="500" height="200" rx="8" fill="#0a0a15"/>
+  <text x="660" y="318" font-family="'Courier New', monospace" font-size="14" fill="#888"># Creating a dictionary with curly braces</text>
+  <text x="660" y="343" font-family="'Courier New', monospace" font-size="15">
+    <tspan fill="#9cdcfe">player</tspan> <tspan fill="#e0e0e0">=</tspan> <tspan fill="#e0e0e0">{</tspan>
+  </text>
+  <text x="680" y="368" font-family="'Courier New', monospace" font-size="15">
+    <tspan fill="#ce9178">"name"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#ce9178">"Aria"</tspan><tspan fill="#e0e0e0">,</tspan>
+  </text>
+  <text x="680" y="393" font-family="'Courier New', monospace" font-size="15">
+    <tspan fill="#ce9178">"health"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">100</tspan><tspan fill="#e0e0e0">,</tspan>
+  </text>
+  <text x="680" y="418" font-family="'Courier New', monospace" font-size="15">
+    <tspan fill="#ce9178">"attack"</tspan><tspan fill="#e0e0e0">:</tspan> <tspan fill="#b5cea8">25</tspan>
+  </text>
+  <text x="660" y="443" font-family="'Courier New', monospace" font-size="15"><tspan fill="#e0e0e0">}</tspan></text>
+  <text x="660" y="473" font-family="'Courier New', monospace" font-size="14" fill="#888"># Access by key</text>
+  <text x="660" y="493" font-family="'Courier New', monospace" font-size="15">
+    <tspan fill="#dcdcaa">print</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#9cdcfe">player</tspan><tspan fill="#e0e0e0">[</tspan><tspan fill="#ce9178">"health"</tspan><tspan fill="#e0e0e0">])</tspan>  <tspan fill="#888"># 100</tspan>
+  </text>
+  
+  <!-- Key Rules -->
+  <rect x="40" y="540" width="1120" height="130" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="540" width="1120" height="40" rx="12" fill="#ffc107" opacity="0.15"/>
+  <rect x="40" y="578" width="1120" height="2" fill="#ffc107" opacity="0.3"/>
+  <text x="60" y="567" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#ffc107">🔑 Key Rules</text>
+  
+  <circle cx="70" cy="610" r="8" fill="#4ecca3"/>
+  <text x="90" y="615" font-family="'Segoe UI', sans-serif" font-size="16" fill="#c0c0c0"><tspan fill="#ffc107">Keys</tspan> must be unique and immutable (strings, ints, tuples). <tspan fill="#ffc107">Values</tspan> can be anything.</text>
+  
+  <circle cx="70" cy="645" r="8" fill="#7b68ee"/>
+  <text x="90" y="650" font-family="'Segoe UI', sans-serif" font-size="16" fill="#c0c0c0">Dictionaries are <tspan fill="#7b68ee">unordered by nature</tspan> (though Python 3.7+ maintains insertion order).</text>
+  
+  <!-- Visual: List vs Dict comparison -->
+  <rect x="40" y="695" width="1120" height="170" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <text x="60" y="730" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#4ecca3">📊 List vs. Dictionary</text>
+  
+  <!-- List side -->
+  <rect x="80" y="750" width="460" height="80" rx="8" fill="#e94560" opacity="0.1" stroke="#e94560" stroke-width="1"/>
+  <text x="100" y="775" font-family="'Courier New', monospace" font-size="15" fill="#e94560">List — Access by INDEX</text>
+  <text x="100" y="800" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">stats = [100, 25, "Aria"]</text>
+  <text x="100" y="820" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">stats[0]  →  100   <tspan fill="#888"># what IS index 0?</tspan></text>
+  
+  <text x="570" y="800" font-family="'Segoe UI', sans-serif" font-size="24" fill="#555">vs</text>
+  
+  <!-- Dict side -->
+  <rect x="620" y="750" width="500" height="80" rx="8" fill="#4ecca3" opacity="0.1" stroke="#4ecca3" stroke-width="1"/>
+  <text x="640" y="775" font-family="'Courier New', monospace" font-size="15" fill="#4ecca3">Dict — Access by KEY</text>
+  <text x="640" y="800" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">stats = {"health": 100, ...}</text>
+  <text x="640" y="820" font-family="'Courier New', monospace" font-size="14" fill="#a0a0a0">stats["health"]  →  100   <tspan fill="#888"># clear!</tspan></text>
+  
+  <!-- Footer -->
+  <rect x="0" y="880" width="1200" height="20" fill="url(#headerGrad)"/>
+  <text x="600" y="894" font-family="'Courier New', monospace" font-size="12" fill="#555" text-anchor="middle">Python Dictionaries — Section 1 of 7</text>
+</svg>

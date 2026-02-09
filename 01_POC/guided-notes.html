@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Dictionaries — Guided Notes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+    :root{--bg:#0f0f1a;--surface:#1a1a2e;--surface-light:#252540;--accent:#4ecca3;--purple:#7b68ee;--red:#e94560;--yellow:#ffc107;--text:#e0e0e0;--text-muted:#a0a0a0;--text-dim:#666;--code-bg:#0a0a15}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;padding:2rem;max-width:1000px;margin:0 auto}
+    h1{font-size:2rem;color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:0.5rem;margin-bottom:0.5rem}
+    .subtitle{color:var(--text-muted);font-size:1rem;margin-bottom:2rem}
+    .section{background:var(--surface);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;border-left:4px solid var(--accent)}
+    .section.purple{border-left-color:var(--purple)}.section.red{border-left-color:var(--red)}.section.yellow{border-left-color:var(--yellow)}
+    .section-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem}
+    .section-number{background:var(--accent);color:var(--bg);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:0.85rem;padding:0.2rem 0.6rem;border-radius:6px}
+    .section.purple .section-number{background:var(--purple)}.section.red .section-number{background:var(--red)}.section.yellow .section-number{background:var(--yellow)}
+    h2{font-size:1.3rem;color:var(--text)}h3{font-size:1.1rem;color:var(--accent);margin:1rem 0 0.5rem}
+    p,li{color:var(--text-muted);margin-bottom:0.5rem}.key-term{color:var(--yellow);font-weight:600}
+    pre{background:var(--code-bg);border-radius:8px;padding:1.25rem;margin:0.75rem 0;overflow-x:auto;border:1px solid #1e1e35;line-height:1.65}
+    pre code{font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:var(--text);background:none;padding:0;border-radius:0;white-space:pre}
+    .c{color:#6a9955}.kw{color:#c586c0}.tp{color:#4ecca3}.st{color:#ce9178}.fn{color:#dcdcaa}.vr{color:#9cdcfe}.dt{color:#ffc107}.nm{color:#b5cea8}.op{color:#e0e0e0}
+    .todo-block{background:var(--surface-light);border:2px dashed var(--yellow);border-radius:8px;padding:1rem;margin:1rem 0}
+    .todo-block h4{color:var(--yellow);font-size:0.95rem;margin-bottom:0.5rem}.todo-block pre{border-color:rgba(255,193,7,0.3)}
+    .note-box{background:var(--surface-light);border-radius:8px;padding:0.75rem 1rem;margin:0.75rem 0;border-left:3px solid var(--purple)}
+    .note-box.warning{border-left-color:var(--red)}.note-box.tip{border-left-color:var(--accent)}
+    .exit-ticket{background:var(--surface);border:2px solid var(--red);border-radius:12px;padding:1.5rem;margin-top:2rem}.exit-ticket h2{color:var(--red)}
+    .exit-ticket textarea{width:100%;background:var(--code-bg);color:var(--text);border:1px solid var(--surface-light);border-radius:8px;padding:0.75rem;font-family:'Inter',sans-serif;font-size:0.9rem;resize:vertical;min-height:60px;margin:0.5rem 0}
+    .submission-box{background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:1.5rem;margin-top:1.5rem}.submission-box h2{color:var(--accent)}
+    .time-badge{display:inline-block;background:var(--surface-light);color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:0.75rem;padding:0.15rem 0.5rem;border-radius:4px;margin-left:auto}
+    .file-tag{display:inline-block;background:var(--purple);color:white;font-family:'JetBrains Mono',monospace;font-size:0.75rem;padding:0.15rem 0.5rem;border-radius:4px;margin-bottom:0.5rem}
+  </style>
+</head>
+<body>
+<nav style="max-width:1000px;margin:0 auto;padding:1rem 2rem 0;font-family:'Fira Code',monospace;font-size:0.75rem;">
+  <a href="../../../Downloads" style="color:#555;text-decoration:none;">home</a>
+  <span style="color:#555;"> / </span>
+  <a href="../../../Downloads/dictionaries-lesson-U2B2/dictionaries" style="color:#555;text-decoration:none;">unit_02</a>
+  <span style="color:#555;"> / </span>
+  <span style="color:#7b68ee;">guided-notes</span>
+</nav>
+
+<h1>📚 Python Dictionaries</h1>
+<p class="subtitle">Guided Notes — Follow along in PyCharm. Create a new Python project called <strong>DictionaryNotes</strong>.</p>
+
+<!-- SECTION 1 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">01</span><h2>What Are Dictionaries?</h2><span class="time-badge">11:09 – 11:19</span>
+  </div>
+  <p>A <span class="key-term">dictionary</span> stores data as <span class="key-term">key–value pairs</span>. Instead of accessing items by index (like a list), you access them by a unique key.</p>
+  <div class="note-box tip"><strong>🎮 Analogy:</strong> Think of a video game stats screen — you don't say "give me item at index 0." You say "give me the <em>health</em>." The stat name is the key, the number is the value.</div>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">section01_what_are_dictionaries.py</span>
+  <pre><code><span class="c"># A dictionary stores data as key-value pairs</span>
+<span class="c"># Syntax: {key: value, key: value, ...}</span>
+<span class="vr">player</span> = {
+    <span class="st">"name"</span>: <span class="st">"Aria"</span>,
+    <span class="st">"health"</span>: <span class="nm">100</span>,
+    <span class="st">"attack"</span>: <span class="nm">25</span>
+}
+<span class="fn">print</span>(<span class="vr">player</span>)
+<span class="fn">print</span>(<span class="kw">f</span><span class="st">"Player name: {player['name']}"</span>)
+
+<span class="c"># Keys must be unique — duplicates overwrite!</span>
+<span class="vr">demo</span> = {<span class="st">"a"</span>: <span class="nm">1</span>, <span class="st">"b"</span>: <span class="nm">2</span>, <span class="st">"a"</span>: <span class="nm">99</span>}
+<span class="fn">print</span>(<span class="vr">demo</span>)  <span class="c"># "a" is 99, not 1</span></code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — section01_what_are_dictionaries.py</h4>
+    <pre><code><span class="c"># TODO 1: Create a dictionary "enemy" with: "name"→"Goblin", "health"→50, "attack"→10, "loot"→"gold coin"</span>
+<span class="c">#         Print the entire dictionary</span>
+<span class="c"># TODO 2: Print ONLY the enemy's name, then ONLY the enemy's loot</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section purple">
+  <div class="section-header">
+    <span class="section-number">02</span><h2>Accessing &amp; Modifying Values</h2><span class="time-badge">11:19 – 11:29</span>
+  </div>
+  <p>Use <span class="key-term">brackets [ ]</span> when you're sure the key exists. Use <span class="key-term">.get()</span> for safe access that won't crash.</p>
+  <div class="note-box warning"><strong>⚠️ Warning:</strong> <code>dict["missing_key"]</code> crashes with <code>KeyError</code>! Use <code>.get()</code> to be safe.</div>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">section02_accessing_and_modifying.py</span>
+  <pre><code><span class="vr">player</span> = {<span class="st">"name"</span>: <span class="st">"Aria"</span>, <span class="st">"health"</span>: <span class="nm">100</span>, <span class="st">"attack"</span>: <span class="nm">25</span>}
+<span class="fn">print</span>(<span class="vr">player</span>.<span class="fn">get</span>(<span class="st">"mana"</span>))          <span class="c"># None (no crash!)</span>
+<span class="fn">print</span>(<span class="vr">player</span>.<span class="fn">get</span>(<span class="st">"mana"</span>, <span class="nm">0</span>))       <span class="c"># 0 (custom default)</span>
+<span class="vr">player</span>[<span class="st">"health"</span>] = <span class="nm">80</span>             <span class="c"># Update</span>
+<span class="vr">player</span>[<span class="st">"mana"</span>] = <span class="nm">50</span>               <span class="c"># Add new key</span>
+<span class="kw">del</span> <span class="vr">player</span>[<span class="st">"attack"</span>]              <span class="c"># Delete</span></code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — section02_accessing_and_modifying.py</h4>
+    <pre><code><span class="c"># TODO 1: Create "weapon" dict: "name"→"Iron Sword", "damage"→15, "durability"→100. Print damage.</span>
+<span class="c"># TODO 2: Use .get() to safely print weapon's "enchantment" (default "None")</span>
+<span class="c"># TODO 3: Update durability to 85, add "element"→"fire". Print full dict.</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section red">
+  <div class="section-header">
+    <span class="section-number">03</span><h2>Common Dictionary Methods</h2><span class="time-badge">11:29 – 11:39</span>
+  </div>
+  <p>Python dicts have <span class="key-term">.keys()</span>, <span class="key-term">.values()</span>, <span class="key-term">.items()</span>, the <code>in</code> operator, and <span class="key-term">.pop()</span>.</p>
+  <div class="note-box tip"><strong>💡 Tip:</strong> The <code>in</code> operator checks <strong>keys by default</strong>, NOT values. Use <code>value in dict.values()</code> for values.</div>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">section03_common_methods.py</span>
+  <pre><code><span class="vr">player</span> = {<span class="st">"name"</span>: <span class="st">"Aria"</span>, <span class="st">"health"</span>: <span class="nm">100</span>, <span class="st">"attack"</span>: <span class="nm">25</span>, <span class="st">"defense"</span>: <span class="nm">15</span>}
+<span class="fn">print</span>(<span class="fn">list</span>(<span class="vr">player</span>.<span class="fn">keys</span>()))       <span class="c"># all keys</span>
+<span class="fn">print</span>(<span class="fn">list</span>(<span class="vr">player</span>.<span class="fn">values</span>()))     <span class="c"># all values</span>
+<span class="fn">print</span>(<span class="fn">list</span>(<span class="vr">player</span>.<span class="fn">items</span>()))      <span class="c"># all (key, value) pairs</span>
+<span class="fn">print</span>(<span class="st">"health"</span> <span class="kw">in</span> <span class="vr">player</span>)         <span class="c"># True</span>
+<span class="fn">print</span>(<span class="nm">100</span> <span class="kw">in</span> <span class="vr">player</span>.<span class="fn">values</span>())     <span class="c"># True</span>
+<span class="fn">print</span>(<span class="fn">len</span>(<span class="vr">player</span>))                 <span class="c"># 4</span>
+<span class="vr">removed</span> = <span class="vr">player</span>.<span class="fn">pop</span>(<span class="st">"defense"</span>)   <span class="c"># removes and returns 15</span></code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — section03_common_methods.py</h4>
+    <pre><code><span class="c"># TODO 1: Create "shop" dict with 4 items and prices. Print item names with .keys()</span>
+<span class="c"># TODO 2: Check if "elixir" and "antidote" are in the shop. Print results.</span>
+<span class="c"># TODO 3: .pop() "revive crystal", print "Bought revive crystal for {price} gold!"</span></code></pre>
+  </div>
+</div>
+
+<!-- LEG STRETCH -->
+<div style="text-align:center;padding:1.5rem;color:var(--text-dim);border:1px dashed var(--text-dim);border-radius:12px;margin-bottom:1.5rem;">
+  🦵 <strong>LEG STRETCH / Q&amp;A BREAK</strong> — 5 minutes (11:39 – 11:44)
+</div>
+
+<!-- SECTION 4 -->
+<div class="section yellow">
+  <div class="section-header">
+    <span class="section-number">04</span><h2>Looping Through Dictionaries</h2><span class="time-badge">11:44 – 11:54</span>
+  </div>
+  <p>Loop over <span class="key-term">keys</span> (default), <span class="key-term">values</span>, or <span class="key-term">both</span> with <code>.items()</code>. The <code>.items()</code> loop is the most common.</p>
+  <div class="note-box"><strong>📌 Quick Ref:</strong> Keys → <code>for k in dict</code> · Values → <code>for v in dict.values()</code> · Both → <code>for k, v in dict.items()</code></div>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">section04_looping.py</span>
+  <pre><code><span class="vr">inventory</span> = {<span class="st">"sword"</span>: <span class="nm">1</span>, <span class="st">"potion"</span>: <span class="nm">5</span>, <span class="st">"shield"</span>: <span class="nm">1</span>, <span class="st">"arrow"</span>: <span class="nm">20</span>}
+
+<span class="kw">for</span> <span class="vr">item</span> <span class="kw">in</span> <span class="vr">inventory</span>:              <span class="c"># keys only</span>
+    <span class="fn">print</span>(<span class="vr">item</span>)
+
+<span class="kw">for</span> <span class="vr">count</span> <span class="kw">in</span> <span class="vr">inventory</span>.<span class="fn">values</span>():   <span class="c"># values only</span>
+    <span class="fn">print</span>(<span class="vr">count</span>)
+
+<span class="kw">for</span> <span class="vr">item</span>, <span class="vr">count</span> <span class="kw">in</span> <span class="vr">inventory</span>.<span class="fn">items</span>():  <span class="c"># both ⭐</span>
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"{item}: {count}"</span>)</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — section04_looping.py</h4>
+    <pre><code><span class="c"># TODO 1: Create "stats" dict, loop with .items() to print each stat</span>
+<span class="c"># TODO 2: Loop and print only stats with value >= 15: "HIGH STAT → dexterity: 18"</span>
+<span class="c"># TODO 3: Sum all stat values using a loop over .values()</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">05</span><h2>Nested Dictionaries</h2><span class="time-badge">11:54 – 12:04</span>
+  </div>
+  <p>A dictionary value can be <span class="key-term">another dictionary</span>! Chain brackets: <code>dict[outer_key][inner_key]</code>.</p>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">section05_nested_dictionaries.py</span>
+  <pre><code><span class="vr">party</span> = {
+    <span class="st">"warrior"</span>: {<span class="st">"name"</span>: <span class="st">"Kael"</span>, <span class="st">"health"</span>: <span class="nm">150</span>, <span class="st">"attack"</span>: <span class="nm">40</span>},
+    <span class="st">"mage"</span>:    {<span class="st">"name"</span>: <span class="st">"Lyra"</span>, <span class="st">"health"</span>: <span class="nm">80</span>,  <span class="st">"attack"</span>: <span class="nm">60</span>}
+}
+<span class="fn">print</span>(<span class="vr">party</span>[<span class="st">"warrior"</span>][<span class="st">"name"</span>])     <span class="c"># "Kael"</span>
+<span class="vr">party</span>[<span class="st">"mage"</span>][<span class="st">"health"</span>] = <span class="nm">60</span>       <span class="c"># modify nested</span>
+
+<span class="kw">for</span> <span class="vr">role</span>, <span class="vr">stats</span> <span class="kw">in</span> <span class="vr">party</span>.<span class="fn">items</span>():
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"--- {role} ---"</span>)
+    <span class="kw">for</span> <span class="vr">key</span>, <span class="vr">val</span> <span class="kw">in</span> <span class="vr">stats</span>.<span class="fn">items</span>():
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"  {key}: {val}"</span>)</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — section05_nested_dictionaries.py</h4>
+    <pre><code><span class="c"># TODO 1: Add "healer": {"name":"Sage","health":90,"attack":15}. Print healer's name.</span>
+<span class="c"># TODO 2: Level up healer: +20 health, +5 attack. Print updated dict.</span>
+<span class="c"># TODO 3: Loop the entire party with nested loops to print all stats.</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section purple">
+  <div class="section-header">
+    <span class="section-number">06</span><h2>Dictionaries + Other Collections</h2><span class="time-badge">12:04 – 12:14</span>
+  </div>
+  <p>Dict values can be <span class="key-term">lists</span>, and you can have a <span class="key-term">list of dictionaries</span>. Both are extremely common.</p>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">section06_dicts_with_collections.py</span>
+  <pre><code><span class="c"># Dict with LIST values</span>
+<span class="vr">inventory</span> = {
+    <span class="st">"weapons"</span>: [<span class="st">"sword"</span>, <span class="st">"bow"</span>],
+    <span class="st">"potions"</span>: [<span class="st">"health"</span>, <span class="st">"mana"</span>, <span class="st">"speed"</span>]
+}
+<span class="fn">print</span>(<span class="vr">inventory</span>[<span class="st">"weapons"</span>][<span class="nm">0</span>])      <span class="c"># "sword"</span>
+<span class="vr">inventory</span>[<span class="st">"weapons"</span>].<span class="fn">append</span>(<span class="st">"axe"</span>)
+
+<span class="c"># List OF dictionaries</span>
+<span class="vr">enemies</span> = [
+    {<span class="st">"name"</span>: <span class="st">"Goblin"</span>, <span class="st">"hp"</span>: <span class="nm">30</span>, <span class="st">"xp"</span>: <span class="nm">10</span>},
+    {<span class="st">"name"</span>: <span class="st">"Dragon"</span>, <span class="st">"hp"</span>: <span class="nm">500</span>, <span class="st">"xp"</span>: <span class="nm">200</span>}
+]
+<span class="kw">for</span> <span class="vr">enemy</span> <span class="kw">in</span> <span class="vr">enemies</span>:
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"{enemy['name']} — HP: {enemy['hp']}"</span>)</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — section06_dicts_with_collections.py</h4>
+    <pre><code><span class="c"># TODO 1: Add "quest_items" → ["old map","ancient key"], append "dragon scale"</span>
+<span class="c"># TODO 2: Add enemy {"name":"Witch","hp":120,"xp":75}. Print Witch's name.</span>
+<span class="c"># TODO 3: Loop enemies, print only those with 50+ XP: "BOSS: Dragon — 200 XP"</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section red">
+  <div class="section-header">
+    <span class="section-number">07</span><h2>Practical Patterns</h2><span class="time-badge">12:14 – 12:24</span>
+  </div>
+  <p>Three essential patterns: <span class="key-term">counting occurrences</span>, <span class="key-term">lookup tables</span>, and <span class="key-term">building dicts</span> from user input.</p>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">section07_practical_patterns.py</span>
+  <pre><code>
+<span class="c"># Pattern 1: Counting</span>
+<span class="vr">loot_drops</span> = [<span class="st">"gold"</span>, <span class="st">"gem"</span>, <span class="st">"gold"</span>, <span class="st">"potion"</span>, <span class="st">"gold"</span>, <span class="st">"gem"</span>]
+<span class="vr">counts</span> = {}
+<span class="kw">for</span> <span class="vr">item</span> <span class="kw">in</span> <span class="vr">loot_drops</span>:
+    <span class="kw">if</span> <span class="vr">item</span> <span class="kw">in</span> <span class="vr">counts</span>:
+        <span class="vr">counts</span>[<span class="vr">item</span>] += <span class="nm">1</span>
+    <span class="kw">else</span>:
+        <span class="vr">counts</span>[<span class="vr">item</span>] = <span class="nm">1</span>
+<span class="fn">print</span>(<span class="vr">counts</span>)  <span class="c"># {"gold": 3, "gem": 2, "potion": 1}</span>
+
+<span class="c"># Pattern 2: Lookup Table</span>
+<span class="vr">element_chart</span> = {<span class="st">"fire"</span>: <span class="st">"Strong vs Ice"</span>, <span class="st">"water"</span>: <span class="st">"Strong vs Fire"</span>}
+<span class="vr">advantage</span> = <span class="vr">element_chart</span>.<span class="fn">get</span>(<span class="st">"fire"</span>, <span class="st">"Unknown"</span>)
+<span class="fn">print</span>(<span class="vr">advantage</span>)  <span class="c"># "Strong vs Ice"</span>
+
+<span class="c"># Pattern 3: Building from input</span>
+<span class="vr">character</span> = {}
+<span class="vr">character</span>[<span class="st">"name"</span>] = <span class="fn">input</span>(<span class="st">"Name: "</span>)
+<span class="vr">character</span>[<span class="st">"class"</span>] = <span class="fn">input</span>(<span class="st">"Class: "</span>)
+<span class="vr">character</span>[<span class="st">"level"</span>] = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Level: "</span>))
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>&#9999;&#65039; YOUR TURN &mdash; Add to section07_practical_patterns.py</h4>
+    <pre><code>
+<span class="c"># TODO 1: Create a list of enemy attacks and use the counting pattern</span>
+<span class="c">#         ["slash","bite","slash","fireball","bite","slash","fireball","bite","bite"]</span>
+<span class="c">#         Print the counts dictionary</span>
+
+<span class="c"># TODO 2: Create a lookup table "potion_effects" mapping:</span>
+<span class="c">#         "health" → "Restores 50 HP", "mana" → "Restores 30 MP"</span>
+<span class="c">#         "speed" → "Boosts speed for 10s", "strength" → "Boosts attack for 15s"</span>
+<span class="c">#         Look up "mana" and "invisibility" (default "No effect")</span>
+
+<span class="c"># TODO 3: Build a dict "my_character" from user input:</span>
+<span class="c">#         Ask for name (str), class (str), and level (int)</span>
+<span class="c">#         Print the full dictionary</span>
+  </code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- EXIT TICKET -->
+<!-- ============================================================ -->
+<div class="exit-ticket">
+  <h2>&#127915; Exit Ticket</h2>
+  <p style="color: var(--text-muted); margin-bottom: 1rem;">Answer these in your own words. No code needed — just understanding.</p>
+  
+  <p><strong>1.</strong> In your own words, what is a dictionary and how is it different from a list?</p>
+  <textarea placeholder="A dictionary is..."></textarea>
+  
+  <p><strong>2.</strong> What is the difference between <code>dict["key"]</code> and <code>dict.get("key")</code>?</p>
+  <textarea placeholder="The difference is..."></textarea>
+  
+  <p><strong>3.</strong> If you want to loop through both keys and values at the same time, what method do you use and what does the loop look like?</p>
+  <textarea placeholder="You use..."></textarea>
+  
+  <p><strong>4.</strong> Given this dictionary, how would you access the mage's health?</p>
+<pre style="margin-bottom: 0.5rem;"><code><span class="vr">party</span> = {<span class="st">"warrior"</span>: {<span class="st">"health"</span>: <span class="nm">150</span>}, <span class="st">"mage"</span>: {<span class="st">"health"</span>: <span class="nm">80</span>}}</code></pre>
+  <textarea placeholder="You would write: "></textarea>
+</div>
+
+<!-- ============================================================ -->
+<!-- SUBMISSION INSTRUCTIONS -->
+<!-- ============================================================ -->
+<div class="submission-box">
+  <h2>&#128228; Submission (5 points)</h2>
+  <p style="color: var(--text-muted);">
+    1. Make sure all your TODO sections are completed.<br>
+    2. Push your <strong>DictionaryNotes</strong> project to GitHub.<br>
+    3. Ensure the repository is set to <strong>Public</strong>.<br>
+    4. Copy the repository URL and submit it on <strong>Canvas</strong>.
+  </p>
+</div>
+
+</body>
+</html>
