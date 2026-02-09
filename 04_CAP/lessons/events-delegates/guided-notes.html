@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events &amp; Delegates in C# — Guided Notes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+    
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --red: #e94560;
+      --yellow: #ffc107;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --text-dim: #666;
+      --code-bg: #0a0a15;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .section {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .section.purple { border-left-color: var(--purple); }
+    .section.red { border-left-color: var(--red); }
+    .section.yellow { border-left-color: var(--yellow); }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .section-number {
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+    
+    .section.purple .section-number { background: var(--purple); }
+    .section.red .section-number { background: var(--red); }
+    .section.yellow .section-number { background: var(--yellow); }
+    
+    h2 {
+      font-size: 1.3rem;
+      color: var(--text);
+    }
+    
+    h3 {
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin: 1rem 0 0.5rem;
+    }
+    
+    p, li { color: var(--text-muted); margin-bottom: 0.5rem; }
+    
+    .key-term {
+      color: var(--yellow);
+      font-weight: 600;
+    }
+    
+    pre {
+      background: var(--code-bg);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 0.75rem 0;
+      overflow-x: auto;
+      border: 1px solid #1e1e35;
+      line-height: 1.65;
+    }
+    pre code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text);
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      white-space: pre;
+    }
+    
+    .c { color: #6a9955; }
+    .kw { color: #c586c0; }
+    .tp { color: #4ecca3; }
+    .st { color: #ce9178; }
+    .fn { color: #dcdcaa; }
+    .vr { color: #9cdcfe; }
+    .dt { color: #ffc107; }
+    .nm { color: #b5cea8; }
+    .op { color: #e0e0e0; }
+    
+    .todo-block {
+      background: var(--surface-light);
+      border: 2px dashed var(--yellow);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .todo-block h4 {
+      color: var(--yellow);
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .todo-block pre {
+      border-color: rgba(255, 193, 7, 0.3);
+    }
+    
+    .note-box {
+      background: var(--surface-light);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      border-left: 3px solid var(--purple);
+    }
+    
+    .note-box.warning { border-left-color: var(--red); }
+    .note-box.tip { border-left-color: var(--accent); }
+    
+    .exit-ticket {
+      background: var(--surface);
+      border: 2px solid var(--red);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .exit-ticket h2 { color: var(--red); }
+    
+    .exit-ticket textarea {
+      width: 100%;
+      background: var(--code-bg);
+      color: var(--text);
+      border: 1px solid var(--surface-light);
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 60px;
+      margin: 0.5rem 0;
+    }
+    
+    .submission-box {
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .submission-box h2 { color: var(--accent); }
+    
+    .time-badge {
+      display: inline-block;
+      background: var(--surface-light);
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      margin-left: auto;
+    }
+
+    .file-tag {
+      display: inline-block;
+      background: var(--purple);
+      color: white;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<nav style="max-width:1000px;margin:0 auto;padding:1rem 2rem 0;font-family:'Fira Code',monospace;font-size:0.75rem;">
+  <a href="../../" style="color:#555;text-decoration:none;">home</a>
+  <span style="color:#555;"> / </span>
+  <a href="./" style="color:#555;text-decoration:none;">unit_05</a>
+  <span style="color:#555;"> / </span>
+  <span style="color:#7b68ee;">guided-notes</span>
+</nav>
+
+
+<h1>📚 Events &amp; Delegates in C#</h1>
+<p class="subtitle">Guided Notes — Follow along in JetBrains Rider. Create a new Console App project called <strong>EventsDelegatesNotes</strong>.</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: What Are Delegates? -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2>What Are Delegates?</h2>
+    <span class="time-badge">12:42 – 12:52</span>
+  </div>
+  
+  <p>A <span class="key-term">delegate</span> is a type that holds a reference to a method. Think of it like a variable that stores a function instead of a number or string.</p>
+  
+  <div class="note-box tip">
+    <strong>🏠 Analogy:</strong> A TV remote button doesn't DO anything itself — it <em>points to</em> a function (change channel, volume). You press the button, the function runs. A delegate works the same way with methods!
+  </div>
+  
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section01_WhatAreDelegates.cs</span>
+  <pre><code>
+<span class="c">// ============================================</span>
+<span class="c">// SECTION 1: What Are Delegates?</span>
+<span class="c">// ============================================</span>
+
+<span class="c">// Step 1: Declare a delegate type</span>
+<span class="c">// This says: "Any method that takes a string and returns void can be stored here"</span>
+<span class="kw">public</span> <span class="kw">delegate</span> <span class="tp">void</span> <span class="dt">Notify</span>(<span class="tp">string</span> <span class="vr">message</span>);
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">Section01_WhatAreDelegates</span>
+{
+    <span class="c">// Step 2: Create methods that match the delegate signature</span>
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">ShowAlert</span>(<span class="tp">string</span> <span class="vr">msg</span>)
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"🔔 ALERT: {<span class="vr">msg</span>}"</span>);
+    }
+    
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">LogMessage</span>(<span class="tp">string</span> <span class="vr">msg</span>)
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"📝 LOG: {<span class="vr">msg</span>}"</span>);
+    }
+    
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">Run</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"=== Section 1: What Are Delegates? ==="</span>);
+        
+        <span class="c">// Step 3: Assign a method to the delegate</span>
+        <span class="dt">Notify</span> <span class="vr">notifier</span> = <span class="fn">ShowAlert</span>;
+        <span class="vr">notifier</span>(<span class="st">"Server is down!"</span>);
+        
+        <span class="c">// Step 4: Reassign to a different method</span>
+        <span class="vr">notifier</span> = <span class="fn">LogMessage</span>;
+        <span class="vr">notifier</span>(<span class="st">"Server is down!"</span>);
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Add to Section01_WhatAreDelegates.cs</h4>
+    <p>Inside the <code>Run()</code> method, after the existing code:</p>
+    <pre><code>
+<span class="c">// TODO 1: Create a new method called "SendEmail" that takes a string parameter</span>
+<span class="c">//         and prints "📧 EMAIL: " followed by the message</span>
+
+<span class="c">// TODO 2: Assign SendEmail to the notifier delegate and invoke it</span>
+<span class="c">//         with the message "Disk space low!"</span>
+  </code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: Using Delegates -->
+<!-- ============================================================ -->
+<div class="section purple">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2>Using Delegates</h2>
+    <span class="time-badge">12:52 – 1:02</span>
+  </div>
+  
+  <p>Delegates really shine when you <span class="key-term">pass them as parameters</span> — this is called the <span class="key-term">callback pattern</span>. The method doesn't need to know WHAT it's doing; it just calls whatever function it was given.</p>
+  
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section02_UsingDelegates.cs</span>
+  <pre><code>
+<span class="c">// ============================================</span>
+<span class="c">// SECTION 2: Using Delegates (Callbacks)</span>
+<span class="c">// ============================================</span>
+
+<span class="kw">public</span> <span class="kw">delegate</span> <span class="tp">int</span> <span class="dt">MathOperation</span>(<span class="tp">int</span> <span class="vr">a</span>, <span class="tp">int</span> <span class="vr">b</span>);
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">Section02_UsingDelegates</span>
+{
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">int</span> <span class="fn">Add</span>(<span class="tp">int</span> <span class="vr">a</span>, <span class="tp">int</span> <span class="vr">b</span>) => <span class="vr">a</span> + <span class="vr">b</span>;
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">int</span> <span class="fn">Subtract</span>(<span class="tp">int</span> <span class="vr">a</span>, <span class="tp">int</span> <span class="vr">b</span>) => <span class="vr">a</span> - <span class="vr">b</span>;
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">int</span> <span class="fn">Multiply</span>(<span class="tp">int</span> <span class="vr">a</span>, <span class="tp">int</span> <span class="vr">b</span>) => <span class="vr">a</span> * <span class="vr">b</span>;
+    
+    <span class="c">// This method accepts a delegate as a parameter!</span>
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">RunCalculation</span>(<span class="dt">MathOperation</span> <span class="vr">operation</span>, <span class="tp">int</span> <span class="vr">x</span>, <span class="tp">int</span> <span class="vr">y</span>)
+    {
+        <span class="tp">int</span> <span class="vr">result</span> = <span class="vr">operation</span>(<span class="vr">x</span>, <span class="vr">y</span>);
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"Result: {<span class="vr">result</span>}"</span>);
+    }
+    
+    <span class="c">// Null-safe invocation with ?.Invoke()</span>
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">SafeRun</span>(<span class="dt">MathOperation</span>? <span class="vr">operation</span>, <span class="tp">int</span> <span class="vr">x</span>, <span class="tp">int</span> <span class="vr">y</span>)
+    {
+        <span class="tp">int</span>? <span class="vr">result</span> = <span class="vr">operation</span>?.<span class="fn">Invoke</span>(<span class="vr">x</span>, <span class="vr">y</span>);
+        Console.<span class="fn">WriteLine</span>(<span class="vr">result</span> != <span class="kw">null</span> 
+            ? <span class="st">$"Result: {<span class="vr">result</span>}"</span> 
+            : <span class="st">"No operation provided!"</span>);
+    }
+    
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">Run</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"=== Section 2: Using Delegates ==="</span>);
+        
+        <span class="fn">RunCalculation</span>(<span class="fn">Add</span>, <span class="nm">10</span>, <span class="nm">5</span>);       <span class="c">// Result: 15</span>
+        <span class="fn">RunCalculation</span>(<span class="fn">Subtract</span>, <span class="nm">10</span>, <span class="nm">5</span>);  <span class="c">// Result: 5</span>
+        <span class="fn">RunCalculation</span>(<span class="fn">Multiply</span>, <span class="nm">10</span>, <span class="nm">5</span>);  <span class="c">// Result: 50</span>
+        
+        <span class="c">// Safe invocation — won't crash even if null</span>
+        <span class="fn">SafeRun</span>(<span class="kw">null</span>, <span class="nm">10</span>, <span class="nm">5</span>);
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Add to Section02_UsingDelegates.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Create a method called "Divide" that returns a / b</span>
+<span class="c">//         (int division is fine, no need for decimals)</span>
+
+<span class="c">// TODO 2: In Run(), call RunCalculation with your Divide method</span>
+<span class="c">//         using the values 20 and 4</span>
+
+<span class="c">// TODO 3: Call SafeRun with your Divide method using 20 and 4</span>
+  </code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: Multicast Delegates -->
+<!-- ============================================================ -->
+<div class="section red">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2>Multicast Delegates</h2>
+    <span class="time-badge">1:02 – 1:12</span>
+  </div>
+  
+  <p>A single delegate can hold references to <span class="key-term">multiple methods</span>. When invoked, it calls ALL of them in the order they were added. Use <code>+=</code> to subscribe, <code>-=</code> to unsubscribe.</p>
+  
+  <div class="note-box warning">
+    <strong>⚠️ Warning:</strong> Using <code>=</code> instead of <code>+=</code> will REPLACE all existing methods! Always use <code>+=</code> to add.
+  </div>
+  
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section03_MulticastDelegates.cs</span>
+  <pre><code>
+<span class="c">// ============================================</span>
+<span class="c">// SECTION 3: Multicast Delegates</span>
+<span class="c">// ============================================</span>
+
+<span class="kw">public</span> <span class="kw">delegate</span> <span class="tp">void</span> <span class="dt">AlarmAction</span>(<span class="tp">string</span> <span class="vr">location</span>);
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">Section03_MulticastDelegates</span>
+{
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">SendEmail</span>(<span class="tp">string</span> <span class="vr">loc</span>)
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"📧 Email sent about: {<span class="vr">loc</span>}"</span>);
+    
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">LogToConsole</span>(<span class="tp">string</span> <span class="vr">loc</span>)
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"📝 Logged alarm at: {<span class="vr">loc</span>}"</span>);
+    
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">SoundBuzzer</span>(<span class="tp">string</span> <span class="vr">loc</span>)
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"🔊 BUZZER for: {<span class="vr">loc</span>}"</span>);
+    
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">Run</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"=== Section 3: Multicast Delegates ==="</span>);
+        
+        <span class="c">// Subscribe multiple methods</span>
+        <span class="dt">AlarmAction</span> <span class="vr">onAlarm</span> = <span class="fn">SendEmail</span>;
+        <span class="vr">onAlarm</span> += <span class="fn">LogToConsole</span>;
+        <span class="vr">onAlarm</span> += <span class="fn">SoundBuzzer</span>;
+        
+        Console.<span class="fn">WriteLine</span>(<span class="st">"--- Triggering alarm (3 subscribers) ---"</span>);
+        <span class="vr">onAlarm</span>(<span class="st">"Kitchen"</span>);
+        
+        <span class="c">// Unsubscribe the buzzer</span>
+        <span class="vr">onAlarm</span> -= <span class="fn">SoundBuzzer</span>;
+        
+        Console.<span class="fn">WriteLine</span>(<span class="st">"\n--- After removing buzzer (2 subscribers) ---"</span>);
+        <span class="vr">onAlarm</span>(<span class="st">"Garage"</span>);
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Add to Section03_MulticastDelegates.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Create a new method called "CallFireDepartment" that takes a string</span>
+<span class="c">//         and prints "🚒 Fire dept called for: " followed by the location</span>
+
+<span class="c">// TODO 2: In Run(), subscribe CallFireDepartment to onAlarm</span>
+<span class="c">//         AFTER the existing subscribers, then trigger the alarm for "Basement"</span>
+
+<span class="c">// TODO 3: Unsubscribe SendEmail, then trigger for "Bedroom" to see the change</span>
+  </code></pre>
+  </div>
+</div>
+
+<!-- LEG STRETCH BREAK -->
+<div style="text-align: center; padding: 1.5rem; color: var(--text-dim); border: 1px dashed var(--text-dim); border-radius: 12px; margin-bottom: 1.5rem;">
+  🦵 <strong>LEG STRETCH / Q&amp;A BREAK</strong> — 5 minutes (1:12 – 1:17)
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: Anonymous Methods -->
+<!-- ============================================================ -->
+<div class="section yellow">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2>Anonymous Methods</h2>
+    <span class="time-badge">1:17 – 1:27</span>
+  </div>
+  
+  <p>Instead of defining a named method and then assigning it, you can create a method <span class="key-term">inline</span> using the <code>delegate</code> keyword. These are called <span class="key-term">anonymous methods</span> because they have no name.</p>
+  
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section04_AnonymousMethods.cs</span>
+  <pre><code>
+<span class="c">// ============================================</span>
+<span class="c">// SECTION 4: Anonymous Methods</span>
+<span class="c">// ============================================</span>
+
+<span class="kw">public</span> <span class="kw">delegate</span> <span class="tp">void</span> <span class="dt">Formatter</span>(<span class="tp">string</span> <span class="vr">text</span>);
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">Section04_AnonymousMethods</span>
+{
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">Run</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"=== Section 4: Anonymous Methods ==="</span>);
+        
+        <span class="c">// Anonymous method — defined inline!</span>
+        <span class="dt">Formatter</span> <span class="vr">shout</span> = <span class="kw">delegate</span>(<span class="tp">string</span> <span class="vr">text</span>)
+        {
+            Console.<span class="fn">WriteLine</span>(<span class="vr">text</span>.<span class="fn">ToUpper</span>() + <span class="st">"!!!"</span>);
+        };
+        
+        <span class="dt">Formatter</span> <span class="vr">whisper</span> = <span class="kw">delegate</span>(<span class="tp">string</span> <span class="vr">text</span>)
+        {
+            Console.<span class="fn">WriteLine</span>(<span class="vr">text</span>.<span class="fn">ToLower</span>() + <span class="st">"..."</span>);
+        };
+        
+        <span class="vr">shout</span>(<span class="st">"Hello World"</span>);    <span class="c">// HELLO WORLD!!!</span>
+        <span class="vr">whisper</span>(<span class="st">"Hello World"</span>);  <span class="c">// hello world...</span>
+        
+        <span class="c">// Works with multicast too!</span>
+        <span class="dt">Formatter</span> <span class="vr">both</span> = <span class="vr">shout</span>;
+        <span class="vr">both</span> += <span class="vr">whisper</span>;
+        Console.<span class="fn">WriteLine</span>(<span class="st">"\n--- Both formatters ---"</span>);
+        <span class="vr">both</span>(<span class="st">"Testing"</span>);
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Add to Section04_AnonymousMethods.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Create an anonymous method assigned to a Formatter delegate called "reverse"</span>
+<span class="c">//         It should print the text reversed (Hint: new string(text.Reverse().ToArray()))</span>
+
+<span class="c">// TODO 2: Invoke your "reverse" formatter with "Hello World"</span>
+
+<span class="c">// TODO 3: Add "reverse" to the "both" multicast delegate and invoke "both" with "Code"</span>
+  </code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Lambda Expressions -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">05</span>
+    <h2>Lambda Expressions</h2>
+    <span class="time-badge">1:27 – 1:37</span>
+  </div>
+  
+  <p>Lambda expressions are <span class="key-term">shorthand</span> for anonymous methods using the <code>=></code> ("goes to") operator. Left side = parameters. Right side = what to do.</p>
+  
+  <div class="note-box tip">
+    <strong>💡 Evolution:</strong> Named Method → Anonymous Method → <strong>Lambda</strong>. Each step removes boilerplate. The compiler generates the same code for all three!
+  </div>
+  
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section05_LambdaExpressions.cs</span>
+  <pre><code>
+<span class="c">// ============================================</span>
+<span class="c">// SECTION 5: Lambda Expressions</span>
+<span class="c">// ============================================</span>
+
+<span class="kw">public</span> <span class="kw">delegate</span> <span class="tp">int</span> <span class="dt">Calculate</span>(<span class="tp">int</span> <span class="vr">a</span>, <span class="tp">int</span> <span class="vr">b</span>);
+<span class="kw">public</span> <span class="kw">delegate</span> <span class="tp">void</span> <span class="dt">Printer</span>(<span class="tp">string</span> <span class="vr">msg</span>);
+<span class="kw">public</span> <span class="kw">delegate</span> <span class="tp">bool</span> <span class="dt">Checker</span>(<span class="tp">int</span> <span class="vr">number</span>);
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">Section05_LambdaExpressions</span>
+{
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">Run</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"=== Section 5: Lambda Expressions ==="</span>);
+        
+        <span class="c">// Single-line lambda (expression body)</span>
+        <span class="dt">Calculate</span> <span class="vr">add</span> = (<span class="vr">a</span>, <span class="vr">b</span>) => <span class="vr">a</span> + <span class="vr">b</span>;
+        <span class="dt">Calculate</span> <span class="vr">multiply</span> = (<span class="vr">a</span>, <span class="vr">b</span>) => <span class="vr">a</span> * <span class="vr">b</span>;
+        
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"Add: {<span class="vr">add</span>(<span class="nm">3</span>, <span class="nm">4</span>)}"</span>);          <span class="c">// 7</span>
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"Multiply: {<span class="vr">multiply</span>(<span class="nm">3</span>, <span class="nm">4</span>)}"</span>);  <span class="c">// 12</span>
+        
+        <span class="c">// Lambda with void return</span>
+        <span class="dt">Printer</span> <span class="vr">greet</span> = (<span class="vr">name</span>) => Console.<span class="fn">WriteLine</span>(<span class="st">$"Hello, {<span class="vr">name</span>}!"</span>);
+        <span class="vr">greet</span>(<span class="st">"class"</span>);
+        
+        <span class="c">// Lambda returning bool</span>
+        <span class="dt">Checker</span> <span class="vr">isEven</span> = (<span class="vr">n</span>) => <span class="vr">n</span> % <span class="nm">2</span> == <span class="nm">0</span>;
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"Is 4 even? {<span class="vr">isEven</span>(<span class="nm">4</span>)}"</span>);   <span class="c">// True</span>
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"Is 7 even? {<span class="vr">isEven</span>(<span class="nm">7</span>)}"</span>);   <span class="c">// False</span>
+        
+        <span class="c">// Multi-line lambda (statement body — needs braces and return)</span>
+        <span class="dt">Calculate</span> <span class="vr">safeDivide</span> = (<span class="vr">a</span>, <span class="vr">b</span>) =>
+        {
+            <span class="kw">if</span> (<span class="vr">b</span> == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;
+            <span class="kw">return</span> <span class="vr">a</span> / <span class="vr">b</span>;
+        };
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"Safe divide: {<span class="vr">safeDivide</span>(<span class="nm">10</span>, <span class="nm">0</span>)}"</span>); <span class="c">// 0</span>
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Add to Section05_LambdaExpressions.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Create a lambda "subtract" using the Calculate delegate</span>
+<span class="c">//         that returns a - b. Print the result of subtract(10, 3)</span>
+
+<span class="c">// TODO 2: Create a lambda "isPositive" using the Checker delegate</span>
+<span class="c">//         that returns true if the number is greater than 0</span>
+<span class="c">//         Test it with 5 and -3</span>
+
+<span class="c">// TODO 3: Create a multi-line lambda "clampedAdd" using Calculate</span>
+<span class="c">//         that adds a + b but caps the result at 100 (returns 100 if sum > 100)</span>
+<span class="c">//         Test with (60, 50) and (30, 20)</span>
+  </code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Introduction to Events -->
+<!-- ============================================================ -->
+<div class="section purple">
+  <div class="section-header">
+    <span class="section-number">06</span>
+    <h2>Introduction to Events</h2>
+    <span class="time-badge">1:37 – 1:47</span>
+  </div>
+  
+  <p>The <code>event</code> keyword wraps a delegate to <span class="key-term">restrict</span> what outside code can do. Outsiders can <strong>subscribe</strong> (<code>+=</code>) and <strong>unsubscribe</strong> (<code>-=</code>) but <strong>CANNOT</strong> invoke or replace the delegate.</p>
+  
+  <div class="note-box">
+    <strong>📡 Publisher/Subscriber Pattern:</strong> The publisher defines and fires the event. Subscribers listen and react. The publisher doesn't need to know WHO is listening — it just fires.
+  </div>
+  
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section06_IntroToEvents.cs</span>
+  <pre><code>
+<span class="c">// ============================================</span>
+<span class="c">// SECTION 6: Introduction to Events</span>
+<span class="c">// ============================================</span>
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">TemperatureSensor</span>
+{
+    <span class="c">// 1. Declare delegate type</span>
+    <span class="kw">public</span> <span class="kw">delegate</span> <span class="tp">void</span> <span class="dt">TempChangedHandler</span>(<span class="tp">double</span> <span class="vr">newTemp</span>);
+    
+    <span class="c">// 2. Declare event using the delegate</span>
+    <span class="kw">public</span> <span class="kw">event</span> <span class="dt">TempChangedHandler</span> <span class="vr">OnTemperatureChanged</span>;
+    
+    <span class="kw">private</span> <span class="tp">double</span> <span class="vr">_currentTemp</span>;
+    
+    <span class="c">// 3. Method that fires the event</span>
+    <span class="kw">public</span> <span class="tp">void</span> <span class="fn">SetTemperature</span>(<span class="tp">double</span> <span class="vr">temp</span>)
+    {
+        <span class="vr">_currentTemp</span> = <span class="vr">temp</span>;
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"\n🌡️ Temperature set to {<span class="vr">temp</span>}°F"</span>);
+        
+        <span class="c">// Fire the event (null-safe)</span>
+        <span class="vr">OnTemperatureChanged</span>?.<span class="fn">Invoke</span>(<span class="vr">temp</span>);
+    }
+}
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">Section06_IntroToEvents</span>
+{
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">Run</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"=== Section 6: Introduction to Events ==="</span>);
+        
+        <span class="kw">var</span> <span class="vr">sensor</span> = <span class="kw">new</span> <span class="tp">TemperatureSensor</span>();
+        
+        <span class="c">// Subscribe with a named method</span>
+        <span class="vr">sensor</span>.<span class="vr">OnTemperatureChanged</span> += <span class="fn">DisplayTemp</span>;
+        
+        <span class="c">// Subscribe with a lambda</span>
+        <span class="vr">sensor</span>.<span class="vr">OnTemperatureChanged</span> += (<span class="vr">temp</span>) =>
+        {
+            <span class="kw">if</span> (<span class="vr">temp</span> > <span class="nm">100</span>)
+                Console.<span class="fn">WriteLine</span>(<span class="st">"🔥 WARNING: Overheating!"</span>);
+        };
+        
+        <span class="vr">sensor</span>.<span class="fn">SetTemperature</span>(<span class="nm">72</span>);
+        <span class="vr">sensor</span>.<span class="fn">SetTemperature</span>(<span class="nm">105</span>);
+        
+        <span class="c">// These would NOT compile from outside the class:</span>
+        <span class="c">// sensor.OnTemperatureChanged = null;        ❌ Can't replace</span>
+        <span class="c">// sensor.OnTemperatureChanged(99);            ❌ Can't invoke</span>
+        <span class="c">// sensor.OnTemperatureChanged?.Invoke(99);    ❌ Can't invoke</span>
+    }
+    
+    <span class="kw">static</span> <span class="tp">void</span> <span class="fn">DisplayTemp</span>(<span class="tp">double</span> <span class="vr">temp</span>)
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"📊 Dashboard updated: {<span class="vr">temp</span>}°F"</span>);
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Add to Section06_IntroToEvents.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Subscribe a lambda to OnTemperatureChanged that prints</span>
+<span class="c">//         "❄️ WARNING: Freezing!" if the temperature drops below 32</span>
+
+<span class="c">// TODO 2: After the existing SetTemperature calls, add:</span>
+<span class="c">//         sensor.SetTemperature(28) to test your freezing warning</span>
+
+<span class="c">// TODO 3: Uncomment the three "would NOT compile" lines one at a time</span>
+<span class="c">//         and observe the compiler error. Then re-comment them.</span>
+  </code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: Putting It Together -->
+<!-- ============================================================ -->
+<div class="section red">
+  <div class="section-header">
+    <span class="section-number">07</span>
+    <h2>Putting It All Together</h2>
+    <span class="time-badge">1:47 – 1:57</span>
+  </div>
+  
+  <p>Let's combine everything into a mini publisher/subscriber system — a <span class="key-term">doorbell</span> that multiple systems can react to.</p>
+  
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section07_PuttingItTogether.cs</span>
+  <pre><code>
+<span class="c">// ============================================</span>
+<span class="c">// SECTION 7: Putting It All Together</span>
+<span class="c">// ============================================</span>
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">Doorbell</span>
+{
+    <span class="kw">public</span> <span class="kw">delegate</span> <span class="tp">void</span> <span class="dt">DoorbellHandler</span>(<span class="tp">string</span> <span class="vr">visitorName</span>);
+    <span class="kw">public</span> <span class="kw">event</span> <span class="dt">DoorbellHandler</span> <span class="vr">OnRing</span>;
+    
+    <span class="kw">public</span> <span class="tp">void</span> <span class="fn">Ring</span>(<span class="tp">string</span> <span class="vr">visitor</span>)
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"\n🔔 Doorbell rang! Visitor: {<span class="vr">visitor</span>}"</span>);
+        <span class="vr">OnRing</span>?.<span class="fn">Invoke</span>(<span class="vr">visitor</span>);
+    }
+}
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">Section07_PuttingItTogether</span>
+{
+    <span class="kw">static</span> <span class="tp">void</span> <span class="fn">UnlockDoor</span>(<span class="tp">string</span> <span class="vr">name</span>)
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"🔓 Door unlocked for {<span class="vr">name</span>}"</span>);
+    
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">Run</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"=== Section 7: Putting It Together ==="</span>);
+        
+        <span class="kw">var</span> <span class="vr">doorbell</span> = <span class="kw">new</span> <span class="tp">Doorbell</span>();
+        
+        <span class="c">// Named method subscriber</span>
+        <span class="vr">doorbell</span>.<span class="vr">OnRing</span> += <span class="fn">UnlockDoor</span>;
+        
+        <span class="c">// Lambda subscriber</span>
+        <span class="vr">doorbell</span>.<span class="vr">OnRing</span> += (<span class="vr">name</span>) =>
+            Console.<span class="fn">WriteLine</span>(<span class="st">$"📹 Camera recording: {<span class="vr">name</span>} at door"</span>);
+        
+        <span class="c">// Anonymous method subscriber</span>
+        <span class="vr">doorbell</span>.<span class="vr">OnRing</span> += <span class="kw">delegate</span>(<span class="tp">string</span> <span class="vr">name</span>)
+        {
+            Console.<span class="fn">WriteLine</span>(<span class="st">$"💡 Porch light turned on for {<span class="vr">name</span>}"</span>);
+        };
+        
+        <span class="vr">doorbell</span>.<span class="fn">Ring</span>(<span class="st">"Alice"</span>);
+        <span class="vr">doorbell</span>.<span class="fn">Ring</span>(<span class="st">"Delivery Driver"</span>);
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Add to Section07_PuttingItTogether.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Add a lambda subscriber that prints</span>
+<span class="c">//         "📱 Phone notification: [name] is at the door"</span>
+
+<span class="c">// TODO 2: Add a named method called "LogVisitor" that prints</span>
+<span class="c">//         "📋 Visitor log: [name] arrived at [current time]"</span>
+<span class="c">//         Hint: DateTime.Now.ToShortTimeString()</span>
+
+<span class="c">// TODO 3: Subscribe LogVisitor and ring the doorbell with "Bob"</span>
+  </code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- EXIT TICKET -->
+<!-- ============================================================ -->
+<div class="exit-ticket">
+  <h2>🎫 Exit Ticket</h2>
+  <p style="color: var(--text-muted); margin-bottom: 1rem;">Answer these in your own words. No code needed — just understanding.</p>
+  
+  <p><strong>1.</strong> In your own words, what is a delegate?</p>
+  <textarea placeholder="A delegate is..."></textarea>
+  
+  <p><strong>2.</strong> What's the difference between <code>=</code> and <code>+=</code> when working with delegates?</p>
+  <textarea placeholder="The difference is..."></textarea>
+  
+  <p><strong>3.</strong> Why would you use the <code>event</code> keyword instead of just a public delegate?</p>
+  <textarea placeholder="You'd use event because..."></textarea>
+  
+  <p><strong>4.</strong> Rewrite this anonymous method as a lambda expression:</p>
+<pre style="margin-bottom: 0.5rem;"><code><span class="kw">delegate</span>(<span class="tp">string</span> <span class="vr">name</span>) { Console.<span class="fn">WriteLine</span>(<span class="st">$"Hi {name}"</span>); };</code></pre>
+  <textarea placeholder="Lambda version: "></textarea>
+</div>
+
+<!-- ============================================================ -->
+<!-- SUBMISSION INSTRUCTIONS -->
+<!-- ============================================================ -->
+<div class="submission-box">
+  <h2>📤 Submission (5 points)</h2>
+  <p style="color: var(--text-muted);">
+    1. Make sure all your TODO sections are completed.<br>
+    2. Push your <strong>EventsDelegatesNotes</strong> project to GitHub.<br>
+    3. Ensure the repository is set to <strong>Public</strong>.<br>
+    4. Copy the repository URL and submit it on <strong>Canvas</strong>.
+  </p>
+</div>
+
+</body>
+</html>
