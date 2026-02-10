@@ -1,157 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unit 02 - Lesson 02 (U2B2): Python Dictionaries — Principles of Computing</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#0f0f1a;--surface:#1a1a2e;--surface-light:#252540;--accent:#4ecca3;--purple:#7b68ee;--red:#e94560;--yellow:#ffc107;--text:#e0e0e0;--text-muted:#a0a0a0;--text-dim:#555}
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6}
-    body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(78,204,163,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(78,204,163,0.03) 1px,transparent 1px);background-size:50px 50px}
-    a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
-    .header{max-width:1000px;margin:0 auto;padding:2rem 2rem 0}
-    .breadcrumb{font-family:'Fira Code',monospace;font-size:0.75rem;color:var(--text-dim);margin-bottom:1.5rem}
-    .breadcrumb a{color:var(--text-dim)}.breadcrumb a:hover{color:var(--accent)}
-    .unit-badge{display:inline-block;font-family:'Fira Code',monospace;font-size:0.7rem;color:var(--accent);background:rgba(78,204,163,0.1);border:1px solid rgba(78,204,163,0.25);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.75rem;letter-spacing:0.05em}
-    h1{font-size:2.4rem;font-weight:700;line-height:1.15;margin-bottom:0.75rem;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .lesson-desc{color:var(--text-muted);font-size:1.05rem;max-width:650px;margin-bottom:2rem}
-    .timing-bar{display:flex;gap:1.5rem;flex-wrap:wrap;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--surface-light);border-radius:10px;margin-bottom:2.5rem}
-    .timing-item{font-family:'Fira Code',monospace;font-size:0.78rem;color:var(--text-muted)}.timing-item strong{color:var(--text)}
-    .content{max-width:1000px;margin:0 auto;padding:0 2rem 4rem}
-    .section-label{font-family:'Fira Code',monospace;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1.25rem}
-    .day-section{margin-bottom:3rem}
-    .day-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem}
-    .day-num{font-family:'Fira Code',monospace;font-size:0.75rem;font-weight:700;color:var(--bg);background:var(--accent);padding:0.2rem 0.6rem;border-radius:6px}
-    .day-section:nth-child(2) .day-num{background:var(--purple)}
-    .day-title{font-size:1.2rem;font-weight:600}
-    .day-time{font-family:'Fira Code',monospace;font-size:0.7rem;color:var(--text-dim);margin-left:auto}
-    .resource-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
-    .resource-card{display:flex;align-items:flex-start;gap:1rem;background:var(--surface);border:1px solid var(--surface-light);border-radius:10px;padding:1.25rem;transition:border-color 0.2s,transform 0.2s}
-    .resource-card:hover{border-color:var(--accent);transform:translateY(-1px)}
-    .resource-card.link{cursor:pointer}
-    .res-icon{font-size:1.5rem;flex-shrink:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--surface-light)}
-    .res-info h4{font-size:0.95rem;margin-bottom:0.2rem}.res-info p{font-size:0.78rem;color:var(--text-muted);margin:0}
-    .res-info .canvas-note{display:inline-block;margin-top:0.5rem;font-family:'Fira Code',monospace;font-size:0.65rem;color:var(--yellow);background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.2);padding:0.15rem 0.5rem;border-radius:4px}
-    .svg-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;margin-top:1rem}
-    .svg-thumb{background:var(--surface);border:1px solid var(--surface-light);border-radius:8px;padding:0.75rem;text-align:center;transition:border-color 0.2s}
-    .svg-thumb:hover{border-color:var(--purple)}
-    .svg-thumb img{width:100%;height:auto;border-radius:4px;margin-bottom:0.5rem}
-    .svg-thumb span{font-family:'Fira Code',monospace;font-size:0.65rem;color:var(--text-dim)}
-    .footer{border-top:1px solid var(--surface-light);padding:2rem;text-align:center;font-family:'Fira Code',monospace;font-size:0.75rem;color:var(--text-dim)}
-    @media(max-width:700px){h1{font-size:1.8rem}.resource-grid{grid-template-columns:1fr}.svg-gallery{grid-template-columns:repeat(2,1fr)}}
-  </style>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Unit 02 - Lesson 02 (U2B2): Python Dictionaries — Principles of Computing</title>
+        <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+              rel="stylesheet">
+        <style>
+            :root {
+                --bg: #0f0f1a;
+                --surface: #1a1a2e;
+                --surface-light: #252540;
+                --accent: #4ecca3;
+                --purple: #7b68ee;
+                --red: #e94560;
+                --yellow: #ffc107;
+                --text: #e0e0e0;
+                --text-muted: #a0a0a0;
+                --text-dim: #555
+            }
 
-<header class="header">
-  <nav class="breadcrumb">
-    <a href="../../../../../Downloads">home</a> / <span>unit_02</span>
-  </nav>
-  <span class="unit-badge">Unit 02 - Lesson 02 (U2B2)</span>
-  <h1>Python Dictionaries</h1>
-  <p class="lesson-desc">Creating, accessing, modifying, looping, nesting, and applying practical dictionary patterns. Two-day lesson with guided notes and a Video Game Inventory System activity.</p>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box
+            }
 
-  <div class="timing-bar">
-    <div class="timing-item"><strong>Period:</strong> 86 min (11:01–12:27)</div>
-    <div class="timing-item"><strong>Day 1:</strong> Guided Notes (5 pts)</div>
-    <div class="timing-item"><strong>Day 2:</strong> Activity (15 pts)</div>
-    <div class="timing-item"><strong>Submit via:</strong> GitHub → Canvas</div>
-  </div>
-</header>
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family: 'DM Sans', sans-serif;
+                line-height: 1.6
+            }
 
-<main class="content">
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                z-index: -1;
+                background-image: linear-gradient(rgba(78, 204, 163, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(78, 204, 163, 0.03) 1px, transparent 1px);
+                background-size: 50px 50px
+            }
 
-  <!-- DAY 1 -->
-  <div class="day-section">
-    <div class="day-header">
-      <span class="day-num">DAY 1</span>
-      <span class="day-title">Guided Notes — Python Dictionaries</span>
-      <span class="day-time">11:01 – 12:27</span>
-    </div>
-    <div class="resource-grid">
-      <a href="guided-notes.html" class="resource-card link">
-        <div class="res-icon">📝</div>
-        <div class="res-info">
-          <h4>Interactive Guided Notes</h4>
-          <p>7 sections with live code demos, TODO practice, and an exit ticket. Open in browser and follow along in PyCharm.</p>
-        </div>
-      </a>
-      <div class="resource-card">
-        <div class="res-icon">📂</div>
-        <div class="res-info">
-          <h4>Student Starter Files</h4>
-          <p>main.py + 7 section .py files. Students create a <strong>DictionaryNotes</strong> Python project and add these.</p>
-          <span class="canvas-note">⚡ Assignment link on Canvas — 5 pts</span>
-        </div>
-      </div>
-    </div>
+            a {
+                color: var(--accent);
+                text-decoration: none
+            }
 
-    <div class="section-label" style="margin-top:2rem;">// infographics</div>
-    <div class="svg-gallery">
-      <a href="svgs/01-what-are-dictionaries.svg" class="svg-thumb" target="_blank">
-        <img src="svgs/01-what-are-dictionaries.svg" alt="What Are Dictionaries">
-        <span>01 — Dictionaries</span>
-      </a>
-      <a href="svgs/02-accessing-and-modifying.svg" class="svg-thumb" target="_blank">
-        <img src="svgs/02-accessing-and-modifying.svg" alt="Accessing & Modifying">
-        <span>02 — Access/Modify</span>
-      </a>
-      <a href="svgs/03-common-methods.svg" class="svg-thumb" target="_blank">
-        <img src="svgs/03-common-methods.svg" alt="Common Methods">
-        <span>03 — Methods</span>
-      </a>
-      <a href="svgs/04-looping-through-dictionaries.svg" class="svg-thumb" target="_blank">
-        <img src="svgs/04-looping-through-dictionaries.svg" alt="Looping">
-        <span>04 — Looping</span>
-      </a>
-      <a href="svgs/05-nested-dictionaries.svg" class="svg-thumb" target="_blank">
-        <img src="svgs/05-nested-dictionaries.svg" alt="Nested Dictionaries">
-        <span>05 — Nested</span>
-      </a>
-      <a href="svgs/06-dictionaries-with-collections.svg" class="svg-thumb" target="_blank">
-        <img src="svgs/06-dictionaries-with-collections.svg" alt="Dicts + Collections">
-        <span>06 — Collections</span>
-      </a>
-      <a href="svgs/07-practical-patterns.svg" class="svg-thumb" target="_blank">
-        <img src="svgs/07-practical-patterns.svg" alt="Practical Patterns">
-        <span>07 — Patterns</span>
-      </a>
-    </div>
-  </div>
+            a:hover {
+                text-decoration: underline
+            }
 
-  <!-- DAY 2 -->
-  <div class="day-section">
-    <div class="day-header">
-      <span class="day-num">DAY 2</span>
-      <span class="day-title">Activity — Video Game Inventory System</span>
-      <span class="day-time">11:01 – 12:27</span>
-    </div>
-    <div class="resource-grid">
-      <div class="resource-card">
-        <div class="res-icon">🎮</div>
-        <div class="res-info">
-          <h4>Video Game Inventory System</h4>
-          <p>Build an inventory manager with 5 files using dictionaries. Track items by category, buy/sell from a shop, equip gear, and use potions — all driven by a menu loop.</p>
-          <span class="canvas-note">⚡ Upload to Canvas — 15 pts</span>
-        </div>
-      </div>
-      <div class="resource-card">
-        <div class="res-icon">📋</div>
-        <div class="res-info">
-          <h4>Activity Starter Files</h4>
-          <p>5 .py files with TODO comments. Students create a <strong>GameInventory</strong> project in PyCharm.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+            .header {
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 2rem 2rem 0
+            }
 
-</main>
+            .breadcrumb {
+                font-family: 'Fira Code', monospace;
+                font-size: 0.75rem;
+                color: var(--text-dim);
+                margin-bottom: 1.5rem
+            }
 
-<footer class="footer">
-  <a href="../../../../../Downloads">← Back to Course Home</a> · Principles of Computing — Python
-</footer>
+            .breadcrumb a {
+                color: var(--text-dim)
+            }
 
-</body>
+            .breadcrumb a:hover {
+                color: var(--accent)
+            }
+
+            .unit-badge {
+                display: inline-block;
+                font-family: 'Fira Code', monospace;
+                font-size: 0.7rem;
+                color: var(--accent);
+                background: rgba(78, 204, 163, 0.1);
+                border: 1px solid rgba(78, 204, 163, 0.25);
+                padding: 0.2rem 0.6rem;
+                border-radius: 20px;
+                margin-bottom: 0.75rem;
+                letter-spacing: 0.05em
+            }
+
+            h1 {
+                font-size: 2.4rem;
+                font-weight: 700;
+                line-height: 1.15;
+                margin-bottom: 0.75rem;
+                background: linear-gradient(135deg, var(--accent), var(--purple));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text
+            }
+
+            .lesson-desc {
+                color: var(--text-muted);
+                font-size: 1.05rem;
+                max-width: 650px;
+                margin-bottom: 2rem
+            }
+
+            .timing-bar {
+                display: flex;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+                padding: 1rem 1.25rem;
+                background: var(--surface);
+                border: 1px solid var(--surface-light);
+                border-radius: 10px;
+                margin-bottom: 2.5rem
+            }
+
+            .timing-item {
+                font-family: 'Fira Code', monospace;
+                font-size: 0.78rem;
+                color: var(--text-muted)
+            }
+
+            .timing-item strong {
+                color: var(--text)
+            }
+
+            .content {
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 0 2rem 4rem
+            }
+
+            .section-label {
+                font-family: 'Fira Code', monospace;
+                font-size: 0.7rem;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--text-dim);
+                margin-bottom: 1.25rem
+            }
+
+            .day-section {
+                margin-bottom: 3rem
+            }
+
+            .day-header {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 1.25rem
+            }
+
+            .day-num {
+                font-family: 'Fira Code', monospace;
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: var(--bg);
+                background: var(--accent);
+                padding: 0.2rem 0.6rem;
+                border-radius: 6px
+            }
+
+            .day-section:nth-child(2) .day-num {
+                background: var(--purple)
+            }
+
+            .day-title {
+                font-size: 1.2rem;
+                font-weight: 600
+            }
+
+            .day-time {
+                font-family: 'Fira Code', monospace;
+                font-size: 0.7rem;
+                color: var(--text-dim);
+                margin-left: auto
+            }
+
+            .resource-grid {
+                display: grid;
+                grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1rem
+            }
+
+            .resource-card {
+                display: flex;
+                align-items: flex-start;
+                gap: 1rem;
+                background: var(--surface);
+                border: 1px solid var(--surface-light);
+                border-radius: 10px;
+                padding: 1.25rem;
+                transition: border-color 0.2s, transform 0.2s
+            }
+
+            .resource-card:hover {
+                border-color: var(--accent);
+                transform: translateY(-1px)
+            }
+
+            .resource-card.link {
+                cursor: pointer
+            }
+
+            .res-icon {
+                font-size: 1.5rem;
+                flex-shrink: 0;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                background: var(--surface-light)
+            }
+
+            .res-info h4 {
+                font-size: 0.95rem;
+                margin-bottom: 0.2rem
+            }
+
+            .res-info p {
+                font-size: 0.78rem;
+                color: var(--text-muted);
+                margin: 0
+            }
+
+            .res-info .canvas-note {
+                display: inline-block;
+                margin-top: 0.5rem;
+                font-family: 'Fira Code', monospace;
+                font-size: 0.65rem;
+                color: var(--yellow);
+                background: rgba(255, 193, 7, 0.1);
+                border: 1px solid rgba(255, 193, 7, 0.2);
+                padding: 0.15rem 0.5rem;
+                border-radius: 4px
+            }
+
+            .svg-gallery {
+                display: grid;
+                grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+                gap: 0.75rem;
+                margin-top: 1rem
+            }
+
+            .svg-thumb {
+                background: var(--surface);
+                border: 1px solid var(--surface-light);
+                border-radius: 8px;
+                padding: 0.75rem;
+                text-align: center;
+                transition: border-color 0.2s
+            }
+
+            .svg-thumb:hover {
+                border-color: var(--purple)
+            }
+
+            .svg-thumb img {
+                width: 100%;
+                height: auto;
+                border-radius: 4px;
+                margin-bottom: 0.5rem
+            }
+
+            .svg-thumb span {
+                font-family: 'Fira Code', monospace;
+                font-size: 0.65rem;
+                color: var(--text-dim)
+            }
+
+            .footer {
+                border-top: 1px solid var(--surface-light);
+                padding: 2rem;
+                text-align: center;
+                font-family: 'Fira Code', monospace;
+                font-size: 0.75rem;
+                color: var(--text-dim)
+            }
+
+            @media (max-width: 700px) {
+                h1 {
+                    font-size: 1.8rem
+                }
+
+                .resource-grid {
+                    grid-template-columns:1fr
+                }
+
+                .svg-gallery {
+                    grid-template-columns:repeat(2, 1fr)
+                }
+            }
+        </style>
+    </head>
+    <body>
+
+        <header class="header">
+            <nav class="breadcrumb">
+                <a href="../../../../../Downloads">home</a> / <span>unit_02</span>
+            </nav>
+            <span class="unit-badge">Unit 02 - Lesson 02 (U2B2)</span>
+            <h1>Python Dictionaries</h1>
+            <p class="lesson-desc">Creating, accessing, modifying, looping, nesting, and applying practical dictionary
+                patterns. Two-day lesson with guided notes and a Video Game Inventory System activity.</p>
+
+            <div class="timing-bar">
+                <div class="timing-item"><strong>Period:</strong> 86 min (11:01–12:27)</div>
+                <div class="timing-item"><strong>Day 1:</strong> Guided Notes (5 pts)</div>
+                <div class="timing-item"><strong>Day 2:</strong> Activity (15 pts)</div>
+                <div class="timing-item"><strong>Submit via:</strong> GitHub → Canvas</div>
+            </div>
+        </header>
+
+        <main class="content">
+
+            <!-- DAY 1 -->
+            <div class="day-section">
+                <div class="day-header">
+                    <span class="day-num">DAY 1</span>
+                    <span class="day-title">Guided Notes — Python Dictionaries</span>
+                    <span class="day-time">11:01 – 12:27</span>
+                </div>
+                <div class="resource-grid">
+                    <a href="guided-notes.html" class="resource-card link">
+                        <div class="res-icon">📝</div>
+                        <div class="res-info">
+                            <h4>Interactive Guided Notes</h4>
+                            <p>7 sections with live code demos, TODO practice, and an exit ticket. Open in browser and
+                                follow along in PyCharm.</p>
+                        </div>
+                    </a>
+                    <div>
+                        <a href="https://github.com/narmstro2020/narmstro2020.github.io/tree/main/01_POC/lessons/dictionaries/guided-notes-start" class="resource-card link">
+                            <div class="res-icon">📂</div>
+                            <div class="res-info">
+                                <h4>Student Starter Files</h4>
+                                <p>main.py + 7 section .py files. Students create a <strong>DictionaryNotes</strong>
+                                    Python project and add these.</p>
+                                <span class="canvas-note">⚡ Assignment link on Canvas — 5 pts</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="section-label" style="margin-top:2rem;">// infographics</div>
+                <div class="svg-gallery">
+                    <a href="svgs/01-what-are-dictionaries.svg" class="svg-thumb" target="_blank">
+                        <img src="svgs/01-what-are-dictionaries.svg" alt="What Are Dictionaries">
+                        <span>01 — Dictionaries</span>
+                    </a>
+                    <a href="svgs/02-accessing-and-modifying.svg" class="svg-thumb" target="_blank">
+                        <img src="svgs/02-accessing-and-modifying.svg" alt="Accessing & Modifying">
+                        <span>02 — Access/Modify</span>
+                    </a>
+                    <a href="svgs/03-common-methods.svg" class="svg-thumb" target="_blank">
+                        <img src="svgs/03-common-methods.svg" alt="Common Methods">
+                        <span>03 — Methods</span>
+                    </a>
+                    <a href="svgs/04-looping-through-dictionaries.svg" class="svg-thumb" target="_blank">
+                        <img src="svgs/04-looping-through-dictionaries.svg" alt="Looping">
+                        <span>04 — Looping</span>
+                    </a>
+                    <a href="svgs/05-nested-dictionaries.svg" class="svg-thumb" target="_blank">
+                        <img src="svgs/05-nested-dictionaries.svg" alt="Nested Dictionaries">
+                        <span>05 — Nested</span>
+                    </a>
+                    <a href="svgs/06-dictionaries-with-collections.svg" class="svg-thumb" target="_blank">
+                        <img src="svgs/06-dictionaries-with-collections.svg" alt="Dicts + Collections">
+                        <span>06 — Collections</span>
+                    </a>
+                    <a href="svgs/07-practical-patterns.svg" class="svg-thumb" target="_blank">
+                        <img src="svgs/07-practical-patterns.svg" alt="Practical Patterns">
+                        <span>07 — Patterns</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- DAY 2 -->
+            <div class="day-section">
+                <div class="day-header">
+                    <span class="day-num">DAY 2</span>
+                    <span class="day-title">Activity — Video Game Inventory System</span>
+                    <span class="day-time">11:01 – 12:27</span>
+                </div>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <div class="res-icon">🎮</div>
+                        <div class="res-info">
+                            <h4>Video Game Inventory System</h4>
+                            <p>Build an inventory manager with 5 files using dictionaries. Track items by category,
+                                buy/sell from a shop, equip gear, and use potions — all driven by a menu loop.</p>
+                            <span class="canvas-note">⚡ Upload to Canvas — 15 pts</span>
+                        </div>
+                    </div>
+                    <div class="resource-card">
+                        <div class="res-icon">📋</div>
+                        <div class="res-info">
+                            <h4>Activity Starter Files</h4>
+                            <p>5 .py files with TODO comments. Students create a <strong>GameInventory</strong> project
+                                in PyCharm.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="footer">
+            <a href="../../../../../Downloads">← Back to Course Home</a> · Principles of Computing — Python
+        </footer>
+
+    </body>
 </html>
