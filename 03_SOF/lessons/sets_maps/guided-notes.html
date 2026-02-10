@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Sets &amp; Maps - Guided Notes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d1117;
+            padding: 2rem;
+            color: #ccd6f6;
+        }
+        h1 {
+            text-align: center;
+            color: #4ecca3;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #8892b0;
+            margin-bottom: 2rem;
+        }
+        .section {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #2d2d44;
+        }
+        .section h2 {
+            color: #e94560;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section h2::before {
+            content: "▸";
+            color: #4ecca3;
+        }
+        .diagram-container {
+            background: #0f0f1a;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .diagram-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .code-snippet {
+            background: #0f0f1a;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #4ecca3;
+            overflow-x: auto;
+        }
+        .code-snippet-header {
+            color: #4ecca3;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        pre {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #ccd6f6;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        .kw { color: #c792ea; }
+        .type { color: #ffcb6b; }
+        .fn { color: #82aaff; }
+        .str { color: #c3e88d; }
+        .num { color: #f78c6c; }
+        .cm { color: #8892b0; }
+        .op { color: #89ddff; }
+
+        .note-box {
+            background: #2d2d44;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #ffc107;
+        }
+        .note-box.tip { border-left-color: #4ecca3; }
+        .note-box.warning { border-left-color: #e94560; }
+        .note-box h4 { color: #ffc107; margin-bottom: 0.5rem; }
+        .note-box.tip h4 { color: #4ecca3; }
+        .note-box.warning h4 { color: #e94560; }
+
+        .todo-box {
+            background: #1a2332;
+            border: 2px dashed #4ecca3;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .todo-box h4 {
+            color: #4ecca3;
+            margin-bottom: 0.5rem;
+        }
+        .todo-box .starter-code {
+            background: #0f0f1a;
+            border-radius: 6px;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            border-left: 3px solid #e94560;
+        }
+
+        .exit-ticket {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 2px solid #ffc107;
+        }
+        .exit-ticket h2 {
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+        .exit-ticket .question {
+            background: #2d2d44;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .exit-ticket .question p {
+            color: #ccd6f6;
+            margin-bottom: 0.5rem;
+        }
+        .exit-ticket .answer-area {
+            background: #0f0f1a;
+            border-radius: 6px;
+            padding: 0.8rem;
+            min-height: 60px;
+            color: #8892b0;
+            font-style: italic;
+        }
+
+        .submission-box {
+            background: #1a2332;
+            border: 2px solid #4ecca3;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .submission-box h3 { color: #4ecca3; margin-bottom: 0.5rem; }
+        .submission-box ol {
+            text-align: left;
+            display: inline-block;
+            color: #ccd6f6;
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            color: #8892b0;
+            margin-top: 2rem;
+            padding: 1rem;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Java Sets &amp; Maps</h1>
+    <p class="subtitle">Guided Notes | Collections Framework</p>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: What is a Set? -->
+    <!-- ============================================ -->
+    <section class="section">
+        <h2>Section 1: What is a Set?</h2>
+
+        <div class="diagram-container">
+            <img src="01-set-overview.svg" alt="Set Overview Diagram">
+        </div>
+
+        <div class="code-snippet">
+            <div class="code-snippet-header">Instructor Demo: Creating a Set</div>
+<pre><span class="cm">// A Set stores UNIQUE elements — no duplicates</span>
+<span class="kw">import</span> java.util.HashSet;
+<span class="kw">import</span> java.util.Set;
+
+<span class="type">Set</span><span class="op">&lt;</span><span class="type">String</span><span class="op">&gt;</span> names = <span class="kw">new</span> <span class="type">HashSet</span><span class="op">&lt;&gt;</span>();
+names.<span class="fn">add</span>(<span class="str">"Alice"</span>);
+names.<span class="fn">add</span>(<span class="str">"Bob"</span>);
+names.<span class="fn">add</span>(<span class="str">"Alice"</span>);  <span class="cm">// duplicate — ignored!</span>
+
+System.out.<span class="fn">println</span>(names);        <span class="cm">// [Alice, Bob]</span>
+System.out.<span class="fn">println</span>(names.<span class="fn">size</span>()); <span class="cm">// 2, not 3!</span>
+</pre>
+        </div>
+
+        <div class="note-box tip">
+            <h4>💡 Key Takeaway</h4>
+            <p>A <code>Set</code> is like a <code>List</code>, but it automatically rejects duplicates. There is <strong>no index access</strong> — you can't call <code>.get(0)</code>. Use a for-each loop to iterate.</p>
+        </div>
+
+        <div class="todo-box">
+            <h4>✏️ YOUR TURN — TODO #1</h4>
+            <p>Create a <code>Set&lt;String&gt;</code> of your favorite foods. Try adding a duplicate and print the set to confirm it was rejected.</p>
+            <div class="starter-code">
+<pre><span class="cm">// TODO #1: Create a HashSet of favorite foods</span>
+<span class="cm">// Add at least 4 foods, including one duplicate</span>
+<span class="cm">// Print the set and its size</span>
+
+<span class="type">Set</span><span class="op">&lt;</span><span class="type">String</span><span class="op">&gt;</span> foods = <span class="kw">new</span> <span class="type">HashSet</span><span class="op">&lt;&gt;</span>();
+
+<span class="cm">// Add your foods here:</span>
+
+
+<span class="cm">// Print the set and its size:</span>
+
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: Set Implementations -->
+    <!-- ============================================ -->
+    <section class="section">
+        <h2>Section 2: HashSet vs TreeSet vs LinkedHashSet</h2>
+
+        <div class="diagram-container">
+            <img src="02-set-implementations.svg" alt="Set Implementations Diagram">
+        </div>
+
+        <div class="code-snippet">
+            <div class="code-snippet-header">Instructor Demo: Comparing Set Types</div>
+<pre><span class="kw">import</span> java.util.*;
+
+<span class="cm">// Same data, different behavior</span>
+<span class="type">Set</span><span class="op">&lt;</span><span class="type">String</span><span class="op">&gt;</span> hash    = <span class="kw">new</span> <span class="type">HashSet</span><span class="op">&lt;&gt;</span>();
+<span class="type">Set</span><span class="op">&lt;</span><span class="type">String</span><span class="op">&gt;</span> tree    = <span class="kw">new</span> <span class="type">TreeSet</span><span class="op">&lt;&gt;</span>();
+<span class="type">Set</span><span class="op">&lt;</span><span class="type">String</span><span class="op">&gt;</span> linked  = <span class="kw">new</span> <span class="type">LinkedHashSet</span><span class="op">&lt;&gt;</span>();
+
+<span class="cm">// Add in same order to all three</span>
+<span class="kw">for</span> (<span class="type">String</span> animal : <span class="type">List</span>.<span class="fn">of</span>(<span class="str">"Dog"</span>, <span class="str">"Cat"</span>, <span class="str">"Bird"</span>, <span class="str">"Ant"</span>)) {
+    hash.<span class="fn">add</span>(animal);
+    tree.<span class="fn">add</span>(animal);
+    linked.<span class="fn">add</span>(animal);
+}
+
+System.out.<span class="fn">println</span>(<span class="str">"HashSet:       "</span> + hash);    <span class="cm">// unpredictable order</span>
+System.out.<span class="fn">println</span>(<span class="str">"TreeSet:       "</span> + tree);    <span class="cm">// [Ant, Bird, Cat, Dog]</span>
+System.out.<span class="fn">println</span>(<span class="str">"LinkedHashSet: "</span> + linked);  <span class="cm">// [Dog, Cat, Bird, Ant]</span>
+</pre>
+        </div>
+
+        <div class="todo-box">
+            <h4>✏️ YOUR TURN — TODO #2</h4>
+            <p>Create a <code>TreeSet&lt;Integer&gt;</code> and add the numbers 50, 10, 30, 20, 40 in that order. Print the set. What order do they appear in?</p>
+            <div class="starter-code">
+<pre><span class="cm">// TODO #2: Create a TreeSet of Integers</span>
+<span class="cm">// Add: 50, 10, 30, 20, 40</span>
+<span class="cm">// Print the set — what order are they in?</span>
+
+<span class="type">Set</span><span class="op">&lt;</span><span class="type">Integer</span><span class="op">&gt;</span> numbers = <span class="kw">new</span> <span class="type">TreeSet</span><span class="op">&lt;&gt;</span>();
+
+<span class="cm">// Add your numbers here:</span>
+
+
+<span class="cm">// Print:</span>
+
+
+<span class="cm">// Answer: The numbers are in ____________ order because TreeSet ____________.</span>
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: Common Set Methods -->
+    <!-- ============================================ -->
+    <section class="section">
+        <h2>Section 3: Common Set Methods</h2>
+
+        <div class="diagram-container">
+            <img src="03-set-methods.svg" alt="Common Set Methods Diagram">
+        </div>
+
+        <div class="code-snippet">
+            <div class="code-snippet-header">Instructor Demo: Set Operations</div>
+<pre><span class="type">Set</span><span class="op">&lt;</span><span class="type">String</span><span class="op">&gt;</span> colors = <span class="kw">new</span> <span class="type">HashSet</span><span class="op">&lt;&gt;</span>();
+colors.<span class="fn">add</span>(<span class="str">"Red"</span>);
+colors.<span class="fn">add</span>(<span class="str">"Blue"</span>);
+colors.<span class="fn">add</span>(<span class="str">"Green"</span>);
+
+<span class="cm">// Check membership — very fast with HashSet!</span>
+System.out.<span class="fn">println</span>(colors.<span class="fn">contains</span>(<span class="str">"Red"</span>));    <span class="cm">// true</span>
+System.out.<span class="fn">println</span>(colors.<span class="fn">contains</span>(<span class="str">"Yellow"</span>)); <span class="cm">// false</span>
+
+<span class="cm">// Remove</span>
+colors.<span class="fn">remove</span>(<span class="str">"Blue"</span>);
+System.out.<span class="fn">println</span>(colors);  <span class="cm">// [Red, Green]</span>
+
+<span class="cm">// Iterate with for-each (ONLY way — no .get()!)</span>
+<span class="kw">for</span> (<span class="type">String</span> c : colors) {
+    System.out.<span class="fn">println</span>(<span class="str">"Color: "</span> + c);
+}
+</pre>
+        </div>
+
+        <div class="todo-box">
+            <h4>✏️ YOUR TURN — TODO #3</h4>
+            <p>Create a <code>Set&lt;String&gt;</code> of class subjects. Add 5 subjects, remove one, check if "Math" is in the set, and iterate to print each subject on its own line.</p>
+            <div class="starter-code">
+<pre><span class="cm">// TODO #3: Create a Set of class subjects</span>
+<span class="type">Set</span><span class="op">&lt;</span><span class="type">String</span><span class="op">&gt;</span> subjects = <span class="kw">new</span> <span class="type">HashSet</span><span class="op">&lt;&gt;</span>();
+
+<span class="cm">// Add 5 subjects:</span>
+
+
+<span class="cm">// Remove one subject:</span>
+
+
+<span class="cm">// Check if "Math" is in the set and print the result:</span>
+
+
+<span class="cm">// Use a for-each loop to print each subject:</span>
+
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- LEG STRETCH / Q&A -->
+    <!-- ============================================ -->
+    <div style="background: #2d2d44; border-radius: 12px; padding: 1.5rem; margin: 2rem 0; text-align: center; border: 2px dashed #c792ea;">
+        <h2 style="color: #c792ea; margin-bottom: 0.5rem;">🦵 Leg Stretch &amp; Q/A — 5 minutes</h2>
+        <p style="color: #8892b0;">Stand up, stretch, ask questions about Sets before we move on to Maps!</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: What is a Map? -->
+    <!-- ============================================ -->
+    <section class="section">
+        <h2>Section 4: What is a Map?</h2>
+
+        <div class="diagram-container">
+            <img src="04-map-overview.svg" alt="Map Overview Diagram">
+        </div>
+
+        <div class="code-snippet">
+            <div class="code-snippet-header">Instructor Demo: Creating a Map</div>
+<pre><span class="kw">import</span> java.util.HashMap;
+<span class="kw">import</span> java.util.Map;
+
+<span class="cm">// Map&lt;KeyType, ValueType&gt;</span>
+<span class="type">Map</span><span class="op">&lt;</span><span class="type">String</span>, <span class="type">String</span><span class="op">&gt;</span> contacts = <span class="kw">new</span> <span class="type">HashMap</span><span class="op">&lt;&gt;</span>();
+
+contacts.<span class="fn">put</span>(<span class="str">"Alice"</span>, <span class="str">"555-0101"</span>);
+contacts.<span class="fn">put</span>(<span class="str">"Bob"</span>,   <span class="str">"555-0202"</span>);
+
+<span class="cm">// Get a value by its key</span>
+<span class="type">String</span> number = contacts.<span class="fn">get</span>(<span class="str">"Alice"</span>);  <span class="cm">// "555-0101"</span>
+
+<span class="cm">// Duplicate key REPLACES the old value!</span>
+contacts.<span class="fn">put</span>(<span class="str">"Alice"</span>, <span class="str">"555-9999"</span>);
+System.out.<span class="fn">println</span>(contacts.<span class="fn">get</span>(<span class="str">"Alice"</span>));  <span class="cm">// "555-9999"</span>
+</pre>
+        </div>
+
+        <div class="note-box warning">
+            <h4>⚠️ Watch Out</h4>
+            <p><strong>Keys must be unique</strong> in a Map. If you <code>put()</code> a key that already exists, the old value is <em>silently replaced</em>. The <code>put()</code> method returns the previous value (or <code>null</code> if the key was new).</p>
+        </div>
+
+        <div class="todo-box">
+            <h4>✏️ YOUR TURN — TODO #4</h4>
+            <p>Create a <code>Map&lt;String, Integer&gt;</code> that maps student names to their ages. Add at least 3 entries, then retrieve and print one student's age using <code>.get()</code>.</p>
+            <div class="starter-code">
+<pre><span class="cm">// TODO #4: Create a Map of student names → ages</span>
+<span class="type">Map</span><span class="op">&lt;</span><span class="type">String</span>, <span class="type">Integer</span><span class="op">&gt;</span> ages = <span class="kw">new</span> <span class="type">HashMap</span><span class="op">&lt;&gt;</span>();
+
+<span class="cm">// Add at least 3 students with their ages:</span>
+
+
+<span class="cm">// Retrieve and print one student's age:</span>
+
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: Map Implementations -->
+    <!-- ============================================ -->
+    <section class="section">
+        <h2>Section 5: HashMap vs TreeMap vs LinkedHashMap</h2>
+
+        <div class="diagram-container">
+            <img src="05-map-implementations.svg" alt="Map Implementations Diagram">
+        </div>
+
+        <div class="code-snippet">
+            <div class="code-snippet-header">Instructor Demo: Comparing Map Types</div>
+<pre><span class="type">Map</span><span class="op">&lt;</span><span class="type">String</span>, <span class="type">Integer</span><span class="op">&gt;</span> hashMap   = <span class="kw">new</span> <span class="type">HashMap</span><span class="op">&lt;&gt;</span>();
+<span class="type">Map</span><span class="op">&lt;</span><span class="type">String</span>, <span class="type">Integer</span><span class="op">&gt;</span> treeMap   = <span class="kw">new</span> <span class="type">TreeMap</span><span class="op">&lt;&gt;</span>();
+<span class="type">Map</span><span class="op">&lt;</span><span class="type">String</span>, <span class="type">Integer</span><span class="op">&gt;</span> linkedMap = <span class="kw">new</span> <span class="type">LinkedHashMap</span><span class="op">&lt;&gt;</span>();
+
+<span class="cm">// Add same data to all three</span>
+<span class="type">String</span>[] names = {<span class="str">"Charlie"</span>, <span class="str">"Alice"</span>, <span class="str">"Bob"</span>};
+<span class="kw">int</span>[] scores = {<span class="num">85</span>, <span class="num">92</span>, <span class="num">78</span>};
+
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i < names.length; i++) {
+    hashMap.<span class="fn">put</span>(names[i], scores[i]);
+    treeMap.<span class="fn">put</span>(names[i], scores[i]);
+    linkedMap.<span class="fn">put</span>(names[i], scores[i]);
+}
+
+System.out.<span class="fn">println</span>(<span class="str">"HashMap:       "</span> + hashMap);   <span class="cm">// unpredictable</span>
+System.out.<span class="fn">println</span>(<span class="str">"TreeMap:       "</span> + treeMap);   <span class="cm">// {Alice=92, Bob=78, Charlie=85}</span>
+System.out.<span class="fn">println</span>(<span class="str">"LinkedHashMap: "</span> + linkedMap); <span class="cm">// {Charlie=85, Alice=92, Bob=78}</span>
+</pre>
+        </div>
+
+        <div class="todo-box">
+            <h4>✏️ YOUR TURN — TODO #5</h4>
+            <p>Create a <code>TreeMap&lt;String, String&gt;</code> mapping country names to their capitals. Add at least 4 entries. Print the map — are the entries in alphabetical order by country?</p>
+            <div class="starter-code">
+<pre><span class="cm">// TODO #5: Create a TreeMap of countries → capitals</span>
+<span class="type">Map</span><span class="op">&lt;</span><span class="type">String</span>, <span class="type">String</span><span class="op">&gt;</span> capitals = <span class="kw">new</span> <span class="type">TreeMap</span><span class="op">&lt;&gt;</span>();
+
+<span class="cm">// Add at least 4 country-capital pairs:</span>
+
+
+<span class="cm">// Print the map:</span>
+
+
+<span class="cm">// Answer: The entries are sorted by ____________ because TreeMap ____________.</span>
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: Common Map Methods -->
+    <!-- ============================================ -->
+    <section class="section">
+        <h2>Section 6: Common Map Methods</h2>
+
+        <div class="diagram-container">
+            <img src="06-map-methods.svg" alt="Common Map Methods Diagram">
+        </div>
+
+        <div class="code-snippet">
+            <div class="code-snippet-header">Instructor Demo: Map Methods in Action</div>
+<pre><span class="type">Map</span><span class="op">&lt;</span><span class="type">String</span>, <span class="type">Integer</span><span class="op">&gt;</span> scores = <span class="kw">new</span> <span class="type">HashMap</span><span class="op">&lt;&gt;</span>();
+scores.<span class="fn">put</span>(<span class="str">"Alice"</span>, <span class="num">95</span>);
+scores.<span class="fn">put</span>(<span class="str">"Bob"</span>, <span class="num">82</span>);
+scores.<span class="fn">put</span>(<span class="str">"Charlie"</span>, <span class="num">91</span>);
+
+<span class="cm">// Check before accessing</span>
+<span class="kw">if</span> (scores.<span class="fn">containsKey</span>(<span class="str">"Bob"</span>)) {
+    System.out.<span class="fn">println</span>(<span class="str">"Bob's score: "</span> + scores.<span class="fn">get</span>(<span class="str">"Bob"</span>));
+}
+
+<span class="cm">// Safe fallback with getOrDefault</span>
+<span class="kw">int</span> zoeScore = scores.<span class="fn">getOrDefault</span>(<span class="str">"Zoe"</span>, <span class="num">0</span>);  <span class="cm">// 0 (not found)</span>
+
+<span class="cm">// Iterate with entrySet — gets both key and value</span>
+<span class="kw">for</span> (<span class="kw">var</span> entry : scores.<span class="fn">entrySet</span>()) {
+    System.out.<span class="fn">println</span>(entry.<span class="fn">getKey</span>() + <span class="str">": "</span> + entry.<span class="fn">getValue</span>());
+}
+</pre>
+        </div>
+
+        <div class="todo-box">
+            <h4>✏️ YOUR TURN — TODO #6</h4>
+            <p>Using your <code>ages</code> Map from TODO #4 (or create a new one), do the following:</p>
+            <div class="starter-code">
+<pre><span class="cm">// TODO #6: Practice Map methods</span>
+<span class="cm">// (Use your ages map from TODO #4, or create a new HashMap)</span>
+
+<span class="cm">// a) Check if a specific student exists using containsKey:</span>
+
+
+<span class="cm">// b) Use getOrDefault to safely look up a student that</span>
+<span class="cm">//    may not exist (use 0 as the default):</span>
+
+
+<span class="cm">// c) Remove one student from the map:</span>
+
+
+<span class="cm">// d) Use a for-each with entrySet() to print each</span>
+<span class="cm">//    student's name and age on its own line:</span>
+
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 7: When to Use What? -->
+    <!-- ============================================ -->
+    <section class="section">
+        <h2>Section 7: When to Use What?</h2>
+
+        <div class="diagram-container">
+            <img src="07-when-to-use.svg" alt="When to Use What Decision Guide">
+        </div>
+
+        <div class="code-snippet">
+            <div class="code-snippet-header">Instructor Demo: Practical Examples</div>
+<pre><span class="cm">// Scenario 1: Track unique visitors to a website</span>
+<span class="type">Set</span><span class="op">&lt;</span><span class="type">String</span><span class="op">&gt;</span> visitors = <span class="kw">new</span> <span class="type">HashSet</span><span class="op">&lt;&gt;</span>();
+visitors.<span class="fn">add</span>(<span class="str">"user123"</span>);
+visitors.<span class="fn">add</span>(<span class="str">"user456"</span>);
+visitors.<span class="fn">add</span>(<span class="str">"user123"</span>);  <span class="cm">// same user, not counted twice</span>
+System.out.<span class="fn">println</span>(<span class="str">"Unique visitors: "</span> + visitors.<span class="fn">size</span>());
+
+<span class="cm">// Scenario 2: Count word frequency in a sentence</span>
+<span class="type">Map</span><span class="op">&lt;</span><span class="type">String</span>, <span class="type">Integer</span><span class="op">&gt;</span> wordCount = <span class="kw">new</span> <span class="type">HashMap</span><span class="op">&lt;&gt;</span>();
+<span class="type">String</span>[] words = {<span class="str">"the"</span>, <span class="str">"cat"</span>, <span class="str">"sat"</span>, <span class="str">"on"</span>, <span class="str">"the"</span>, <span class="str">"mat"</span>};
+<span class="kw">for</span> (<span class="type">String</span> word : words) {
+    wordCount.<span class="fn">put</span>(word, wordCount.<span class="fn">getOrDefault</span>(word, <span class="num">0</span>) + <span class="num">1</span>);
+}
+System.out.<span class="fn">println</span>(wordCount);  <span class="cm">// {mat=1, the=2, sat=1, cat=1, on=1}</span>
+</pre>
+        </div>
+
+        <div class="note-box tip">
+            <h4>💡 The getOrDefault Pattern</h4>
+            <p>The word frequency pattern is extremely common: <code>map.put(key, map.getOrDefault(key, 0) + 1)</code>. It safely increments a counter, starting at 0 for new keys.</p>
+        </div>
+
+        <div class="todo-box">
+            <h4>✏️ YOUR TURN — TODO #7</h4>
+            <p>Write a small program that counts how many times each character appears in your first name. Use a <code>Map&lt;Character, Integer&gt;</code> and the getOrDefault pattern.</p>
+            <div class="starter-code">
+<pre><span class="cm">// TODO #7: Count character frequency in your name</span>
+<span class="type">String</span> name = <span class="str">"YourNameHere"</span>;  <span class="cm">// ← replace with your name</span>
+<span class="type">Map</span><span class="op">&lt;</span><span class="type">Character</span>, <span class="type">Integer</span><span class="op">&gt;</span> charCount = <span class="kw">new</span> <span class="type">HashMap</span><span class="op">&lt;&gt;</span>();
+
+<span class="cm">// Loop through each character of your name</span>
+<span class="cm">// Hint: use name.charAt(i) to get each character</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i < name.<span class="fn">length</span>(); i++) {
+    <span class="kw">char</span> c = name.<span class="fn">charAt</span>(i);
+    <span class="cm">// Use getOrDefault pattern to count:</span>
+
+}
+
+<span class="cm">// Print the character counts:</span>
+
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- EXIT TICKET -->
+    <!-- ============================================ -->
+    <div class="exit-ticket">
+        <h2>🎫 Exit Ticket</h2>
+
+        <div class="question">
+            <p><strong>1.</strong> What is the most important thing you learned today about Sets and/or Maps?</p>
+            <div class="answer-area">Write your answer here...</div>
+        </div>
+
+        <div class="question">
+            <p><strong>2.</strong> What is one thing that is still unclear or that you'd like more practice with?</p>
+            <div class="answer-area">Write your answer here...</div>
+        </div>
+
+        <div class="question">
+            <p><strong>3.</strong> If you were building an app to track student attendance (just whether they showed up or not on a given day), would you use a <code>Set</code> or a <code>Map</code>? Why?</p>
+            <div class="answer-area">Write your answer here...</div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUBMISSION -->
+    <!-- ============================================ -->
+    <div class="submission-box">
+        <h3>📤 Submission (5 points)</h3>
+        <ol>
+            <li>Push your completed guided notes project to GitHub</li>
+            <li>Make sure the repository is set to <strong>Public</strong></li>
+            <li>Copy the repository URL</li>
+            <li>Submit the link on Canvas</li>
+        </ol>
+    </div>
+
+    <footer>
+        <p>Java Sets &amp; Maps Guided Notes | Collections Framework</p>
+    </footer>
+
+</body>
+</html>

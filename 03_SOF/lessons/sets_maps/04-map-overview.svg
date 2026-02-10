@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#161b22"/>
+    </linearGradient>
+    <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6b6b"/>
+      <stop offset="100%" style="stop-color:#ee5a24"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="600" fill="url(#bgGrad)"/>
+  <g opacity="0.05">
+    <pattern id="hex" width="50" height="43.3" patternUnits="userSpaceOnUse">
+      <polygon points="25,0 50,14.4 50,43.3 25,43.3 0,28.9 0,0" fill="none" stroke="#ff6b6b" stroke-width="0.3"/>
+    </pattern>
+    <rect width="900" height="600" fill="url(#hex)"/>
+  </g>
+
+  <!-- Title -->
+  <text x="450" y="48" font-family="'Segoe UI', sans-serif" font-size="34" fill="#ff6b6b" text-anchor="middle" font-weight="bold" filter="url(#glow)">What is a Map?</text>
+  <text x="450" y="76" font-family="'Consolas', monospace" font-size="15" fill="#8b949e" text-anchor="middle">A collection of key → value pairs — like a dictionary or phonebook</text>
+
+  <!-- Real-world analogy -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="100" width="400" height="220" rx="12" fill="#1c2333" stroke="#ffcb6b" stroke-width="1.5"/>
+    <rect x="30" y="100" width="400" height="38" rx="12" fill="#ffcb6b" opacity="0.12"/>
+    <text x="230" y="125" font-family="'Segoe UI', sans-serif" font-size="16" fill="#ffcb6b" text-anchor="middle" font-weight="bold">📖 Real-World Analogy: Contacts</text>
+  </g>
+
+  <g font-family="'Segoe UI', sans-serif" font-size="14">
+    <!-- Contact entries -->
+    <rect x="55" y="150" width="350" height="32" rx="6" fill="#0d1117" stroke="#2d333b"/>
+    <text x="70" y="171" fill="#ff6b6b" font-weight="bold">Alice</text>
+    <text x="175" y="171" fill="#89ddff">→</text>
+    <text x="200" y="171" fill="#c3e88d">555-0101</text>
+
+    <rect x="55" y="188" width="350" height="32" rx="6" fill="#0d1117" stroke="#2d333b"/>
+    <text x="70" y="209" fill="#ff6b6b" font-weight="bold">Bob</text>
+    <text x="175" y="209" fill="#89ddff">→</text>
+    <text x="200" y="209" fill="#c3e88d">555-0202</text>
+
+    <rect x="55" y="226" width="350" height="32" rx="6" fill="#0d1117" stroke="#2d333b"/>
+    <text x="70" y="247" fill="#ff6b6b" font-weight="bold">Charlie</text>
+    <text x="175" y="247" fill="#89ddff">→</text>
+    <text x="200" y="247" fill="#c3e88d">555-0303</text>
+
+    <text x="90" y="284" fill="#ffcb6b" font-size="12" font-weight="bold">KEY (unique)</text>
+    <text x="220" y="284" fill="#4ecca3" font-size="12" font-weight="bold">VALUE (can repeat)</text>
+  </g>
+
+  <!-- Java Map -->
+  <g filter="url(#shadow)">
+    <rect x="470" y="100" width="400" height="220" rx="12" fill="#1c2333" stroke="#ff6b6b" stroke-width="1.5"/>
+    <rect x="470" y="100" width="400" height="38" rx="12" fill="#ff6b6b" opacity="0.12"/>
+    <text x="670" y="125" font-family="'Segoe UI', sans-serif" font-size="16" fill="#ff6b6b" text-anchor="middle" font-weight="bold">☕ In Java: Map&lt;K, V&gt;</text>
+  </g>
+
+  <g font-family="'Consolas', monospace" font-size="13">
+    <text x="490" y="155" fill="#8b949e">// Declare with TWO type parameters</text>
+    <text x="490" y="175" fill="#c792ea">Map</text><text x="518" y="175" fill="#89ddff">&lt;</text><text x="528" y="175" fill="#ffcb6b">String</text><text x="572" y="175" fill="#ccd6f6">,</text><text x="582" y="175" fill="#ffcb6b"> String</text><text x="626" y="175" fill="#89ddff">&gt;</text><text x="636" y="175" fill="#ccd6f6"> contacts =</text>
+    <text x="504" y="195" fill="#c792ea">new</text><text x="532" y="195" fill="#ffcb6b"> HashMap</text><text x="604" y="195" fill="#89ddff">&lt;&gt;</text><text x="622" y="195" fill="#ccd6f6">();</text>
+
+    <text x="490" y="225" fill="#8b949e">// Put key-value pairs</text>
+    <text x="490" y="245" fill="#ccd6f6">contacts.</text><text x="562" y="245" fill="#82aaff">put</text><text x="586" y="245" fill="#ccd6f6">(</text><text x="594" y="245" fill="#c3e88d">"Alice"</text><text x="648" y="245" fill="#ccd6f6">,</text><text x="658" y="245" fill="#c3e88d"> "555-0101"</text><text x="750" y="245" fill="#ccd6f6">);</text>
+    <text x="490" y="265" fill="#ccd6f6">contacts.</text><text x="562" y="265" fill="#82aaff">put</text><text x="586" y="265" fill="#ccd6f6">(</text><text x="594" y="265" fill="#c3e88d">"Bob"</text><text x="636" y="265" fill="#ccd6f6">,</text><text x="646" y="265" fill="#c3e88d"> "555-0202"</text><text x="738" y="265" fill="#ccd6f6">);</text>
+
+    <text x="490" y="295" fill="#8b949e">// Get a value by its key</text>
+    <text x="490" y="315" fill="#ffcb6b">String</text><text x="534" y="315" fill="#ccd6f6"> num = contacts.</text><text x="666" y="315" fill="#82aaff">get</text><text x="690" y="315" fill="#ccd6f6">(</text><text x="698" y="315" fill="#c3e88d">"Alice"</text><text x="752" y="315" fill="#ccd6f6">);</text>
+  </g>
+
+  <!-- Key Rules Section -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="340" width="840" height="240" rx="12" fill="#1c2333" stroke="#2d333b" stroke-width="1"/>
+    <text x="450" y="375" font-family="'Segoe UI', sans-serif" font-size="20" fill="#e6edf3" text-anchor="middle" font-weight="bold">Map Rules</text>
+  </g>
+
+  <!-- Rule 1 -->
+  <g>
+    <rect x="55" y="395" width="250" height="80" rx="8" fill="#ff6b6b" opacity="0.08" stroke="#ff6b6b" stroke-width="1"/>
+    <text x="180" y="420" font-family="'Segoe UI', sans-serif" font-size="14" fill="#ff6b6b" text-anchor="middle" font-weight="bold">🔑 Keys Must Be Unique</text>
+    <text x="180" y="442" font-family="'Segoe UI', sans-serif" font-size="12" fill="#ccd6f6" text-anchor="middle">Putting a duplicate key</text>
+    <text x="180" y="460" font-family="'Segoe UI', sans-serif" font-size="12" fill="#ccd6f6" text-anchor="middle">REPLACES the old value</text>
+  </g>
+
+  <!-- Rule 2 -->
+  <g>
+    <rect x="325" y="395" width="250" height="80" rx="8" fill="#4ecca3" opacity="0.08" stroke="#4ecca3" stroke-width="1"/>
+    <text x="450" y="420" font-family="'Segoe UI', sans-serif" font-size="14" fill="#4ecca3" text-anchor="middle" font-weight="bold">📋 Values Can Repeat</text>
+    <text x="450" y="442" font-family="'Segoe UI', sans-serif" font-size="12" fill="#ccd6f6" text-anchor="middle">Multiple keys can map</text>
+    <text x="450" y="460" font-family="'Segoe UI', sans-serif" font-size="12" fill="#ccd6f6" text-anchor="middle">to the same value</text>
+  </g>
+
+  <!-- Rule 3 -->
+  <g>
+    <rect x="595" y="395" width="250" height="80" rx="8" fill="#c792ea" opacity="0.08" stroke="#c792ea" stroke-width="1"/>
+    <text x="720" y="420" font-family="'Segoe UI', sans-serif" font-size="14" fill="#c792ea" text-anchor="middle" font-weight="bold">🚫 Not a Collection</text>
+    <text x="720" y="442" font-family="'Segoe UI', sans-serif" font-size="12" fill="#ccd6f6" text-anchor="middle">Map does NOT extend</text>
+    <text x="720" y="460" font-family="'Segoe UI', sans-serif" font-size="12" fill="#ccd6f6" text-anchor="middle">Collection interface</text>
+  </g>
+
+  <!-- Duplicate key example -->
+  <g font-family="'Consolas', monospace" font-size="13">
+    <rect x="55" y="492" width="790" height="70" rx="8" fill="#0d1117" stroke="#2d333b"/>
+    <text x="70" y="515" fill="#ccd6f6">contacts.</text><text x="142" y="515" fill="#82aaff">put</text><text x="166" y="515" fill="#ccd6f6">(</text><text x="174" y="515" fill="#c3e88d">"Alice"</text><text x="228" y="515" fill="#ccd6f6">,</text><text x="238" y="515" fill="#c3e88d"> "555-0101"</text><text x="330" y="515" fill="#ccd6f6">);</text><text x="360" y="515" fill="#8b949e"> // Alice → 555-0101</text>
+    <text x="70" y="540" fill="#ccd6f6">contacts.</text><text x="142" y="540" fill="#82aaff">put</text><text x="166" y="540" fill="#ccd6f6">(</text><text x="174" y="540" fill="#c3e88d">"Alice"</text><text x="228" y="540" fill="#ccd6f6">,</text><text x="238" y="540" fill="#c3e88d"> "555-9999"</text><text x="330" y="540" fill="#ccd6f6">);</text><text x="360" y="540" fill="#f78c6c"> // Alice → 555-9999 (REPLACED!)</text>
+  </g>
+</svg>

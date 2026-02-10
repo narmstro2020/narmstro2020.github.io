@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 680">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#161b22"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="680" fill="url(#bgGrad)"/>
+
+  <!-- Title -->
+  <text x="450" y="48" font-family="'Segoe UI', sans-serif" font-size="34" fill="#ff6b6b" text-anchor="middle" font-weight="bold" filter="url(#glow)">Common Map Methods</text>
+  <text x="450" y="76" font-family="'Consolas', monospace" font-size="15" fill="#8b949e" text-anchor="middle">Essential operations for working with Maps</text>
+
+  <!-- Left: Adding / Getting -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="95" width="410" height="230" rx="12" fill="#1c2333" stroke="#4ecca3" stroke-width="1.5"/>
+    <rect x="30" y="95" width="410" height="36" rx="12" fill="#4ecca3" opacity="0.12"/>
+    <text x="235" y="119" font-family="'Segoe UI', sans-serif" font-size="15" fill="#4ecca3" text-anchor="middle" font-weight="bold">Adding and Getting</text>
+  </g>
+  <g font-family="'Consolas', monospace" font-size="12.5">
+    <text x="48" y="148" fill="#8b949e">// put(key, value) — add or replace</text>
+    <text x="48" y="168" fill="#ccd6f6">scores.</text><text x="112" y="168" fill="#82aaff">put</text><text x="136" y="168" fill="#ccd6f6">(</text><text x="144" y="168" fill="#c3e88d">"Alice"</text><text x="200" y="168" fill="#ccd6f6">,</text><text x="210" y="168" fill="#f78c6c"> 95</text><text x="234" y="168" fill="#ccd6f6">);</text>
+
+    <text x="48" y="198" fill="#8b949e">// get(key) — returns value or null</text>
+    <text x="48" y="218" fill="#ffcb6b">Integer</text><text x="104" y="218" fill="#ccd6f6"> val = scores.</text><text x="232" y="218" fill="#82aaff">get</text><text x="256" y="218" fill="#ccd6f6">(</text><text x="264" y="218" fill="#c3e88d">"Alice"</text><text x="320" y="218" fill="#ccd6f6">);</text>
+    <text x="345" y="218" fill="#4ecca3"> // 95</text>
+
+    <text x="48" y="248" fill="#8b949e">// getOrDefault — safe fallback</text>
+    <text x="48" y="268" fill="#c792ea">int</text><text x="74" y="268" fill="#ccd6f6"> s = scores.</text><text x="178" y="268" fill="#82aaff">getOrDefault</text><text x="274" y="268" fill="#ccd6f6">(</text><text x="282" y="268" fill="#c3e88d">"Zoe"</text><text x="322" y="268" fill="#ccd6f6">,</text><text x="332" y="268" fill="#f78c6c"> 0</text><text x="344" y="268" fill="#ccd6f6">);</text>
+
+    <text x="48" y="298" fill="#8b949e">// size(), isEmpty(), clear()</text>
+    <text x="48" y="315" fill="#ccd6f6">scores.</text><text x="112" y="315" fill="#82aaff">size</text><text x="144" y="315" fill="#ccd6f6">();  scores.</text><text x="248" y="315" fill="#82aaff">clear</text><text x="280" y="315" fill="#ccd6f6">();</text>
+  </g>
+
+  <!-- Right: Checking / Removing -->
+  <g filter="url(#shadow)">
+    <rect x="460" y="95" width="410" height="230" rx="12" fill="#1c2333" stroke="#ffcb6b" stroke-width="1.5"/>
+    <rect x="460" y="95" width="410" height="36" rx="12" fill="#ffcb6b" opacity="0.12"/>
+    <text x="665" y="119" font-family="'Segoe UI', sans-serif" font-size="15" fill="#ffcb6b" text-anchor="middle" font-weight="bold">Checking and Removing</text>
+  </g>
+  <g font-family="'Consolas', monospace" font-size="12.5">
+    <text x="478" y="148" fill="#8b949e">// containsKey() — does key exist?</text>
+    <text x="478" y="168" fill="#c792ea">if</text><text x="498" y="168" fill="#ccd6f6"> (scores.</text><text x="572" y="168" fill="#82aaff">containsKey</text><text x="656" y="168" fill="#ccd6f6">(</text><text x="664" y="168" fill="#c3e88d">"Bob"</text><text x="704" y="168" fill="#ccd6f6">)) {</text>
+    <text x="492" y="188" fill="#8b949e">// "Bob" is a key in the map</text>
+    <text x="478" y="208" fill="#ccd6f6">}</text>
+
+    <text x="478" y="238" fill="#8b949e">// containsValue() — does value exist?</text>
+    <text x="478" y="258" fill="#ccd6f6">scores.</text><text x="542" y="258" fill="#82aaff">containsValue</text><text x="642" y="258" fill="#ccd6f6">(</text><text x="650" y="258" fill="#f78c6c">100</text><text x="674" y="258" fill="#ccd6f6">);</text>
+    <text x="698" y="258" fill="#4ecca3"> // true/false</text>
+
+    <text x="478" y="290" fill="#8b949e">// remove(key) — returns old value</text>
+    <text x="478" y="310" fill="#ffcb6b">Integer</text><text x="534" y="310" fill="#ccd6f6"> old = scores.</text><text x="666" y="310" fill="#82aaff">remove</text><text x="714" y="310" fill="#ccd6f6">(</text><text x="722" y="310" fill="#c3e88d">"Bob"</text><text x="762" y="310" fill="#ccd6f6">);</text>
+  </g>
+
+  <!-- Bottom: Three Iteration Patterns -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="345" width="840" height="310" rx="12" fill="#1c2333" stroke="#c792ea" stroke-width="1.5"/>
+    <rect x="30" y="345" width="840" height="36" rx="12" fill="#c792ea" opacity="0.12"/>
+    <text x="450" y="369" font-family="'Segoe UI', sans-serif" font-size="15" fill="#c792ea" text-anchor="middle" font-weight="bold">Three Ways to Iterate a Map</text>
+  </g>
+
+  <!-- Pattern 1: keySet -->
+  <rect x="50" y="395" width="255" height="145" rx="8" fill="#0d1117" stroke="#58a6ff" stroke-width="1"/>
+  <text x="177" y="414" font-family="'Segoe UI', sans-serif" font-size="13" fill="#58a6ff" text-anchor="middle" font-weight="bold">1. Loop over keys</text>
+  <g font-family="'Consolas', monospace" font-size="11.5">
+    <text x="62" y="438" fill="#c792ea">for</text><text x="86" y="438" fill="#ccd6f6"> (</text><text x="98" y="438" fill="#ffcb6b">String</text><text x="142" y="438" fill="#ccd6f6"> key :</text>
+    <text x="72" y="456" fill="#ccd6f6">  scores.</text><text x="144" y="456" fill="#82aaff">keySet</text><text x="192" y="456" fill="#ccd6f6">()) {</text>
+    <text x="72" y="476" fill="#ccd6f6">  System.out.</text><text x="168" y="476" fill="#82aaff">println</text><text x="216" y="476" fill="#ccd6f6">(</text>
+    <text x="80" y="494" fill="#ccd6f6">    key +</text><text x="140" y="494" fill="#c3e88d"> ": "</text><text x="178" y="494" fill="#ccd6f6"> +</text>
+    <text x="80" y="512" fill="#ccd6f6">    scores.</text><text x="144" y="512" fill="#82aaff">get</text><text x="168" y="512" fill="#ccd6f6">(key));</text>
+    <text x="62" y="530" fill="#ccd6f6">}</text>
+  </g>
+
+  <!-- Pattern 2: values -->
+  <rect x="322" y="395" width="255" height="145" rx="8" fill="#0d1117" stroke="#4ecca3" stroke-width="1"/>
+  <text x="450" y="414" font-family="'Segoe UI', sans-serif" font-size="13" fill="#4ecca3" text-anchor="middle" font-weight="bold">2. Loop over values only</text>
+  <g font-family="'Consolas', monospace" font-size="11.5">
+    <text x="334" y="438" fill="#c792ea">for</text><text x="358" y="438" fill="#ccd6f6"> (</text><text x="370" y="438" fill="#ffcb6b">Integer</text><text x="422" y="438" fill="#ccd6f6"> val :</text>
+    <text x="344" y="456" fill="#ccd6f6">  scores.</text><text x="416" y="456" fill="#82aaff">values</text><text x="464" y="456" fill="#ccd6f6">()) {</text>
+    <text x="344" y="476" fill="#ccd6f6">  System.out.</text><text x="440" y="476" fill="#82aaff">println</text><text x="488" y="476" fill="#ccd6f6">(val);</text>
+    <text x="334" y="496" fill="#ccd6f6">}</text>
+    <text x="334" y="526" fill="#8b949e">// when you only need</text>
+    <text x="334" y="542" fill="#8b949e">// the values, not keys</text>
+  </g>
+
+  <!-- Pattern 3: entrySet -->
+  <rect x="594" y="395" width="255" height="145" rx="8" fill="#0d1117" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="722" y="414" font-family="'Segoe UI', sans-serif" font-size="13" fill="#ff6b6b" text-anchor="middle" font-weight="bold">3. Loop over entries</text>
+  <g font-family="'Consolas', monospace" font-size="11.5">
+    <text x="606" y="438" fill="#c792ea">for</text><text x="630" y="438" fill="#ccd6f6"> (</text><text x="642" y="438" fill="#ffcb6b">var</text><text x="666" y="438" fill="#ccd6f6"> entry :</text>
+    <text x="616" y="456" fill="#ccd6f6">  scores.</text><text x="688" y="456" fill="#82aaff">entrySet</text><text x="752" y="456" fill="#ccd6f6">()) {</text>
+    <text x="616" y="476" fill="#ccd6f6">  entry.</text><text x="668" y="476" fill="#82aaff">getKey</text><text x="716" y="476" fill="#ccd6f6">();</text>
+    <text x="616" y="496" fill="#ccd6f6">  entry.</text><text x="668" y="496" fill="#82aaff">getValue</text><text x="728" y="496" fill="#ccd6f6">();</text>
+    <text x="606" y="516" fill="#ccd6f6">}</text>
+    <text x="606" y="536" fill="#8b949e">// most efficient for both</text>
+  </g>
+
+  <!-- Tip at bottom -->
+  <rect x="50" y="555" width="800" height="40" rx="8" fill="#4ecca3" opacity="0.08" stroke="#4ecca3" stroke-width="1"/>
+  <text x="450" y="580" font-family="'Segoe UI', sans-serif" font-size="13" fill="#4ecca3" text-anchor="middle">💡  entrySet() is the most efficient when you need both key and value — avoids extra .get() calls</text>
+</svg>

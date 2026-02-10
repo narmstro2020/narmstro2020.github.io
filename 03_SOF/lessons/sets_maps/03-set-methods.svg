@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#161b22"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="620" fill="url(#bgGrad)"/>
+  <g opacity="0.04">
+    <pattern id="cross" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M12 0v24M0 12h24" stroke="#58a6ff" stroke-width="0.3"/>
+    </pattern>
+    <rect width="900" height="620" fill="url(#cross)"/>
+  </g>
+
+  <!-- Title -->
+  <text x="450" y="48" font-family="'Segoe UI', sans-serif" font-size="34" fill="#58a6ff" text-anchor="middle" font-weight="bold" filter="url(#glow)">Common Set Methods</text>
+  <text x="450" y="76" font-family="'Consolas', monospace" font-size="15" fill="#8b949e" text-anchor="middle">Essential operations for working with Sets</text>
+
+  <!-- Left column: Adding &amp; Removing -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="100" width="410" height="240" rx="12" fill="#1c2333" stroke="#4ecca3" stroke-width="1.5"/>
+    <rect x="30" y="100" width="410" height="38" rx="12" fill="#4ecca3" opacity="0.12"/>
+    <text x="235" y="125" font-family="'Segoe UI', sans-serif" font-size="16" fill="#4ecca3" text-anchor="middle" font-weight="bold">Adding &amp; Removing</text>
+  </g>
+  <g font-family="'Consolas', monospace" font-size="13">
+    <text x="50" y="158" fill="#8b949e">// add() returns true if element was NEW</text>
+    <text x="50" y="178" fill="#c792ea">boolean</text><text x="110" y="178" fill="#ccd6f6"> added = colors.</text><text x="262" y="178" fill="#82aaff">add</text><text x="286" y="178" fill="#ccd6f6">(</text><text x="294" y="178" fill="#c3e88d">"Red"</text><text x="332" y="178" fill="#ccd6f6">);</text><text x="350" y="178" fill="#4ecca3"> // true</text>
+    <text x="50" y="198" fill="#ccd6f6">added = colors.</text><text x="186" y="198" fill="#82aaff">add</text><text x="210" y="198" fill="#ccd6f6">(</text><text x="218" y="198" fill="#c3e88d">"Red"</text><text x="256" y="198" fill="#ccd6f6">);</text><text x="285" y="198" fill="#f78c6c"> // false (duplicate!)</text>
+
+    <text x="50" y="228" fill="#8b949e">// remove() returns true if found and removed</text>
+    <text x="50" y="248" fill="#ccd6f6">colors.</text><text x="106" y="248" fill="#82aaff">remove</text><text x="154" y="248" fill="#ccd6f6">(</text><text x="162" y="248" fill="#c3e88d">"Red"</text><text x="200" y="248" fill="#ccd6f6">);</text><text x="228" y="248" fill="#4ecca3"> // true</text>
+    <text x="50" y="268" fill="#ccd6f6">colors.</text><text x="106" y="268" fill="#82aaff">remove</text><text x="154" y="268" fill="#ccd6f6">(</text><text x="162" y="268" fill="#c3e88d">"Purple"</text><text x="222" y="268" fill="#ccd6f6">);</text><text x="250" y="268" fill="#f78c6c"> // false (not found)</text>
+
+    <text x="50" y="298" fill="#8b949e">// clear() removes ALL elements</text>
+    <text x="50" y="318" fill="#ccd6f6">colors.</text><text x="106" y="318" fill="#82aaff">clear</text><text x="138" y="318" fill="#ccd6f6">();</text><text x="170" y="318" fill="#4ecca3"> // now empty</text>
+  </g>
+
+  <!-- Right column: Checking &amp; Size -->
+  <g filter="url(#shadow)">
+    <rect x="460" y="100" width="410" height="240" rx="12" fill="#1c2333" stroke="#ffcb6b" stroke-width="1.5"/>
+    <rect x="460" y="100" width="410" height="38" rx="12" fill="#ffcb6b" opacity="0.12"/>
+    <text x="665" y="125" font-family="'Segoe UI', sans-serif" font-size="16" fill="#ffcb6b" text-anchor="middle" font-weight="bold">Checking &amp; Size</text>
+  </g>
+  <g font-family="'Consolas', monospace" font-size="13">
+    <text x="480" y="158" fill="#8b949e">// contains() — fast lookup!</text>
+    <text x="480" y="178" fill="#c792ea">boolean</text><text x="540" y="178" fill="#ccd6f6"> has = colors.</text><text x="672" y="178" fill="#82aaff">contains</text><text x="736" y="178" fill="#ccd6f6">(</text><text x="744" y="178" fill="#c3e88d">"Blue"</text><text x="792" y="178" fill="#ccd6f6">);</text>
+
+    <text x="480" y="210" fill="#8b949e">// size() — number of elements</text>
+    <text x="480" y="230" fill="#c792ea">int</text><text x="510" y="230" fill="#ccd6f6"> count = colors.</text><text x="642" y="230" fill="#82aaff">size</text><text x="674" y="230" fill="#ccd6f6">();</text>
+
+    <text x="480" y="262" fill="#8b949e">// isEmpty() — check if empty</text>
+    <text x="480" y="282" fill="#c792ea">if</text><text x="498" y="282" fill="#ccd6f6"> (colors.</text><text x="570" y="282" fill="#82aaff">isEmpty</text><text x="618" y="282" fill="#ccd6f6">()) {</text>
+    <text x="495" y="302" fill="#ccd6f6">System.out.</text><text x="583" y="302" fill="#82aaff">println</text><text x="631" y="302" fill="#ccd6f6">(</text><text x="639" y="302" fill="#c3e88d">"No colors!"</text><text x="739" y="302" fill="#ccd6f6">);</text>
+    <text x="480" y="322" fill="#ccd6f6">}</text>
+  </g>
+
+  <!-- Bottom: Iteration -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="360" width="840" height="240" rx="12" fill="#1c2333" stroke="#c792ea" stroke-width="1.5"/>
+    <rect x="30" y="360" width="840" height="38" rx="12" fill="#c792ea" opacity="0.12"/>
+    <text x="450" y="385" font-family="'Segoe UI', sans-serif" font-size="16" fill="#c792ea" text-anchor="middle" font-weight="bold">Iterating Over a Set  (no .get() — must use for-each!)</text>
+  </g>
+
+  <!-- For-each loop -->
+  <g font-family="'Consolas', monospace" font-size="13">
+    <rect x="55" y="410" width="370" height="160" rx="8" fill="#0d1117" stroke="#2d333b"/>
+    <text x="70" y="435" fill="#8b949e">// For-each loop — most common</text>
+    <text x="70" y="458" fill="#c792ea">Set</text><text x="94" y="458" fill="#89ddff">&lt;</text><text x="104" y="458" fill="#ffcb6b">String</text><text x="148" y="458" fill="#89ddff">&gt;</text><text x="158" y="458" fill="#ccd6f6"> colors =</text>
+    <text x="84" y="478" fill="#c792ea">new</text><text x="112" y="478" fill="#ffcb6b"> HashSet</text><text x="184" y="478" fill="#89ddff">&lt;&gt;</text><text x="202" y="478" fill="#ccd6f6">();</text>
+    <text x="70" y="498" fill="#8b949e">// ... add some colors ...</text>
+    <text x="70" y="522" fill="#c792ea">for</text><text x="98" y="522" fill="#ccd6f6"> (</text><text x="110" y="522" fill="#ffcb6b">String</text><text x="158" y="522" fill="#ccd6f6"> color : colors) {</text>
+    <text x="84" y="542" fill="#ccd6f6">System.out.</text><text x="172" y="542" fill="#82aaff">println</text><text x="220" y="542" fill="#ccd6f6">(color);</text>
+    <text x="70" y="562" fill="#ccd6f6">}</text>
+  </g>
+
+  <!-- Important note -->
+  <g>
+    <rect x="465" y="410" width="380" height="160" rx="8" fill="#f78c6c" opacity="0.08" stroke="#f78c6c" stroke-width="1"/>
+    <text x="485" y="438" font-family="'Segoe UI', sans-serif" font-size="15" fill="#f78c6c" font-weight="bold">⚠️  No Index Access!</text>
+    <g font-family="'Segoe UI', sans-serif" font-size="13" fill="#ccd6f6">
+      <text x="485" y="465">Unlike Lists, Sets have NO .get(index)</text>
+      <text x="485" y="488">method. You cannot access elements by</text>
+      <text x="485" y="511">position. Use for-each to iterate.</text>
+    </g>
+    <g font-family="'Consolas', monospace" font-size="13">
+      <text x="485" y="542" fill="#f78c6c" text-decoration="line-through">colors.get(0);</text>
+      <text x="635" y="542" fill="#f78c6c">// ✗ COMPILE ERROR</text>
+    </g>
+  </g>
+</svg>
