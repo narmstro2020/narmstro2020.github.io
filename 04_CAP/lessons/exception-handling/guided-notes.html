@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exception Handling in C# — Guided Notes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+    :root {
+      --bg: #0f0f1a; --surface: #1a1a2e; --surface-light: #252540;
+      --accent: #4ecca3; --purple: #7b68ee; --red: #e94560; --yellow: #ffc107;
+      --text: #e0e0e0; --text-muted: #a0a0a0; --text-dim: #666; --code-bg: #0a0a15;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; padding: 2rem; max-width: 1000px; margin: 0 auto; }
+    h1 { font-size: 2rem; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 2rem; }
+    .section { background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border-left: 4px solid var(--accent); }
+    .section.purple { border-left-color: var(--purple); }
+    .section.red { border-left-color: var(--red); }
+    .section.yellow { border-left-color: var(--yellow); }
+    .section-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+    .section-number { background: var(--accent); color: var(--bg); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.85rem; padding: 0.2rem 0.6rem; border-radius: 6px; }
+    .section.purple .section-number { background: var(--purple); }
+    .section.red .section-number { background: var(--red); }
+    .section.yellow .section-number { background: var(--yellow); }
+    h2 { font-size: 1.3rem; color: var(--text); }
+    h3 { font-size: 1.1rem; color: var(--accent); margin: 1rem 0 0.5rem; }
+    p, li { color: var(--text-muted); margin-bottom: 0.5rem; }
+    .key-term { color: var(--yellow); font-weight: 600; }
+    pre { background: var(--code-bg); border-radius: 8px; padding: 1.25rem; margin: 0.75rem 0; overflow-x: auto; border: 1px solid #1e1e35; line-height: 1.65; }
+    pre code { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text); background: none; padding: 0; border-radius: 0; white-space: pre; }
+    .c { color: #6a9955; } .kw { color: #c586c0; } .tp { color: #4ecca3; } .st { color: #ce9178; }
+    .fn { color: #dcdcaa; } .vr { color: #9cdcfe; } .dt { color: #ffc107; } .nm { color: #b5cea8; } .op { color: #e0e0e0; }
+    .todo-block { background: var(--surface-light); border: 2px dashed var(--yellow); border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+    .todo-block h4 { color: var(--yellow); font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .todo-block pre { border-color: rgba(255, 193, 7, 0.3); }
+    .note-box { background: var(--surface-light); border-radius: 8px; padding: 0.75rem 1rem; margin: 0.75rem 0; border-left: 3px solid var(--purple); }
+    .note-box.warning { border-left-color: var(--red); }
+    .note-box.tip { border-left-color: var(--accent); }
+    .exit-ticket { background: var(--surface); border: 2px solid var(--red); border-radius: 12px; padding: 1.5rem; margin-top: 2rem; }
+    .exit-ticket h2 { color: var(--red); }
+    .exit-ticket textarea { width: 100%; background: var(--code-bg); color: var(--text); border: 1px solid var(--surface-light); border-radius: 8px; padding: 0.75rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; resize: vertical; min-height: 60px; margin: 0.5rem 0; }
+    .submission-box { background: var(--surface); border: 2px solid var(--accent); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; }
+    .submission-box h2 { color: var(--accent); }
+    .time-badge { display: inline-block; background: var(--surface-light); color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 4px; margin-left: auto; }
+    .file-tag { display: inline-block; background: var(--purple); color: white; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.5rem; }
+    .break-banner { text-align: center; padding: 1rem; margin: 1.5rem 0; background: var(--surface); border-radius: 12px; border: 2px solid var(--accent); }
+    .break-banner span { font-size: 1.1rem; font-weight: 600; color: var(--accent); }
+  </style>
+</head>
+<body>
+<nav style="max-width:1000px;margin:0 auto;padding:1rem 2rem 0;font-family:'JetBrains Mono',monospace;font-size:0.75rem;">
+  <a href="../../../04_CAP_2" style="color:#555;text-decoration:none;">home</a>
+  <span style="color:#555;"> / </span>
+  <a href="" style="color:#555;text-decoration:none;">exception-handling</a>
+  <span style="color:#555;"> / </span>
+  <span style="color:#7b68ee;">guided-notes</span>
+</nav>
+
+<h1>📚 Exception Handling in C#</h1>
+<p class="subtitle">Guided Notes — Follow along in JetBrains Rider. Create a new Console App project called <strong>ExceptionHandlingNotes</strong>.</p>
+
+<!-- SECTION 1 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2>What Are Exceptions?</h2>
+    <span class="time-badge">12:42 – 12:52</span>
+  </div>
+  <p>An <span class="key-term">exception</span> is an error that occurs at <strong>runtime</strong> — while your program is running. Unlike syntax errors (caught by the compiler), exceptions happen when something unexpected goes wrong with valid code.</p>
+  <div class="note-box tip">
+    <strong>🍔 Analogy:</strong> Ordering from a drive-through: you order a burger (works fine), item #99 ("doesn't exist!"), your card declines ("payment failed!"). Each is an "exception" — the system needs to handle it gracefully or everything stops.
+  </div>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section01_WhatAreExceptions.cs</span>
+  <pre><code><span class="kw">public</span> <span class="kw">class</span> <span class="tp">Section01_WhatAreExceptions</span>
+{
+    <span class="kw">public</span> <span class="kw">static</span> <span class="tp">void</span> <span class="fn">Run</span>()
+    {
+        Console.<span class="fn">Write</span>(<span class="st">"Enter a number: "</span>);
+        <span class="tp">string</span> <span class="vr">input</span> = Console.<span class="fn">ReadLine</span>();
+        <span class="tp">int</span> <span class="vr">number</span> = <span class="tp">int</span>.<span class="fn">Parse</span>(<span class="vr">input</span>);
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"You entered: {<span class="vr">number</span>}"</span>);
+        
+        <span class="c">// Run this and type "hello" — watch the crash!</span>
+    }
+}</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section01_WhatAreExceptions.cs</h4>
+    <pre><code><span class="c">// TODO 1: Run the program and type "hello" instead of a number.</span>
+<span class="c">//         What exception type do you see? Write it as a comment.</span>
+
+<span class="c">// TODO 2: Run again and type nothing (just press Enter).</span>
+<span class="c">//         What exception type do you see? Write it as a comment.</span>
+
+<span class="c">// TODO 3: In a comment, explain the difference between a syntax</span>
+<span class="c">//         error and an exception.</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section purple">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2>Try / Catch Basics</h2>
+    <span class="time-badge">12:52 – 1:02</span>
+  </div>
+  <p>The <span class="key-term">try/catch</span> block lets you attempt risky code and handle errors if they occur. The program does NOT crash — it jumps to the catch block instead, then continues.</p>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section02_TryCatchBasics.cs</span>
+  <pre><code><span class="kw">try</span>
+{
+    Console.<span class="fn">Write</span>(<span class="st">"Enter a number: "</span>);
+    <span class="tp">string</span> <span class="vr">input</span> = Console.<span class="fn">ReadLine</span>();
+    <span class="tp">int</span> <span class="vr">number</span> = <span class="tp">int</span>.<span class="fn">Parse</span>(<span class="vr">input</span>);
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Double: {<span class="vr">number</span> * 2}"</span>);
+}
+<span class="kw">catch</span> (<span class="tp">FormatException</span> <span class="vr">ex</span>)
+{
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Error: {<span class="vr">ex</span>.Message}"</span>);
+    Console.<span class="fn">WriteLine</span>(<span class="st">"Please enter a valid number next time!"</span>);
+}
+
+Console.<span class="fn">WriteLine</span>(<span class="st">"Program continues! No crash."</span>);</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section02_TryCatchBasics.cs</h4>
+    <pre><code><span class="c">// TODO 1: Add a second try/catch that asks for two numbers,</span>
+<span class="c">//         divides the first by the second, and catches</span>
+<span class="c">//         DivideByZeroException. Test with 10 / 0.</span>
+
+<span class="c">// TODO 2: After your try/catch, print a message proving</span>
+<span class="c">//         the program kept running after the error.</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section red">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2>Multiple Catch Blocks</h2>
+    <span class="time-badge">1:02 – 1:12</span>
+  </div>
+  <p>You can have multiple catch blocks to handle different exception types differently. C# checks them <span class="key-term">top to bottom</span> and runs the FIRST one that matches.</p>
+  <div class="note-box warning">
+    <strong>⚠️ Critical Rule:</strong> Always order from <strong>most specific</strong> to <strong>least specific</strong>. If you put <code>catch (Exception)</code> first, the compiler will error — the specific catches become unreachable!
+  </div>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section03_MultipleCatchBlocks.cs</span>
+  <pre><code><span class="kw">try</span>
+{
+    Console.<span class="fn">Write</span>(<span class="st">"Enter an index (0-4): "</span>);
+    <span class="tp">int</span> <span class="vr">index</span> = <span class="tp">int</span>.<span class="fn">Parse</span>(Console.<span class="fn">ReadLine</span>());
+    <span class="tp">int</span>[] <span class="vr">numbers</span> = { <span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span> };
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Value: {<span class="vr">numbers</span>[<span class="vr">index</span>]}"</span>);
+}
+<span class="kw">catch</span> (<span class="tp">FormatException</span> <span class="vr">ex</span>)
+{
+    Console.<span class="fn">WriteLine</span>(<span class="st">"That wasn't a number!"</span>);
+}
+<span class="kw">catch</span> (<span class="tp">IndexOutOfRangeException</span> <span class="vr">ex</span>)
+{
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Index must be 0-4. {<span class="vr">ex</span>.Message}"</span>);
+}</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section03_MultipleCatchBlocks.cs</h4>
+    <pre><code><span class="c">// TODO 1: Add a general catch (Exception ex) block at the END.</span>
+<span class="c">//         Print "Something unexpected happened: " + ex.Message</span>
+
+<span class="c">// TODO 2: Test with valid input, "abc", and 99. Comment what happens.</span>
+
+<span class="c">// TODO 3: Move catch (Exception ex) to be FIRST. What compiler error</span>
+<span class="c">//         do you get? Comment it, then move it back.</span></code></pre>
+  </div>
+</div>
+
+<!-- BREAK -->
+<div class="break-banner">
+  <span>🦵 LEG STRETCH / Q&A — 5 minutes (1:12 – 1:17)</span>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section yellow">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2>The Finally Block</h2>
+    <span class="time-badge">1:17 – 1:27</span>
+  </div>
+  <p>The <span class="key-term">finally</span> block runs <strong>no matter what</strong> — whether an exception was thrown or not. It's used for cleanup: closing files, releasing resources, resetting state.</p>
+  <div class="note-box tip">
+    <strong>🧹 Think of it as:</strong> "No matter what happened, do THIS before leaving." Like turning off the stove before leaving the kitchen, even if dinner burned.
+  </div>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section04_TheFinallyBlock.cs</span>
+  <pre><code><span class="tp">StreamReader</span> <span class="vr">reader</span> = <span class="kw">null</span>;
+<span class="kw">try</span>
+{
+    <span class="vr">reader</span> = <span class="kw">new</span> <span class="tp">StreamReader</span>(<span class="st">"data.txt"</span>);
+    <span class="tp">string</span> <span class="vr">content</span> = <span class="vr">reader</span>.<span class="fn">ReadToEnd</span>();
+    Console.<span class="fn">WriteLine</span>(<span class="vr">content</span>);
+}
+<span class="kw">catch</span> (<span class="tp">FileNotFoundException</span> <span class="vr">ex</span>)
+{
+    Console.<span class="fn">WriteLine</span>(<span class="st">"File not found! "</span> + <span class="vr">ex</span>.Message);
+}
+<span class="kw">finally</span>
+{
+    <span class="kw">if</span> (<span class="vr">reader</span> != <span class="kw">null</span>)
+    {
+        <span class="vr">reader</span>.<span class="fn">Close</span>();
+        Console.<span class="fn">WriteLine</span>(<span class="st">"📁 Reader closed in finally block."</span>);
+    }
+    Console.<span class="fn">WriteLine</span>(<span class="st">"✅ Finally block always runs!"</span>);
+}</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section04_TheFinallyBlock.cs</h4>
+    <pre><code><span class="c">// TODO 1: Create "data.txt" in bin/Debug/net9.0. Run — does finally run?</span>
+
+<span class="c">// TODO 2: Delete "data.txt" and run — does finally STILL run?</span>
+
+<span class="c">// TODO 3: Write your own try/catch/finally using StreamWriter</span>
+<span class="c">//         to append a log entry to "log.txt".</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">05</span>
+    <h2>Exception Properties</h2>
+    <span class="time-badge">1:27 – 1:37</span>
+  </div>
+  <p>Every exception object has properties that help you <span class="key-term">debug</span>. The three most important: <code>.Message</code> (what), <code>.StackTrace</code> (where), and <code>.InnerException</code> (why).</p>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section05_ExceptionProperties.cs</span>
+  <pre><code><span class="kw">try</span>
+{
+    <span class="tp">int</span>[] <span class="vr">arr</span> = { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span> };
+    Console.<span class="fn">WriteLine</span>(<span class="vr">arr</span>[<span class="nm">10</span>]);
+}
+<span class="kw">catch</span> (<span class="tp">IndexOutOfRangeException</span> <span class="vr">ex</span>)
+{
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Message:    {<span class="vr">ex</span>.Message}"</span>);
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"StackTrace: {<span class="vr">ex</span>.StackTrace}"</span>);
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Source:     {<span class="vr">ex</span>.Source}"</span>);
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Inner:      {<span class="vr">ex</span>.InnerException}"</span>);
+}</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section05_ExceptionProperties.cs</h4>
+    <pre><code><span class="c">// TODO 1: In a comment, explain what StackTrace told you.</span>
+
+<span class="c">// TODO 2: Try int.Parse("not a number") and print all four properties.</span>
+
+<span class="c">// TODO 3: Try Console.WriteLine(ex) and compare. Which is better?</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section purple">
+  <div class="section-header">
+    <span class="section-number">06</span>
+    <h2>Throwing Exceptions</h2>
+    <span class="time-badge">1:37 – 1:47</span>
+  </div>
+  <p>You can <span class="key-term">throw</span> exceptions yourself using the <code>throw</code> keyword. This is how you enforce rules in your own methods — if someone passes bad data, you signal the problem.</p>
+  <div class="note-box warning">
+    <strong>⚠️ throw; vs throw ex;</strong> — Use <code>throw;</code> (no variable) to re-throw and preserve the original stack trace. <code>throw ex;</code> resets the trace and makes debugging harder.
+  </div>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section06_ThrowingExceptions.cs</span>
+  <pre><code><span class="kw">static</span> <span class="tp">void</span> <span class="fn">SetAge</span>(<span class="tp">int</span> <span class="vr">age</span>)
+{
+    <span class="kw">if</span> (<span class="vr">age</span> &lt; <span class="nm">0</span> || <span class="vr">age</span> &gt; <span class="nm">150</span>)
+    {
+        <span class="kw">throw new</span> <span class="tp">ArgumentOutOfRangeException</span>(<span class="kw">nameof</span>(<span class="vr">age</span>),
+            <span class="st">"Age must be between 0 and 150."</span>);
+    }
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Age set to: {<span class="vr">age</span>}"</span>);
+}
+
+<span class="c">// In Run():</span>
+<span class="kw">try</span>
+{
+    <span class="fn">SetAge</span>(<span class="nm">25</span>);   <span class="c">// works fine</span>
+    <span class="fn">SetAge</span>(-<span class="nm">5</span>);   <span class="c">// throws!</span>
+}
+<span class="kw">catch</span> (<span class="tp">ArgumentOutOfRangeException</span> <span class="vr">ex</span>)
+{
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Invalid age: {<span class="vr">ex</span>.Message}"</span>);
+}</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section06_ThrowingExceptions.cs</h4>
+    <pre><code><span class="c">// TODO 1: Write ValidateUsername(string username) that throws</span>
+<span class="c">//         ArgumentNullException if null, ArgumentException if &lt; 3 chars.</span>
+
+<span class="c">// TODO 2: Test with null, "", "ab", and "alice" in try/catch blocks.</span>
+
+<span class="c">// TODO 3: Comment: why throw instead of just printing an error?</span></code></pre>
+  </div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section red">
+  <div class="section-header">
+    <span class="section-number">07</span>
+    <h2>Custom Exceptions</h2>
+    <span class="time-badge">1:47 – 1:57</span>
+  </div>
+  <p>When built-in exceptions don't describe your specific error well enough, <span class="key-term">create your own</span>. Custom exceptions inherit from <code>Exception</code> and can carry extra data.</p>
+  <h3>💻 Instructor Demo</h3>
+  <span class="file-tag">Section07_CustomExceptions.cs</span>
+  <pre><code><span class="kw">public class</span> <span class="tp">InsufficientFundsException</span> : <span class="tp">Exception</span>
+{
+    <span class="kw">public</span> <span class="tp">decimal</span> <span class="vr">AttemptedAmount</span> { <span class="kw">get</span>; }
+    <span class="kw">public</span> <span class="tp">decimal</span> <span class="vr">CurrentBalance</span> { <span class="kw">get</span>; }
+
+    <span class="kw">public</span> <span class="fn">InsufficientFundsException</span>(<span class="tp">decimal</span> <span class="vr">attempted</span>, <span class="tp">decimal</span> <span class="vr">balance</span>)
+        : <span class="kw">base</span>(<span class="st">$"Cannot withdraw {attempted:C}. Balance: {balance:C}"</span>)
+    {
+        AttemptedAmount = <span class="vr">attempted</span>;
+        CurrentBalance = <span class="vr">balance</span>;
+    }
+}
+
+<span class="c">// Usage:</span>
+<span class="tp">decimal</span> <span class="vr">balance</span> = <span class="nm">100.00m</span>;
+<span class="tp">decimal</span> <span class="vr">withdrawal</span> = <span class="nm">250.00m</span>;
+
+<span class="kw">try</span>
+{
+    <span class="kw">if</span> (<span class="vr">withdrawal</span> > <span class="vr">balance</span>)
+        <span class="kw">throw new</span> <span class="tp">InsufficientFundsException</span>(<span class="vr">withdrawal</span>, <span class="vr">balance</span>);
+    <span class="vr">balance</span> -= <span class="vr">withdrawal</span>;
+}
+<span class="kw">catch</span> (<span class="tp">InsufficientFundsException</span> <span class="vr">ex</span>)
+{
+    Console.<span class="fn">WriteLine</span>(<span class="vr">ex</span>.Message);
+    Console.<span class="fn">WriteLine</span>(<span class="st">$"Short by: {<span class="vr">ex</span>.AttemptedAmount - <span class="vr">ex</span>.CurrentBalance:C}"</span>);
+}</code></pre>
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section07_CustomExceptions.cs</h4>
+    <pre><code><span class="c">// TODO 1: Create InvalidGradeException with a Grade property.</span>
+<span class="c">//         Inherit from Exception, call base() with a message.</span>
+
+<span class="c">// TODO 2: Ask user for a grade, throw if not 0-100. Catch it.</span>
+
+<span class="c">// TODO 3: Also catch FormatException. Specific catches first!</span></code></pre>
+  </div>
+</div>
+
+<!-- EXIT TICKET -->
+<div class="exit-ticket">
+  <h2>🎫 Exit Ticket</h2>
+  <p style="color: var(--text-muted); margin-bottom: 1rem;">Answer these in your own words. No code needed — just understanding.</p>
+  <p><strong>1.</strong> What is the difference between a syntax error and an exception? Give one example of each.</p>
+  <textarea placeholder="A syntax error is... An exception is..."></textarea>
+  <p><strong>2.</strong> If you have catch blocks for IOException, FileNotFoundException, and Exception, what order must they be in and why?</p>
+  <textarea placeholder="The order should be..."></textarea>
+  <p><strong>3.</strong> What is the purpose of the finally block? Give a real-world scenario where you'd use it.</p>
+  <textarea placeholder="The finally block..."></textarea>
+  <p><strong>4.</strong> What is the difference between <code>throw;</code> and <code>throw ex;</code> inside a catch block?</p>
+  <textarea placeholder="throw; preserves... throw ex; resets..."></textarea>
+  <p><strong>5.</strong> When should you use <code>int.TryParse()</code> instead of wrapping <code>int.Parse()</code> in a try/catch?</p>
+  <textarea placeholder="Use TryParse when..."></textarea>
+</div>
+
+<!-- SUBMISSION -->
+<div class="submission-box">
+  <h2>📤 Submission (5 points)</h2>
+  <p style="color: var(--text-muted);">
+    1. Make sure all your TODO sections are completed.<br>
+    2. Push your <strong>ExceptionHandlingNotes</strong> project to GitHub.<br>
+    3. Ensure the repository is set to <strong>Public</strong>.<br>
+    4. Copy the repository URL and submit it on <strong>Canvas</strong>.
+  </p>
+</div>
+
+</body>
+</html>
