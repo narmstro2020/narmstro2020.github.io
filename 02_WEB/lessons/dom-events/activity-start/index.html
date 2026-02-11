@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Profile Card</title>
+  <style>
+    /* ============================================
+       CSS is done for you — focus on the JavaScript!
+       ============================================ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 2rem;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light-mode {
+      background: #f0f0f5;
+      color: #1a1a2e;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #4ecca3;
+      text-align: center;
+    }
+
+    /* ── Profile Card ── */
+    .profile-card {
+      background: #252540;
+      border: 2px solid #4ecca3;
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    body.light-mode .profile-card {
+      background: #ffffff;
+      border-color: #7b68ee;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4ecca3, #7b68ee);
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: #0f0f1a;
+      font-weight: 700;
+      transition: transform 0.3s;
+    }
+
+    .avatar:hover {
+      transform: scale(1.1);
+    }
+
+    .profile-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .profile-title {
+      font-size: 0.9rem;
+      color: #a0a0a0;
+      margin-bottom: 1rem;
+    }
+
+    body.light-mode .profile-title {
+      color: #666;
+    }
+
+    .profile-bio {
+      font-size: 0.85rem;
+      color: #a0a0a0;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    body.light-mode .profile-bio {
+      color: #555;
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-box {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #4ecca3;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: #a0a0a0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Controls ── */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .control-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #4ecca3;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+      outline: none;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light-mode input[type="text"] {
+      background: #fff;
+      color: #1a1a2e;
+      border-color: #7b68ee;
+    }
+
+    button {
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+
+    .btn-update {
+      background: #4ecca3;
+      color: #0f0f1a;
+    }
+
+    .btn-theme {
+      background: #7b68ee;
+      color: white;
+      width: 100%;
+    }
+
+    .btn-like {
+      background: #e94560;
+      color: white;
+      width: 100%;
+    }
+
+    .btn-reset {
+      background: #555;
+      color: white;
+      width: 100%;
+    }
+
+    /* ── Status ── */
+    .status-bar {
+      font-size: 0.8rem;
+      color: #a0a0a0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎨 Interactive Profile Card</h1>
+
+  <!-- ── Profile Card ── -->
+  <div class="profile-card">
+    <div class="avatar" id="avatar">?</div>
+    <div class="profile-name" id="profile-name">Your Name</div>
+    <div class="profile-title" id="profile-title">Web Developer</div>
+    <div class="profile-bio" id="profile-bio">Click "Update Name" to personalize this card. Try the theme toggle and the like button!</div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-number" id="like-count">0</div>
+        <div class="stat-label">Likes</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="visit-count">1</div>
+        <div class="stat-label">Visits</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="click-count">0</div>
+        <div class="stat-label">Clicks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Controls ── -->
+  <div class="controls">
+    <div class="control-row">
+      <input type="text" id="name-input" placeholder="Enter your name...">
+      <button class="btn-update" id="update-btn">Update Name</button>
+    </div>
+    <button class="btn-theme" id="theme-btn">🌙 Toggle Theme</button>
+    <button class="btn-like" id="like-btn">❤️ Like This Profile</button>
+    <button class="btn-reset" id="reset-btn">🔄 Reset Everything</button>
+  </div>
+
+  <div class="status-bar" id="status">Ready — start clicking!</div>
+
+  <script>
+    // ============================================
+    // 🎨 Interactive Profile Card — Activity
+    // DOM & Event Listeners
+    // ============================================
+    //
+    // WHAT YOU ALREADY KNOW:
+    //   ✅ Variables (let, const)
+    //   ✅ Functions (function declarations)
+    //   ✅ Template literals (`Hello ${name}`)
+    //   ✅ document.querySelector()
+    //   ✅ element.addEventListener("click", ...)
+    //
+    // YOUR JOB:
+    //   Complete each TODO below. Every TODO tells you
+    //   exactly WHICH element to select and WHAT to do.
+    //   The HTML and CSS are done — you only write JS.
+    //
+    // TOTAL: 7 TODOs across 4 features
+    // ============================================
+
+
+    // ── FEATURE 1: Update Name ──────────────────
+    // When the user types a name and clicks "Update Name":
+    //   - The profile name text changes to what they typed
+    //   - The avatar letter changes to the first letter of the name
+    //   - The status bar updates to show a confirmation message
+
+    // TODO 1: Select the elements you need.
+    //   Use document.querySelector() to grab each of these by their id:
+    //     - The input box         → id="name-input"
+    //     - The update button     → id="update-btn"
+    //     - The profile name text → id="profile-name"
+    //     - The avatar circle     → id="avatar"
+    //     - The status bar        → id="status"
+    //   Store each one in a variable using const.
+
+
+    // TODO 2: Add a "click" event listener to the update button.
+    //   Inside the listener function:
+    //     a) Read the text from the input box using .value
+    //     b) Set the profile name's .textContent to that value
+    //     c) Set the avatar's .textContent to the FIRST CHARACTER
+    //        of the name (hint: use [0] on the string)
+    //     d) Set the status bar's .textContent to a message like:
+    //        "✅ Name updated to [name]!" using a template literal
+    //     e) Clear the input box by setting its .value to ""
+
+
+    // ── FEATURE 2: Theme Toggle ─────────────────
+    // When the user clicks "Toggle Theme":
+    //   - The page switches between dark and light mode
+    //   - The status bar shows which mode is now active
+
+    // TODO 3: Select the theme button (id="theme-btn")
+    //   and the <body> element (use "body" as the selector).
+
+
+    // TODO 4: Add a "click" event listener to the theme button.
+    //   Inside the listener function:
+    //     a) Use body.classList.toggle("light-mode") to switch themes
+    //     b) Update the status bar .textContent to say either
+    //        "☀️ Light mode!" or "🌙 Dark mode!"
+    //        (hint: check body.classList.contains("light-mode"))
+
+
+    // ── FEATURE 3: Like Button ──────────────────
+    // When the user clicks "Like This Profile":
+    //   - The like count goes up by 1
+    //   - The status bar shows how many total likes
+
+    // TODO 5: Select the like button (id="like-btn") and
+    //   the like count display (id="like-count").
+    //   Also create a let variable called "likes" starting at 0.
+
+
+    // TODO 6: Add a "click" event listener to the like button.
+    //   Inside the listener function:
+    //     a) Increase the likes variable by 1
+    //     b) Set the like count display's .textContent to the new value
+    //     c) Update the status bar to say:
+    //        "❤️ You have [likes] like(s)!" using a template literal
+
+
+    // ── FEATURE 4: Reset Button ─────────────────
+    // When the user clicks "Reset Everything":
+    //   - Name goes back to "Your Name"
+    //   - Avatar goes back to "?"
+    //   - Like count resets to 0
+    //   - Status bar says "🔄 Everything has been reset!"
+
+    // TODO 7: Select the reset button (id="reset-btn").
+    //   Add a "click" event listener. Inside:
+    //     a) Set profile name .textContent back to "Your Name"
+    //     b) Set avatar .textContent back to "?"
+    //     c) Set the likes variable back to 0
+    //     d) Set like count display .textContent to "0"
+    //     e) Set status bar .textContent to "🔄 Everything has been reset!"
+
+  </script>
+</body>
+</html>

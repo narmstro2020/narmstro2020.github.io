@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Development &amp; Databases — JavaScript</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --red: #e94560;
+      --yellow: #ffc107;
+      --blue: #5dade2;
+      --orange: #ff8c42;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --text-dim: #555;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; line-height: 1.6; }
+
+    /* ── Grid Background ── */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1;
+      background-image:
+        linear-gradient(rgba(78,204,163,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78,204,163,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 4rem 2rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--surface-light);
+    }
+    .hero-badge {
+      display: inline-block;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: rgba(78,204,163,0.1);
+      border: 1px solid rgba(78,204,163,0.25);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 650px;
+    }
+
+    /* ── Nav Stats ── */
+    .stats {
+      display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;
+    }
+    .stat {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--text-dim);
+    }
+    .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .stat-dot.green { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+    .stat-dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+    .stat-dot.dim { background: var(--text-dim); }
+
+    /* ── Content ── */
+    .content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+    .section-label {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Unit Grid ── */
+    .unit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+    .unit-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-light);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+    .unit-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(78,204,163,0.08);
+    }
+    .unit-card.locked {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+    .unit-card.locked::after {
+      content: '🔒';
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.1rem;
+    }
+    .unit-card.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent), 0 4px 20px rgba(78,204,163,0.1);
+    }
+    .unit-card.active::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--purple));
+    }
+    .unit-num {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.1em;
+    }
+    .unit-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .unit-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .unit-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+    }
+    .tag {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.65rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: var(--surface-light);
+      color: var(--text-dim);
+    }
+    .tag.green { background: rgba(78,204,163,0.12); color: var(--accent); }
+    .tag.purple { background: rgba(123,104,238,0.12); color: var(--purple); }
+    .tag.red { background: rgba(233,69,96,0.12); color: var(--red); }
+    .tag.yellow { background: rgba(255,193,7,0.12); color: var(--yellow); }
+    .tag.blue { background: rgba(93,173,226,0.12); color: var(--blue); }
+    .tag.orange { background: rgba(255,140,66,0.12); color: var(--orange); }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--surface-light);
+      padding: 2rem;
+      text-align: center;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 2rem; }
+      .unit-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="hero-badge">// 2025–2026</span>
+  <h1>Web Development<br>&amp; Databases</h1>
+  <p>Course materials, guided notes, and activities. Click an active unit to view its lessons.</p>
+  <div class="stats">
+    <div class="stat"><span class="stat-dot green"></span> Active</div>
+    <div class="stat"><span class="stat-dot yellow"></span> Up Next</div>
+    <div class="stat"><span class="stat-dot dim"></span> Locked</div>
+  </div>
+</header>
+
+<main class="content">
+  <div class="section-label">// units</div>
+  <div class="unit-grid">
+
+    <div class="unit-card locked">
+      <div class="unit-num">UNIT_00</div>
+      <h3>HTML &amp; CSS Foundations</h3>
+      <p>Document structure, semantic tags, selectors, the box model, flexbox, and building responsive layouts.</p>
+      <div class="unit-tags">
+        <span class="tag green">HTML</span>
+        <span class="tag green">CSS</span>
+        <span class="tag green">flexbox</span>
+        <span class="tag green">responsive</span>
+      </div>
+    </div>
+
+    <a href="./lessons/dom-events/index.html" class="unit-card active">
+      <div class="unit-num">UNIT_01</div>
+      <h3>JavaScript &amp; the DOM</h3>
+      <p>Variables, functions, template literals, selecting elements, event listeners, and building interactive web pages.</p>
+      <div class="unit-tags">
+        <span class="tag green">variables</span>
+        <span class="tag green">functions</span>
+        <span class="tag purple">querySelector</span>
+        <span class="tag purple">addEventListener</span>
+      </div>
+    </a>
+
+    <div class="unit-card locked">
+      <div class="unit-num">UNIT_02</div>
+      <h3>Conditionals &amp; Logic</h3>
+      <p>If/else statements, comparison operators, logical operators, and building decision-driven interfaces.</p>
+      <div class="unit-tags">
+        <span class="tag yellow">if/else</span>
+        <span class="tag yellow">comparison</span>
+        <span class="tag yellow">logical ops</span>
+        <span class="tag yellow">ternary</span>
+      </div>
+    </div>
+
+    <div class="unit-card locked">
+      <div class="unit-num">UNIT_03</div>
+      <h3>Loops &amp; Iteration</h3>
+      <p>For loops, while loops, looping through DOM elements, and generating dynamic content.</p>
+      <div class="unit-tags">
+        <span class="tag red">for</span>
+        <span class="tag red">while</span>
+        <span class="tag red">forEach</span>
+        <span class="tag red">querySelectorAll</span>
+      </div>
+    </div>
+
+    <div class="unit-card locked">
+      <div class="unit-num">UNIT_04</div>
+      <h3>Arrays &amp; Objects</h3>
+      <p>Storing collections of data, object properties, JSON basics, and rendering data to the page.</p>
+      <div class="unit-tags">
+        <span class="tag blue">arrays</span>
+        <span class="tag blue">objects</span>
+        <span class="tag blue">JSON</span>
+        <span class="tag blue">rendering</span>
+      </div>
+    </div>
+
+    <div class="unit-card locked">
+      <div class="unit-num">UNIT_05</div>
+      <h3>Project 1 — Interactive Web App</h3>
+      <p>Design, build, and ship a complete interactive JavaScript application using all Unit 1–4 skills.</p>
+      <div class="unit-tags">
+        <span class="tag orange">planning</span>
+        <span class="tag orange">development</span>
+        <span class="tag orange">submission</span>
+      </div>
+    </div>
+
+    <div class="unit-card locked">
+      <div class="unit-num">UNIT_06</div>
+      <h3>Intro to SQL &amp; Supabase</h3>
+      <p>Relational databases, SQL queries (SELECT, INSERT, UPDATE, DELETE), and connecting to Supabase.</p>
+      <div class="unit-tags">
+        <span class="tag green">SQL</span>
+        <span class="tag green">SELECT</span>
+        <span class="tag green">Supabase</span>
+        <span class="tag green">tables</span>
+      </div>
+    </div>
+
+    <div class="unit-card locked">
+      <div class="unit-num">UNIT_07</div>
+      <h3>Full-Stack: JS + Supabase</h3>
+      <p>CRUD operations from the browser, reading and writing to a real database, and building data-driven apps.</p>
+      <div class="unit-tags">
+        <span class="tag purple">CRUD</span>
+        <span class="tag purple">fetch</span>
+        <span class="tag purple">async/await</span>
+        <span class="tag purple">Supabase JS</span>
+      </div>
+    </div>
+
+    <div class="unit-card locked">
+      <div class="unit-num">UNIT_08</div>
+      <h3>Authentication &amp; Users</h3>
+      <p>User sign-up, login, sessions, row-level security, and building apps with real user accounts.</p>
+      <div class="unit-tags">
+        <span class="tag red">auth</span>
+        <span class="tag red">sessions</span>
+        <span class="tag red">RLS</span>
+        <span class="tag red">security</span>
+      </div>
+    </div>
+
+    <div class="unit-card locked">
+      <div class="unit-num">UNIT_09</div>
+      <h3>Final Project — Full-Stack App</h3>
+      <p>Design, develop, and present a complete web application with a database backend using everything you've learned.</p>
+      <div class="unit-tags">
+        <span class="tag yellow">planning</span>
+        <span class="tag yellow">development</span>
+        <span class="tag yellow">presentation</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  Web Development &amp; Databases — JavaScript · narmstro2020.github.io
+</footer>
+
+</body>
+</html>
