@@ -1,349 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Software Development Capstone — C#</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0f0f1a;
-      --surface: #1a1a2e;
-      --surface-light: #252540;
-      --accent: #4ecca3;
-      --purple: #7b68ee;
-      --red: #e94560;
-      --yellow: #ffc107;
-      --blue: #5dade2;
-      --text: #e0e0e0;
-      --text-muted: #a0a0a0;
-      --text-dim: #555;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; line-height: 1.6; }
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Development Capstone — C#</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #0f0f1a;
+        --surface: #1a1a2e;
+        --surface-light: #252540;
+        --accent: #4ecca3;
+        --purple: #7b68ee;
+        --red: #e94560;
+        --yellow: #ffc107;
+        --blue: #5dade2;
+        --text: #e0e0e0;
+        --text-muted: #a0a0a0;
+        --text-dim: #555;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; line-height: 1.6; }
 
-    /* ── Grid Background ── */
-    body::before {
-      content: ''; position: fixed; inset: 0; z-index: -1;
-      background-image:
-        linear-gradient(rgba(78,204,163,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(78,204,163,0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
-    }
+      /* ── Grid Background ── */
+      body::before {
+        content: ''; position: fixed; inset: 0; z-index: -1;
+        background-image:
+                linear-gradient(rgba(78,204,163,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(78,204,163,0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+      }
 
-    /* ── Hero ── */
-    .hero {
-      padding: 4rem 2rem 3rem;
-      max-width: 1100px;
-      margin: 0 auto;
-      border-bottom: 1px solid var(--surface-light);
-    }
-    .hero-badge {
-      display: inline-block;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.75rem;
-      color: var(--accent);
-      background: rgba(78,204,163,0.1);
-      border: 1px solid rgba(78,204,163,0.25);
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      margin-bottom: 1rem;
-      letter-spacing: 0.05em;
-    }
-    .hero h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 0.75rem;
-      background: linear-gradient(135deg, var(--accent), var(--purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      max-width: 650px;
-    }
+      /* ── Hero ── */
+      .hero {
+        padding: 4rem 2rem 3rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        border-bottom: 1px solid var(--surface-light);
+      }
+      .hero-badge {
+        display: inline-block;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.75rem;
+        color: var(--accent);
+        background: rgba(78,204,163,0.1);
+        border: 1px solid rgba(78,204,163,0.25);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+        letter-spacing: 0.05em;
+      }
+      .hero h1 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        line-height: 1.15;
+        margin-bottom: 0.75rem;
+        background: linear-gradient(135deg, var(--accent), var(--purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        max-width: 650px;
+      }
 
-    /* ── Nav Stats ── */
-    .stats {
-      display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;
-    }
-    .stat {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--text-dim);
-    }
-    .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
-    .stat-dot.green { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-    .stat-dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
-    .stat-dot.dim { background: var(--text-dim); }
+      /* ── Nav Stats ── */
+      .stats {
+        display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;
+      }
+      .stat {
+        display: flex; align-items: center; gap: 0.5rem;
+        font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--text-dim);
+      }
+      .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
+      .stat-dot.green { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+      .stat-dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+      .stat-dot.dim { background: var(--text-dim); }
 
-    /* ── Content ── */
-    .content {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2.5rem 2rem 4rem;
-    }
-    .section-label {
-      font-family: 'Fira Code', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 1.5rem;
-    }
+      /* ── Content ── */
+      .content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2.5rem 2rem 4rem;
+      }
+      .section-label {
+        font-family: 'Fira Code', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 1.5rem;
+      }
 
-    /* ── Unit Grid ── */
-    .unit-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1rem;
-    }
-    .unit-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-light);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      position: relative;
-      overflow: hidden;
-    }
-    .unit-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(78,204,163,0.08);
-    }
-    .unit-card.locked {
-      opacity: 0.45;
-      pointer-events: none;
-    }
-    .unit-card.locked::after {
-      content: '🔒';
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 1.1rem;
-    }
-    .unit-card.active {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px var(--accent), 0 4px 20px rgba(78,204,163,0.1);
-    }
-    .unit-card.active::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--purple));
-    }
-    .unit-num {
-      font-family: 'Fira Code', monospace;
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.1em;
-    }
-    .unit-card h3 {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-    }
-    .unit-card p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-      line-height: 1.5;
-    }
-    .unit-tags {
-      display: flex; flex-wrap: wrap; gap: 0.4rem;
-    }
-    .tag {
-      font-family: 'Fira Code', monospace;
-      font-size: 0.65rem;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      background: var(--surface-light);
-      color: var(--text-dim);
-    }
-    .tag.green { background: rgba(78,204,163,0.12); color: var(--accent); }
-    .tag.purple { background: rgba(123,104,238,0.12); color: var(--purple); }
-    .tag.red { background: rgba(233,69,96,0.12); color: var(--red); }
-    .tag.yellow { background: rgba(255,193,7,0.12); color: var(--yellow); }
-    .tag.blue { background: rgba(93,173,226,0.12); color: var(--blue); }
+      /* ── Unit Grid ── */
+      .unit-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1rem;
+      }
+      .unit-card {
+        background: var(--surface);
+        border: 1px solid var(--surface-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        position: relative;
+        overflow: hidden;
+      }
+      .unit-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(78,204,163,0.08);
+      }
+      .unit-card.locked {
+        opacity: 0.45;
+        pointer-events: none;
+      }
+      .unit-card.locked::after {
+        content: '🔒';
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.1rem;
+      }
+      .unit-card.active {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent), 0 4px 20px rgba(78,204,163,0.1);
+      }
+      .unit-card.active::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--purple));
+      }
+      .unit-num {
+        font-family: 'Fira Code', monospace;
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.1em;
+      }
+      .unit-card h3 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+      }
+      .unit-card p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+        line-height: 1.5;
+      }
+      .unit-tags {
+        display: flex; flex-wrap: wrap; gap: 0.4rem;
+      }
+      .tag {
+        font-family: 'Fira Code', monospace;
+        font-size: 0.65rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        background: var(--surface-light);
+        color: var(--text-dim);
+      }
+      .tag.green { background: rgba(78,204,163,0.12); color: var(--accent); }
+      .tag.purple { background: rgba(123,104,238,0.12); color: var(--purple); }
+      .tag.red { background: rgba(233,69,96,0.12); color: var(--red); }
+      .tag.yellow { background: rgba(255,193,7,0.12); color: var(--yellow); }
+      .tag.blue { background: rgba(93,173,226,0.12); color: var(--blue); }
 
-    /* ── Footer ── */
-    .footer {
-      border-top: 1px solid var(--surface-light);
-      padding: 2rem;
-      text-align: center;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.75rem;
-      color: var(--text-dim);
-    }
+      /* ── Footer ── */
+      .footer {
+        border-top: 1px solid var(--surface-light);
+        padding: 2rem;
+        text-align: center;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+      }
 
-    @media (max-width: 700px) {
-      .hero h1 { font-size: 2rem; }
-      .unit-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
+      @media (max-width: 700px) {
+        .hero h1 { font-size: 2rem; }
+        .unit-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
 
-<header class="hero">
-  <span class="hero-badge">// 2025–2026</span>
-  <h1>Software Development<br>Capstone — C#</h1>
-  <p>Course materials, guided notes, and activities. Click an active unit to view its lessons.</p>
-  <div class="stats">
-    <div class="stat"><span class="stat-dot green"></span> Active</div>
-    <div class="stat"><span class="stat-dot yellow"></span> Up Next</div>
-    <div class="stat"><span class="stat-dot dim"></span> Locked</div>
-  </div>
-</header>
-
-<main class="content">
-  <div class="section-label">// units</div>
-  <div class="unit-grid">
-
-    <div class="unit-card locked">
-      <div class="unit-num">UNIT_01</div>
-      <h3>C# Fundamentals</h3>
-      <p>Variables, types, operators, conditionals, loops, and methods. The building blocks of everything.</p>
-      <div class="unit-tags">
-        <span class="tag green">int</span>
-        <span class="tag green">string</span>
-        <span class="tag green">if/else</span>
-        <span class="tag green">for/foreach</span>
+    <header class="hero">
+      <span class="hero-badge">// 2025–2026</span>
+      <h1>Software Development<br>Capstone — C#</h1>
+      <p>Course materials, guided notes, and activities. Click an active unit to view its lessons.</p>
+      <div class="stats">
+        <div class="stat"><span class="stat-dot green"></span> Active</div>
+        <div class="stat"><span class="stat-dot yellow"></span> Up Next</div>
+        <div class="stat"><span class="stat-dot dim"></span> Locked</div>
       </div>
-    </div>
+    </header>
 
-    <div class="unit-card locked">
-      <div class="unit-num">UNIT_02</div>
-      <h3>Object-Oriented Programming</h3>
-      <p>Classes, objects, constructors, properties, access modifiers, and the four pillars of OOP.</p>
-      <div class="unit-tags">
-        <span class="tag purple">classes</span>
-        <span class="tag purple">inheritance</span>
-        <span class="tag purple">encapsulation</span>
-        <span class="tag purple">polymorphism</span>
+    <main class="content">
+      <div class="section-label">// units</div>
+      <div class="unit-grid">
+
+        <div class="unit-card locked">
+          <div class="unit-num">UNIT_01</div>
+          <h3>C# Fundamentals</h3>
+          <p>Variables, types, operators, conditionals, loops, and methods. The building blocks of everything.</p>
+          <div class="unit-tags">
+            <span class="tag green">int</span>
+            <span class="tag green">string</span>
+            <span class="tag green">if/else</span>
+            <span class="tag green">for/foreach</span>
+          </div>
+        </div>
+
+        <div class="unit-card locked">
+          <div class="unit-num">UNIT_02</div>
+          <h3>Object-Oriented Programming</h3>
+          <p>Classes, objects, constructors, properties, access modifiers, and the four pillars of OOP.</p>
+          <div class="unit-tags">
+            <span class="tag purple">classes</span>
+            <span class="tag purple">inheritance</span>
+            <span class="tag purple">encapsulation</span>
+            <span class="tag purple">polymorphism</span>
+          </div>
+        </div>
+
+        <div class="unit-card locked">
+          <div class="unit-num">UNIT_03</div>
+          <h3>Arrays, Collections &amp; Exception Handling</h3>
+          <p>Arrays, List&lt;T&gt;, Dictionary, and robust error handling with try-catch-finally.</p>
+          <div class="unit-tags">
+            <span class="tag red">arrays</span>
+            <span class="tag red">List&lt;T&gt;</span>
+            <span class="tag red">Dictionary</span>
+            <span class="tag red">try/catch</span>
+          </div>
+        </div>
+
+        <div class="unit-card locked">
+          <div class="unit-num">UNIT_04</div>
+          <h3>Streams &amp; File Handling</h3>
+          <p>Reading, writing, and managing files with StreamReader, StreamWriter, and the File class.</p>
+          <div class="unit-tags">
+            <span class="tag yellow">StreamReader</span>
+            <span class="tag yellow">StreamWriter</span>
+            <span class="tag yellow">File I/O</span>
+            <span class="tag yellow">using</span>
+          </div>
+        </div>
+
+        <a href="lessons/events-delegates/" class="unit-card active">
+          <div class="unit-num">UNIT_01_Lesson 07 (U1B7)</div>
+          <h3>Events &amp; Delegates</h3>
+          <p>Delegates, callbacks, multicast, anonymous methods, lambda expressions, and the event keyword.</p>
+          <div class="unit-tags">
+            <span class="tag green">delegates</span>
+            <span class="tag purple">lambda</span>
+            <span class="tag red">events</span>
+            <span class="tag yellow">pub/sub</span>
+          </div>
+        </a>
+
+        <a href="lessons/exception-handling/" class="unit-card active">
+          <div class="unit-num">LESSON</div>
+          <h3>Exception Handling</h3>
+          <p>Try/catch/finally, multiple catch blocks, exception properties, throwing &amp; custom exceptions.</p>
+          <div class="unit-tags">
+            <span class="tag red">try/catch</span>
+            <span class="tag yellow">finally</span>
+            <span class="tag green">throw</span>
+            <span class="tag purple">custom exceptions</span>
+          </div>
+        </a>
+
+        <a href="lessons/gui-frameworks/" class="unit-card active">
+          <div class="unit-num">LESSON</div>
+          <h3>C# GUI Frameworks</h3>
+          <p>From console to desktop — WinForms, WPF, and WinUI 3. XAML layout, GUI events, and building a tip calculator.</p>
+          <div class="unit-tags">
+            <span class="tag green">XAML</span>
+            <span class="tag purple">WinUI 3</span>
+            <span class="tag red">GUI events</span>
+            <span class="tag yellow">code-behind</span>
+          </div>
+        </a>
+
+        <div class="unit-card locked">
+          <div class="unit-num">UNIT_06</div>
+          <h3>Interfaces &amp; Generics</h3>
+          <p>Defining contracts with interfaces, using generics for type-safe reusable code.</p>
+          <div class="unit-tags">
+            <span class="tag blue">IComparable</span>
+            <span class="tag blue">IEnumerable</span>
+            <span class="tag blue">generics</span>
+          </div>
+        </div>
+
+        <div class="unit-card locked">
+          <div class="unit-num">UNIT_07</div>
+          <h3>LINQ &amp; Data Processing</h3>
+          <p>Query, filter, and transform collections with Language Integrated Query.</p>
+          <div class="unit-tags">
+            <span class="tag purple">Where</span>
+            <span class="tag purple">Select</span>
+            <span class="tag purple">OrderBy</span>
+            <span class="tag purple">GroupBy</span>
+          </div>
+        </div>
+
+        <div class="unit-card locked">
+          <div class="unit-num">UNIT_08</div>
+          <h3>Intro to Unity &amp; MonoBehaviour</h3>
+          <p>Unity Editor, GameObjects, components, Start/Update lifecycle, and your first scripts.</p>
+          <div class="unit-tags">
+            <span class="tag green">GameObject</span>
+            <span class="tag green">MonoBehaviour</span>
+            <span class="tag green">Start()</span>
+            <span class="tag green">Update()</span>
+          </div>
+        </div>
+
+        <div class="unit-card locked">
+          <div class="unit-num">UNIT_09</div>
+          <h3>Unity Game Systems</h3>
+          <p>Physics, input handling, collision, UI, and building interactive game mechanics.</p>
+          <div class="unit-tags">
+            <span class="tag red">Rigidbody</span>
+            <span class="tag red">Collider</span>
+            <span class="tag red">Input</span>
+            <span class="tag red">Canvas</span>
+          </div>
+        </div>
+
+        <div class="unit-card locked">
+          <div class="unit-num">UNIT_10</div>
+          <h3>Capstone Project</h3>
+          <p>Design, develop, and present a complete game or application using everything you've learned.</p>
+          <div class="unit-tags">
+            <span class="tag yellow">planning</span>
+            <span class="tag yellow">development</span>
+            <span class="tag yellow">presentation</span>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </main>
 
-    <div class="unit-card locked">
-      <div class="unit-num">UNIT_03</div>
-      <h3>Arrays, Collections &amp; Exception Handling</h3>
-      <p>Arrays, List&lt;T&gt;, Dictionary, and robust error handling with try-catch-finally.</p>
-      <div class="unit-tags">
-        <span class="tag red">arrays</span>
-        <span class="tag red">List&lt;T&gt;</span>
-        <span class="tag red">Dictionary</span>
-        <span class="tag red">try/catch</span>
-      </div>
-    </div>
+    <footer class="footer">
+      Software Development Capstone — C# · narmstro2020.github.io
+    </footer>
 
-    <div class="unit-card locked">
-      <div class="unit-num">UNIT_04</div>
-      <h3>Streams &amp; File Handling</h3>
-      <p>Reading, writing, and managing files with StreamReader, StreamWriter, and the File class.</p>
-      <div class="unit-tags">
-        <span class="tag yellow">StreamReader</span>
-        <span class="tag yellow">StreamWriter</span>
-        <span class="tag yellow">File I/O</span>
-        <span class="tag yellow">using</span>
-      </div>
-    </div>
-
-    <a href="lessons/events-delegates/" class="unit-card active">
-      <div class="unit-num">UNIT_01_Lesson 07 (U1B7)</div>
-      <h3>Events &amp; Delegates</h3>
-      <p>Delegates, callbacks, multicast, anonymous methods, lambda expressions, and the event keyword.</p>
-      <div class="unit-tags">
-        <span class="tag green">delegates</span>
-        <span class="tag purple">lambda</span>
-        <span class="tag red">events</span>
-        <span class="tag yellow">pub/sub</span>
-      </div>
-    </a>
-
-    <a href="lessons/exception-handling/" class="unit-card active">
-      <div class="unit-num">LESSON</div>
-      <h3>Exception Handling</h3>
-      <p>Try/catch/finally, multiple catch blocks, exception properties, throwing &amp; custom exceptions.</p>
-      <div class="unit-tags">
-        <span class="tag red">try/catch</span>
-        <span class="tag yellow">finally</span>
-        <span class="tag green">throw</span>
-        <span class="tag purple">custom exceptions</span>
-      </div>
-    </a>
-
-    <div class="unit-card locked">
-      <div class="unit-num">UNIT_06</div>
-      <h3>Interfaces &amp; Generics</h3>
-      <p>Defining contracts with interfaces, using generics for type-safe reusable code.</p>
-      <div class="unit-tags">
-        <span class="tag blue">IComparable</span>
-        <span class="tag blue">IEnumerable</span>
-        <span class="tag blue">generics</span>
-      </div>
-    </div>
-
-    <div class="unit-card locked">
-      <div class="unit-num">UNIT_07</div>
-      <h3>LINQ &amp; Data Processing</h3>
-      <p>Query, filter, and transform collections with Language Integrated Query.</p>
-      <div class="unit-tags">
-        <span class="tag purple">Where</span>
-        <span class="tag purple">Select</span>
-        <span class="tag purple">OrderBy</span>
-        <span class="tag purple">GroupBy</span>
-      </div>
-    </div>
-
-    <div class="unit-card locked">
-      <div class="unit-num">UNIT_08</div>
-      <h3>Intro to Unity &amp; MonoBehaviour</h3>
-      <p>Unity Editor, GameObjects, components, Start/Update lifecycle, and your first scripts.</p>
-      <div class="unit-tags">
-        <span class="tag green">GameObject</span>
-        <span class="tag green">MonoBehaviour</span>
-        <span class="tag green">Start()</span>
-        <span class="tag green">Update()</span>
-      </div>
-    </div>
-
-    <div class="unit-card locked">
-      <div class="unit-num">UNIT_09</div>
-      <h3>Unity Game Systems</h3>
-      <p>Physics, input handling, collision, UI, and building interactive game mechanics.</p>
-      <div class="unit-tags">
-        <span class="tag red">Rigidbody</span>
-        <span class="tag red">Collider</span>
-        <span class="tag red">Input</span>
-        <span class="tag red">Canvas</span>
-      </div>
-    </div>
-
-    <div class="unit-card locked">
-      <div class="unit-num">UNIT_10</div>
-      <h3>Capstone Project</h3>
-      <p>Design, develop, and present a complete game or application using everything you've learned.</p>
-      <div class="unit-tags">
-        <span class="tag yellow">planning</span>
-        <span class="tag yellow">development</span>
-        <span class="tag yellow">presentation</span>
-      </div>
-    </div>
-
-  </div>
-</main>
-
-<footer class="footer">
-  Software Development Capstone — C# · narmstro2020.github.io
-</footer>
-
-</body>
+  </body>
 </html>

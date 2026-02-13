@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C# GUI Frameworks — Guided Notes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+    
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --red: #e94560;
+      --yellow: #ffc107;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --text-dim: #666;
+      --code-bg: #0a0a15;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .section {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .section.purple { border-left-color: var(--purple); }
+    .section.red { border-left-color: var(--red); }
+    .section.yellow { border-left-color: var(--yellow); }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .section-number {
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+    
+    .section.purple .section-number { background: var(--purple); }
+    .section.red .section-number { background: var(--red); }
+    .section.yellow .section-number { background: var(--yellow); }
+    
+    h2 {
+      font-size: 1.3rem;
+      color: var(--text);
+    }
+    
+    h3 {
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin: 1rem 0 0.5rem;
+    }
+    
+    p, li { color: var(--text-muted); margin-bottom: 0.5rem; }
+    
+    .key-term {
+      color: var(--yellow);
+      font-weight: 600;
+    }
+    
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      background: var(--code-bg);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+    
+    pre {
+      background: var(--code-bg);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+      border: 1px solid var(--surface-light);
+    }
+    
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+    
+    .file-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--purple);
+      background: rgba(123, 104, 238, 0.1);
+      border: 1px solid rgba(123, 104, 238, 0.25);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .todo-block {
+      background: rgba(78, 204, 163, 0.06);
+      border: 1px solid rgba(78, 204, 163, 0.2);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .todo-block h4 {
+      color: var(--accent);
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .svg-embed {
+      margin: 1rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--surface-light);
+    }
+    
+    .svg-embed img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .note-box {
+      background: rgba(255, 193, 7, 0.06);
+      border: 1px solid rgba(255, 193, 7, 0.2);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+    }
+    
+    .note-box strong { color: var(--yellow); }
+    
+    /* Syntax highlighting classes */
+    .kw { color: #c586c0; }
+    .tp { color: #4ec9b0; }
+    .fn { color: #dcdcaa; }
+    .st { color: #ce9178; }
+    .nm { color: #b5cea8; }
+    .vr { color: #9cdcfe; }
+    .dt { color: #4ec9b0; }
+    .c  { color: #6a9955; }
+    .xk { color: #808080; } /* XML brackets */
+    .xa { color: #9cdcfe; } /* XML attributes */
+    .xt { color: #4ec9b0; } /* XML tags */
+    
+    .exit-ticket {
+      background: var(--surface);
+      border: 2px solid var(--purple);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .exit-ticket h2 { color: var(--purple); margin-bottom: 1rem; }
+    
+    textarea {
+      width: 100%;
+      min-height: 70px;
+      background: var(--code-bg);
+      color: var(--text);
+      border: 1px solid var(--surface-light);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      resize: vertical;
+      margin-bottom: 1rem;
+    }
+    
+    textarea:focus { outline: 1px solid var(--accent); }
+    
+    .submission-box {
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .submission-box h2 { color: var(--accent); margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<h1>C# GUI Frameworks — Guided Notes</h1>
+<p class="subtitle">From Console to Desktop: WinForms, WPF &amp; WinUI 3 &nbsp;|&nbsp; Read &amp; Annotate — study the examples, complete the TODOs</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 1 -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2>Why GUI Frameworks?</h2>
+  </div>
+  
+  <p>Everything you've built so far uses <code>Console.ReadLine()</code> and <code>Console.WriteLine()</code> — sequential, blocking, text-only. A <span class="key-term">GUI framework</span> gives you windows, buttons, sliders, and text fields driven by <strong>events</strong>.</p>
+
+  <div class="svg-embed">
+    <img src="svgs/01-why-gui-frameworks.svg" alt="Why GUI Frameworks infographic">
+  </div>
+
+  <h3>📖 Study This Code</h3>
+  <span class="file-tag">Section01_WhyGuiFrameworks.cs</span>
+  <pre><code>
+<span class="c">// Console App — sequential, blocking</span>
+<span class="tp">Console</span>.<span class="fn">Write</span>(<span class="st">"Enter name: "</span>);
+<span class="kw">string</span> <span class="vr">name</span> = <span class="tp">Console</span>.<span class="fn">ReadLine</span>();  <span class="c">// BLOCKS here</span>
+
+<span class="c">// GUI App — event-driven, non-blocking</span>
+<span class="c">// XAML: &lt;Button Content="Submit" Click="OnSubmit"/&gt;</span>
+<span class="kw">private void</span> <span class="fn">OnSubmit</span>(<span class="tp">object</span> <span class="vr">sender</span>, <span class="tp">RoutedEventArgs</span> <span class="vr">e</span>)
+{
+    <span class="vr">output</span>.<span class="vr">Text</span> = <span class="st">$"Hello {nameBox.Text}!"</span>;
+}
+</code></pre>
+
+  <div class="note-box">
+    <strong>💡 Connection:</strong> The <code>Click</code> event in GUI frameworks uses the <em>exact same</em> delegate/event pattern from Unit 5. The framework is the publisher, your handler is the subscriber.
+  </div>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section01_WhyGuiFrameworks.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Explain the difference between "sequential/blocking"</span>
+<span class="c">//         and "event-driven" programming in 2-3 sentences.</span>
+
+<span class="c">// TODO 2: Identify which line uses the delegate/event pattern</span>
+<span class="c">//         from Unit 5 and explain what happens on click.</span>
+</code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 2 -->
+<!-- ============================================================ -->
+<div class="section purple">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2>WinForms: The Classic</h2>
+  </div>
+  
+  <p><span class="key-term">Windows Forms</span> (2002) — the original C# GUI framework. Everything is pure C# — there's no markup language. A drag-and-drop designer generates code to position controls with pixel coordinates.</p>
+
+  <div class="svg-embed">
+    <img src="svgs/02-winforms-the-classic.svg" alt="WinForms infographic">
+  </div>
+
+  <h3>📖 Study This Code</h3>
+  <span class="file-tag">Section02_WinFormsClassic.cs</span>
+  <pre><code>
+<span class="c">// WinForms: ALL layout in C#, pixel-positioned</span>
+<span class="kw">var</span> <span class="vr">btn</span> = <span class="kw">new</span> <span class="tp">Button</span>();
+<span class="vr">btn</span>.<span class="vr">Text</span> = <span class="st">"Click Me"</span>;
+<span class="vr">btn</span>.<span class="vr">Location</span> = <span class="kw">new</span> <span class="tp">Point</span>(<span class="nm">50</span>, <span class="nm">50</span>);   <span class="c">// fixed pixels!</span>
+<span class="vr">btn</span>.<span class="vr">Size</span> = <span class="kw">new</span> <span class="tp">Size</span>(<span class="nm">120</span>, <span class="nm">40</span>);
+
+<span class="c">// Same += event pattern</span>
+<span class="vr">btn</span>.<span class="vr">Click</span> += (<span class="vr">s</span>, <span class="vr">e</span>) =>
+    <span class="tp">MessageBox</span>.<span class="fn">Show</span>(<span class="st">"Hello!"</span>);
+
+<span class="kw">this</span>.<span class="vr">Controls</span>.<span class="fn">Add</span>(<span class="vr">btn</span>);
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section02_WinFormsClassic.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Count the pixel-positioning lines. Why is this</span>
+<span class="c">//         problematic on different screen resolutions?</span>
+
+<span class="c">// TODO 2: What delegate signature does Button.Click expect?</span>
+
+<span class="c">// TODO 3: Compare WinForms button creation vs XAML.</span>
+<span class="c">//         Which separates "what" from "how"?</span>
+</code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 3 -->
+<!-- ============================================================ -->
+<div class="section red">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2>WPF: XAML Arrives</h2>
+  </div>
+  
+  <p><span class="key-term">Windows Presentation Foundation</span> (2006) introduced <span class="key-term">XAML</span> — a markup language that separates what the UI looks like from how it behaves. Think: HTML for desktop apps.</p>
+
+  <div class="svg-embed">
+    <img src="svgs/03-wpf-xaml-arrives.svg" alt="WPF infographic">
+  </div>
+
+  <h3>📖 Study This Code</h3>
+  <span class="file-tag">Section03_WpfXamlArrives.cs</span>
+  
+  <p style="color: var(--red); font-weight: 600; margin-top: 0.75rem;">The XAML file (what the user sees):</p>
+  <pre><code>
+<span class="xk">&lt;</span><span class="xt">Window</span> <span class="xa">Title</span>=<span class="st">"My WPF App"</span><span class="xk">&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">StackPanel</span> <span class="xa">Margin</span>=<span class="st">"20"</span><span class="xk">&gt;</span>
+    <span class="xk">&lt;</span><span class="xt">TextBox</span> <span class="xa">x:Name</span>=<span class="st">"nameBox"</span><span class="xk">/&gt;</span>
+    <span class="xk">&lt;</span><span class="xt">Button</span> <span class="xa">Content</span>=<span class="st">"Submit"</span> <span class="xa">Click</span>=<span class="st">"OnSubmitClicked"</span><span class="xk">/&gt;</span>
+    <span class="xk">&lt;</span><span class="xt">TextBlock</span> <span class="xa">x:Name</span>=<span class="st">"output"</span><span class="xk">/&gt;</span>
+  <span class="xk">&lt;/</span><span class="xt">StackPanel</span><span class="xk">&gt;</span>
+<span class="xk">&lt;/</span><span class="xt">Window</span><span class="xk">&gt;</span>
+</code></pre>
+
+  <p style="color: var(--accent); font-weight: 600;">The code-behind (what happens):</p>
+  <pre><code>
+<span class="kw">public partial class</span> <span class="tp">MainWindow</span> : <span class="tp">Window</span>
+{
+    <span class="kw">public</span> <span class="fn">MainWindow</span>() => <span class="fn">InitializeComponent</span>();
+
+    <span class="kw">private void</span> <span class="fn">OnSubmitClicked</span>(<span class="tp">object</span> <span class="vr">sender</span>, <span class="tp">RoutedEventArgs</span> <span class="vr">e</span>)
+    {
+        <span class="vr">output</span>.<span class="vr">Text</span> = <span class="st">$"Hello, {nameBox.Text}!"</span>;
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section03_WpfXamlArrives.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Explain what each file is responsible for and</span>
+<span class="c">//         WHY this separation is useful.</span>
+
+<span class="c">// TODO 2: What does "partial" do? Why is it needed with XAML?</span>
+
+<span class="c">// TODO 3: Find: (a) the text input control, (b) the click</span>
+<span class="c">//         event attribute, (c) the C# name attribute.</span>
+</code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 4 -->
+<!-- ============================================================ -->
+<div class="section yellow">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2>WinUI 3: Modern Windows</h2>
+  </div>
+  
+  <p><span class="key-term">WinUI 3</span> is Microsoft's current recommended framework for Windows apps. It uses the <strong>same XAML concepts</strong> as WPF but with the Fluent Design System — rounded corners, acrylic materials, and built-in dark mode.</p>
+
+  <div class="svg-embed">
+    <img src="svgs/04-winui3-modern-windows.svg" alt="WinUI 3 infographic">
+  </div>
+
+  <h3>📖 Study This Code</h3>
+  <span class="file-tag">Section04_WinUI3Modern.cs</span>
+  <pre><code>
+<span class="c">&lt;!-- WinUI 3 XAML — notice how similar to WPF! --&gt;</span>
+<span class="xk">&lt;</span><span class="xt">StackPanel</span> <span class="xa">Spacing</span>=<span class="st">"12"</span> <span class="xa">Padding</span>=<span class="st">"24"</span><span class="xk">&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">TextBox</span> <span class="xa">x:Name</span>=<span class="st">"billBox"</span> <span class="xa">PlaceholderText</span>=<span class="st">"Enter bill"</span> <span class="xa">Header</span>=<span class="st">"Bill Amount"</span><span class="xk">/&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">Slider</span> <span class="xa">x:Name</span>=<span class="st">"tipSlider"</span> <span class="xa">Minimum</span>=<span class="st">"0"</span> <span class="xa">Maximum</span>=<span class="st">"30"</span> <span class="xa">Value</span>=<span class="st">"18"</span>
+          <span class="xa">ValueChanged</span>=<span class="st">"OnTipChanged"</span><span class="xk">/&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">Button</span> <span class="xa">Content</span>=<span class="st">"Calculate"</span> <span class="xa">Click</span>=<span class="st">"OnCalculate"</span>
+          <span class="xa">Style</span>=<span class="st">"{StaticResource AccentButtonStyle}"</span><span class="xk">/&gt;</span>
+<span class="xk">&lt;/</span><span class="xt">StackPanel</span><span class="xk">&gt;</span>
+</code></pre>
+
+  <pre><code>
+<span class="c">// Code-behind — same pattern as WPF</span>
+<span class="kw">private void</span> <span class="fn">OnTipChanged</span>(<span class="tp">object</span> <span class="vr">sender</span>, <span class="tp">RangeBaseValueChangedEventArgs</span> <span class="vr">e</span>)
+{
+    <span class="kw">if</span> (<span class="vr">tipOutput</span> != <span class="kw">null</span>)
+        <span class="vr">tipOutput</span>.<span class="vr">Text</span> = <span class="st">$"Tip: {e.NewValue:F0}%"</span>;
+}
+
+<span class="kw">private void</span> <span class="fn">OnCalculate</span>(<span class="tp">object</span> <span class="vr">sender</span>, <span class="tp">RoutedEventArgs</span> <span class="vr">e</span>)
+{
+    <span class="kw">if</span> (<span class="tp">decimal</span>.<span class="fn">TryParse</span>(<span class="vr">billBox</span>.<span class="vr">Text</span>, <span class="kw">out</span> <span class="tp">decimal</span> <span class="vr">bill</span>))
+    {
+        <span class="tp">decimal</span> <span class="vr">tip</span> = <span class="vr">bill</span> * (<span class="tp">decimal</span>)(<span class="vr">tipSlider</span>.<span class="vr">Value</span> / <span class="nm">100</span>);
+        <span class="vr">tipOutput</span>.<span class="vr">Text</span> = <span class="st">$"Tip: {tip:C} | Total: {bill + tip:C}"</span>;
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section04_WinUI3Modern.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: List 3 things SAME and 2 things DIFFERENT vs WPF.</span>
+
+<span class="c">// TODO 2: What is the Slider's ValueChanged event signature?</span>
+<span class="c">//         How does it compare to Button's Click?</span>
+
+<span class="c">// TODO 3: Why TryParse instead of Parse in a GUI app?</span>
+</code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 5 -->
+<!-- ============================================================ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">05</span>
+    <h2>XAML Fundamentals</h2>
+  </div>
+  
+  <p>XAML is XML-based: each <span class="key-term">tag</span> creates a C# object, each <span class="key-term">attribute</span> sets a property. Layout is controlled by <strong>panels</strong> — containers that arrange child controls.</p>
+
+  <div class="svg-embed">
+    <img src="svgs/05-xaml-fundamentals.svg" alt="XAML Fundamentals infographic">
+  </div>
+
+  <h3>📖 Study This Code</h3>
+  <span class="file-tag">Section05_XamlFundamentals.cs</span>
+
+  <p style="color: var(--accent); font-weight: 600; margin-top: 0.75rem;">StackPanel — stacks children vertically or horizontally:</p>
+  <pre><code>
+<span class="xk">&lt;</span><span class="xt">StackPanel</span> <span class="xa">Orientation</span>=<span class="st">"Vertical"</span> <span class="xa">Spacing</span>=<span class="st">"8"</span><span class="xk">&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">TextBlock</span> <span class="xa">Text</span>=<span class="st">"First"</span><span class="xk">/&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">TextBlock</span> <span class="xa">Text</span>=<span class="st">"Second"</span><span class="xk">/&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">TextBlock</span> <span class="xa">Text</span>=<span class="st">"Third"</span><span class="xk">/&gt;</span>
+<span class="xk">&lt;/</span><span class="xt">StackPanel</span><span class="xk">&gt;</span>
+</code></pre>
+
+  <p style="color: var(--red); font-weight: 600;">Grid — rows and columns:</p>
+  <pre><code>
+<span class="xk">&lt;</span><span class="xt">Grid</span> <span class="xa">RowSpacing</span>=<span class="st">"8"</span> <span class="xa">ColumnSpacing</span>=<span class="st">"8"</span><span class="xk">&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">Grid.RowDefinitions</span><span class="xk">&gt;</span>
+    <span class="xk">&lt;</span><span class="xt">RowDefinition</span> <span class="xa">Height</span>=<span class="st">"Auto"</span><span class="xk">/&gt;</span>     <span class="c">&lt;!-- sizes to content --&gt;</span>
+    <span class="xk">&lt;</span><span class="xt">RowDefinition</span> <span class="xa">Height</span>=<span class="st">"*"</span><span class="xk">/&gt;</span>        <span class="c">&lt;!-- fills remaining --&gt;</span>
+  <span class="xk">&lt;/</span><span class="xt">Grid.RowDefinitions</span><span class="xk">&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">Grid.ColumnDefinitions</span><span class="xk">&gt;</span>
+    <span class="xk">&lt;</span><span class="xt">ColumnDefinition</span> <span class="xa">Width</span>=<span class="st">"150"</span><span class="xk">/&gt;</span>    <span class="c">&lt;!-- fixed 150px --&gt;</span>
+    <span class="xk">&lt;</span><span class="xt">ColumnDefinition</span> <span class="xa">Width</span>=<span class="st">"*"</span><span class="xk">/&gt;</span>      <span class="c">&lt;!-- fills rest --&gt;</span>
+  <span class="xk">&lt;/</span><span class="xt">Grid.ColumnDefinitions</span><span class="xk">&gt;</span>
+
+  <span class="xk">&lt;</span><span class="xt">TextBlock</span> <span class="xa">Text</span>=<span class="st">"Name:"</span> <span class="xa">Grid.Row</span>=<span class="st">"0"</span> <span class="xa">Grid.Column</span>=<span class="st">"0"</span><span class="xk">/&gt;</span>
+  <span class="xk">&lt;</span><span class="xt">TextBox</span> <span class="xa">Grid.Row</span>=<span class="st">"0"</span> <span class="xa">Grid.Column</span>=<span class="st">"1"</span><span class="xk">/&gt;</span>
+<span class="xk">&lt;/</span><span class="xt">Grid</span><span class="xk">&gt;</span>
+</code></pre>
+  
+  <div class="note-box">
+    <strong>📏 Sizing Keywords:</strong> <code>Auto</code> = size to content &nbsp;|&nbsp; <code>*</code> = fill remaining &nbsp;|&nbsp; <code>2*</code> = twice as much as <code>1*</code> &nbsp;|&nbsp; <code>150</code> = fixed pixels
+  </div>
+
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section05_XamlFundamentals.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Design a layout: label + TextBox on one row, then</span>
+<span class="c">//         3 buttons in a row below. Sketch the XAML nesting.</span>
+
+<span class="c">// TODO 2: Explain the difference between Height="Auto" and Height="*".</span>
+
+<span class="c">// TODO 3: Translate a TextBox XAML tag to equivalent C# code.</span>
+</code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 6 -->
+<!-- ============================================================ -->
+<div class="section purple">
+  <div class="section-header">
+    <span class="section-number">06</span>
+    <h2>Events in the GUI World</h2>
+  </div>
+  
+  <p>GUI events work <strong>exactly</strong> like the events from Unit 5: <code>publisher.Event += handler;</code>. The publisher is a control, and your handler is a method or lambda.</p>
+
+  <div class="svg-embed">
+    <img src="svgs/06-events-in-gui-world.svg" alt="Events in GUI World infographic">
+  </div>
+
+  <h3>📖 Study This Code</h3>
+  <span class="file-tag">Section06_EventsInGuiWorld.cs</span>
+
+  <p style="color: var(--red); font-weight: 600; margin-top: 0.75rem;">Way 1 — Wire in XAML:</p>
+  <pre><code>
+<span class="xk">&lt;</span><span class="xt">Button</span> <span class="xa">Content</span>=<span class="st">"Go"</span> <span class="xa">Click</span>=<span class="st">"OnGoClicked"</span><span class="xk">/&gt;</span>
+
+<span class="c">// Must define a method with the matching signature:</span>
+<span class="kw">private void</span> <span class="fn">OnGoClicked</span>(<span class="tp">object</span> <span class="vr">sender</span>, <span class="tp">RoutedEventArgs</span> <span class="vr">e</span>) { }
+</code></pre>
+
+  <p style="color: var(--accent); font-weight: 600;">Way 2 — Wire in C# with +=:</p>
+  <pre><code>
+<span class="c">// Lambda — great for simple handlers</span>
+<span class="vr">goBtn</span>.<span class="vr">Click</span> += (<span class="vr">s</span>, <span class="vr">e</span>) => <span class="vr">output</span>.<span class="vr">Text</span> = <span class="st">"Clicked!"</span>;
+
+<span class="c">// Named method — better for complex logic</span>
+<span class="vr">goBtn</span>.<span class="vr">Click</span> += <span class="fn">HandleGoClick</span>;
+</code></pre>
+
+  <p style="color: var(--yellow); font-weight: 600;">Shared handler via sender:</p>
+  <pre><code>
+<span class="c">// Multiple buttons, ONE handler</span>
+<span class="kw">private void</span> <span class="fn">OnAnyClick</span>(<span class="tp">object</span> <span class="vr">sender</span>, <span class="tp">RoutedEventArgs</span> <span class="vr">e</span>)
+{
+    <span class="kw">var</span> <span class="vr">btn</span> = (<span class="tp">Button</span>)<span class="vr">sender</span>;
+    <span class="vr">output</span>.<span class="vr">Text</span> = <span class="st">$"Clicked: {btn.Content}"</span>;
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section06_EventsInGuiWorld.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Write XAML + C# handler for 5 color buttons sharing one handler.</span>
+
+<span class="c">// TODO 2: Write a lambda for Slider.ValueChanged that shows</span>
+<span class="c">//         "Changed from X to Y" using e.OldValue and e.NewValue.</span>
+
+<span class="c">// TODO 3: Compare XAML wiring vs C# wiring — which do you prefer?</span>
+</code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 7 -->
+<!-- ============================================================ -->
+<div class="section red">
+  <div class="section-header">
+    <span class="section-number">07</span>
+    <h2>Patterns &amp; Architecture</h2>
+  </div>
+  
+  <p>GUI apps need structure. The <span class="key-term">partial class</span> pattern connects XAML to code-behind, and <span class="key-term">model classes</span> keep business logic separate from UI code.</p>
+
+  <div class="svg-embed">
+    <img src="svgs/07-patterns-architecture.svg" alt="Patterns & Architecture infographic">
+  </div>
+
+  <h3>📖 Study This Code</h3>
+  <span class="file-tag">Section07_PatternsArchitecture.cs</span>
+
+  <p style="color: var(--purple); font-weight: 600; margin-top: 0.75rem;">Separate model class (no UI knowledge):</p>
+  <pre><code>
+<span class="kw">public class</span> <span class="tp">TipCalculator</span>
+{
+    <span class="kw">public</span> <span class="tp">decimal</span> <span class="vr">BillAmount</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public</span> <span class="tp">double</span> <span class="vr">TipPercentage</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+    <span class="kw">public</span> <span class="tp">decimal</span> <span class="vr">TipAmount</span>
+        => <span class="vr">BillAmount</span> * (<span class="tp">decimal</span>)(<span class="vr">TipPercentage</span> / <span class="nm">100</span>);
+
+    <span class="kw">public</span> <span class="tp">decimal</span> <span class="vr">Total</span>
+        => <span class="vr">BillAmount</span> + <span class="vr">TipAmount</span>;
+}
+</code></pre>
+
+  <p style="color: var(--accent); font-weight: 600;">Thin code-behind — Read → Calculate → Display:</p>
+  <pre><code>
+<span class="kw">private</span> <span class="tp">TipCalculator</span> <span class="vr">_calc</span> = <span class="kw">new</span>();
+
+<span class="kw">private void</span> <span class="fn">OnCalculate</span>(<span class="tp">object</span> <span class="vr">sender</span>, <span class="tp">RoutedEventArgs</span> <span class="vr">e</span>)
+{
+    <span class="kw">if</span> (<span class="tp">decimal</span>.<span class="fn">TryParse</span>(<span class="vr">billBox</span>.<span class="vr">Text</span>, <span class="kw">out</span> <span class="tp">decimal</span> <span class="vr">bill</span>))
+    {
+        <span class="vr">_calc</span>.<span class="vr">BillAmount</span> = <span class="vr">bill</span>;              <span class="c">// 1. Read from UI</span>
+        <span class="vr">_calc</span>.<span class="vr">TipPercentage</span> = <span class="vr">tipSlider</span>.<span class="vr">Value</span>; <span class="c">// 1. Read from UI</span>
+
+        <span class="vr">tipOutput</span>.<span class="vr">Text</span> = <span class="st">$"Tip: {_calc.TipAmount:C}"</span>;   <span class="c">// 3. Write to UI</span>
+        <span class="vr">totalOutput</span>.<span class="vr">Text</span> = <span class="st">$"Total: {_calc.Total:C}"</span>; <span class="c">// 3. Write to UI</span>
+    }
+}
+</code></pre>
+  
+  <div class="todo-block">
+    <h4>✏️ YOUR TURN — Section07_PatternsArchitecture.cs</h4>
+    <pre><code>
+<span class="c">// TODO 1: Give TWO reasons to separate business logic from code-behind.</span>
+
+<span class="c">// TODO 2: Add a "round up to nearest dollar" property to TipCalculator.</span>
+<span class="c">//         (Hint: Math.Ceiling)</span>
+
+<span class="c">// TODO 3: In OnCalculate, identify: Read from UI, Call model, Write to UI.</span>
+</code></pre>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- EXIT TICKET -->
+<!-- ============================================================ -->
+<div class="exit-ticket">
+  <h2>🎫 Exit Ticket</h2>
+  <p style="color: var(--text-muted); margin-bottom: 1rem;">Answer these in your own words. No code needed — just understanding.</p>
+  
+  <p><strong>1.</strong> Name the three C# GUI frameworks we covered today. For each one, write one sentence describing its key characteristic.</p>
+  <textarea placeholder="WinForms is... WPF is... WinUI 3 is..."></textarea>
+  
+  <p><strong>2.</strong> What is XAML? Why is separating the UI markup from the C# logic considered an improvement over the WinForms approach?</p>
+  <textarea placeholder="XAML is... Separating them is better because..."></textarea>
+  
+  <p><strong>3.</strong> Explain how GUI events connect to the delegate/event pattern you learned in Unit 5. Use the terms: publisher, event, subscriber, handler.</p>
+  <textarea placeholder="In a GUI app, the publisher is... the event is... the subscriber/handler is..."></textarea>
+  
+  <p><strong>4.</strong> What does the <code>partial</code> keyword do, and why do WPF/WinUI projects need it?</p>
+  <textarea placeholder="The partial keyword allows..."></textarea>
+</div>
+
+<!-- ============================================================ -->
+<!-- SUBMISSION INSTRUCTIONS -->
+<!-- ============================================================ -->
+<div class="submission-box">
+  <h2>📤 Submission (5 points)</h2>
+  <p style="color: var(--text-muted);">
+    1. Make sure all your TODO sections are completed in the .cs files.<br>
+    2. Push your <strong>GuiFrameworksNotes</strong> project to GitHub.<br>
+    3. Ensure the repository is set to <strong>Public</strong>.<br>
+    4. Copy the repository URL and submit it on <strong>Canvas</strong>.
+  </p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C# GUI Frameworks — Lesson Hub</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+    
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --red: #e94560;
+      --yellow: #ffc107;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+    
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    
+    .hero .tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--purple);
+      background: rgba(123, 104, 238, 0.1);
+      border: 1px solid rgba(123, 104, 238, 0.25);
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--surface-light);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+    
+    .card .day-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card.day1 .day-label { color: var(--accent); }
+    .card.day2 .day-label { color: var(--purple); }
+    
+    .card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    
+    .card .points {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    
+    .card.day1 .points {
+      color: var(--accent);
+      background: rgba(78, 204, 163, 0.1);
+    }
+    
+    .card.day2 .points {
+      color: var(--purple);
+      background: rgba(123, 104, 238, 0.1);
+    }
+    
+    .topics {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .topics h3 {
+      color: var(--yellow);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .topic-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      list-style: none;
+    }
+    
+    .topic-list li {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+    }
+    
+    .topic-list li code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      background: rgba(78, 204, 163, 0.08);
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--surface-light);
+    }
+    
+    .footer code { 
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent); 
+    }
+    
+    @media (max-width: 600px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .topic-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <span class="tag">Software Development Capstone</span>
+      <h1>C# GUI Frameworks</h1>
+      <p>From Console to Desktop — explore WinForms, WPF, and WinUI 3, then build your first graphical application.</p>
+    </div>
+    
+    <div class="card-grid">
+      <a href="guided-notes.html" class="card day1">
+        <div class="day-label">📝 Day 1 — Guided Notes</div>
+        <h2>Explore GUI Frameworks</h2>
+        <p>Learn the concepts behind WinForms, WPF, and WinUI 3. Study XAML syntax, layout panels, GUI events, and architecture patterns.</p>
+        <span class="points">5 points • Read &amp; Annotate</span>
+      </a>
+      
+      <a href="#" class="card day2" style="pointer-events: none; opacity: 0.7;">
+        <div class="day-label">🔨 Day 2 — Activity</div>
+        <h2>WinUI 3 Tip Calculator</h2>
+        <p>Build a complete tip calculator using WinUI 3 with XAML layout, event wiring, and a separated model class.</p>
+        <span class="points">15 points • Build in Rider</span>
+      </a>
+    </div>
+    
+    <div class="topics">
+      <h3>📚 Topics Covered</h3>
+      <ul class="topic-list">
+        <li><code>WinForms</code> — pixel-based, all C#</li>
+        <li><code>WPF</code> — XAML + code-behind</li>
+        <li><code>WinUI 3</code> — modern, Fluent Design</li>
+        <li><code>XAML</code> — declarative UI markup</li>
+        <li><code>StackPanel</code> / <code>Grid</code> — layout panels</li>
+        <li><code>GUI Events</code> — Click, ValueChanged, etc.</li>
+        <li><code>partial class</code> — split one class across files</li>
+        <li><code>Code-behind</code> — .xaml + .xaml.cs pattern</li>
+      </ul>
+    </div>
+    
+    <div class="footer">
+      <p>Submit completed work via GitHub → Canvas &nbsp;|&nbsp; <code>git push origin main</code></p>
+    </div>
+  </div>
+</body>
+</html>

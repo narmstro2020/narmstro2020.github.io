@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a2e" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="900" fill="#0f0f1a"/>
+  <rect width="1200" height="900" fill="url(#grid)" opacity="0.3"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="80" fill="url(#headerGrad)"/>
+  <rect x="0" y="78" width="1200" height="2" fill="#4ecca3"/>
+  <text x="30" y="52" font-family="'Courier New', monospace" font-size="28" font-weight="bold" fill="#4ecca3">04</text>
+  <text x="80" y="52" font-family="'Segoe UI', sans-serif" font-size="26" font-weight="bold" fill="#e0e0e0">WinUI 3: Modern Windows</text>
+  <text x="1170" y="52" font-family="'Courier New', monospace" font-size="16" fill="#555" text-anchor="end">C# GUI Frameworks</text>
+
+  <!-- Core Concept -->
+  <rect x="40" y="110" width="1120" height="90" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="110" width="6" height="90" rx="3" fill="#4ecca3"/>
+  <text x="70" y="148" font-family="'Segoe UI', sans-serif" font-size="22" font-weight="bold" fill="#4ecca3">💡 What is WinUI 3?</text>
+  <text x="70" y="178" font-family="'Segoe UI', sans-serif" font-size="17" fill="#c0c0c0"><tspan fill="#ffc107" font-weight="bold">WinUI 3</tspan> is Microsoft's <tspan fill="#e94560" font-weight="bold">current recommended</tspan> framework for Windows desktop apps.</text>
+  <text x="70" y="195" font-family="'Segoe UI', sans-serif" font-size="17" fill="#c0c0c0">Built on the <tspan fill="#7b68ee" font-weight="bold">Windows App SDK</tspan>, it uses XAML like WPF but with <tspan fill="#4ecca3" font-weight="bold">modern Fluent Design</tspan>.</text>
+
+  <!-- Timeline -->
+  <rect x="40" y="225" width="1120" height="130" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="225" width="1120" height="40" rx="12" fill="#7b68ee" opacity="0.2"/>
+  <rect x="40" y="263" width="1120" height="2" fill="#7b68ee" opacity="0.3"/>
+  <text x="60" y="252" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#7b68ee">📅 C# GUI Framework Timeline</text>
+
+  <!-- Timeline line -->
+  <line x1="100" y1="310" x2="1100" y2="310" stroke="#333" stroke-width="2"/>
+
+  <!-- WinForms -->
+  <circle cx="180" cy="310" r="8" fill="#e94560"/>
+  <text x="180" y="295" font-family="'Courier New', monospace" font-size="12" fill="#e94560" text-anchor="middle">2002</text>
+  <text x="180" y="338" font-family="'Segoe UI', sans-serif" font-size="12" fill="#a0a0a0" text-anchor="middle">WinForms</text>
+
+  <!-- WPF -->
+  <circle cx="400" cy="310" r="8" fill="#ffc107"/>
+  <text x="400" y="295" font-family="'Courier New', monospace" font-size="12" fill="#ffc107" text-anchor="middle">2006</text>
+  <text x="400" y="338" font-family="'Segoe UI', sans-serif" font-size="12" fill="#a0a0a0" text-anchor="middle">WPF</text>
+
+  <!-- UWP -->
+  <circle cx="620" cy="310" r="8" fill="#888"/>
+  <text x="620" y="295" font-family="'Courier New', monospace" font-size="12" fill="#888" text-anchor="middle">2015</text>
+  <text x="620" y="338" font-family="'Segoe UI', sans-serif" font-size="12" fill="#666" text-anchor="middle">UWP (deprecated)</text>
+
+  <!-- WinUI 3 -->
+  <circle cx="840" cy="310" r="10" fill="#4ecca3"/>
+  <text x="840" y="293" font-family="'Courier New', monospace" font-size="13" fill="#4ecca3" text-anchor="middle" font-weight="bold">2021</text>
+  <text x="840" y="338" font-family="'Segoe UI', sans-serif" font-size="13" fill="#4ecca3" text-anchor="middle" font-weight="600">WinUI 3 ✓</text>
+
+  <!-- MAUI -->
+  <circle cx="1000" cy="310" r="8" fill="#7b68ee"/>
+  <text x="1000" y="295" font-family="'Courier New', monospace" font-size="12" fill="#7b68ee" text-anchor="middle">2022</text>
+  <text x="1000" y="338" font-family="'Segoe UI', sans-serif" font-size="12" fill="#a0a0a0" text-anchor="middle">.NET MAUI</text>
+
+  <!-- WinUI 3 vs WPF -->
+  <rect x="40" y="380" width="540" height="250" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="380" width="540" height="40" rx="12" fill="#4ecca3" opacity="0.2"/>
+  <rect x="40" y="418" width="540" height="2" fill="#4ecca3" opacity="0.3"/>
+  <text x="60" y="407" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#4ecca3">✅ What WinUI 3 Brings</text>
+
+  <text x="60" y="450" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• <tspan fill="#ffc107">Fluent Design System</tspan> — rounded corners, shadows,</text>
+  <text x="75" y="470" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">  acrylic/mica materials, dark mode built-in</text>
+  <text x="60" y="498" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• <tspan fill="#ffc107">Same XAML concepts</tspan> as WPF — panels, controls,</text>
+  <text x="75" y="518" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">  events, code-behind all transfer</text>
+  <text x="60" y="546" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• <tspan fill="#ffc107">Modern APIs</tspan> — Windows App SDK, not .NET Framework</text>
+  <text x="60" y="574" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• <tspan fill="#ffc107">Active development</tspan> — Microsoft's go-forward platform</text>
+  <text x="60" y="602" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• <tspan fill="#ffc107">Win 10/11 native</tspan> — looks and feels like a real app</text>
+
+  <!-- Key Differences -->
+  <rect x="620" y="380" width="540" height="250" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="620" y="380" width="540" height="40" rx="12" fill="#e94560" opacity="0.2"/>
+  <rect x="620" y="418" width="540" height="2" fill="#e94560" opacity="0.3"/>
+  <text x="640" y="407" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#e94560">⚡ WinUI 3 vs WPF — Key Differences</text>
+
+  <text x="660" y="450" font-family="'Courier New', monospace" font-size="13" fill="#a0a0a0">Namespace:</text>
+  <text x="660" y="472" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#888">WPF:   </tspan><tspan fill="#ffc107">System.Windows</tspan>
+  </text>
+  <text x="660" y="494" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#888">WinUI: </tspan><tspan fill="#4ecca3">Microsoft.UI.Xaml</tspan>
+  </text>
+
+  <text x="660" y="524" font-family="'Courier New', monospace" font-size="13" fill="#a0a0a0">App model:</text>
+  <text x="660" y="546" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#888">WPF:   </tspan><tspan fill="#ffc107">.NET runtime</tspan>
+  </text>
+  <text x="660" y="568" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#888">WinUI: </tspan><tspan fill="#4ecca3">Windows App SDK + .NET</tspan>
+  </text>
+
+  <text x="660" y="598" font-family="'Courier New', monospace" font-size="13" fill="#a0a0a0">Styling:</text>
+  <text x="660" y="618" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#888">WPF:   </tspan><tspan fill="#ffc107">Classic Windows / custom</tspan>
+  </text>
+
+  <!-- WinUI 3 Code Sample -->
+  <rect x="40" y="655" width="1120" height="205" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="655" width="1120" height="40" rx="12" fill="#ffc107" opacity="0.2"/>
+  <rect x="40" y="693" width="1120" height="2" fill="#ffc107" opacity="0.3"/>
+  <text x="60" y="682" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#ffc107">👀 WinUI 3 XAML Preview — Looks Familiar!</text>
+
+  <rect x="60" y="710" width="1080" height="130" rx="8" fill="#0a0a15"/>
+  <text x="80" y="735" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#808080">&lt;</tspan><tspan fill="#4ec9b0">StackPanel</tspan> <tspan fill="#9cdcfe">Spacing</tspan><tspan fill="#e0e0e0">=</tspan><tspan fill="#ce9178">"12"</tspan> <tspan fill="#9cdcfe">Padding</tspan><tspan fill="#e0e0e0">=</tspan><tspan fill="#ce9178">"24"</tspan><tspan fill="#808080">&gt;</tspan>
+  </text>
+  <text x="80" y="758" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#e0e0e0">  </tspan><tspan fill="#808080">&lt;</tspan><tspan fill="#4ec9b0">TextBox</tspan> <tspan fill="#9cdcfe">x:Name</tspan><tspan fill="#e0e0e0">=</tspan><tspan fill="#ce9178">"nameBox"</tspan> <tspan fill="#9cdcfe">PlaceholderText</tspan><tspan fill="#e0e0e0">=</tspan><tspan fill="#ce9178">"Enter name"</tspan><tspan fill="#808080">/&gt;</tspan>
+  </text>
+  <text x="80" y="781" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#e0e0e0">  </tspan><tspan fill="#808080">&lt;</tspan><tspan fill="#4ec9b0">Button</tspan> <tspan fill="#9cdcfe">Content</tspan><tspan fill="#e0e0e0">=</tspan><tspan fill="#ce9178">"Submit"</tspan> <tspan fill="#9cdcfe">Click</tspan><tspan fill="#e0e0e0">=</tspan><tspan fill="#ce9178">"OnSubmit"</tspan> <tspan fill="#9cdcfe">Style</tspan><tspan fill="#e0e0e0">=</tspan><tspan fill="#ce9178">"{StaticResource AccentButtonStyle}"</tspan><tspan fill="#808080">/&gt;</tspan>
+  </text>
+  <text x="80" y="804" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#e0e0e0">  </tspan><tspan fill="#808080">&lt;</tspan><tspan fill="#4ec9b0">TextBlock</tspan> <tspan fill="#9cdcfe">x:Name</tspan><tspan fill="#e0e0e0">=</tspan><tspan fill="#ce9178">"output"</tspan> <tspan fill="#9cdcfe">FontSize</tspan><tspan fill="#e0e0e0">=</tspan><tspan fill="#ce9178">"18"</tspan><tspan fill="#808080">/&gt;</tspan>
+  </text>
+  <text x="80" y="827" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#808080">&lt;/</tspan><tspan fill="#4ec9b0">StackPanel</tspan><tspan fill="#808080">&gt;</tspan>
+  </text>
+
+  <text x="80" y="848" font-family="'Segoe UI', sans-serif" font-size="14" fill="#4ecca3">⭐ Same XAML structure as WPF — if you learn one, you can work in both!</text>
+</svg>

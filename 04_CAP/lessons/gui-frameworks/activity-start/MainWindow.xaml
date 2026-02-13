@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ============================================================ -->
+<!-- MainWindow.xaml — WinUI 3 Tip Calculator                     -->
+<!-- Complete the TODOs to build the full layout.                  -->
+<!-- ============================================================ -->
+<Window
+    x:Class="TipCalculatorApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Tip Calculator">
+
+    <!-- Main layout: vertical stack with padding -->
+    <Grid Padding="32" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ====== HEADER ====== -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <TextBlock Text="💰 Tip Calculator"
+                       FontSize="32" FontWeight="Bold"/>
+            <TextBlock Text="Calculate tip and split the bill"
+                       FontSize="14" Foreground="Gray"/>
+        </StackPanel>
+
+        <!-- ====== MAIN CONTENT ====== -->
+        <StackPanel Grid.Row="1" Spacing="16" MaxWidth="500"
+                    HorizontalAlignment="Left">
+
+            <!-- Bill Amount Input -->
+            <TextBox x:Name="billBox"
+                     Header="Bill Amount ($)"
+                     PlaceholderText="0.00"
+                     InputScope="CurrencyAmount"/>
+
+            <!-- ================================================ -->
+            <!-- TODO 1: Add a Slider for tip percentage           -->
+            <!--   x:Name="tipSlider"                              -->
+            <!--   Minimum="0"  Maximum="30"  Value="18"           -->
+            <!--   Header="Tip Percentage"                         -->
+            <!--   Wire ValueChanged to "OnTipSliderChanged"       -->
+            <!-- ================================================ -->
+
+
+            <!-- Tip percentage display label -->
+            <TextBlock x:Name="tipPercentLabel"
+                       Text="Tip: 18%"
+                       FontSize="16"/>
+
+            <!-- ================================================ -->
+            <!-- TODO 2: Add a ComboBox for splitting the bill     -->
+            <!--   x:Name="splitCombo"                             -->
+            <!--   Header="Split Between"                          -->
+            <!--   Add ComboBoxItems: "1 person", "2 people",      -->
+            <!--     "3 people", "4 people", "5 people"            -->
+            <!--   Set SelectedIndex="0" (default to 1 person)     -->
+            <!-- ================================================ -->
+
+
+            <!-- Calculate Button -->
+            <!-- ================================================ -->
+            <!-- TODO 3: Add a Button                              -->
+            <!--   Content="Calculate Tip"                         -->
+            <!--   Style="{StaticResource AccentButtonStyle}"      -->
+            <!--   Wire Click to "OnCalculateClicked"              -->
+            <!--   Set HorizontalAlignment="Stretch"               -->
+            <!--   Set Margin="0,8,0,0"                            -->
+            <!-- ================================================ -->
+
+
+            <!-- ====== RESULTS SECTION ====== -->
+            <StackPanel x:Name="resultsPanel"
+                        Spacing="8"
+                        Padding="16"
+                        CornerRadius="8"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        Margin="0,8,0,0">
+
+                <TextBlock Text="Results"
+                           FontSize="18" FontWeight="SemiBold"/>
+
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Tip Amount:" Grid.Row="0" Grid.Column="0"
+                               VerticalAlignment="Center"/>
+                    <TextBlock x:Name="tipAmountText" Grid.Row="0" Grid.Column="1"
+                               Text="$0.00" FontWeight="SemiBold" FontSize="16"
+                               HorizontalAlignment="Right"/>
+
+                    <TextBlock Text="Total:" Grid.Row="1" Grid.Column="0"
+                               VerticalAlignment="Center"/>
+                    <TextBlock x:Name="totalText" Grid.Row="1" Grid.Column="1"
+                               Text="$0.00" FontWeight="SemiBold" FontSize="16"
+                               HorizontalAlignment="Right"/>
+
+                    <!-- ============================================ -->
+                    <!-- TODO 4: Add a row for "Per Person:" display  -->
+                    <!--   Left side: TextBlock "Per Person:"         -->
+                    <!--     Grid.Row="2" Grid.Column="0"             -->
+                    <!--   Right side: TextBlock x:Name="perPersonText"-->
+                    <!--     Grid.Row="2" Grid.Column="1"             -->
+                    <!--     Start with Text="$0.00"                  -->
+                    <!--     FontWeight="Bold" FontSize="20"          -->
+                    <!--     Foreground: use the accent color          -->
+                    <!-- ============================================ -->
+
+                </Grid>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</Window>

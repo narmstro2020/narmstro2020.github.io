@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a2e" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="900" fill="#0f0f1a"/>
+  <rect width="1200" height="900" fill="url(#grid)" opacity="0.3"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="80" fill="url(#headerGrad)"/>
+  <rect x="0" y="78" width="1200" height="2" fill="#4ecca3"/>
+  <text x="30" y="52" font-family="'Courier New', monospace" font-size="28" font-weight="bold" fill="#4ecca3">02</text>
+  <text x="80" y="52" font-family="'Segoe UI', sans-serif" font-size="26" font-weight="bold" fill="#e0e0e0">WinForms: The Classic</text>
+  <text x="1170" y="52" font-family="'Courier New', monospace" font-size="16" fill="#555" text-anchor="end">C# GUI Frameworks</text>
+
+  <!-- Core Concept -->
+  <rect x="40" y="110" width="1120" height="90" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="110" width="6" height="90" rx="3" fill="#4ecca3"/>
+  <text x="70" y="148" font-family="'Segoe UI', sans-serif" font-size="22" font-weight="bold" fill="#4ecca3">💡 What is WinForms?</text>
+  <text x="70" y="178" font-family="'Segoe UI', sans-serif" font-size="17" fill="#c0c0c0"><tspan fill="#ffc107" font-weight="bold">Windows Forms</tspan> (.NET 2002) — the original C# GUI framework. <tspan fill="#e94560">Drag-and-drop designer</tspan>,</text>
+  <text x="70" y="195" font-family="'Segoe UI', sans-serif" font-size="17" fill="#c0c0c0">auto-generated code, native Windows controls. Still used in enterprise &amp; legacy apps.</text>
+
+  <!-- WinForms Code Example -->
+  <rect x="40" y="225" width="560" height="340" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="225" width="560" height="40" rx="12" fill="#e94560" opacity="0.2"/>
+  <rect x="40" y="263" width="560" height="2" fill="#e94560" opacity="0.3"/>
+  <text x="60" y="252" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#e94560">⌨️ WinForms Code Pattern</text>
+
+  <rect x="60" y="280" width="520" height="270" rx="8" fill="#0a0a15"/>
+  <text x="80" y="305" font-family="'Courier New', monospace" font-size="13" fill="#888">// Everything is C# — no markup language</text>
+  <text x="80" y="328" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#c586c0">var</tspan> <tspan fill="#9cdcfe">btn</tspan> <tspan fill="#e0e0e0">=</tspan> <tspan fill="#c586c0">new</tspan> <tspan fill="#4ec9b0">Button</tspan><tspan fill="#e0e0e0">();</tspan>
+  </text>
+  <text x="80" y="351" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#9cdcfe">btn</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#9cdcfe">Text</tspan> <tspan fill="#e0e0e0">=</tspan> <tspan fill="#ce9178">"Click Me"</tspan><tspan fill="#e0e0e0">;</tspan>
+  </text>
+  <text x="80" y="374" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#9cdcfe">btn</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#9cdcfe">Location</tspan> <tspan fill="#e0e0e0">=</tspan> <tspan fill="#c586c0">new</tspan> <tspan fill="#4ec9b0">Point</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#b5cea8">50</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#b5cea8">50</tspan><tspan fill="#e0e0e0">);</tspan>
+  </text>
+  <text x="80" y="397" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#9cdcfe">btn</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#9cdcfe">Size</tspan> <tspan fill="#e0e0e0">=</tspan> <tspan fill="#c586c0">new</tspan> <tspan fill="#4ec9b0">Size</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#b5cea8">120</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#b5cea8">40</tspan><tspan fill="#e0e0e0">);</tspan>
+  </text>
+  <text x="80" y="428" font-family="'Courier New', monospace" font-size="13" fill="#888">// Wire up click event — familiar!</text>
+  <text x="80" y="451" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#9cdcfe">btn</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#9cdcfe">Click</tspan> <tspan fill="#e0e0e0">+=</tspan> <tspan fill="#e0e0e0">(</tspan><tspan fill="#9cdcfe">s</tspan><tspan fill="#e0e0e0">,</tspan> <tspan fill="#9cdcfe">e</tspan><tspan fill="#e0e0e0">)</tspan> <tspan fill="#c586c0">=&gt;</tspan>
+  </text>
+  <text x="80" y="474" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#e0e0e0">    </tspan><tspan fill="#4ec9b0">MessageBox</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#dcdcaa">Show</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#ce9178">"Hello!"</tspan><tspan fill="#e0e0e0">);</tspan>
+  </text>
+  <text x="80" y="505" font-family="'Courier New', monospace" font-size="13" fill="#888">// Add button to the form's controls</text>
+  <text x="80" y="528" font-family="'Courier New', monospace" font-size="13">
+    <tspan fill="#c586c0">this</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#9cdcfe">Controls</tspan><tspan fill="#e0e0e0">.</tspan><tspan fill="#dcdcaa">Add</tspan><tspan fill="#e0e0e0">(</tspan><tspan fill="#9cdcfe">btn</tspan><tspan fill="#e0e0e0">);</tspan>
+  </text>
+
+  <!-- Characteristics -->
+  <rect x="620" y="225" width="540" height="340" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="620" y="225" width="540" height="40" rx="12" fill="#7b68ee" opacity="0.2"/>
+  <rect x="620" y="263" width="540" height="2" fill="#7b68ee" opacity="0.3"/>
+  <text x="640" y="252" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#7b68ee">📋 Key Characteristics</text>
+
+  <text x="640" y="300" font-family="'Segoe UI', sans-serif" font-size="16" fill="#4ecca3" font-weight="600">Strengths</text>
+  <text x="660" y="325" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• Easy to learn — drag, drop, double-click to code</text>
+  <text x="660" y="350" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• Fast prototyping — visual designer generates code</text>
+  <text x="660" y="375" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• Massive ecosystem — tons of tutorials &amp; examples</text>
+  <text x="660" y="400" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• Cross-platform via .NET 8+ (basic support)</text>
+
+  <text x="640" y="435" font-family="'Segoe UI', sans-serif" font-size="16" fill="#e94560" font-weight="600">Limitations</text>
+  <text x="660" y="460" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• Fixed-pixel layouts — don't scale well</text>
+  <text x="660" y="485" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• UI &amp; logic tightly coupled in code-behind</text>
+  <text x="660" y="510" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• Limited styling — looks dated without extra work</text>
+  <text x="660" y="535" font-family="'Segoe UI', sans-serif" font-size="15" fill="#a0a0a0">• No declarative markup — everything in C#</text>
+
+  <!-- Mock WinForms Window -->
+  <rect x="40" y="590" width="1120" height="270" rx="12" fill="#1a1a2e" filter="url(#shadow)"/>
+  <rect x="40" y="590" width="1120" height="40" rx="12" fill="#ffc107" opacity="0.2"/>
+  <rect x="40" y="628" width="1120" height="2" fill="#ffc107" opacity="0.3"/>
+  <text x="60" y="617" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#ffc107">🎨 What WinForms Looks Like</text>
+
+  <!-- Mock window chrome -->
+  <rect x="100" y="650" width="450" height="190" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
+  <rect x="100" y="650" width="450" height="28" fill="#e0e0e0"/>
+  <text x="115" y="669" font-family="'Segoe UI', sans-serif" font-size="13" fill="#333">📝 My First WinForm</text>
+  <rect x="500" y="655" width="18" height="18" rx="2" fill="#e94560"/>
+  <rect x="477" y="655" width="18" height="18" rx="2" fill="#ffc107"/>
+  <rect x="454" y="655" width="18" height="18" rx="2" fill="#4ecca3"/>
+
+  <!-- Form content -->
+  <text x="120" y="708" font-family="'Segoe UI', sans-serif" font-size="13" fill="#333">Name:</text>
+  <rect x="175" y="693" width="200" height="22" rx="3" fill="#fff" stroke="#999"/>
+  <text x="183" y="709" font-family="'Segoe UI', sans-serif" font-size="12" fill="#999">Enter your name</text>
+
+  <rect x="390" y="693" width="80" height="24" rx="3" fill="#4ecca3"/>
+  <text x="430" y="710" font-family="'Segoe UI', sans-serif" font-size="12" fill="#0f0f1a" text-anchor="middle" font-weight="600">Submit</text>
+
+  <text x="120" y="750" font-family="'Segoe UI', sans-serif" font-size="13" fill="#333">Message:</text>
+  <rect x="120" y="758" width="350" height="65" rx="3" fill="#fff" stroke="#999"/>
+
+  <!-- Annotations -->
+  <line x1="560" y1="700" x2="620" y2="680" stroke="#ffc107" stroke-width="1" stroke-dasharray="4"/>
+  <text x="630" y="678" font-family="'Courier New', monospace" font-size="12" fill="#ffc107">new TextBox()</text>
+  <text x="630" y="695" font-family="'Courier New', monospace" font-size="11" fill="#888">Position set with pixels</text>
+
+  <line x1="470" y1="706" x2="620" y2="730" stroke="#4ecca3" stroke-width="1" stroke-dasharray="4"/>
+  <text x="630" y="728" font-family="'Courier New', monospace" font-size="12" fill="#4ecca3">new Button()</text>
+  <text x="630" y="745" font-family="'Courier New', monospace" font-size="11" fill="#888">Click += event handler</text>
+
+  <line x1="480" y1="790" x2="620" y2="785" stroke="#7b68ee" stroke-width="1" stroke-dasharray="4"/>
+  <text x="630" y="783" font-family="'Courier New', monospace" font-size="12" fill="#7b68ee">new TextBox() { Multiline }</text>
+  <text x="630" y="800" font-family="'Courier New', monospace" font-size="11" fill="#888">All layout in C# code</text>
+
+  <!-- Takeaway -->
+  <rect x="60" y="830" width="1080" height="18" rx="4" fill="#ffc107" opacity="0.06"/>
+  <text x="80" y="844" font-family="'Segoe UI', sans-serif" font-size="14" fill="#ffc107">⭐ WinForms = quick to build, but UI and logic are mixed together and layouts use fixed pixels</text>
+</svg>
