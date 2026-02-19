@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 01 — Unity Foundations &amp; Your First Script</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --red: #e94560;
+      --yellow: #ffc107;
+      --blue: #5dade2;
+      --orange: #ff8c42;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --text-dim: #555;
+      --keyword: #c678dd;
+      --type: #e5c07b;
+      --string: #98c379;
+      --number: #d19a66;
+      --comment: #5c6370;
+      --function: #61afef;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.7;
+      padding: 0;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(78,204,163,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78,204,163,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* Header */
+    .header {
+      background: var(--surface);
+      border-bottom: 2px solid var(--accent);
+      padding: 2rem 3rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .header-badge {
+      display: inline-block;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(78,204,163,0.1);
+      border: 1px solid rgba(78,204,163,0.25);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    .header h1 {
+      font-size: 1.8rem;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .header h1 span { color: var(--accent); }
+    .header-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .header-meta strong { color: var(--yellow); }
+    .header-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .htag {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.65rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .htag.green { background: rgba(78,204,163,0.12); color: var(--accent); border: 1px solid rgba(78,204,163,0.25); }
+    .htag.purple { background: rgba(123,104,238,0.12); color: var(--purple); border: 1px solid rgba(123,104,238,0.25); }
+    .htag.yellow { background: rgba(255,193,7,0.12); color: var(--yellow); border: 1px solid rgba(255,193,7,0.25); }
+    .htag.blue { background: rgba(93,173,226,0.12); color: var(--blue); border: 1px solid rgba(93,173,226,0.25); }
+    .htag.red { background: rgba(233,69,96,0.12); color: var(--red); border: 1px solid rgba(233,69,96,0.25); }
+
+    /* Main Content */
+    .content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 3rem 4rem;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 3rem;
+      border-left: 3px solid var(--surface-light);
+      padding-left: 1.5rem;
+    }
+    .section-num {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.25rem;
+    }
+    .section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .section h2 .icon { margin-right: 0.5rem; }
+    .section h3 {
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin: 1.25rem 0 0.5rem;
+    }
+    .section p {
+      margin-bottom: 0.75rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .section p strong { color: var(--text); }
+    .section p code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      background: rgba(78,204,163,0.08);
+      color: var(--accent);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+    }
+
+    /* Time Badge */
+    .time-badge {
+      display: inline-block;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.65rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    .time-badge.t15 { background: rgba(93,173,226,0.12); color: var(--blue); border: 1px solid rgba(93,173,226,0.25); }
+    .time-badge.t20 { background: rgba(78,204,163,0.12); color: var(--accent); border: 1px solid rgba(78,204,163,0.25); }
+    .time-badge.t25 { background: rgba(123,104,238,0.12); color: var(--purple); border: 1px solid rgba(123,104,238,0.25); }
+
+    /* Code Blocks */
+    pre {
+      background: #12121f;
+      border: 1px solid #2a2a40;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.65;
+    }
+    pre .kw { color: var(--keyword); }
+    pre .tp { color: var(--type); }
+    pre .st { color: var(--string); }
+    pre .nm { color: var(--number); }
+    pre .cm { color: var(--comment); font-style: italic; }
+    pre .fn { color: var(--function); }
+    pre .ac { color: var(--accent); }
+    pre .rd { color: var(--red); }
+    pre .yl { color: var(--yellow); }
+
+    /* Output Box */
+    .output-box {
+      background: #0a0a14;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+    }
+    .output-box::before {
+      content: '▶ Console Output';
+      display: block;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* Fill-in-the-blank */
+    .fill-blank {
+      background: var(--surface);
+      border: 1px solid var(--surface-light);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+    }
+    .fill-blank h4 {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--yellow);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .fill-blank label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .fill-blank input[type="text"] {
+      width: 100%;
+      background: #12121f;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      color: var(--accent);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
+      transition: border-color 0.2s;
+    }
+    .fill-blank input[type="text"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .fill-blank input[type="text"]::placeholder {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* Note Area */
+    .note-area {
+      background: var(--surface);
+      border: 1px solid var(--surface-light);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+    }
+    .note-area h4 {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--purple);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+    .note-area textarea {
+      width: 100%;
+      min-height: 80px;
+      background: #12121f;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 0.75rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      resize: vertical;
+    }
+    .note-area textarea:focus {
+      outline: none;
+      border-color: var(--purple);
+    }
+    .note-area textarea::placeholder {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* Connection Box */
+    .connection-box {
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    }
+    .connection-box.csharp {
+      background: rgba(78,204,163,0.06);
+      border: 1px solid rgba(78,204,163,0.2);
+    }
+    .connection-box.csharp::before {
+      content: '🔗 C# CONNECTION';
+      font-family: 'Fira Code', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+    .connection-box.key {
+      background: rgba(255,193,7,0.06);
+      border: 1px solid rgba(255,193,7,0.2);
+    }
+    .connection-box.key::before {
+      content: '💡 KEY CONCEPT';
+      font-family: 'Fira Code', monospace;
+      font-size: 0.65rem;
+      color: var(--yellow);
+      letter-spacing: 0.1em;
+    }
+    .connection-box.warn {
+      background: rgba(233,69,96,0.06);
+      border: 1px solid rgba(233,69,96,0.2);
+    }
+    .connection-box.warn::before {
+      content: '⚠️ WATCH OUT';
+      font-family: 'Fira Code', monospace;
+      font-size: 0.65rem;
+      color: var(--red);
+      letter-spacing: 0.1em;
+    }
+    .connection-box p {
+      margin-top: 0.4rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Comparison Table */
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 1rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2a2a40;
+    }
+    .compare-table th {
+      background: var(--surface-light);
+      padding: 0.6rem 1rem;
+      text-align: left;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .compare-table td {
+      background: var(--surface);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      border-top: 1px solid #2a2a40;
+      color: var(--text-muted);
+    }
+    .compare-table td code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+    }
+
+    /* SVG Image */
+    .svg-container {
+      margin: 1.25rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2a2a40;
+    }
+    .svg-container img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--surface-light), transparent);
+      margin: 2rem 0;
+    }
+
+    /* Exit Ticket */
+    .exit-ticket {
+      background: var(--surface);
+      border: 2px solid var(--purple);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    .exit-ticket h2 {
+      color: var(--purple);
+      margin-bottom: 1rem;
+    }
+    .exit-ticket .question {
+      margin-bottom: 1.25rem;
+    }
+    .exit-ticket .question label {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+    }
+    .exit-ticket textarea {
+      width: 100%;
+      min-height: 70px;
+      background: #12121f;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 0.75rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      resize: vertical;
+    }
+    .exit-ticket textarea:focus {
+      outline: none;
+      border-color: var(--purple);
+    }
+
+    /* Submit Info */
+    .submit-info {
+      background: rgba(78,204,163,0.06);
+      border: 1px solid rgba(78,204,163,0.2);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .submit-info p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .submit-info strong { color: var(--accent); }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      border-top: 1px solid var(--surface-light);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">LESSON 01 · GOLD DAY · FEB 19</div>
+  <h1>Unity Foundations &amp; <span>Your First Script</span></h1>
+  <div class="header-meta">
+    Software Development Capstone · <strong>Guided Notes (5 pts)</strong> · 86 min block
+  </div>
+  <div class="header-tags">
+    <span class="htag green">Unity Editor</span>
+    <span class="htag green">GameObject</span>
+    <span class="htag green">Components</span>
+    <span class="htag purple">MonoBehaviour</span>
+    <span class="htag red">Start() / Update()</span>
+    <span class="htag yellow">Vector3</span>
+    <span class="htag blue">Transform</span>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ============================================ -->
+  <!-- SECTION 1: The Unity Editor -->
+  <!-- ============================================ -->
+  <div class="section">
+    <div class="section-num">SECTION 01</div>
+    <span class="time-badge t20">⏱ ~20 MIN</span>
+    <h2><span class="icon">🖥️</span> The Unity Editor — Your Workspace</h2>
+
+    <p>
+      Unity is a <strong>game engine</strong> — a tool that handles rendering, physics, audio, and input so you can focus on building your game. The Unity Editor is the visual interface where you design scenes, place objects, and test your game.
+    </p>
+
+    <div class="svg-container">
+      <img src="svgs/01-unity-editor-layout.svg" alt="Unity Editor Layout Diagram">
+    </div>
+
+    <h3>The Five Essential Panels</h3>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:22%">Panel</th>
+          <th style="width:40%">Purpose</th>
+          <th>Think of it as...</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Hierarchy</code></td>
+          <td>Lists every GameObject in the current scene</td>
+          <td>A table of contents for your scene</td>
+        </tr>
+        <tr>
+          <td><code>Scene View</code></td>
+          <td>3D workspace where you visually build your level</td>
+          <td>Your construction site</td>
+        </tr>
+        <tr>
+          <td><code>Game View</code></td>
+          <td>Preview of what the player will actually see</td>
+          <td>The player's TV screen</td>
+        </tr>
+        <tr>
+          <td><code>Inspector</code></td>
+          <td>Shows properties/components of the selected object</td>
+          <td>A detailed info card</td>
+        </tr>
+        <tr>
+          <td><code>Project</code></td>
+          <td>File browser for all assets (scripts, images, etc.)</td>
+          <td>Your file explorer / Solution Explorer</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="connection-box csharp">
+      <p>
+        In Rider, you have the <strong>Solution Explorer</strong> (files), <strong>Editor</strong> (code), and <strong>Console</strong> (output). Unity has the same idea — just with a 3D visual workspace added on top.
+      </p>
+    </div>
+
+    <h3>Scene Navigation Shortcuts</h3>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Action</th><th>Shortcut</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Pan the view</td><td><code>Middle mouse drag</code> or <code>Alt + Left mouse drag</code></td></tr>
+        <tr><td>Orbit / Rotate view</td><td><code>Right mouse drag</code></td></tr>
+        <tr><td>Zoom in/out</td><td><code>Scroll wheel</code></td></tr>
+        <tr><td>Focus on selected object</td><td><code>F</code> key</td></tr>
+        <tr><td>Fly through scene</td><td><code>Right-click + WASD</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="fill-blank">
+      <h4>📝 CHECK YOUR UNDERSTANDING</h4>
+      <label>1. Which panel lists every object in your scene?</label>
+      <input type="text" placeholder="Type your answer...">
+      <label>2. Which panel shows the properties and components of a selected object?</label>
+      <input type="text" placeholder="Type your answer...">
+      <label>3. What's the difference between Scene View and Game View?</label>
+      <input type="text" placeholder="Type your answer...">
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 2: GameObjects & Components -->
+  <!-- ============================================ -->
+  <div class="section">
+    <div class="section-num">SECTION 02</div>
+    <span class="time-badge t20">⏱ ~20 MIN</span>
+    <h2><span class="icon">🧱</span> GameObjects &amp; Components</h2>
+
+    <p>
+      In Unity, <strong>everything</strong> in your scene is a <strong>GameObject</strong> — the player, the ground, the camera, lights, obstacles. But a GameObject by itself is just an empty container. <strong>Components</strong> are what give it behavior and appearance.
+    </p>
+
+    <div class="svg-container">
+      <img src="svgs/02-gameobjects-components.svg" alt="GameObjects and Components Diagram">
+    </div>
+
+    <div class="connection-box key">
+      <p>
+        Unity uses <strong>composition over inheritance</strong>. Instead of one massive <code>Player</code> class with everything built in, you snap small, focused Components onto a GameObject — like LEGO bricks. Need physics? Add a <code>Rigidbody</code>. Need custom behavior? Add your <code>.cs</code> script.
+      </p>
+    </div>
+
+    <h3>Common Built-in Components</h3>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Component</th><th>What It Does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>Transform</code></td><td>Position, rotation, and scale — <strong>every</strong> GameObject has one</td></tr>
+        <tr><td><code>MeshFilter</code></td><td>Defines the 3D shape (cube, sphere, custom mesh)</td></tr>
+        <tr><td><code>MeshRenderer</code></td><td>Draws the shape on screen with a material/color</td></tr>
+        <tr><td><code>Collider</code></td><td>Invisible hitbox for physics collisions</td></tr>
+        <tr><td><code>Rigidbody</code></td><td>Enables physics (gravity, forces, momentum)</td></tr>
+        <tr><td><code>AudioSource</code></td><td>Plays sound effects or music</td></tr>
+        <tr><td><code>Camera</code></td><td>Renders the scene from its viewpoint</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Your Scripts Are Components Too!</h3>
+    <p>
+      When you write a C# script that inherits from <code>MonoBehaviour</code>, it becomes a <strong>custom component</strong>. You can drag it onto any GameObject — just like you'd add a Rigidbody or Collider. Your <code>public</code> fields even appear as editable properties in the Inspector.
+    </p>
+
+    <div class="connection-box csharp">
+      <p>
+        You already know how to write classes with properties and methods. A Unity component is exactly that — a class. The only difference is it <strong>inherits from <code>MonoBehaviour</code></strong> and Unity calls certain methods on it automatically.
+      </p>
+    </div>
+
+    <div class="fill-blank">
+      <h4>📝 CHECK YOUR UNDERSTANDING</h4>
+      <label>1. What is a GameObject without any components (besides Transform)?</label>
+      <input type="text" placeholder="Type your answer...">
+      <label>2. Name two built-in components that make an object visible on screen.</label>
+      <input type="text" placeholder="Type your answer...">
+      <label>3. What makes your C# scripts work as Unity components?</label>
+      <input type="text" placeholder="Hint: it involves inheritance...">
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 3: MonoBehaviour Lifecycle -->
+  <!-- ============================================ -->
+  <div class="section">
+    <div class="section-num">SECTION 03</div>
+    <span class="time-badge t25">⏱ ~25 MIN</span>
+    <h2><span class="icon">🔄</span> MonoBehaviour — Your Script's Lifecycle</h2>
+
+    <p>
+      Every Unity script inherits from <code>MonoBehaviour</code>. This base class gives your script access to Unity's <strong>lifecycle methods</strong> — special methods that Unity calls automatically at specific moments during gameplay.
+    </p>
+
+    <div class="svg-container">
+      <img src="svgs/03-monobehaviour-lifecycle.svg" alt="MonoBehaviour Lifecycle Diagram">
+    </div>
+
+    <h3>The Two Most Important Methods</h3>
+
+    <pre><code><span class="kw">using</span> UnityEngine;
+
+<span class="kw">public class</span> <span class="tp">PlayerMove</span> : <span class="ac">MonoBehaviour</span>
+{
+    <span class="kw">public</span> <span class="kw">float</span> <span class="fn">speed</span> = <span class="nm">5f</span>;  <span class="cm">// Visible in Inspector!</span>
+
+    <span class="cm">// Called ONCE when the scene loads</span>
+    <span class="kw">void</span> <span class="fn">Start</span>()
+    {
+        Debug.<span class="fn">Log</span>(<span class="st">"Game started! Player ready."</span>);
+    }
+
+    <span class="cm">// Called EVERY FRAME (~60 times per second)</span>
+    <span class="kw">void</span> <span class="rd">Update</span>()
+    {
+        <span class="cm">// Game logic goes here — movement, input, etc.</span>
+    }
+}</code></pre>
+
+    <div class="connection-box csharp">
+      <p>
+        Think of <code>Start()</code> like a <strong>constructor</strong> — it runs once to set things up. Think of <code>Update()</code> like a <strong>while loop</strong> that runs forever (every frame) until the game stops. You've written loops that repeat; <code>Update()</code> is Unity's built-in game loop.
+      </p>
+    </div>
+
+    <h3>Other Lifecycle Methods (Preview)</h3>
+    <p>You'll use these in future lessons, but it's good to know they exist:</p>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Method</th><th>When It's Called</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>Awake()</code></td><td>Very first thing — even before <code>Start()</code></td></tr>
+        <tr><td><code>Start()</code></td><td>Once, right before the first <code>Update()</code></td></tr>
+        <tr><td><code>Update()</code></td><td>Every frame (variable timing)</td></tr>
+        <tr><td><code>FixedUpdate()</code></td><td>At fixed intervals — used for physics</td></tr>
+        <tr><td><code>OnCollisionEnter()</code></td><td>When this object collides with another</td></tr>
+        <tr><td><code>OnDestroy()</code></td><td>When this object is removed from the scene</td></tr>
+      </tbody>
+    </table>
+
+    <div class="connection-box warn">
+      <p>
+        <code>public</code> fields show up in the Inspector panel. This lets you tweak values (like speed) without changing code! But remember: the Inspector value <strong>overrides</strong> whatever you set in code. If you change <code>speed = 5f</code> to <code>speed = 10f</code> in code but the Inspector still says 5, Unity uses the Inspector value.
+      </p>
+    </div>
+
+    <div class="fill-blank">
+      <h4>📝 CHECK YOUR UNDERSTANDING</h4>
+      <label>1. How many times does Start() run?</label>
+      <input type="text" placeholder="Type your answer...">
+      <label>2. Approximately how many times per second does Update() run?</label>
+      <input type="text" placeholder="Type your answer...">
+      <label>3. What base class must your Unity scripts inherit from?</label>
+      <input type="text" placeholder="Type your answer...">
+      <label>4. What keyword makes a field visible in Unity's Inspector?</label>
+      <input type="text" placeholder="Type your answer...">
+    </div>
+
+    <div class="note-area">
+      <h4>📓 YOUR NOTES — How does MonoBehaviour compare to classes you've written before?</h4>
+      <textarea placeholder="Write your thoughts here... What's similar? What's different?"></textarea>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 4: Vector3, Transform & 3D Space -->
+  <!-- ============================================ -->
+  <div class="section">
+    <div class="section-num">SECTION 04</div>
+    <span class="time-badge t20">⏱ ~20 MIN</span>
+    <h2><span class="icon">📐</span> Vector3, Transform &amp; 3D Space</h2>
+
+    <p>
+      In 3D space, every position, direction, and size is described by <strong>three numbers</strong>: X, Y, and Z. Unity uses a struct called <code>Vector3</code> to store these values.
+    </p>
+
+    <div class="svg-container">
+      <img src="svgs/04-vector3-transform.svg" alt="Vector3 and Transform Diagram">
+    </div>
+
+    <h3>Unity's Coordinate System</h3>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Axis</th><th>Direction</th><th>Color in Editor</th><th>Vector3 Shorthand</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong style="color:#e94560">X</strong></td><td>Left / Right</td><td style="color:#e94560">Red</td><td><code>Vector3.right</code> → (1, 0, 0)</td></tr>
+        <tr><td><strong style="color:#4ecca3">Y</strong></td><td>Down / Up</td><td style="color:#4ecca3">Green</td><td><code>Vector3.up</code> → (0, 1, 0)</td></tr>
+        <tr><td><strong style="color:#5dade2">Z</strong></td><td>Backward / Forward</td><td style="color:#5dade2">Blue</td><td><code>Vector3.forward</code> → (0, 0, 1)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Creating a Vector3</h3>
+    <pre><code><span class="cm">// Create a specific position</span>
+<span class="tp">Vector3</span> spawnPoint = <span class="kw">new</span> <span class="tp">Vector3</span>(<span class="nm">0</span>, <span class="nm">5</span>, <span class="nm">0</span>);  <span class="cm">// 5 units up</span>
+
+<span class="cm">// Handy shortcuts</span>
+<span class="tp">Vector3</span> origin    = <span class="tp">Vector3</span>.zero;     <span class="cm">// (0, 0, 0)</span>
+<span class="tp">Vector3</span> up        = <span class="tp">Vector3</span>.up;       <span class="cm">// (0, 1, 0)</span>
+<span class="tp">Vector3</span> right     = <span class="tp">Vector3</span>.right;    <span class="cm">// (1, 0, 0)</span>
+<span class="tp">Vector3</span> forward   = <span class="tp">Vector3</span>.forward;  <span class="cm">// (0, 0, 1)</span></code></pre>
+
+    <h3>The Transform Component</h3>
+    <p>
+      Every GameObject has a <code>Transform</code>. It stores the object's <strong>position</strong>, <strong>rotation</strong>, and <strong>scale</strong> — all as Vector3 values. You access it in code with <code>transform</code> (lowercase).
+    </p>
+
+    <pre><code><span class="cm">// Read the current position</span>
+<span class="tp">Vector3</span> pos = transform.position;
+Debug.<span class="fn">Log</span>(<span class="st">$"Player is at: {pos}"</span>);
+
+<span class="cm">// Teleport to a new position</span>
+transform.position = <span class="kw">new</span> <span class="tp">Vector3</span>(<span class="nm">0</span>, <span class="nm">10</span>, <span class="nm">0</span>);
+
+<span class="cm">// Move smoothly every frame</span>
+transform.<span class="fn">Translate</span>(<span class="tp">Vector3</span>.right * speed * Time.deltaTime);</code></pre>
+
+    <h3>Why <code>Time.deltaTime</code>?</h3>
+    <p>
+      <code>Update()</code> runs every frame, but frames aren't evenly spaced. A fast computer might run 120 fps, a slow one 30 fps. <code>Time.deltaTime</code> is the <strong>time since the last frame</strong> — multiplying by it ensures your object moves the same <em>speed per second</em> regardless of frame rate.
+    </p>
+
+    <div class="connection-box key">
+      <p>
+        Without <code>Time.deltaTime</code>: movement depends on fps (faster computer = faster player).<br>
+        With <code>Time.deltaTime</code>: movement is <strong>units per second</strong> (consistent everywhere).
+      </p>
+    </div>
+
+    <div class="fill-blank">
+      <h4>📝 CHECK YOUR UNDERSTANDING</h4>
+      <label>1. What three values does a Vector3 hold?</label>
+      <input type="text" placeholder="Type your answer...">
+      <label>2. Which axis points "up" in Unity?</label>
+      <input type="text" placeholder="Type your answer...">
+      <label>3. What method moves an object relative to its current position?</label>
+      <input type="text" placeholder="Hint: transform.___________()">
+      <label>4. Why do we multiply by Time.deltaTime when moving objects?</label>
+      <input type="text" placeholder="Type your answer...">
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================ -->
+  <!-- EXIT TICKET -->
+  <!-- ============================================ -->
+  <div class="exit-ticket">
+    <h2>🎟️ Exit Ticket</h2>
+    <div class="question">
+      <label>1. In your own words, explain the relationship between a GameObject and its Components.</label>
+      <textarea placeholder="Write 2-3 sentences..."></textarea>
+    </div>
+    <div class="question">
+      <label>2. A student writes movement code in Start() and their object only moves once. What's the bug?</label>
+      <textarea placeholder="Explain why and what they should do instead..."></textarea>
+    </div>
+    <div class="question">
+      <label>3. Write the single line of code that would move an object forward at a speed of 8 units per second.</label>
+      <textarea placeholder="transform.______(...);" style="font-family:'Fira Code',monospace; font-size:0.85rem;"></textarea>
+    </div>
+  </div>
+
+  <!-- SUBMISSION -->
+  <div class="submit-info">
+    <p>
+      <strong>Submission:</strong> Save/print this page as PDF → Upload to Canvas<br>
+      <strong>Points:</strong> 5 pts (completion) · All blanks filled + exit ticket answered
+    </p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Software Development Capstone · C# + Unity · Warren Central · 2025–2026
+</div>
+
+</body>
+</html>
