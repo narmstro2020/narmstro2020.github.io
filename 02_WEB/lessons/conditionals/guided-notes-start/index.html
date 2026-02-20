@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guided Notes — Operators &amp; Conditionals</title>
+  <style>
+    /* ============================================
+       CSS is done for you — focus on the JavaScript!
+       ============================================ */
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --red: #e94560;
+      --yellow: #ffc107;
+      --blue: #5dade2;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; padding: 2rem; max-width: 900px; margin: 0 auto; }
+    h1 {
+      font-size: 1.8rem; margin-bottom: 0.25rem;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+
+    .section {
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .section h2 {
+      font-size: 1.15rem; color: var(--accent); margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--surface-light);
+    }
+    .section p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .section ul { margin: 0.5rem 0 0.5rem 1.5rem; font-size: 0.85rem; color: var(--text-muted); }
+    .section li { margin-bottom: 0.3rem; }
+    .section code { background: var(--surface-light); padding: 0.15rem 0.4rem; border-radius: 4px; font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.85em; color: var(--yellow); }
+    .warmup-badge {
+      display: inline-block; background: rgba(233,69,96,0.15); color: var(--red);
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+      padding: 0.2rem 0.6rem; border-radius: 20px; border: 1px solid rgba(233,69,96,0.3);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── Warm-Up Interactive Area ── */
+    .warmup-app {
+      background: var(--surface-light); border-radius: 8px; padding: 1.25rem;
+      margin-top: 1rem; text-align: center;
+    }
+    #greeting-display {
+      font-size: 1.4rem; font-weight: 700; color: var(--purple);
+      margin-bottom: 1rem; min-height: 2rem;
+    }
+    .warmup-app input {
+      background: var(--bg); border: 1px solid var(--surface-light); color: var(--text);
+      padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem;
+      width: 200px; margin-right: 0.5rem;
+    }
+    .warmup-app input:focus { outline: none; border-color: var(--accent); }
+    .warmup-app button {
+      background: var(--accent); color: var(--bg); border: none;
+      padding: 0.5rem 1rem; border-radius: 6px; font-weight: 700;
+      cursor: pointer; font-size: 0.85rem;
+    }
+    .warmup-app button:hover { opacity: 0.85; }
+    #warmup-status {
+      margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted);
+      min-height: 1.2rem;
+    }
+
+    /* ── Run Button & Output ── */
+    button.run-btn {
+      display: block; margin: 2rem auto 1rem;
+      background: var(--accent); color: var(--bg);
+      border: none; padding: 0.75rem 2rem; border-radius: 8px;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    button.run-btn:hover { opacity: 0.85; }
+    #output {
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-radius: 10px; padding: 1.5rem;
+      font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.82rem;
+      color: var(--accent); white-space: pre-wrap; line-height: 1.7;
+      min-height: 150px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Operators &amp; Conditionals</h1>
+<p class="subtitle">Day 1 — Fri Feb 20 · Guided Notes · 15 pts</p>
+
+<!-- ══════════════════════════════════════════
+     WARM-UP: DOM & Event Listener Review (~15 min)
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <span class="warmup-badge">⚡ WARM-UP · 15 MIN</span>
+  <h2>Warm-Up — DOM &amp; Event Listeners Review</h2>
+  <p>Let's knock off the rust! Use <code>querySelector</code>, <code>addEventListener</code>, <code>textContent</code>, and <code>.value</code> to make this mini-app work.</p>
+
+  <div class="warmup-app">
+    <div id="greeting-display">Hello, _____!</div>
+    <input type="text" id="name-input" placeholder="Type your name...">
+    <button id="greet-btn">Greet Me</button>
+    <div id="warmup-status"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 1: Comparison Operators
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <h2>Section 1 — Comparison Operators</h2>
+  <p>Comparison operators compare two values and return <code>true</code> or <code>false</code>.</p>
+  <ul>
+    <li><code>===</code> strict equality · <code>!==</code> strict inequality</li>
+    <li><code>&gt;</code> greater than · <code>&lt;</code> less than</li>
+    <li><code>&gt;=</code> greater or equal · <code>&lt;=</code> less or equal</li>
+  </ul>
+  <p><strong>Key rule:</strong> <code>==</code> checks value only, <code>===</code> checks value AND type — always use <code>===</code>.</p>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2: Logical Operators
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <h2>Section 2 — Logical Operators</h2>
+  <p>Logical operators combine multiple conditions.</p>
+  <ul>
+    <li><code>&amp;&amp;</code> — AND: both sides must be true</li>
+    <li><code>||</code> — OR: at least one side must be true</li>
+    <li><code>!</code> — NOT: flips true ↔ false</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 3: Truthy & Falsy
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <h2>Section 3 — Truthy &amp; Falsy Values</h2>
+  <p>JavaScript treats some values as <strong>false</strong> in conditions (falsy). Everything else is <strong>true</strong> (truthy).</p>
+  <ul>
+    <li><strong>Falsy values:</strong> <code>false</code>, <code>0</code>, <code>""</code> (empty string), <code>null</code>, <code>undefined</code>, <code>NaN</code></li>
+    <li><strong>Truthy:</strong> everything else — including <code>"0"</code>, <code>"false"</code>, <code>[]</code>, <code>{}</code></li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 4: if / else if / else
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <h2>Section 4 — if / else if / else</h2>
+  <p>The <code>if</code> statement runs code only when a condition is true. Chain with <code>else if</code> and <code>else</code> for multiple paths.</p>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5: switch Statements
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <h2>Section 5 — switch Statements</h2>
+  <p>Use <code>switch</code> when comparing one value against many possible matches. Cleaner than long if/else if chains for exact matches.</p>
+</div>
+
+<button class="run-btn" onclick="runNotes()">▶ Run All Notes</button>
+
+<div id="output">// Output will appear here when you click "Run All Notes"...</div>
+
+<script>
+  // ============================================
+  // 📝 OPERATORS & CONDITIONALS — Guided Notes
+  // ============================================
+  //
+  // WHAT YOU ALREADY KNOW:
+  //   ✅ Variables (let, const)
+  //   ✅ Functions
+  //   ✅ Template literals (`Hello ${name}`)
+  //   ✅ querySelector & addEventListener
+  //
+  // INSTRUCTIONS:
+  //   Fill in each TODO as we go through the notes.
+  //   Click "Run All Notes" to test your code.
+  //   Output appears in the dark panel at the bottom.
+  //
+  // TOTAL: 17 TODOs (3 warm-up + 13 notes + 1 bonus)
+  // ============================================
+
+
+  // ╔══════════════════════════════════════════╗
+  // ║  WARM-UP: DOM & Event Listeners (~15 min)║
+  // ╚══════════════════════════════════════════╝
+  //
+  // Make the greeting app above work!
+  // When the user types a name and clicks "Greet Me":
+  //   - The greeting display updates to "Hello, [name]!"
+  //   - The status text says how many characters are in the name
+  //   - The input clears out
+
+  // TODO 1: Select the 3 elements you need using querySelector.
+  //   - #name-input  → store in a const called nameInput
+  //   - #greet-btn   → store in a const called greetBtn
+  //   - #greeting-display → store in a const called greetingDisplay
+  //   - #warmup-status → store in a const called warmupStatus
+
+
+  // TODO 2: Add a "click" event listener to greetBtn.
+  //   Inside the listener function:
+  //     a) Read the text from nameInput using .value
+  //     b) Set greetingDisplay's .textContent to `Hello, ${name}!`
+  //     c) Set warmupStatus's .textContent to
+  //        `✅ That name has ${name.length} characters!`
+  //     d) Clear nameInput by setting .value to ""
+
+
+  // TODO 3: BONUS WARM-UP — Add an "input" event listener to nameInput
+  //   that updates greetingDisplay in REAL TIME as the user types.
+  //   (Hint: use the same .value → .textContent pattern)
+
+
+  // ╔══════════════════════════════════════════╗
+  // ║  GUIDED NOTES: Operators & Conditionals  ║
+  // ╚══════════════════════════════════════════╝
+
+  let output = "";
+
+  function log(text) {
+    output += text + "\n";
+  }
+
+  function logSection(title) {
+    output += "\n══════════════════════════════════\n";
+    output += `  ${title}\n`;
+    output += "══════════════════════════════════\n\n";
+  }
+
+
+  function runNotes() {
+    output = "";
+
+    // ──────────────────────────────────────
+    // SECTION 1: Comparison Operators
+    // ──────────────────────────────────────
+    logSection("SECTION 1: Comparison Operators");
+
+    let age = 17;
+    let votingAge = 18;
+
+    // TODO 4: Use === to check if age equals votingAge.
+    //   Store the result in a variable called canVote.
+    let canVote; // ← replace with: age === votingAge
+
+    log(`age === votingAge → ${canVote}`);
+
+    // TODO 5: Use > to check if age is greater than 15.
+    //   Store in a variable called isOlderThan15.
+    let isOlderThan15; // ← replace
+
+    log(`age > 15 → ${isOlderThan15}`);
+
+    // TODO 6: Use !== to check if age is NOT equal to 18.
+    //   Store in a variable called notEighteen.
+    let notEighteen; // ← replace
+
+    log(`age !== 18 → ${notEighteen}`);
+
+    // Danger zone: == vs ===
+    let numFive = 5;
+    let strFive = "5";
+    log(`\n5 == "5"  → ${numFive == strFive}   (loose — DANGER!)`);
+    log(`5 === "5" → ${numFive === strFive}  (strict — SAFE!)`);
+
+
+    // ──────────────────────────────────────
+    // SECTION 2: Logical Operators
+    // ──────────────────────────────────────
+    logSection("SECTION 2: Logical Operators");
+
+    let hasTicket = true;
+    let hasID = false;
+
+    // TODO 7: Use && to check if the person has BOTH a ticket AND an ID.
+    //   Store in canEnter.
+    let canEnter; // ← replace with: hasTicket && hasID
+
+    log(`hasTicket && hasID → ${canEnter}`);
+
+    // TODO 8: Use || to check if the person has a ticket OR an ID.
+    //   Store in canTry.
+    let canTry; // ← replace with: hasTicket || hasID
+
+    log(`hasTicket || hasID → ${canTry}`);
+
+    // TODO 9: Use ! to flip hasID.
+    //   Store in noID.
+    let noID; // ← replace with: !hasID
+
+    log(`!hasID → ${noID}`);
+
+
+    // ──────────────────────────────────────
+    // SECTION 3: Truthy & Falsy
+    // ──────────────────────────────────────
+    logSection("SECTION 3: Truthy & Falsy");
+
+    let testValues = [0, 1, "", "hello", null, undefined, false, true, [], {}];
+
+    // TODO 10: Use a for loop to go through testValues.
+    //   For each value, log whether it's truthy or falsy.
+    //   Hint: if (value) → truthy, else → falsy
+    //   Use: log(`${JSON.stringify(value)} → ${result}`);
+    // Example output: 0 → falsy, 1 → truthy
+
+    // ← write your for loop here
+
+
+    // ──────────────────────────────────────
+    // SECTION 4: if / else if / else
+    // ──────────────────────────────────────
+    logSection("SECTION 4: if / else if / else");
+
+    let score = 85;
+
+    // TODO 11: Write an if/else if/else chain that assigns a letter grade:
+    //   score >= 90 → "A"
+    //   score >= 80 → "B"
+    //   score >= 70 → "C"
+    //   score >= 60 → "D"
+    //   else        → "F"
+    //   Store the result in a variable called grade.
+    let grade; // ← your if/else chain goes below
+
+
+    log(`Score: ${score} → Grade: ${grade}`);
+
+    // TODO 12: Write an if/else that checks if a number is even or odd.
+    //   Use the modulo operator: number % 2 === 0 means even.
+    let number = 7;
+    let evenOrOdd; // ← your if/else goes below
+
+
+    log(`${number} is ${evenOrOdd}`);
+
+    // TODO 13: Write an if/else if/else that checks a temperature:
+    //   temp >= 90 → "It's hot! 🔥"
+    //   temp >= 70 → "Nice weather! ☀️"
+    //   temp >= 50 → "A bit chilly. 🧥"
+    //   else       → "Bundle up! 🥶"
+    let temp = 72;
+    let weather; // ← your chain goes below
+
+
+    log(`${temp}°F → ${weather}`);
+
+
+    // ──────────────────────────────────────
+    // SECTION 5: switch Statements
+    // ──────────────────────────────────────
+    logSection("SECTION 5: switch Statements");
+
+    let day = "Wednesday";
+
+    // TODO 14: Write a switch statement that assigns a message based on day:
+    //   "Monday"    → "Start of the week 😴"
+    //   "Wednesday" → "Hump day! 🐪"
+    //   "Friday"    → "Almost weekend! 🎉"
+    //   "Saturday" or "Sunday" → "Weekend! 🥳"
+    //   default     → "Just another day."
+    //   Store in dayMessage.
+    let dayMessage; // ← your switch goes below
+
+
+    log(`${day} → ${dayMessage}`);
+
+    // TODO 15: Write a switch on a variable called fruit (set to "apple"):
+    //   "apple"  → "🍎 Red and crunchy"
+    //   "banana" → "🍌 Yellow and sweet"
+    //   "grape"  → "🍇 Small and purple"
+    //   default  → "🤷 Unknown fruit"
+    let fruit = "apple";
+    let fruitMessage; // ← your switch goes below
+
+
+    log(`${fruit} → ${fruitMessage}`);
+
+    // TODO 16: Write a switch on a variable called role (set to "admin"):
+    //   "admin"     → "Full access granted"
+    //   "editor"    → "Can edit content"
+    //   "viewer"    → "Read-only access"
+    //   default     → "No access"
+    let role = "admin";
+    let accessLevel; // ← your switch goes below
+
+
+    log(`Role: ${role} → ${accessLevel}`);
+
+
+    // ──────────────────────────────────────
+    // BONUS: Ternary Operator
+    // ──────────────────────────────────────
+    logSection("BONUS: Ternary Operator");
+
+    // The ternary operator is a shorthand if/else:
+    //   condition ? valueIfTrue : valueIfFalse
+
+    // TODO 17 (BONUS): Rewrite the even/odd check as a ternary.
+    //   let result = number % 2 === 0 ? "even" : "odd";
+    let bonusNumber = 42;
+    let bonusResult; // ← replace with ternary
+
+    log(`${bonusNumber} is ${bonusResult} (ternary)`);
+
+
+    // ──── Display output ────
+    document.getElementById("output").textContent = output;
+  }
+</script>
+
+</body>
+</html>

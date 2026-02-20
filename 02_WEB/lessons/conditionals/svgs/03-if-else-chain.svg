@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="450" fill="url(#bg)" rx="12"/>
+
+  <text x="300" y="35" text-anchor="middle" font-family="monospace" font-size="18" font-weight="bold" fill="#4ecca3">if / else if / else</text>
+  <line x1="100" y1="47" x2="500" y2="47" stroke="#252540" stroke-width="1"/>
+
+  <!-- Syntax Box -->
+  <rect x="30" y="60" width="260" height="200" rx="8" fill="#1a1a2e" stroke="#252540"/>
+  <text x="50" y="82" font-family="monospace" font-size="11" fill="#a0a0a0">// Syntax:</text>
+  <text x="50" y="102" font-family="monospace" font-size="12" fill="#7b68ee">if</text><text x="67" y="102" font-family="monospace" font-size="12" fill="#e0e0e0"> (condition1) {</text>
+  <text x="60" y="120" font-family="monospace" font-size="12" fill="#4ecca3">  // runs if true</text>
+  <text x="50" y="140" font-family="monospace" font-size="12" fill="#e0e0e0">}</text><text x="60" y="140" font-family="monospace" font-size="12" fill="#7b68ee"> else if</text><text x="125" y="140" font-family="monospace" font-size="12" fill="#e0e0e0"> (cond2) {</text>
+  <text x="60" y="158" font-family="monospace" font-size="12" fill="#4ecca3">  // runs if cond2</text>
+  <text x="50" y="178" font-family="monospace" font-size="12" fill="#e0e0e0">}</text><text x="60" y="178" font-family="monospace" font-size="12" fill="#7b68ee"> else</text><text x="100" y="178" font-family="monospace" font-size="12" fill="#e0e0e0"> {</text>
+  <text x="60" y="196" font-family="monospace" font-size="12" fill="#4ecca3">  // runs otherwise</text>
+  <text x="50" y="216" font-family="monospace" font-size="12" fill="#e0e0e0">}</text>
+  <text x="50" y="245" font-family="monospace" font-size="10" fill="#a0a0a0">Only ONE block runs!</text>
+
+  <!-- Flow Diagram -->
+  <rect x="310" y="60" width="260" height="200" rx="8" fill="#1a1a2e" stroke="#252540"/>
+  <text x="440" y="82" text-anchor="middle" font-family="monospace" font-size="11" fill="#a0a0a0">Flow:</text>
+
+  <!-- Diamond 1 -->
+  <polygon points="440,100 490,120 440,140 390,120" fill="none" stroke="#ffc107" stroke-width="1.5"/>
+  <text x="440" y="124" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffc107">cond1?</text>
+
+  <!-- True arrow right -->
+  <line x1="490" y1="120" x2="540" y2="120" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="545" y="124" font-family="monospace" font-size="9" fill="#4ecca3">✓ run</text>
+
+  <!-- False arrow down -->
+  <line x1="440" y1="140" x2="440" y2="155" stroke="#e94560" stroke-width="1.5"/>
+
+  <!-- Diamond 2 -->
+  <polygon points="440,155 490,175 440,195 390,175" fill="none" stroke="#ffc107" stroke-width="1.5"/>
+  <text x="440" y="179" text-anchor="middle" font-family="monospace" font-size="9" fill="#ffc107">cond2?</text>
+
+  <!-- True arrow right -->
+  <line x1="490" y1="175" x2="540" y2="175" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="545" y="179" font-family="monospace" font-size="9" fill="#4ecca3">✓ run</text>
+
+  <!-- False arrow down to else -->
+  <line x1="440" y1="195" x2="440" y2="215" stroke="#e94560" stroke-width="1.5"/>
+  <rect x="410" y="215" width="60" height="24" rx="4" fill="rgba(123,104,238,0.2)" stroke="#7b68ee"/>
+  <text x="440" y="231" text-anchor="middle" font-family="monospace" font-size="9" fill="#7b68ee">else</text>
+
+  <!-- Grade Example -->
+  <rect x="30" y="275" width="540" height="155" rx="8" fill="rgba(78,204,163,0.06)" stroke="rgba(78,204,163,0.15)"/>
+  <text x="50" y="297" font-family="monospace" font-size="11" fill="#a0a0a0">// Grade Calculator Example:</text>
+  <text x="50" y="317" font-family="monospace" font-size="12" fill="#e0e0e0"><tspan fill="#7b68ee">let</tspan> score = <tspan fill="#ffc107">85</tspan>;</text>
+  <text x="50" y="337" font-family="monospace" font-size="12" fill="#e0e0e0"><tspan fill="#7b68ee">if</tspan> (score &gt;= <tspan fill="#ffc107">90</tspan>)      grade = <tspan fill="#4ecca3">"A"</tspan>;</text>
+  <text x="50" y="355" font-family="monospace" font-size="12" fill="#e0e0e0"><tspan fill="#7b68ee">else if</tspan> (score &gt;= <tspan fill="#ffc107">80</tspan>) grade = <tspan fill="#4ecca3">"B"</tspan>;  <tspan fill="#a0a0a0">← this runs!</tspan></text>
+  <text x="50" y="373" font-family="monospace" font-size="12" fill="#e0e0e0"><tspan fill="#7b68ee">else if</tspan> (score &gt;= <tspan fill="#ffc107">70</tspan>) grade = <tspan fill="#4ecca3">"C"</tspan>;</text>
+  <text x="50" y="391" font-family="monospace" font-size="12" fill="#e0e0e0"><tspan fill="#7b68ee">else if</tspan> (score &gt;= <tspan fill="#ffc107">60</tspan>) grade = <tspan fill="#4ecca3">"D"</tspan>;</text>
+  <text x="50" y="409" font-family="monospace" font-size="12" fill="#e0e0e0"><tspan fill="#7b68ee">else</tspan>                  grade = <tspan fill="#4ecca3">"F"</tspan>;</text>
+</svg>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="420" fill="url(#bg)" rx="12"/>
+
+  <text x="300" y="35" text-anchor="middle" font-family="monospace" font-size="18" font-weight="bold" fill="#ffc107">switch Statement</text>
+  <line x1="100" y1="47" x2="500" y2="47" stroke="#252540" stroke-width="1"/>
+
+  <!-- Syntax -->
+  <rect x="30" y="60" width="260" height="230" rx="8" fill="#1a1a2e" stroke="#252540"/>
+  <text x="50" y="82" font-family="monospace" font-size="11" fill="#a0a0a0">// Syntax:</text>
+  <text x="50" y="102" font-family="monospace" font-size="12" fill="#7b68ee">switch</text><text x="100" y="102" font-family="monospace" font-size="12" fill="#e0e0e0"> (expression) {</text>
+  <text x="60" y="125" font-family="monospace" font-size="12" fill="#ffc107">  case</text><text x="105" y="125" font-family="monospace" font-size="12" fill="#e0e0e0"> value1:</text>
+  <text x="70" y="143" font-family="monospace" font-size="12" fill="#4ecca3">    // code</text>
+  <text x="70" y="161" font-family="monospace" font-size="12" fill="#e94560">    break;</text>
+  <text x="60" y="184" font-family="monospace" font-size="12" fill="#ffc107">  case</text><text x="105" y="184" font-family="monospace" font-size="12" fill="#e0e0e0"> value2:</text>
+  <text x="70" y="202" font-family="monospace" font-size="12" fill="#4ecca3">    // code</text>
+  <text x="70" y="220" font-family="monospace" font-size="12" fill="#e94560">    break;</text>
+  <text x="60" y="243" font-family="monospace" font-size="12" fill="#7b68ee">  default:</text>
+  <text x="70" y="261" font-family="monospace" font-size="12" fill="#4ecca3">    // fallback</text>
+  <text x="50" y="281" font-family="monospace" font-size="12" fill="#e0e0e0">}</text>
+
+  <!-- Key Points -->
+  <rect x="310" y="60" width="260" height="230" rx="8" fill="#1a1a2e" stroke="#252540"/>
+  <text x="330" y="85" font-family="monospace" font-size="12" font-weight="bold" fill="#4ecca3">Key Points:</text>
+
+  <circle cx="335" cy="110" r="4" fill="#ffc107"/>
+  <text x="350" y="114" font-family="monospace" font-size="10" fill="#e0e0e0">Uses === for matching</text>
+
+  <circle cx="335" cy="138" r="4" fill="#e94560"/>
+  <text x="350" y="142" font-family="monospace" font-size="10" fill="#e0e0e0">break stops fall-through</text>
+
+  <circle cx="335" cy="166" r="4" fill="#7b68ee"/>
+  <text x="350" y="170" font-family="monospace" font-size="10" fill="#e0e0e0">default = else equivalent</text>
+
+  <circle cx="335" cy="194" r="4" fill="#5dade2"/>
+  <text x="350" y="198" font-family="monospace" font-size="10" fill="#e0e0e0">Stack cases for OR logic:</text>
+  <text x="350" y="218" font-family="monospace" font-size="10" fill="#a0a0a0">case "Sat":</text>
+  <text x="350" y="234" font-family="monospace" font-size="10" fill="#a0a0a0">case "Sun":</text>
+  <text x="360" y="250" font-family="monospace" font-size="10" fill="#4ecca3">// weekend!</text>
+  <text x="360" y="266" font-family="monospace" font-size="10" fill="#e94560">break;</text>
+
+  <!-- When to use -->
+  <rect x="30" y="305" width="540" height="95" rx="8" fill="rgba(255,193,7,0.06)" stroke="rgba(255,193,7,0.15)"/>
+  <text x="50" y="328" font-family="monospace" font-size="12" font-weight="bold" fill="#ffc107">When to use switch vs if/else?</text>
+  <text x="50" y="350" font-family="monospace" font-size="11" fill="#4ecca3">✓ switch</text><text x="130" y="350" font-family="monospace" font-size="11" fill="#a0a0a0">→ Comparing ONE value against MANY exact matches</text>
+  <text x="50" y="370" font-family="monospace" font-size="11" fill="#7b68ee">✓ if/else</text><text x="140" y="370" font-family="monospace" font-size="11" fill="#a0a0a0">→ Ranges, complex conditions, mixed comparisons</text>
+  <text x="50" y="390" font-family="monospace" font-size="10" fill="#a0a0a0">💡 If you're writing 4+ "=== value" checks, switch is usually cleaner.</text>
+</svg>
