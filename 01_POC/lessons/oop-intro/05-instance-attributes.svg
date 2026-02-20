@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480">
+  <defs>
+    <linearGradient id="bg5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="480" fill="url(#bg5)" rx="12"/>
+
+  <text x="450" y="50" text-anchor="middle" fill="#e94560" font-family="Segoe UI, sans-serif" font-size="28" font-weight="bold">Instance Attributes</text>
+  <line x1="220" y1="65" x2="680" y2="65" stroke="#e94560" stroke-width="2" opacity="0.5"/>
+  <text x="450" y="88" text-anchor="middle" fill="#8892b0" font-family="Segoe UI, sans-serif" font-size="14">Variables that belong to a specific object — each object gets its own copy</text>
+
+  <!-- Two types -->
+  <rect x="60" y="110" width="380" height="200" rx="10" fill="#0f3460" stroke="#4ade80" stroke-width="2"/>
+  <text x="250" y="140" text-anchor="middle" fill="#4ade80" font-family="Segoe UI, sans-serif" font-size="18" font-weight="bold">🔄 From Parameters</text>
+  <text x="250" y="163" text-anchor="middle" fill="#8892b0" font-family="Segoe UI, sans-serif" font-size="12">Values passed in when creating the object</text>
+
+  <rect x="80" y="180" width="340" height="110" rx="6" fill="#0d1117"/>
+  <text x="100" y="205" fill="#c678dd" font-family="monospace" font-size="13">def</text>
+  <text x="130" y="205" fill="#61afef" font-family="monospace" font-size="13"> __init__</text>
+  <text x="215" y="205" fill="#ccd6f6" font-family="monospace" font-size="13">(self, </text>
+  <text x="275" y="205" fill="#ffd700" font-family="monospace" font-size="13">name</text>
+  <text x="315" y="205" fill="#ccd6f6" font-family="monospace" font-size="13">, </text>
+  <text x="330" y="205" fill="#ffd700" font-family="monospace" font-size="13">hp</text>
+  <text x="350" y="205" fill="#ccd6f6" font-family="monospace" font-size="13">):</text>
+
+  <text x="110" y="235" fill="#e94560" font-family="monospace" font-size="13">self</text>
+  <text x="145" y="235" fill="#ccd6f6" font-family="monospace" font-size="13">.name = </text>
+  <text x="225" y="235" fill="#ffd700" font-family="monospace" font-size="13">name</text>
+
+  <text x="110" y="260" fill="#e94560" font-family="monospace" font-size="13">self</text>
+  <text x="145" y="260" fill="#ccd6f6" font-family="monospace" font-size="13">.health = </text>
+  <text x="240" y="260" fill="#ffd700" font-family="monospace" font-size="13">hp</text>
+
+  <text x="250" y="282" text-anchor="middle" fill="#4ade80" font-family="monospace" font-size="11">↑ param names can differ!</text>
+
+  <!-- Default attributes -->
+  <rect x="460" y="110" width="380" height="200" rx="10" fill="#0f3460" stroke="#61afef" stroke-width="2"/>
+  <text x="650" y="140" text-anchor="middle" fill="#61afef" font-family="Segoe UI, sans-serif" font-size="18" font-weight="bold">⚙️ Default Values</text>
+  <text x="650" y="163" text-anchor="middle" fill="#8892b0" font-family="Segoe UI, sans-serif" font-size="12">Set inside __init__ — same for all new objects</text>
+
+  <rect x="480" y="180" width="340" height="110" rx="6" fill="#0d1117"/>
+  <text x="500" y="205" fill="#c678dd" font-family="monospace" font-size="13">def</text>
+  <text x="530" y="205" fill="#61afef" font-family="monospace" font-size="13"> __init__</text>
+  <text x="615" y="205" fill="#ccd6f6" font-family="monospace" font-size="13">(self, name, hp):</text>
+
+  <text x="510" y="235" fill="#e94560" font-family="monospace" font-size="13">self</text>
+  <text x="545" y="235" fill="#ccd6f6" font-family="monospace" font-size="13">.level = </text>
+  <text x="632" y="235" fill="#d19a66" font-family="monospace" font-size="13">1</text>
+
+  <text x="510" y="260" fill="#e94560" font-family="monospace" font-size="13">self</text>
+  <text x="545" y="260" fill="#ccd6f6" font-family="monospace" font-size="13">.is_alive = </text>
+  <text x="660" y="260" fill="#d19a66" font-family="monospace" font-size="13">True</text>
+
+  <text x="510" y="282" fill="#e94560" font-family="monospace" font-size="13">self</text>
+  <text x="545" y="282" fill="#ccd6f6" font-family="monospace" font-size="13">.inventory = </text>
+  <text x="672" y="282" fill="#d19a66" font-family="monospace" font-size="13">[]</text>
+
+  <!-- Accessing attributes -->
+  <rect x="60" y="330" width="780" height="135" rx="10" fill="#0d1117" stroke="#ffd700" stroke-width="1"/>
+  <text x="80" y="358" fill="#ffd700" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold">📖 Accessing & Modifying Attributes</text>
+
+  <text x="80" y="390" fill="#ccd6f6" font-family="monospace" font-size="13">hero = Hero(</text>
+  <text x="195" y="390" fill="#98c379" font-family="monospace" font-size="13">"Aria"</text>
+  <text x="255" y="390" fill="#ccd6f6" font-family="monospace" font-size="13">, </text>
+  <text x="268" y="390" fill="#d19a66" font-family="monospace" font-size="13">100</text>
+  <text x="295" y="390" fill="#ccd6f6" font-family="monospace" font-size="13">)</text>
+
+  <text x="80" y="418" fill="#61afef" font-family="monospace" font-size="13">print</text>
+  <text x="120" y="418" fill="#ccd6f6" font-family="monospace" font-size="13">(hero.name)</text>
+  <text x="310" y="418" fill="#5c6370" font-family="monospace" font-size="13"># "Aria"</text>
+  <text x="490" y="418" fill="#4ade80" font-family="monospace" font-size="13">← dot notation to READ</text>
+
+  <text x="80" y="446" fill="#ccd6f6" font-family="monospace" font-size="13">hero.health = </text>
+  <text x="230" y="446" fill="#d19a66" font-family="monospace" font-size="13">80</text>
+  <text x="310" y="446" fill="#5c6370" font-family="monospace" font-size="13"># took damage!</text>
+  <text x="490" y="446" fill="#e94560" font-family="monospace" font-size="13">← dot notation to WRITE</text>
+</svg>

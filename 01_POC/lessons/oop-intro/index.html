@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>U3B1 — OOP Intro: Classes, __init__, self</title>
+  <style>
+    :root {
+      --bg: #0a0a1a;
+      --surface: #12122a;
+      --surface-light: #1a1a3e;
+      --text: #ccd6f6;
+      --text-muted: #8892b0;
+      --text-dim: #5a5a7a;
+      --accent: #e94560;
+      --green: #4ade80;
+      --blue: #61afef;
+      --purple: #c678dd;
+      --yellow: #ffd700;
+      --border: #2a2a4a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .container { max-width: 920px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--accent);
+    }
+    .breadcrumb {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .unit-badge {
+      display: inline-block;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--yellow);
+      background: rgba(255,215,0,0.1);
+      border: 1px solid rgba(255,215,0,0.25);
+      padding: 0.15rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    h1 { font-size: 2.2rem; color: var(--accent); margin-bottom: 0.4rem; }
+    .lesson-desc { color: var(--text-muted); font-size: 1rem; max-width: 700px; margin: 0 auto; }
+    .timing-bar {
+      display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;
+    }
+    .timing-item {
+      font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--text-dim);
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.25rem 0.75rem; border-radius: 4px;
+    }
+    .timing-item strong { color: var(--text-muted); }
+
+    .content { padding: 1rem 0; }
+    .day-section { margin-bottom: 2rem; }
+    .day-header {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+    }
+    .day-num {
+      font-family: 'Fira Code', monospace; font-size: 0.8rem; font-weight: bold;
+      background: var(--accent); color: #fff; padding: 0.2rem 0.6rem; border-radius: 4px;
+    }
+    .day-title { font-size: 1.1rem; color: var(--text); font-weight: 600; }
+    .day-time { margin-left: auto; font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--text-dim); }
+
+    .resource-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;
+    }
+    .resource-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem; display: flex; gap: 0.75rem; align-items: flex-start;
+      text-decoration: none; color: inherit;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .resource-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .resource-card.link { cursor: pointer; }
+    .res-icon {
+      font-size: 1.5rem; flex-shrink: 0; width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: var(--surface-light);
+    }
+    .res-info h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .res-info p { font-size: 0.78rem; color: var(--text-muted); margin: 0; }
+    .res-info .canvas-note {
+      display: inline-block; margin-top: 0.5rem;
+      font-family: 'Fira Code', monospace; font-size: 0.65rem; color: var(--yellow);
+      background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.2);
+      padding: 0.15rem 0.5rem; border-radius: 4px;
+    }
+
+    .svg-gallery {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem; margin-top: 1rem;
+    }
+    .svg-thumb {
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-radius: 8px; padding: 0.75rem; text-align: center;
+      transition: border-color 0.2s;
+    }
+    .svg-thumb:hover { border-color: var(--purple); }
+    .svg-thumb img { width: 100%; height: auto; border-radius: 4px; margin-bottom: 0.5rem; }
+    .svg-thumb span { font-family: 'Fira Code', monospace; font-size: 0.65rem; color: var(--text-dim); }
+
+    footer {
+      border-top: 1px solid var(--surface-light);
+      padding: 2rem; text-align: center;
+      font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--text-dim);
+    }
+
+    @media(max-width: 700px) {
+      h1 { font-size: 1.8rem; }
+      .resource-grid { grid-template-columns: 1fr; }
+      .svg-gallery { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <nav class="breadcrumb">
+      <a href="../../">home</a> / <span>unit_03</span>
+    </nav>
+    <span class="unit-badge">Unit 03 - Lesson 01 (U3B1)</span>
+    <h1>OOP Intro: Classes, __init__, self</h1>
+    <p class="lesson-desc">Build your own blueprints — define classes, create objects, and understand how <code>self</code> connects them. RPG-themed exercises lead into the Monster Wrangler project.</p>
+
+    <div class="timing-bar">
+      <div class="timing-item"><strong>Period:</strong> 86 min (11:01–12:27)</div>
+      <div class="timing-item"><strong>Day 1:</strong> Guided Notes (5 pts)</div>
+      <div class="timing-item"><strong>Day 2:</strong> Activity (15 pts)</div>
+      <div class="timing-item"><strong>Submit via:</strong> GitHub → Canvas</div>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- DAY 1 -->
+    <div class="day-section">
+      <div class="day-header">
+        <span class="day-num">DAY 1</span>
+        <span class="day-title">Guided Notes — OOP Intro</span>
+        <span class="day-time">11:01 – 12:27</span>
+      </div>
+      <div class="resource-grid">
+        <a href="guided-notes.html" class="resource-card link">
+          <div class="res-icon">📝</div>
+          <div class="res-info">
+            <h4>Interactive Guided Notes</h4>
+            <p>7 sections with live code demos, TODO exercises, and an exit ticket.</p>
+          </div>
+        </a>
+        <a href="guided-notes-start/main.py" class="resource-card link">
+          <div class="res-icon">🐍</div>
+          <div class="res-info">
+            <h4>Starter File — main.py</h4>
+            <p>Starter code with instructor demos and TODO placeholders. Open in PyCharm.</p>
+            <span class="canvas-note">📌 Submit this file → GitHub → Canvas (5 pts)</span>
+          </div>
+        </a>
+        <a href="guided-notes-solution/main.py" class="resource-card link">
+          <div class="res-icon">✅</div>
+          <div class="res-info">
+            <h4>Solution File</h4>
+            <p>Complete solution with all TODOs filled in. (Instructor reference.)</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- DAY 2 placeholder -->
+    <div class="day-section">
+      <div class="day-header">
+        <span class="day-num" style="background: var(--blue);">DAY 2</span>
+        <span class="day-title">Activity — OOP Practice (Coming Next Class)</span>
+        <span class="day-time">Next Black Day</span>
+      </div>
+      <div class="resource-grid">
+        <div class="resource-card">
+          <div class="res-icon">🎮</div>
+          <div class="res-info">
+            <h4>OOP Practice Activity</h4>
+            <p>Build custom RPG classes from scratch — heroes, monsters, and items. Activity will be added before Day 2.</p>
+            <span class="canvas-note">📌 15 pts — GitHub → Canvas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SVG Gallery -->
+    <div class="day-section">
+      <div class="day-header">
+        <span class="day-num" style="background: var(--purple);">SVG</span>
+        <span class="day-title">Visual Reference — Concept Graphics</span>
+      </div>
+      <div class="svg-gallery">
+        <div class="svg-thumb">
+          <img src="svgs/01-what-is-oop.svg" alt="What is OOP?">
+          <span>01 — What is OOP?</span>
+        </div>
+        <div class="svg-thumb">
+          <img src="svgs/02-defining-a-class.svg" alt="Defining a Class">
+          <span>02 — Defining a Class</span>
+        </div>
+        <div class="svg-thumb">
+          <img src="svgs/03-init-constructor.svg" alt="The __init__ Constructor">
+          <span>03 — __init__ Constructor</span>
+        </div>
+        <div class="svg-thumb">
+          <img src="svgs/04-self-keyword.svg" alt="The self Keyword">
+          <span>04 — self Keyword</span>
+        </div>
+        <div class="svg-thumb">
+          <img src="svgs/05-instance-attributes.svg" alt="Instance Attributes">
+          <span>05 — Instance Attributes</span>
+        </div>
+        <div class="svg-thumb">
+          <img src="svgs/06-creating-objects.svg" alt="Creating & Using Objects">
+          <span>06 — Creating Objects</span>
+        </div>
+        <div class="svg-thumb">
+          <img src="svgs/07-objects-in-collections.svg" alt="Objects in Collections">
+          <span>07 — Objects in Collections</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>Principles of Computing — Unit 03: OOP Foundations + Monster Wrangler | U3B1</p>
+  </footer>
+</div>
+
+</body>
+</html>

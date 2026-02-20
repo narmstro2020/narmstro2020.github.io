@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>U3B1 — OOP Intro: Classes, __init__, self | Guided Notes</title>
+  <style>
+    :root {
+      --bg-primary: #0a0a1a;
+      --bg-surface: #12122a;
+      --bg-surface-light: #1a1a3e;
+      --text-primary: #ccd6f6;
+      --text-muted: #8892b0;
+      --text-dim: #5a5a7a;
+      --accent: #e94560;
+      --accent-glow: rgba(233, 69, 96, 0.15);
+      --green: #4ade80;
+      --green-glow: rgba(74, 222, 128, 0.12);
+      --blue: #61afef;
+      --blue-glow: rgba(97, 175, 239, 0.12);
+      --purple: #c678dd;
+      --purple-glow: rgba(198, 120, 221, 0.12);
+      --yellow: #ffd700;
+      --yellow-glow: rgba(255, 215, 0, 0.1);
+      --orange: #d19a66;
+      --border: #2a2a4a;
+      --radius: 10px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    .container { max-width: 920px; margin: 0 auto; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--accent);
+    }
+    .breadcrumb {
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .unit-badge {
+      display: inline-block;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--yellow);
+      background: var(--yellow-glow);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      padding: 0.15rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    h1 {
+      font-size: 2.2rem;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+    .timing-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .timing-item {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+    }
+    .timing-item strong { color: var(--text-muted); }
+
+    /* Sections */
+    .section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      position: relative;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px; height: 32px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .section h2 {
+      font-size: 1.3rem;
+      color: var(--text-primary);
+    }
+    .section-time {
+      margin-left: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      background: var(--bg-surface-light);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .section p, .section li {
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .section p strong { color: var(--text-primary); }
+
+    /* SVG container */
+    .svg-container {
+      margin: 1rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .svg-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Code blocks */
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 0.75rem 0;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      color: var(--text-primary);
+    }
+    .code-block .keyword { color: #c678dd; }
+    .code-block .function { color: #61afef; }
+    .code-block .string { color: #98c379; }
+    .code-block .number { color: #d19a66; }
+    .code-block .comment { color: #5c6370; font-style: italic; }
+    .code-block .self { color: #e94560; }
+    .code-block .classname { color: #e5c07b; }
+    .code-block .builtin { color: #61afef; }
+
+    /* TODO blocks */
+    .todo-block {
+      background: var(--green-glow);
+      border: 1px solid rgba(74, 222, 128, 0.3);
+      border-left: 4px solid var(--green);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    }
+    .todo-block h3 {
+      color: var(--green);
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    .todo-block p, .todo-block li {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Instructor demo blocks */
+    .demo-block {
+      background: var(--blue-glow);
+      border: 1px solid rgba(97, 175, 239, 0.3);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    }
+    .demo-block h3 {
+      color: var(--blue);
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Key concept callout */
+    .callout {
+      background: var(--yellow-glow);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+    }
+    .callout h3 {
+      color: var(--yellow);
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+    }
+    .callout p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* Break section */
+    .break-section {
+      text-align: center;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--text-dim);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+    }
+
+    /* Exit ticket */
+    .exit-ticket {
+      background: var(--purple-glow);
+      border: 2px solid rgba(198, 120, 221, 0.4);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-top: 2rem;
+    }
+    .exit-ticket h2 {
+      color: var(--purple);
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="breadcrumb">
+      <a href="index.html">home</a> / unit_03
+    </div>
+    <span class="unit-badge">Unit 03 - Lesson 01 (U3B1)</span>
+    <h1>OOP Intro: Classes, __init__, self</h1>
+    <p class="subtitle">Build your own blueprints — define classes, create objects, and understand how <code>self</code> connects them.</p>
+    <div class="timing-bar">
+      <span class="timing-item"><strong>Period:</strong> 86 min (11:01–12:27)</span>
+      <span class="timing-item"><strong>Type:</strong> Guided Notes (5 pts)</span>
+      <span class="timing-item"><strong>Submit:</strong> GitHub → Canvas</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════ SECTION 1 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">1</span>
+      <h2>What is OOP?</h2>
+      <span class="section-time">11:09 – 11:19 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/01-what-is-oop.svg" alt="What is OOP — Blueprint vs Object diagram">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>OOP organizes code into <strong>classes</strong> (blueprints) and <strong>objects</strong> (real things). You've already been using objects — every list, string, and integer in Python is an object!</p>
+      <div class="code-block">
+<span class="comment"># You've been using objects this whole time!</span>
+my_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+my_string = <span class="string">"Hello World"</span>
+<span class="builtin">print</span>(<span class="builtin">type</span>(my_list))      <span class="comment"># &lt;class 'list'&gt;</span>
+<span class="builtin">print</span>(<span class="builtin">type</span>(my_string))   <span class="comment"># &lt;class 'str'&gt;</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h3>💡 Key Concept</h3>
+      <p>A <strong>class</strong> is a blueprint (like a character creation screen). An <strong>object</strong> is a real thing made from that blueprint (like each character you create). One class → many objects, each with their own data.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 2 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">2</span>
+      <h2>Defining a Class</h2>
+      <span class="section-time">11:19 – 11:29 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/02-defining-a-class.svg" alt="Defining a Class — syntax breakdown">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>Use the <code>class</code> keyword followed by a <strong>PascalCase</strong> name and a colon. The <code>pass</code> keyword is a placeholder so we don't get an error with an empty body.</p>
+      <div class="code-block">
+<span class="keyword">class</span> <span class="classname">Hero</span>:
+    <span class="string">"""A brave RPG hero character."""</span>
+    <span class="keyword">pass</span>
+
+<span class="comment"># Create an object from it:</span>
+hero_1 = <span class="classname">Hero</span>()
+<span class="builtin">print</span>(<span class="builtin">type</span>(hero_1))   <span class="comment"># &lt;class '__main__.Hero'&gt;</span>
+      </div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 1 — Your Turn</h3>
+      <p>Define a class called <code>Weapon</code> with a docstring and <code>pass</code>. Then create an object called <code>sword</code> from it and print its type.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 3 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">3</span>
+      <h2>The __init__ Constructor</h2>
+      <span class="section-time">11:29 – 11:39 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/03-init-constructor.svg" alt="The __init__ Constructor — how it works">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p><code>__init__</code> (pronounced "dunder init") is a special method that runs <strong>automatically</strong> when you create a new object. It sets up the starting values.</p>
+      <div class="code-block">
+<span class="keyword">class</span> <span class="classname">Hero</span>:
+    <span class="string">"""A brave RPG hero character."""</span>
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="self">self</span>, name, health, attack_power):
+        <span class="self">self</span>.name = name
+        <span class="self">self</span>.health = health
+        <span class="self">self</span>.attack_power = attack_power
+        <span class="self">self</span>.is_alive = <span class="number">True</span>    <span class="comment"># default value</span>
+
+<span class="comment"># Python calls __init__ for you:</span>
+aria = <span class="classname">Hero</span>(<span class="string">"Aria"</span>, <span class="number">100</span>, <span class="number">25</span>)
+<span class="builtin">print</span>(<span class="keyword">f</span><span class="string">"{aria.name}: {aria.health} HP"</span>)
+      </div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 2 — Your Turn</h3>
+      <p>Create a hero named <code>"Kael"</code> with 120 health and 30 attack power. Print all of Kael's attributes using f-strings.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ BREAK ═══════════════ -->
+  <div class="break-section">
+    🦵 Leg Stretch / Q&amp;A — 5 minutes (11:39 – 11:44)
+  </div>
+
+  <!-- ═══════════════════ SECTION 4 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">4</span>
+      <h2>The self Keyword</h2>
+      <span class="section-time">11:44 – 11:54 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/04-self-keyword.svg" alt="The self Keyword — each object gets its own self">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p><code>self</code> means "this specific object." Python fills it in automatically — you never pass it yourself. Each object's <code>self</code> points to itself.</p>
+      <div class="code-block">
+<span class="comment"># Each object is independent:</span>
+hero_a = <span class="classname">Hero</span>(<span class="string">"Aria"</span>, <span class="number">100</span>, <span class="number">25</span>)
+hero_b = <span class="classname">Hero</span>(<span class="string">"Kael"</span>, <span class="number">120</span>, <span class="number">30</span>)
+
+hero_a.health = <span class="number">50</span>    <span class="comment"># Aria took damage</span>
+<span class="builtin">print</span>(hero_a.health)   <span class="comment"># 50</span>
+<span class="builtin">print</span>(hero_b.health)   <span class="comment"># still 120!</span>
+      </div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 3 — Your Turn</h3>
+      <p>Create TWO <code>Weapon</code> objects (sword &amp; staff). Print each weapon's damage. Then change the sword's damage and print both again to prove they're independent.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 5 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">5</span>
+      <h2>Instance Attributes</h2>
+      <span class="section-time">11:54 – 12:04 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/05-instance-attributes.svg" alt="Instance Attributes — from parameters and defaults">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>Attributes come from two places: <strong>parameters</strong> (user provides the value) and <strong>defaults</strong> (set inside <code>__init__</code>, same starting value for everyone).</p>
+      <div class="code-block">
+<span class="keyword">class</span> <span class="classname">Monster</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="self">self</span>, name, monster_type, max_health):
+        <span class="comment"># From parameters:</span>
+        <span class="self">self</span>.name = name
+        <span class="self">self</span>.monster_type = monster_type
+        <span class="self">self</span>.max_health = max_health
+        <span class="comment"># Default values:</span>
+        <span class="self">self</span>.current_health = max_health
+        <span class="self">self</span>.level = <span class="number">1</span>
+        <span class="self">self</span>.is_defeated = <span class="number">False</span>
+        <span class="self">self</span>.loot = []
+
+goblin = <span class="classname">Monster</span>(<span class="string">"Grimjaw"</span>, <span class="string">"Goblin"</span>, <span class="number">50</span>)
+      </div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 4 — Your Turn</h3>
+      <p>Define a <code>Potion</code> class that takes <code>name</code> and <code>heal_amount</code> as parameters, plus a default <code>is_used = False</code>. Create two potions and print their info.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 6 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">6</span>
+      <h2>Creating &amp; Using Objects</h2>
+      <span class="section-time">12:04 – 12:14 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/06-creating-objects.svg" alt="Creating and Using Objects — dot notation">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>Use <strong>dot notation</strong> to read and write attributes. You can modify an object's data, append to its lists, and use its attributes in conditionals.</p>
+      <div class="code-block">
+dragon = <span class="classname">Monster</span>(<span class="string">"Smaug"</span>, <span class="string">"Dragon"</span>, <span class="number">500</span>)
+
+<span class="comment"># Read:</span>
+<span class="builtin">print</span>(dragon.name)
+
+<span class="comment"># Write:</span>
+dragon.current_health -= <span class="number">100</span>
+dragon.loot.append(<span class="string">"Dragon Scale"</span>)
+
+<span class="comment"># Conditional:</span>
+<span class="keyword">if</span> dragon.current_health <= <span class="number">0</span>:
+    dragon.is_defeated = <span class="number">True</span>
+      </div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 5 — Your Turn</h3>
+      <p>Create a <code>Monster</code> called "Shadow Wolf". Simulate a battle: deal damage twice, check if defeated, and add loot if so.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 7 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">7</span>
+      <h2>Objects in Collections &amp; Loops</h2>
+      <span class="section-time">12:14 – 12:24 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/07-objects-in-collections.svg" alt="Objects in Collections and Loops">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>Objects can live in lists — this is critical for games! Loop through to print, search, or calculate totals across all objects.</p>
+      <div class="code-block">
+party = [
+    <span class="classname">Hero</span>(<span class="string">"Aria"</span>, <span class="number">100</span>, <span class="number">25</span>),
+    <span class="classname">Hero</span>(<span class="string">"Kael"</span>, <span class="number">120</span>, <span class="number">30</span>),
+    <span class="classname">Hero</span>(<span class="string">"Mira"</span>, <span class="number">70</span>, <span class="number">50</span>),
+]
+
+<span class="keyword">for</span> hero <span class="keyword">in</span> party:
+    <span class="builtin">print</span>(<span class="keyword">f</span><span class="string">"{hero.name}: {hero.health} HP"</span>)
+      </div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 6 — Your Turn</h3>
+      <p>Create a list of 3 <code>Monster</code> objects. Loop through to print each, find the one with the most HP, and calculate total enemy HP.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ EXIT TICKET ═══════════════════ -->
+  <div class="exit-ticket">
+    <div class="section-header">
+      <span class="section-num" style="background: var(--purple);">🎫</span>
+      <h2>Exit Ticket</h2>
+      <span class="section-time">Remaining time</span>
+    </div>
+
+    <p style="color: var(--text-muted); margin-bottom: 1rem;">Build a complete class from scratch — no scaffolding this time!</p>
+
+    <div class="todo-block" style="background: var(--purple-glow); border-color: rgba(198, 120, 221, 0.3); border-left-color: var(--purple);">
+      <h3 style="color: var(--purple);">🎫 TODO 7 — Exit Ticket</h3>
+      <p>Create a <code>QuestItem</code> class with parameters <code>name</code>, <code>rarity</code>, <code>value</code> and defaults <code>is_equipped = False</code>, <code>enhancement_level = 0</code>. Then:</p>
+      <p>a) Create 3 items in an <code>inventory</code> list<br>
+      b) Loop and print each item's name &amp; rarity<br>
+      c) "Equip" the Shadow Cloak<br>
+      d) "Enhance" the Iron Shield 3 times<br>
+      e) Calculate total inventory value<br>
+      f) Print the enhanced shield's full info</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Principles of Computing — Unit 03: OOP Foundations | U3B1</p>
+    <p style="margin-top: 0.25rem;">Submit: Push to GitHub (public) → paste link on Canvas (5 pts)</p>
+  </footer>
+
+</div>
+</body>
+</html>

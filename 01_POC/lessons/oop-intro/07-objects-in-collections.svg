@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <linearGradient id="bg7" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="520" fill="url(#bg7)" rx="12"/>
+
+  <text x="450" y="50" text-anchor="middle" fill="#e94560" font-family="Segoe UI, sans-serif" font-size="28" font-weight="bold">Objects in Collections &amp; Loops</text>
+  <line x1="180" y1="65" x2="720" y2="65" stroke="#e94560" stroke-width="2" opacity="0.5"/>
+  <text x="450" y="88" text-anchor="middle" fill="#8892b0" font-family="Segoe UI, sans-serif" font-size="14">Store objects in lists and loop through them — just like any other variable!</text>
+
+  <!-- Code block: list of objects -->
+  <rect x="60" y="110" width="500" height="200" rx="10" fill="#0d1117" stroke="#3d3d5c" stroke-width="2"/>
+
+  <text x="85" y="138" fill="#484848" font-family="monospace" font-size="13">1</text>
+  <text x="85" y="163" fill="#484848" font-family="monospace" font-size="13">2</text>
+  <text x="85" y="188" fill="#484848" font-family="monospace" font-size="13">3</text>
+  <text x="85" y="213" fill="#484848" font-family="monospace" font-size="13">4</text>
+  <text x="85" y="238" fill="#484848" font-family="monospace" font-size="13">5</text>
+  <text x="85" y="263" fill="#484848" font-family="monospace" font-size="13">6</text>
+  <text x="85" y="288" fill="#484848" font-family="monospace" font-size="13">7</text>
+
+  <text x="115" y="138" fill="#5c6370" font-family="monospace" font-size="13"># Create a party of heroes</text>
+  <text x="115" y="163" fill="#ccd6f6" font-family="monospace" font-size="13">party = [</text>
+  <text x="115" y="188" fill="#ccd6f6" font-family="monospace" font-size="13">    Hero(</text>
+  <text x="182" y="188" fill="#98c379" font-family="monospace" font-size="13">"Aria"</text>
+  <text x="240" y="188" fill="#ccd6f6" font-family="monospace" font-size="13">, 100, 25),</text>
+  <text x="115" y="213" fill="#ccd6f6" font-family="monospace" font-size="13">    Hero(</text>
+  <text x="182" y="213" fill="#98c379" font-family="monospace" font-size="13">"Kael"</text>
+  <text x="240" y="213" fill="#ccd6f6" font-family="monospace" font-size="13">, 120, 30),</text>
+  <text x="115" y="238" fill="#ccd6f6" font-family="monospace" font-size="13">    Hero(</text>
+  <text x="182" y="238" fill="#98c379" font-family="monospace" font-size="13">"Mira"</text>
+  <text x="240" y="238" fill="#ccd6f6" font-family="monospace" font-size="13">, 70, 50),</text>
+  <text x="115" y="263" fill="#ccd6f6" font-family="monospace" font-size="13">]</text>
+
+  <!-- Loop code -->
+  <text x="115" y="290" fill="#c678dd" font-family="monospace" font-size="13">for</text>
+  <text x="150" y="290" fill="#ccd6f6" font-family="monospace" font-size="13"> hero </text>
+  <text x="200" y="290" fill="#c678dd" font-family="monospace" font-size="13">in</text>
+  <text x="222" y="290" fill="#ccd6f6" font-family="monospace" font-size="13"> party:</text>
+
+  <!-- Right side: What the loop does -->
+  <rect x="590" y="110" width="280" height="200" rx="10" fill="#0f3460" stroke="#4ade80" stroke-width="1"/>
+  <text x="730" y="140" text-anchor="middle" fill="#4ade80" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold">🔄 Each Iteration</text>
+
+  <text x="610" y="170" fill="#ccd6f6" font-family="monospace" font-size="12">Loop 1: hero = party[0]</text>
+  <text x="610" y="190" fill="#8892b0" font-family="monospace" font-size="11">         hero.name → "Aria"</text>
+
+  <text x="610" y="218" fill="#ccd6f6" font-family="monospace" font-size="12">Loop 2: hero = party[1]</text>
+  <text x="610" y="238" fill="#8892b0" font-family="monospace" font-size="11">         hero.name → "Kael"</text>
+
+  <text x="610" y="266" fill="#ccd6f6" font-family="monospace" font-size="12">Loop 3: hero = party[2]</text>
+  <text x="610" y="286" fill="#8892b0" font-family="monospace" font-size="11">         hero.name → "Mira"</text>
+
+  <!-- Practical patterns -->
+  <rect x="60" y="330" width="380" height="170" rx="10" fill="#0d1117" stroke="#ffd700" stroke-width="1"/>
+  <text x="80" y="358" fill="#ffd700" font-family="Segoe UI, sans-serif" font-size="15" font-weight="bold">🎯 Pattern: Print All</text>
+
+  <text x="80" y="385" fill="#c678dd" font-family="monospace" font-size="12">for</text>
+  <text x="110" y="385" fill="#ccd6f6" font-family="monospace" font-size="12"> hero </text>
+  <text x="155" y="385" fill="#c678dd" font-family="monospace" font-size="12">in</text>
+  <text x="173" y="385" fill="#ccd6f6" font-family="monospace" font-size="12"> party:</text>
+  <text x="100" y="410" fill="#61afef" font-family="monospace" font-size="12">print</text>
+  <text x="140" y="410" fill="#ccd6f6" font-family="monospace" font-size="12">(</text>
+  <text x="148" y="410" fill="#c678dd" font-family="monospace" font-size="12">f</text>
+  <text x="160" y="410" fill="#98c379" font-family="monospace" font-size="12">"{hero.name}: {hero.health}hp"</text>
+  <text x="395" y="410" fill="#ccd6f6" font-family="monospace" font-size="12">)</text>
+
+  <text x="80" y="442" fill="#5c6370" font-family="monospace" font-size="12"># Output:</text>
+  <text x="80" y="462" fill="#8892b0" font-family="monospace" font-size="12"># Aria: 100hp</text>
+  <text x="80" y="480" fill="#8892b0" font-family="monospace" font-size="12"># Kael: 120hp</text>
+  <text x="80" y="498" fill="#8892b0" font-family="monospace" font-size="12"># Mira: 70hp</text>
+
+  <!-- Filter pattern -->
+  <rect x="460" y="330" width="410" height="170" rx="10" fill="#0d1117" stroke="#c678dd" stroke-width="1"/>
+  <text x="480" y="358" fill="#c678dd" font-family="Segoe UI, sans-serif" font-size="15" font-weight="bold">🔍 Pattern: Find / Filter</text>
+
+  <text x="480" y="385" fill="#5c6370" font-family="monospace" font-size="12"># Find the strongest hero</text>
+  <text x="480" y="410" fill="#ccd6f6" font-family="monospace" font-size="12">strongest = party[</text>
+  <text x="640" y="410" fill="#d19a66" font-family="monospace" font-size="12">0</text>
+  <text x="650" y="410" fill="#ccd6f6" font-family="monospace" font-size="12">]</text>
+
+  <text x="480" y="438" fill="#c678dd" font-family="monospace" font-size="12">for</text>
+  <text x="510" y="438" fill="#ccd6f6" font-family="monospace" font-size="12"> hero </text>
+  <text x="555" y="438" fill="#c678dd" font-family="monospace" font-size="12">in</text>
+  <text x="573" y="438" fill="#ccd6f6" font-family="monospace" font-size="12"> party:</text>
+  <text x="500" y="462" fill="#c678dd" font-family="monospace" font-size="12">if</text>
+  <text x="520" y="462" fill="#ccd6f6" font-family="monospace" font-size="12"> hero.attack > strongest.attack:</text>
+  <text x="520" y="486" fill="#ccd6f6" font-family="monospace" font-size="12">strongest = hero</text>
+
+  <text x="480" y="498" fill="#5c6370" font-family="monospace" font-size="12"># strongest.name → "Mira" (50 atk)</text>
+</svg>
