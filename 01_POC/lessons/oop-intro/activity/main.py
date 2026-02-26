@@ -143,8 +143,3 @@ print("TASK 4: Party Roster")
 print("=" * 55)
 
 # YOUR CODE HERE
-
-
-
-
- Mira 100 HP | Dax 110 HP
