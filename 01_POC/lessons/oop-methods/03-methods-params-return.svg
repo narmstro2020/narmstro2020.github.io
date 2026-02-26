@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="accent3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e94560"/>
+      <stop offset="100%" stop-color="#ff6b6b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="520" fill="url(#bg3)" rx="12"/>
+  <rect x="0" y="0" width="900" height="4" fill="url(#accent3)" rx="2"/>
+
+  <text x="450" y="48" text-anchor="middle" fill="#e94560" font-family="'Courier New',monospace" font-size="14" font-weight="bold" letter-spacing="4">SECTION 3</text>
+  <text x="450" y="82" text-anchor="middle" fill="#ffffff" font-family="'Segoe UI',sans-serif" font-size="28" font-weight="bold">Methods with Parameters &amp; Return</text>
+  <text x="450" y="108" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="14">Methods can take extra inputs and send back results</text>
+
+  <!-- Left: Method with parameter -->
+  <rect x="40" y="130" width="400" height="170" rx="10" fill="#16213e" stroke="#c792ea" stroke-width="2"/>
+  <text x="240" y="155" text-anchor="middle" fill="#c792ea" font-family="'Courier New',monospace" font-size="13" font-weight="bold">⚔️ METHOD WITH PARAMETER</text>
+
+  <text x="70" y="185" fill="#c792ea" font-family="'Courier New',monospace" font-size="12">def</text>
+  <text x="100" y="185" fill="#82aaff" font-family="'Courier New',monospace" font-size="12">take_damage</text>
+  <text x="196" y="185" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">(self, amount):</text>
+  <text x="90" y="210" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">self.hp -= amount</text>
+  <text x="90" y="235" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">print(</text>
+  <text x="135" y="235" fill="#c3e88d" font-family="'Courier New',monospace" font-size="12">f"{self.name} took {amount} dmg!"</text>
+  <text x="413" y="235" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">)</text>
+
+  <!-- Annotation arrows for parameter -->
+  <line x1="310" y1="185" x2="350" y2="185" stroke="#ffd700" stroke-width="1"/>
+  <text x="360" y="180" fill="#ffd700" font-family="'Segoe UI',sans-serif" font-size="10">self = auto</text>
+  <text x="360" y="194" fill="#ffd700" font-family="'Segoe UI',sans-serif" font-size="10">amount = you pass</text>
+
+  <text x="70" y="275" fill="#546e7a" font-family="'Courier New',monospace" font-size="12">hero.take_damage(25)</text>
+  <text x="270" y="275" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="11">→ "Aria took 25 dmg!"</text>
+
+  <!-- Right: Method with return -->
+  <rect x="460" y="130" width="400" height="170" rx="10" fill="#16213e" stroke="#00e676" stroke-width="2"/>
+  <text x="660" y="155" text-anchor="middle" fill="#00e676" font-family="'Courier New',monospace" font-size="13" font-weight="bold">📤 METHOD WITH RETURN</text>
+
+  <text x="490" y="185" fill="#c792ea" font-family="'Courier New',monospace" font-size="12">def</text>
+  <text x="520" y="185" fill="#82aaff" font-family="'Courier New',monospace" font-size="12">is_alive</text>
+  <text x="588" y="185" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">(self):</text>
+  <text x="510" y="210" fill="#e94560" font-family="'Courier New',monospace" font-size="12">return</text>
+  <text x="564" y="210" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">self.hp > 0</text>
+
+  <text x="490" y="250" fill="#546e7a" font-family="'Courier New',monospace" font-size="12">if hero.is_alive():</text>
+  <text x="510" y="275" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">print(</text>
+  <text x="555" y="275" fill="#c3e88d" font-family="'Courier New',monospace" font-size="12">"Still fighting!"</text>
+  <text x="700" y="275" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">)</text>
+
+  <!-- Bottom: Methods that modify state -->
+  <rect x="40" y="320" width="820" height="170" rx="10" fill="#16213e" stroke="#e94560" stroke-width="2"/>
+  <text x="450" y="348" text-anchor="middle" fill="#e94560" font-family="'Courier New',monospace" font-size="13" font-weight="bold">🔄 METHODS THAT MODIFY STATE (self changes the object's data)</text>
+
+  <text x="70" y="382" fill="#c792ea" font-family="'Courier New',monospace" font-size="13">def</text>
+  <text x="105" y="382" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">level_up</text>
+  <text x="175" y="382" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">(self):</text>
+  <text x="90" y="407" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">self.level += 1</text>
+  <text x="340" y="407" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># modifies the object's own data</text>
+  <text x="90" y="432" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">self.hp += 20</text>
+  <text x="340" y="432" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># gains 20 HP on level up</text>
+  <text x="90" y="457" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">print(</text>
+  <text x="143" y="457" fill="#c3e88d" font-family="'Courier New',monospace" font-size="13">f"{self.name} is now level {self.level}!"</text>
+  <text x="505" y="457" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">)</text>
+
+  <!-- Right side flow -->
+  <rect x="590" y="370" width="250" height="105" rx="8" fill="#0f3460" stroke="#ffd700" stroke-width="1" stroke-dasharray="4"/>
+  <text x="715" y="395" text-anchor="middle" fill="#ffd700" font-family="'Segoe UI',sans-serif" font-size="13" font-weight="bold">💡 PATTERN</text>
+  <text x="715" y="418" text-anchor="middle" fill="#ccd6f6" font-family="'Segoe UI',sans-serif" font-size="12">self.attribute = new_value</text>
+  <text x="715" y="440" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="11">Methods can read AND write</text>
+  <text x="715" y="458" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="11">the object's own attributes</text>
+
+  <rect x="40" y="495" width="820" height="2" fill="#0f3460"/>
+  <text x="450" y="512" text-anchor="middle" fill="#4a5568" font-family="'Courier New',monospace" font-size="10">U3B3 — OOP Part 2: Methods, Sprites &amp; super() | Principles of Computing</text>
+</svg>

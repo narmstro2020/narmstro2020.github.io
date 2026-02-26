@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="450" fill="url(#bg)" rx="12"/>
+
+  <text x="300" y="35" text-anchor="middle" font-family="monospace" font-size="18" font-weight="bold" fill="#e0e0e0">When to Use Each Loop</text>
+  <line x1="80" y1="47" x2="520" y2="47" stroke="#252540" stroke-width="1"/>
+
+  <!-- for Loop Card -->
+  <rect x="30" y="65" width="540" height="100" rx="8" fill="rgba(78,204,163,0.06)" stroke="rgba(78,204,163,0.25)"/>
+  <rect x="30" y="65" width="6" height="100" rx="3" fill="#4ecca3"/>
+  <text x="55" y="90" font-family="monospace" font-size="15" font-weight="bold" fill="#4ecca3">for</text>
+  <text x="55" y="112" font-family="monospace" font-size="11" fill="#e0e0e0">Use when you <tspan font-weight="bold" fill="#ffc107">know how many times</tspan> to loop</text>
+  <text x="55" y="132" font-family="monospace" font-size="10" fill="#a0a0a0">Need the index? Need to count? Need to skip by 2s? → for</text>
+  <text x="55" y="152" font-family="monospace" font-size="10" fill="#a0a0a0">Examples: count 1-100, loop through array by index, countdown</text>
+
+  <!-- while Loop Card -->
+  <rect x="30" y="180" width="540" height="100" rx="8" fill="rgba(123,104,238,0.06)" stroke="rgba(123,104,238,0.25)"/>
+  <rect x="30" y="180" width="6" height="100" rx="3" fill="#7b68ee"/>
+  <text x="55" y="205" font-family="monospace" font-size="15" font-weight="bold" fill="#7b68ee">while</text>
+  <text x="55" y="227" font-family="monospace" font-size="11" fill="#e0e0e0">Use when you <tspan font-weight="bold" fill="#ffc107">don't know how many times</tspan> to loop</text>
+  <text x="55" y="247" font-family="monospace" font-size="10" fill="#a0a0a0">Keep going until a condition is met → while</text>
+  <text x="55" y="267" font-family="monospace" font-size="10" fill="#a0a0a0">Examples: roll until 6, guess until correct, read until EOF</text>
+
+  <!-- for...of Loop Card -->
+  <rect x="30" y="295" width="540" height="100" rx="8" fill="rgba(255,193,7,0.06)" stroke="rgba(255,193,7,0.25)"/>
+  <rect x="30" y="295" width="6" height="100" rx="3" fill="#ffc107"/>
+  <text x="55" y="320" font-family="monospace" font-size="15" font-weight="bold" fill="#ffc107">for...of</text>
+  <text x="55" y="342" font-family="monospace" font-size="11" fill="#e0e0e0">Use when you want <tspan font-weight="bold" fill="#ffc107">each value from an array</tspan></text>
+  <text x="55" y="362" font-family="monospace" font-size="10" fill="#a0a0a0">Don't need the index? Just need each item? → for...of</text>
+  <text x="55" y="382" font-family="monospace" font-size="10" fill="#a0a0a0">Examples: print names, sum scores, create DOM elements</text>
+
+  <!-- Decision Helper -->
+  <rect x="30" y="410" width="540" height="30" rx="6" fill="rgba(233,69,96,0.08)" stroke="rgba(233,69,96,0.2)"/>
+  <text x="300" y="430" text-anchor="middle" font-family="monospace" font-size="10" fill="#e94560">💡 When in doubt: for...of for arrays, for when you need the index, while for "until" logic</text>
+</svg>

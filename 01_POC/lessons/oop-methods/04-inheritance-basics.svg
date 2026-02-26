@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="accent4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e94560"/>
+      <stop offset="100%" stop-color="#ff6b6b"/>
+    </linearGradient>
+    <filter id="glow4">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="900" height="520" fill="url(#bg4)" rx="12"/>
+  <rect x="0" y="0" width="900" height="4" fill="url(#accent4)" rx="2"/>
+
+  <text x="450" y="48" text-anchor="middle" fill="#e94560" font-family="'Courier New',monospace" font-size="14" font-weight="bold" letter-spacing="4">SECTION 4</text>
+  <text x="450" y="82" text-anchor="middle" fill="#ffffff" font-family="'Segoe UI',sans-serif" font-size="28" font-weight="bold">Inheritance Basics</text>
+  <text x="450" y="108" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="14">A child class gets everything from its parent — then adds its own stuff</text>
+
+  <!-- Parent class box -->
+  <rect x="270" y="130" width="360" height="135" rx="10" fill="#16213e" stroke="#ffd700" stroke-width="2"/>
+  <rect x="270" y="130" width="360" height="32" rx="10" fill="#ffd700" opacity="0.15"/>
+  <text x="450" y="153" text-anchor="middle" fill="#ffd700" font-family="'Courier New',monospace" font-size="14" font-weight="bold">👑 PARENT CLASS (base)</text>
+
+  <text x="295" y="183" fill="#e94560" font-family="'Courier New',monospace" font-size="12">class</text>
+  <text x="340" y="183" fill="#ffd700" font-family="'Courier New',monospace" font-size="12">Character:</text>
+  <text x="315" y="206" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">self.name = name</text>
+  <text x="315" y="226" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">self.hp = hp</text>
+  <text x="315" y="250" fill="#82aaff" font-family="'Courier New',monospace" font-size="12">def get_info(self)</text>
+
+  <!-- Inheritance arrows -->
+  <line x1="330" y1="270" x2="180" y2="320" stroke="#e94560" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="570" y1="270" x2="720" y2="320" stroke="#e94560" stroke-width="2"/>
+
+  <!-- Arrow markers (simple triangles via path) -->
+  <polygon points="175,320 185,315 185,325" fill="#e94560"/>
+  <polygon points="715,320 725,315 725,325" fill="#e94560"/>
+
+  <text x="220" y="300" fill="#e94560" font-family="'Segoe UI',sans-serif" font-size="11" font-weight="bold">inherits</text>
+  <text x="620" y="300" fill="#e94560" font-family="'Segoe UI',sans-serif" font-size="11" font-weight="bold">inherits</text>
+
+  <!-- Child class 1: Warrior -->
+  <rect x="40" y="320" width="310" height="170" rx="10" fill="#16213e" stroke="#e94560" stroke-width="2"/>
+  <rect x="40" y="320" width="310" height="32" rx="10" fill="#e94560" opacity="0.15"/>
+  <text x="195" y="343" text-anchor="middle" fill="#e94560" font-family="'Courier New',monospace" font-size="13" font-weight="bold">⚔️ CHILD CLASS</text>
+
+  <text x="65" y="374" fill="#e94560" font-family="'Courier New',monospace" font-size="12">class</text>
+  <text x="108" y="374" fill="#ffd700" font-family="'Courier New',monospace" font-size="12">Warrior</text>
+  <text x="172" y="374" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">(</text>
+  <text x="180" y="374" fill="#ffd700" font-family="'Courier New',monospace" font-size="12">Character</text>
+  <text x="256" y="374" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">):</text>
+
+  <text x="85" y="400" fill="#8892b0" font-family="'Courier New',monospace" font-size="11">Gets: name, hp, get_info()</text>
+  <text x="85" y="420" fill="#00e676" font-family="'Courier New',monospace" font-size="11">+ NEW: self.strength</text>
+  <text x="85" y="440" fill="#00e676" font-family="'Courier New',monospace" font-size="11">+ NEW: def slash(self)</text>
+
+  <rect x="65" y="452" width="260" height="28" rx="6" fill="#0f3460"/>
+  <text x="195" y="471" text-anchor="middle" fill="#ccd6f6" font-family="'Segoe UI',sans-serif" font-size="11">Has everything Character has + more</text>
+
+  <!-- Child class 2: Mage -->
+  <rect x="550" y="320" width="310" height="170" rx="10" fill="#16213e" stroke="#c792ea" stroke-width="2"/>
+  <rect x="550" y="320" width="310" height="32" rx="10" fill="#c792ea" opacity="0.15"/>
+  <text x="705" y="343" text-anchor="middle" fill="#c792ea" font-family="'Courier New',monospace" font-size="13" font-weight="bold">🔮 CHILD CLASS</text>
+
+  <text x="575" y="374" fill="#e94560" font-family="'Courier New',monospace" font-size="12">class</text>
+  <text x="618" y="374" fill="#ffd700" font-family="'Courier New',monospace" font-size="12">Mage</text>
+  <text x="655" y="374" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">(</text>
+  <text x="663" y="374" fill="#ffd700" font-family="'Courier New',monospace" font-size="12">Character</text>
+  <text x="740" y="374" fill="#ffffff" font-family="'Courier New',monospace" font-size="12">):</text>
+
+  <text x="595" y="400" fill="#8892b0" font-family="'Courier New',monospace" font-size="11">Gets: name, hp, get_info()</text>
+  <text x="595" y="420" fill="#00e676" font-family="'Courier New',monospace" font-size="11">+ NEW: self.mana</text>
+  <text x="595" y="440" fill="#00e676" font-family="'Courier New',monospace" font-size="11">+ NEW: def cast_spell(self)</text>
+
+  <rect x="575" y="452" width="260" height="28" rx="6" fill="#0f3460"/>
+  <text x="705" y="471" text-anchor="middle" fill="#ccd6f6" font-family="'Segoe UI',sans-serif" font-size="11">Has everything Character has + more</text>
+
+  <rect x="40" y="495" width="820" height="2" fill="#0f3460"/>
+  <text x="450" y="512" text-anchor="middle" fill="#4a5568" font-family="'Courier New',monospace" font-size="10">U3B3 — OOP Part 2: Methods, Sprites &amp; super() | Principles of Computing</text>
+</svg>

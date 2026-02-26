@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>U3B3 — OOP Part 2: Methods, Sprites &amp; super()</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0f0f1a;
+      --bg-secondary: #16213e;
+      --bg-card: #1a1a2e;
+      --accent-red: #e94560;
+      --accent-gold: #ffd700;
+      --accent-blue: #82aaff;
+      --accent-green: #00e676;
+      --accent-purple: #c792ea;
+      --text-primary: #ccd6f6;
+      --text-secondary: #8892b0;
+      --text-muted: #4a5568;
+      --border: #0f3460;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    /* ─── Header ─── */
+    .header {
+      text-align: center;
+      padding: 2.5rem 0;
+      border-bottom: 3px solid var(--accent-red);
+      margin-bottom: 2rem;
+    }
+    .header .unit-tag {
+      display: inline-block;
+      background: var(--accent-red);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .header h1 {
+      font-size: 2.2rem;
+      color: #fff;
+      margin-bottom: 0.35rem;
+    }
+    .header .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .header .meta {
+      margin-top: 1rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    /* ─── Timing ─── */
+    .timing {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .timing h3 {
+      color: var(--accent-gold);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
+    }
+    .timing-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 0.35rem 1rem;
+      font-size: 0.85rem;
+    }
+    .timing-grid .time {
+      color: var(--accent-gold);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+    .timing-grid .desc {
+      color: var(--text-secondary);
+    }
+
+    /* ─── Cards ─── */
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      border-color: var(--accent-red);
+      transform: translateY(-2px);
+    }
+    .card .card-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      margin-bottom: 0.75rem;
+      letter-spacing: 1px;
+    }
+    .card-day1 .card-tag {
+      background: var(--accent-red);
+      color: #fff;
+    }
+    .card-day2 .card-tag {
+      background: var(--accent-purple);
+      color: #fff;
+    }
+    .card h3 {
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    .card .points {
+      margin-top: 0.75rem;
+      color: var(--accent-gold);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    /* ─── Files ─── */
+    .files {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .files h3 {
+      color: var(--accent-blue);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .file-list {
+      list-style: none;
+    }
+    .file-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    .file-list li:last-child { border-bottom: none; }
+    .file-list a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+    .file-list a:hover { text-decoration: underline; }
+    .file-list .desc {
+      color: var(--text-muted);
+      margin-left: 0.5rem;
+    }
+
+    /* ─── Topics ─── */
+    .topics {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .topics h3 {
+      color: var(--accent-green);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+    .topic-item {
+      background: var(--bg-primary);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      border-left: 3px solid var(--accent-green);
+    }
+
+    /* ─── SVG Gallery ─── */
+    .gallery {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .gallery h3 {
+      color: var(--accent-purple);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0.75rem;
+    }
+    .gallery-grid a {
+      display: block;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .gallery-grid a:hover { border-color: var(--accent-purple); }
+    .gallery-grid img {
+      width: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <span class="unit-tag">UNIT 03 — OOP FOUNDATIONS</span>
+      <h1>OOP Part 2: Methods, Sprites &amp; super()</h1>
+      <p class="subtitle">Giving objects behavior, reusing code with inheritance, and prepping for Monster Wrangler</p>
+      <p class="meta">U3B3 | Day 3 of 8 | Feb 26, 2026 | Period: 11:01 a.m. – 12:27 p.m.</p>
+    </div>
+
+    <!-- Timing -->
+    <div class="timing">
+      <h3>⏱ LESSON TIMING — 86 MINUTES</h3>
+      <div class="timing-grid">
+        <span class="time">11:01 – 11:09</span><span class="desc">Attendance + PyCharm setup (8 min)</span>
+        <span class="time">11:09 – 11:39</span><span class="desc">Sections 1 – 3: Methods fundamentals (30 min)</span>
+        <span class="time">11:39 – 11:44</span><span class="desc">Leg stretch / Q&amp;A (5 min)</span>
+        <span class="time">11:44 – 12:24</span><span class="desc">Sections 4 – 7: Inheritance, Sprites, update() (40 min)</span>
+        <span class="time">12:24 – 12:27</span><span class="desc">Exit ticket + submit to GitHub → Canvas (3 min)</span>
+      </div>
+    </div>
+
+    <!-- Day Cards -->
+    <div class="cards">
+      <a href="guided-notes.html" class="card card-day1">
+        <span class="card-tag">DAY 1 — TODAY</span>
+        <h3>Guided Notes</h3>
+        <p>Instance methods, parameters &amp; return values, inheritance basics, super(), Pygame Sprites &amp; Groups, the update() pattern.</p>
+        <p class="points">📝 5 points • 7 TODOs + Exit Ticket</p>
+      </a>
+      <div class="card card-day2" style="opacity: 0.5; pointer-events: none;">
+        <span class="card-tag">DAY 2 — MAR 2</span>
+        <h3>Sprites in Action</h3>
+        <p>Hands-on: create Sprite subclasses, implement update() methods, sprite groups, bouncing ball &amp; moving character exercises.</p>
+        <p class="points">🎮 15 points • Coming next class</p>
+      </div>
+    </div>
+
+    <!-- Topics Covered -->
+    <div class="topics">
+      <h3>📋 TOPICS &amp; PCEP ALIGNMENT</h3>
+      <div class="topic-grid">
+        <div class="topic-item">Instance methods</div>
+        <div class="topic-item">self parameter in methods</div>
+        <div class="topic-item">Method parameters &amp; return</div>
+        <div class="topic-item">Modifying object state</div>
+        <div class="topic-item">Inheritance (parent/child)</div>
+        <div class="topic-item">super().__init__()</div>
+        <div class="topic-item">pygame.sprite.Sprite</div>
+        <div class="topic-item">Sprite Groups</div>
+        <div class="topic-item">The update() pattern</div>
+        <div class="topic-item">PE2 3.3: Methods</div>
+        <div class="topic-item">PE2 3.4: Inheritance</div>
+      </div>
+    </div>
+
+    <!-- File List -->
+    <div class="files">
+      <h3>📁 LESSON FILES</h3>
+      <ul class="file-list">
+        <li><a href="guided-notes.html">guided-notes.html</a><span class="desc">— Interactive guided notes (7 sections + exit ticket)</span></li>
+        <li><a href="guided-notes-start/main.py">guided-notes-start/main.py</a><span class="desc">— Starter file with TODOs</span></li>
+        <li><a href="guided-notes-solution/main.py">guided-notes-solution/main.py</a><span class="desc">— Solution file (instructor only)</span></li>
+        <li><a href="svgs/01-what-are-methods.svg">svgs/01-what-are-methods.svg</a><span class="desc">— Section 1 infographic</span></li>
+        <li><a href="svgs/02-defining-instance-methods.svg">svgs/02-defining-instance-methods.svg</a><span class="desc">— Section 2 infographic</span></li>
+        <li><a href="svgs/03-methods-params-return.svg">svgs/03-methods-params-return.svg</a><span class="desc">— Section 3 infographic</span></li>
+        <li><a href="svgs/04-inheritance-basics.svg">svgs/04-inheritance-basics.svg</a><span class="desc">— Section 4 infographic</span></li>
+        <li><a href="svgs/05-super-function.svg">svgs/05-super-function.svg</a><span class="desc">— Section 5 infographic</span></li>
+        <li><a href="svgs/06-pygame-sprites-groups.svg">svgs/06-pygame-sprites-groups.svg</a><span class="desc">— Section 6 infographic</span></li>
+        <li><a href="svgs/07-update-pattern.svg">svgs/07-update-pattern.svg</a><span class="desc">— Section 7 infographic</span></li>
+      </ul>
+    </div>
+
+    <!-- SVG Gallery -->
+    <div class="gallery">
+      <h3>🎨 INFOGRAPHIC GALLERY</h3>
+      <div class="gallery-grid">
+        <a href="svgs/01-what-are-methods.svg"><img src="svgs/01-what-are-methods.svg" alt="Section 1"></a>
+        <a href="svgs/02-defining-instance-methods.svg"><img src="svgs/02-defining-instance-methods.svg" alt="Section 2"></a>
+        <a href="svgs/03-methods-params-return.svg"><img src="svgs/03-methods-params-return.svg" alt="Section 3"></a>
+        <a href="svgs/04-inheritance-basics.svg"><img src="svgs/04-inheritance-basics.svg" alt="Section 4"></a>
+        <a href="svgs/05-super-function.svg"><img src="svgs/05-super-function.svg" alt="Section 5"></a>
+        <a href="svgs/06-pygame-sprites-groups.svg"><img src="svgs/06-pygame-sprites-groups.svg" alt="Section 6"></a>
+        <a href="svgs/07-update-pattern.svg"><img src="svgs/07-update-pattern.svg" alt="Section 7"></a>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

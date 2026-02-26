@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="accent1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e94560"/>
+      <stop offset="100%" stop-color="#ff6b6b"/>
+    </linearGradient>
+    <linearGradient id="blue1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0f3460"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <filter id="glow1">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="url(#bg1)" rx="12"/>
+  <rect x="0" y="0" width="900" height="4" fill="url(#accent1)" rx="2"/>
+
+  <!-- Title -->
+  <text x="450" y="48" text-anchor="middle" fill="#e94560" font-family="'Courier New',monospace" font-size="14" font-weight="bold" letter-spacing="4">SECTION 1</text>
+  <text x="450" y="82" text-anchor="middle" fill="#ffffff" font-family="'Segoe UI',sans-serif" font-size="28" font-weight="bold">What Are Methods?</text>
+  <text x="450" y="108" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="14">Giving your objects the ability to DO things</text>
+
+  <!-- Left side: Attributes (what we know) -->
+  <rect x="40" y="140" width="380" height="340" rx="10" fill="#16213e" stroke="#0f3460" stroke-width="2"/>
+  <rect x="40" y="140" width="380" height="40" rx="10" fill="#0f3460"/>
+  <text x="230" y="166" text-anchor="middle" fill="#8892b0" font-family="'Courier New',monospace" font-size="13" font-weight="bold">🔹 ATTRIBUTES = DATA</text>
+  <text x="230" y="186" text-anchor="middle" fill="#4a5568" font-family="'Segoe UI',sans-serif" font-size="11">(what the object HAS)</text>
+
+  <!-- Attribute examples -->
+  <text x="70" y="220" fill="#e94560" font-family="'Courier New',monospace" font-size="13">class</text>
+  <text x="113" y="220" fill="#ffd700" font-family="'Courier New',monospace" font-size="13">Hero:</text>
+  <text x="90" y="248" fill="#c792ea" font-family="'Courier New',monospace" font-size="13">def</text>
+  <text x="125" y="248" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">__init__</text>
+  <text x="193" y="248" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">(self, name, hp):</text>
+
+  <text x="110" y="278" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">self.</text>
+  <text x="150" y="278" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">name</text>
+  <text x="192" y="278" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">= name</text>
+  <text x="300" y="278" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># has a name</text>
+
+  <text x="110" y="303" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">self.</text>
+  <text x="150" y="303" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">hp</text>
+  <text x="173" y="303" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">= hp</text>
+  <text x="300" y="303" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># has health</text>
+
+  <text x="110" y="328" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">self.</text>
+  <text x="150" y="328" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">level</text>
+  <text x="196" y="328" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">= 1</text>
+  <text x="300" y="328" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># has a level</text>
+
+  <!-- checkmark -->
+  <text x="230" y="380" text-anchor="middle" fill="#00e676" font-family="'Segoe UI',sans-serif" font-size="14" font-weight="bold">✓ You learned this in U3B1!</text>
+
+  <!-- Divider arrow -->
+  <text x="442" y="320" text-anchor="middle" fill="#e94560" font-family="'Segoe UI',sans-serif" font-size="36" filter="url(#glow1)">→</text>
+  <text x="442" y="345" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="11">NOW</text>
+  <text x="442" y="358" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="11">ADD</text>
+
+  <!-- Right side: Methods (what's new) -->
+  <rect x="480" y="140" width="380" height="340" rx="10" fill="#16213e" stroke="#e94560" stroke-width="2"/>
+  <rect x="480" y="140" width="380" height="40" rx="10" fill="#e94560" opacity="0.2"/>
+  <rect x="480" y="140" width="380" height="40" rx="10" fill="none" stroke="#e94560" stroke-width="2"/>
+  <text x="670" y="166" text-anchor="middle" fill="#e94560" font-family="'Courier New',monospace" font-size="13" font-weight="bold">⚡ METHODS = ACTIONS</text>
+  <text x="670" y="186" text-anchor="middle" fill="#4a5568" font-family="'Segoe UI',sans-serif" font-size="11">(what the object CAN DO)</text>
+
+  <!-- Method examples -->
+  <text x="510" y="220" fill="#c792ea" font-family="'Courier New',monospace" font-size="13">def</text>
+  <text x="545" y="220" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">attack</text>
+  <text x="596" y="220" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">(self):</text>
+  <text x="720" y="220" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># can attack</text>
+
+  <text x="510" y="258" fill="#c792ea" font-family="'Courier New',monospace" font-size="13">def</text>
+  <text x="545" y="258" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">heal</text>
+  <text x="582" y="258" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">(self):</text>
+  <text x="720" y="258" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># can heal</text>
+
+  <text x="510" y="296" fill="#c792ea" font-family="'Courier New',monospace" font-size="13">def</text>
+  <text x="545" y="296" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">level_up</text>
+  <text x="614" y="296" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">(self):</text>
+  <text x="720" y="296" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># can level up</text>
+
+  <text x="510" y="334" fill="#c792ea" font-family="'Courier New',monospace" font-size="13">def</text>
+  <text x="545" y="334" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">get_info</text>
+  <text x="614" y="334" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">(self):</text>
+  <text x="720" y="334" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># can report</text>
+
+  <!-- Key insight box -->
+  <rect x="510" y="370" width="320" height="90" rx="8" fill="#0f3460" stroke="#ffd700" stroke-width="1" stroke-dasharray="4"/>
+  <text x="670" y="395" text-anchor="middle" fill="#ffd700" font-family="'Segoe UI',sans-serif" font-size="13" font-weight="bold">💡 KEY INSIGHT</text>
+  <text x="670" y="418" text-anchor="middle" fill="#ccd6f6" font-family="'Segoe UI',sans-serif" font-size="12">Methods are just functions</text>
+  <text x="670" y="436" text-anchor="middle" fill="#ccd6f6" font-family="'Segoe UI',sans-serif" font-size="12">defined INSIDE a class.</text>
+  <text x="670" y="454" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="11">They always take self as the first parameter.</text>
+
+  <!-- Bottom bar -->
+  <rect x="40" y="495" width="820" height="2" fill="#0f3460"/>
+  <text x="450" y="512" text-anchor="middle" fill="#4a5568" font-family="'Courier New',monospace" font-size="10">U3B3 — OOP Part 2: Methods, Sprites &amp; super() | Principles of Computing</text>
+</svg>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Loops — Guided Notes</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- LEFT PANEL: GUIDED NOTES                     -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="notes-panel">
+            <h1>Loops</h1>
+            <p class="subtitle">Day 1 · Thu Feb 26 · Guided Notes</p>
+
+            <!-- ────────────────────────────────────────── -->
+            <!-- WARM-UP: Conditionals Review (~15 min)     -->
+            <!-- ────────────────────────────────────────── -->
+            <div class="section">
+                <span class="section-badge warmup">⚡ Warm-Up · ~15 min</span>
+                <h2>Conditionals Quick Review</h2>
+                <p>Before we dive into loops, let's shake off the rust with a quick conditionals exercise.</p>
+
+                <div class="code-block"><span class="comment">// ── WARM-UP: Mood Checker ──</span>
+                    <span class="comment">// A user types a mood and we respond with a message.</span>
+
+                    <span class="keyword">const</span> moodInput = document.<span
+                            class="func">querySelector</span>(<span class="string">'#mood-input'</span>);
+                    <span class="keyword">const</span> moodBtn = document.<span class="func">querySelector</span>(<span
+                            class="string">'#mood-btn'</span>);
+                    <span class="keyword">const</span> moodResult = document.<span
+                            class="func">querySelector</span>(<span class="string">'#mood-result'</span>);
+
+                    <span class="comment">// TODO 1: Add a click event listener to moodBtn.</span>
+                    <span class="comment">//         Inside, grab the value from moodInput,</span>
+                    <span class="comment">//         convert it to lowercase, and store in a variable called "mood".</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+
+                    <span class="comment">// TODO 2: Use a switch statement on "mood".</span>
+                    <span class="comment">//         Cases: "happy" → "😊 Glad to hear it!"</span>
+                    <span class="comment">//                "sad"   → "😢 Hope your day gets better!"</span>
+                    <span class="comment">//                "angry" → "😤 Take a deep breath!"</span>
+                    <span class="comment">//         Default:        → "🤔 Interesting mood!"</span>
+                    <span class="comment">//         Store the result in a variable called "message".</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+
+                    <span class="comment">// TODO 3: Set moodResult.textContent to the message.</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+                <div class="tip">💡 This warm-up uses <strong>querySelector</strong>, <strong>addEventListener</strong>,
+                    <strong>switch</strong>, and <strong>.textContent</strong> — all from our previous lessons!
+                </div>
+            </div>
+
+            <!-- ────────────────────────────────────────── -->
+            <!-- SECTION 1: The for Loop                    -->
+            <!-- ────────────────────────────────────────── -->
+            <div class="section">
+                <span class="section-badge core">📘 Core Concept</span>
+                <h2>1. The <code>for</code> Loop</h2>
+                <p>The <code>for</code> loop is the workhorse of JavaScript. It runs a block of code a specific number
+                    of times.</p>
+
+                <div class="code-block"><span
+                        class="comment">// Syntax: for (initialization; condition; update) { ... }</span>
+
+                    <span class="comment">// TODO 4: Write a for loop that counts from 1 to 5.</span>
+                    <span class="comment">//         Inside the loop, log each number to the console.</span>
+                    <span class="comment">//         Pattern: for (let i = 1; i <= 5; i++) { ... }</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="code-block"><span
+                        class="comment">// TODO 5: Write a for loop that counts DOWN from 10 to 1.</span>
+                    <span class="comment">//         Log each number. Use i-- to decrement.</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="code-block"><span class="comment">// TODO 6: Write a for loop that prints only EVEN numbers from 2 to 20.</span>
+                    <span class="comment">//         Hint: start at 2 and increment by 2 (i += 2).</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="tip">💡 The three parts of a <code>for</code> loop: <strong>initialization</strong> (start),
+                    <strong>condition</strong> (keep going?), <strong>update</strong> (change counter).
+                </div>
+            </div>
+
+            <!-- ────────────────────────────────────────── -->
+            <!-- SECTION 2: The while Loop                  -->
+            <!-- ────────────────────────────────────────── -->
+            <div class="section">
+                <span class="section-badge core">📘 Core Concept</span>
+                <h2>2. The <code>while</code> Loop</h2>
+                <p>The <code>while</code> loop keeps running as long as its condition is <code>true</code>. Use it when
+                    you don't know how many times you'll loop.</p>
+
+                <div class="code-block"><span class="comment">// Syntax: while (condition) { ... }</span>
+
+                    <span class="comment">// TODO 7: Create a variable "countdown" set to 5.</span>
+                    <span class="comment">//         Write a while loop that logs "T-minus {countdown}..."</span>
+                    <span class="comment">//         and decrements countdown each iteration.</span>
+                    <span class="comment">//         After the loop, log "🚀 Liftoff!"</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="code-block"><span class="comment">// TODO 8: Simulated dice roller!</span>
+                    <span class="comment">//         Create a variable "roll" set to 0 and "attempts" set to 0.</span>
+                    <span class="comment">//         Use a while loop that keeps rolling until roll === 6.</span>
+                    <span class="comment">//         Inside: roll = Math.ceil(Math.random() * 6); attempts++;</span>
+                    <span class="comment">//         After the loop, log how many attempts it took.</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="tip">⚠️ <strong>Watch out for infinite loops!</strong> Always make sure your condition will
+                    eventually become <code>false</code>. If you forget to update your variable, the loop runs forever
+                    and crashes the browser!
+                </div>
+            </div>
+
+            <!-- ────────────────────────────────────────── -->
+            <!-- SECTION 3: The for...of Loop               -->
+            <!-- ────────────────────────────────────────── -->
+            <div class="section">
+                <span class="section-badge core">📘 Core Concept</span>
+                <h2>3. The <code>for...of</code> Loop</h2>
+                <p>The <code>for...of</code> loop is the cleanest way to iterate through arrays. It gives you each
+                    <strong>value</strong> directly.</p>
+
+                <div class="code-block"><span class="comment">// Syntax: for (const item of array) { ... }</span>
+
+                    <span class="keyword">const</span> fruits = [<span class="string">"apple"</span>, <span
+                            class="string">"banana"</span>, <span class="string">"cherry"</span>, <span class="string">"dragonfruit"</span>];
+
+                    <span class="comment">// TODO 9: Write a for...of loop that logs each fruit.</span>
+                    <span class="comment">//         Use: for (const fruit of fruits) { ... }</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="code-block"><span class="keyword">const</span> scores = [<span class="number">88</span>,
+                    <span class="number">92</span>, <span class="number">75</span>, <span class="number">100</span>,
+                    <span class="number">67</span>];
+
+                    <span class="comment">// TODO 10: Use a for...of loop to calculate the TOTAL of all scores.</span>
+                    <span class="comment">//          Create a variable "total" set to 0 before the loop.</span>
+                    <span class="comment">//          Inside the loop, add each score to total.</span>
+                    <span class="comment">//          After the loop, log the total AND the average (total / scores.length).</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="tip">💡 <code>for...of</code> gives you the <strong>value</strong>. If you need the <strong>index</strong>,
+                    use a regular <code>for</code> loop or <code>forEach</code>.
+                </div>
+            </div>
+
+            <!-- ────────────────────────────────────────── -->
+            <!-- SECTION 4: Iterating Arrays with for       -->
+            <!-- ────────────────────────────────────────── -->
+            <div class="section">
+                <span class="section-badge core">📘 Core Concept</span>
+                <h2>4. Iterating Arrays with <code>for</code> (by index)</h2>
+                <p>Sometimes you need the index. A classic <code>for</code> loop paired with <code>array[i]</code> gives
+                    you full control.</p>
+
+                <div class="code-block"><span class="keyword">const</span> students = [<span
+                        class="string">"Alice"</span>, <span class="string">"Bob"</span>, <span
+                        class="string">"Charlie"</span>, <span class="string">"Diana"</span>];
+
+                    <span class="comment">// TODO 11: Write a for loop that logs each student WITH their number.</span>
+                    <span class="comment">//          Output: "1. Alice", "2. Bob", "3. Charlie", "4. Diana"</span>
+                    <span class="comment">//          Hint: use template literals and (i + 1) for the number.</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+            </div>
+
+            <!-- ────────────────────────────────────────── -->
+            <!-- SECTION 5: break and continue              -->
+            <!-- ────────────────────────────────────────── -->
+            <div class="section">
+                <span class="section-badge core">📘 Core Concept</span>
+                <h2>5. <code>break</code> and <code>continue</code></h2>
+                <p><code>break</code> exits the loop immediately. <code>continue</code> skips to the next iteration.</p>
+
+                <div class="code-block"><span class="comment">// TODO 12: Use a for loop (1 to 10). If i === 5, BREAK out of the loop.</span>
+                    <span class="comment">//          Log each number. You should see 1, 2, 3, 4 only.</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="code-block"><span class="comment">// TODO 13: Use a for loop (1 to 10). If i is even, CONTINUE (skip it).</span>
+                    <span class="comment">//          Log each number. You should see 1, 3, 5, 7, 9 only.</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+            </div>
+
+            <!-- ────────────────────────────────────────── -->
+            <!-- SECTION 6: DOM Manipulation with Loops     -->
+            <!-- ────────────────────────────────────────── -->
+            <div class="section">
+                <span class="section-badge core">📘 Core Concept</span>
+                <h2>6. DOM Manipulation with Loops</h2>
+                <p>The real power: use loops to create HTML elements dynamically from data.</p>
+
+                <div class="code-block"><span class="keyword">const</span> colors = [<span
+                        class="string">"Crimson"</span>, <span class="string">"SteelBlue"</span>, <span class="string">"MediumSeaGreen"</span>,
+                    <span class="string">"Gold"</span>, <span class="string">"Orchid"</span>];
+                    <span class="keyword">const</span> colorList = document.<span
+                            class="func">querySelector</span>(<span class="string">'#color-list'</span>);
+
+                    <span class="comment">// TODO 14: Use a for...of loop to create a &lt;div&gt; for each color.</span>
+                    <span class="comment">//          For each color:</span>
+                    <span class="comment">//            1. Create a div:      const div = document.createElement('div');</span>
+                    <span class="comment">//            2. Set its text:       div.textContent = color;</span>
+                    <span class="comment">//            3. Set its background: div.style.backgroundColor = color;</span>
+                    <span class="comment">//            4. Add a class:        div.classList.add('color-swatch');</span>
+                    <span class="comment">//            5. Append to list:     colorList.appendChild(div);</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="code-block"><span class="keyword">const</span> tasks = [
+                    { text: <span class="string">"Read chapter 5"</span>, done: <span class="number">true</span> },
+                    { text: <span class="string">"Finish homework"</span>, done: <span class="number">false</span> },
+                    { text: <span class="string">"Study for quiz"</span>, done: <span class="number">false</span> },
+                    { text: <span class="string">"Clean desk"</span>, done: <span class="number">true</span> },
+                    ];
+                    <span class="keyword">const</span> taskList = document.<span class="func">querySelector</span>(<span
+                            class="string">'#task-list'</span>);
+
+                    <span class="comment">// TODO 15: Use a for...of loop to create a &lt;div&gt; for each task.</span>
+                    <span class="comment">//          For each task:</span>
+                    <span class="comment">//            1. Create a div element.</span>
+                    <span class="comment">//            2. Set textContent to task.text</span>
+                    <span class="comment">//            3. Add class 'task-item'</span>
+                    <span class="comment">//            4. If task.done is true, ALSO add class 'completed'</span>
+                    <span class="comment">//            5. Append to taskList</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+
+                <div class="tip">💡 This <strong>loop → create → append</strong> pattern is how every dynamic website
+                    works — from social media feeds to shopping carts!
+                </div>
+            </div>
+
+            <!-- ────────────────────────────────────────── -->
+            <!-- BONUS: Nested Loops                        -->
+            <!-- ────────────────────────────────────────── -->
+            <div class="section">
+                <span class="section-badge bonus">🌟 Bonus</span>
+                <h2>7. Nested Loops (If You Finish Early)</h2>
+
+                <div class="code-block"><span class="comment">// TODO 16 (BONUS): Create a multiplication table!</span>
+                    <span class="comment">//   Use two nested for loops (outer: row 1-5, inner: col 1-5).</span>
+                    <span class="comment">//   Build a string for each row: "1x1=1  1x2=2  1x3=3 ..."</span>
+                    <span class="comment">//   Log each row. Output should look like a grid.</span>
+                    <span class="todo">// YOUR CODE HERE</span>
+                </div>
+            </div>
+
+        </div><!-- end notes-panel -->
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- RIGHT PANEL: LIVE OUTPUT                     -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="output-panel">
+            <div class="output-header">
+                <span class="output-dot"></span> Live Output
+            </div>
+            <div id="output">
+                <!-- Warm-up DOM -->
+                <div style="margin-bottom:1.5rem;">
+                    <div class="label">── Warm-Up: Mood Checker ──</div>
+                    <div style="display:flex;gap:0.5rem;margin:0.75rem 0;">
+                        <input id="mood-input" type="text" placeholder="Type a mood..."
+                               style="background:var(--surface);border:1px solid var(--surface-light);color:var(--text);padding:0.4rem 0.75rem;border-radius:6px;font-family:'Fira Code',monospace;font-size:0.8rem;flex:1;">
+                        <button id="mood-btn"
+                                style="background:var(--accent);color:var(--bg);border:none;padding:0.4rem 1rem;border-radius:6px;font-family:'Fira Code',monospace;font-size:0.8rem;cursor:pointer;font-weight:600;">
+                            Check
+                        </button>
+                    </div>
+                    <div id="mood-result" style="color:var(--accent);font-size:0.9rem;min-height:1.5rem;"></div>
+                </div>
+
+                <div class="divider">────────────────────────────</div>
+
+                <!-- Console Output -->
+                <div class="label">── Console Output ──</div>
+                <div id="console-output" style="margin-top:0.5rem;"></div>
+
+                <div class="divider" style="margin-top:1.5rem;">────────────────────────────</div>
+
+                <!-- DOM Output: Colors -->
+                <div class="dom-output">
+                    <div class="label">── Color Swatches (TODO 14) ──</div>
+                    <div id="color-list" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;"></div>
+                </div>
+
+                <div class="divider" style="margin-top:1.5rem;">────────────────────────────</div>
+
+                <!-- DOM Output: Tasks -->
+                <div class="dom-output">
+                    <div class="label">── Task List (TODO 15) ──</div>
+                    <div id="task-list" style="margin-top:0.5rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- JAVASCRIPT                                   -->
+        <!-- ════════════════════════════════════════════ -->
+        <script src="script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>U3B3 — OOP Part 2: Methods, Sprites &amp; super()</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0f0f1a;
+      --bg-secondary: #16213e;
+      --bg-card: #1a1a2e;
+      --accent-red: #e94560;
+      --accent-gold: #ffd700;
+      --accent-blue: #82aaff;
+      --accent-green: #00e676;
+      --accent-purple: #c792ea;
+      --text-primary: #ccd6f6;
+      --text-secondary: #8892b0;
+      --text-muted: #4a5568;
+      --border: #0f3460;
+      --string: #c3e88d;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* ─── Header ─── */
+    .header {
+      text-align: center;
+      padding: 2rem 0 1.5rem;
+      border-bottom: 3px solid var(--accent-red);
+      margin-bottom: 2rem;
+    }
+    .header .tag {
+      display: inline-block;
+      background: var(--accent-red);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      letter-spacing: 2px;
+      margin-bottom: 0.75rem;
+    }
+    .header h1 {
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .header .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .header .meta {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ─── Timing Bar ─── */
+    .timing-bar {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .timing-bar .slot {
+      color: var(--text-secondary);
+    }
+    .timing-bar .slot strong {
+      color: var(--accent-gold);
+    }
+
+    /* ─── Sections ─── */
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .section-num {
+      background: var(--accent-red);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 1.3rem;
+      color: #fff;
+      flex: 1;
+    }
+    .section-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-primary);
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+    }
+
+    /* ─── SVG Container ─── */
+    .svg-container {
+      margin: 1rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .svg-container img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ─── Code Blocks ─── */
+    .demo-block, .todo-block {
+      margin-top: 1rem;
+      padding: 1.25rem;
+      border-radius: 8px;
+    }
+    .demo-block {
+      background: var(--bg-primary);
+      border-left: 3px solid var(--accent-blue);
+    }
+    .todo-block {
+      background: var(--bg-primary);
+      border-left: 3px solid var(--accent-green);
+    }
+    .demo-block h3, .todo-block h3 {
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+    .demo-block h3 { color: var(--accent-blue); }
+    .todo-block h3 { color: var(--accent-green); }
+
+    .code-block {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      white-space: pre;
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+    .keyword { color: var(--accent-red); }
+    .classname { color: var(--accent-gold); }
+    .builtin { color: var(--accent-blue); }
+    .string { color: var(--string); }
+    .comment { color: var(--text-muted); }
+    .purple { color: var(--accent-purple); }
+    .green { color: var(--accent-green); }
+
+    p { margin-bottom: 0.5rem; }
+    code {
+      background: var(--bg-secondary);
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent-blue);
+    }
+
+    /* ─── Exit Ticket ─── */
+    .exit-ticket {
+      background: var(--bg-card);
+      border: 2px solid var(--accent-gold);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-top: 1.5rem;
+    }
+    .exit-ticket h2 {
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+    }
+
+    /* ─── Submit Box ─── */
+    .submit-box {
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      border: 1px dashed var(--accent-green);
+    }
+    .submit-box p {
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+    .submit-box .steps {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════ HEADER ═══════════════════ -->
+  <div class="header">
+    <span class="tag">UNIT 03 — OOP FOUNDATIONS</span>
+    <h1>OOP Part 2: Methods, Sprites &amp; super()</h1>
+    <p class="subtitle">Instance methods • Inheritance • super() • Pygame Sprites • The update() pattern</p>
+    <p class="meta">U3B3 — Day 1: Guided Notes | 5 pts | Feb 26, 2026</p>
+  </div>
+
+  <!-- ═══════════════════ TIMING BAR ═══════════════════ -->
+  <div class="timing-bar">
+    <div class="slot"><strong>11:01 – 11:09</strong> Attendance + Setup</div>
+    <div class="slot"><strong>11:09 – 11:39</strong> Sections 1 – 3</div>
+    <div class="slot"><strong>11:39 – 11:44</strong> Leg Stretch / Q&amp;A</div>
+    <div class="slot"><strong>11:44 – 12:24</strong> Sections 4 – 7</div>
+    <div class="slot"><strong>12:24 – 12:27</strong> Exit Ticket + Submit</div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 1 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">1</span>
+      <h2>What Are Methods?</h2>
+      <span class="section-time">11:09 – 11:19 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/01-what-are-methods.svg" alt="What Are Methods? — attributes vs methods">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>In U3B1 we learned about <strong>attributes</strong> — data an object HAS (like <code>name</code>, <code>hp</code>, <code>level</code>). Now we add <strong>methods</strong> — actions an object CAN DO.</p>
+      <p>A method is simply a function defined <strong>inside</strong> a class. It always takes <code>self</code> as its first parameter so it can access the object's own data.</p>
+      <div class="code-block">
+<span class="keyword">class</span> <span class="classname">Hero</span>:
+    <span class="purple">def</span> <span class="builtin">__init__</span>(self, name, hp):
+        self.name = name
+        self.hp = hp
+        self.level = 1
+
+hero = Hero(<span class="string">"Aria"</span>, 100)
+<span class="builtin">print</span>(<span class="string">f"{hero.name} has {hero.hp} HP"</span>)
+<span class="comment"># Aria has 100 HP — but she can't DO anything yet!</span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 2 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">2</span>
+      <h2>Defining Instance Methods</h2>
+      <span class="section-time">11:19 – 11:29 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/02-defining-instance-methods.svg" alt="Defining Instance Methods — syntax and calling">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>Define methods with <code>def</code> inside the class, indented one level. Always include <code>self</code> as the first parameter. When you call the method, Python passes <code>self</code> automatically.</p>
+      <div class="code-block">
+<span class="keyword">class</span> <span class="classname">Hero</span>:
+    <span class="purple">def</span> <span class="builtin">__init__</span>(self, name, hp):
+        self.name = name
+        self.hp = hp
+
+    <span class="purple">def</span> <span class="builtin">attack</span>(self):
+        <span class="builtin">print</span>(<span class="string">f"{self.name} swings their sword!"</span>)
+
+    <span class="purple">def</span> <span class="builtin">war_cry</span>(self):
+        <span class="builtin">print</span>(<span class="string">f"{self.name} shouts: 'For glory!'"</span>)
+
+hero = Hero(<span class="string">"Aria"</span>, 100)
+hero.attack()    <span class="comment"># Aria swings their sword!</span>
+hero.war_cry()   <span class="comment"># Aria shouts: 'For glory!'</span></div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 1 — Your Turn</h3>
+      <p>Add a method called <code>introduce</code> to the <code>Weapon</code> class. It should print: <code>"{name} — Damage: {damage}"</code>. Then create a <code>Weapon("Iron Sword", 25)</code> and call <code>introduce()</code>.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 3 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">3</span>
+      <h2>Methods with Parameters &amp; Return</h2>
+      <span class="section-time">11:29 – 11:39 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/03-methods-params-return.svg" alt="Methods with Parameters and Return Values">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>Methods can take <strong>extra parameters</strong> (besides self), <strong>return values</strong>, and <strong>modify the object's state</strong> by updating <code>self.attribute</code>.</p>
+      <div class="code-block">
+<span class="purple">def</span> <span class="builtin">take_damage</span>(self, amount):  <span class="comment"># extra param</span>
+    self.hp -= amount                <span class="comment"># modifies state</span>
+
+<span class="purple">def</span> <span class="builtin">is_alive</span>(self):             <span class="comment"># return value</span>
+    <span class="keyword">return</span> self.hp > 0
+
+<span class="purple">def</span> <span class="builtin">level_up</span>(self):             <span class="comment"># modifies state</span>
+    self.level += 1
+    self.hp += 20</div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 2 — Your Turn</h3>
+      <p>Add two methods to the <code>Monster</code> class:</p>
+      <p>a) <code>roar()</code> — prints <code>"{name} roars!"</code></p>
+      <p>b) <code>take_hit(damage)</code> — subtracts damage from hp, prints <code>"{name} has {hp} HP remaining!"</code>, returns <code>True</code> if hp > 0.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ BREAK ═══════════ -->
+  <div style="text-align:center; padding:1rem; color:var(--text-muted); font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
+    ☕ 11:39 – 11:44 — Leg stretch / Q&amp;A
+  </div>
+
+  <!-- ═══════════════════ SECTION 4 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">4</span>
+      <h2>Inheritance Basics</h2>
+      <span class="section-time">11:44 – 11:54 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/04-inheritance-basics.svg" alt="Inheritance — parent and child classes">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p><strong>Inheritance</strong> lets a child class get everything from a parent class, then add its own stuff. Put the parent's name in parentheses: <code>class Warrior(Character):</code></p>
+      <div class="code-block">
+<span class="keyword">class</span> <span class="classname">Character</span>:        <span class="comment"># parent</span>
+    <span class="purple">def</span> <span class="builtin">__init__</span>(self, name, hp):
+        self.name = name
+        self.hp = hp
+    <span class="purple">def</span> <span class="builtin">get_info</span>(self):
+        <span class="keyword">return</span> <span class="string">f"{self.name} (HP: {self.hp})"</span>
+
+<span class="keyword">class</span> <span class="classname">Warrior</span>(<span class="classname">Character</span>):  <span class="comment"># child inherits!</span>
+    <span class="purple">def</span> <span class="builtin">__init__</span>(self, name, hp, strength):
+        self.name = name
+        self.hp = hp
+        self.strength = strength
+    <span class="purple">def</span> <span class="builtin">slash</span>(self):
+        <span class="builtin">print</span>(<span class="string">f"{self.name} slashes for {self.strength} damage!"</span>)
+
+w = Warrior(<span class="string">"Thorin"</span>, 120, 85)
+<span class="builtin">print</span>(w.get_info())  <span class="comment"># inherited from Character!</span></div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 3 — Your Turn</h3>
+      <p>Create a <code>Mage</code> class that inherits from <code>Character</code>. Add a <code>mana</code> attribute and a <code>cast_spell()</code> method. Test with <code>get_info()</code> and <code>cast_spell()</code>.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 5 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">5</span>
+      <h2>The super() Function</h2>
+      <span class="section-time">11:54 – 12:04 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/05-super-function.svg" alt="The super() Function — calling parent's __init__">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>In Section 4 we repeated <code>self.name = name</code> and <code>self.hp = hp</code> in the child. That's not DRY! <code>super().__init__()</code> calls the parent's <code>__init__</code> so you don't repeat yourself.</p>
+      <div class="code-block">
+<span class="keyword">class</span> <span class="classname">Warrior</span>(<span class="classname">Character</span>):
+    <span class="purple">def</span> <span class="builtin">__init__</span>(self, name, hp, strength):
+        <span class="classname">super().__init__(name, hp)</span>  <span class="comment"># parent handles name &amp; hp</span>
+        self.strength = strength      <span class="comment"># child adds its own</span></div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 4 — Your Turn</h3>
+      <p>Rewrite your <code>Mage</code> class from TODO 3 using <code>super()</code>. Don't repeat <code>self.name</code> and <code>self.hp</code> — let the parent handle it.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 6 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">6</span>
+      <h2>Pygame Sprites &amp; Groups</h2>
+      <span class="section-time">12:04 – 12:14 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/06-pygame-sprites-groups.svg" alt="Pygame Sprites and Groups — inheritance in action">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p><code>pygame.sprite.Sprite</code> is a parent class provided by Pygame. Your game objects <strong>inherit</strong> from it — exactly like Section 4! It gives you <code>self.image</code>, <code>self.rect</code>, <code>.kill()</code>, and <code>.update()</code>. A <strong>Group</strong> manages multiple sprites at once.</p>
+      <div class="code-block">
+<span class="keyword">class</span> <span class="classname">Player</span>(pygame.sprite.<span class="classname">Sprite</span>):
+    <span class="purple">def</span> <span class="builtin">__init__</span>(self, x, y):
+        <span class="classname">super().__init__()</span>          <span class="comment"># set up Sprite internals</span>
+        self.image = pygame.Surface((32, 32))
+        self.image.fill(<span class="string">"green"</span>)
+        self.rect = self.image.get_rect(center=(x, y))
+
+<span class="comment"># Group manages them:</span>
+all_sprites = pygame.sprite.Group()
+all_sprites.add(player)
+all_sprites.update()        <span class="comment"># calls each sprite's update()</span>
+all_sprites.draw(screen)    <span class="comment"># draws them all</span></div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 5 — Your Turn</h3>
+      <p>Create a <code>Player</code> class that inherits from <code>MockSprite</code>. Use <code>super().__init__()</code> and add <code>x</code>, <code>y</code>, and <code>speed</code> attributes. Test that it inherits the <code>alive</code> attribute from the parent.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 7 ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">7</span>
+      <h2>The update() Pattern</h2>
+      <span class="section-time">12:14 – 12:24 (10 min)</span>
+    </div>
+
+    <div class="svg-container">
+      <img src="svgs/07-update-pattern.svg" alt="The update() Pattern — game loop connection">
+    </div>
+
+    <div class="demo-block">
+      <h3>👨‍🏫 Instructor Demo</h3>
+      <p>In Pygame, every sprite can have its own <code>update()</code> method. The game loop calls <code>group.update()</code> which triggers each sprite's <code>update()</code> individually. Different sprites can have <strong>different behavior</strong> — same method name, different implementation!</p>
+      <div class="code-block">
+<span class="comment"># Player moves based on keyboard input</span>
+<span class="keyword">class</span> <span class="classname">Player</span>(<span class="classname">GameSprite</span>):
+    <span class="purple">def</span> <span class="builtin">update</span>(self):
+        self.x += self.speed  <span class="comment"># moves right</span>
+
+<span class="comment"># Monster moves automatically</span>
+<span class="keyword">class</span> <span class="classname">Monster</span>(<span class="classname">GameSprite</span>):
+    <span class="purple">def</span> <span class="builtin">update</span>(self):
+        self.x -= self.speed  <span class="comment"># moves left</span></div>
+    </div>
+
+    <div class="todo-block">
+      <h3>✅ TODO 6 — Your Turn</h3>
+      <p>Complete the <code>Player</code> and <code>Monster</code> classes (inherit from <code>GameSprite</code>). Player's <code>update()</code> moves right, Monster's moves left. Simulate 3 frames of the game loop.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ EXIT TICKET ═══════════════════ -->
+  <div class="exit-ticket">
+    <h2>🎫 Exit Ticket — TODO 7</h2>
+    <p>Build a complete <code>Projectile</code> class that inherits from <code>GameSprite</code>:</p>
+    <p>• <code>__init__</code> takes <code>name, x, y, speed, damage</code> — use <code>super().__init__()</code></p>
+    <p>• Adds <code>self.damage</code> as its own attribute</p>
+    <p>• <code>update()</code> moves right by adding speed to x</p>
+    <p>• <code>hit()</code> prints <code>"{name} hits for {damage} damage at x={x}!"</code></p>
+    <p>Create a fireball at (0, 250) with speed 10 and damage 40. Update 3 times, then call <code>hit()</code>.</p>
+  </div>
+
+  <!-- ═══════════════════ SUBMIT ═══════════════════ -->
+  <div class="submit-box">
+    <p>📤 Submit to GitHub → Canvas</p>
+    <p class="steps">Push your completed main.py to your GitHub repo, then submit the link on Canvas.</p>
+  </div>
+
+</body>
+</html>

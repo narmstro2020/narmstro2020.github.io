@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <linearGradient id="bg5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="accent5" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e94560"/>
+      <stop offset="100%" stop-color="#ff6b6b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="520" fill="url(#bg5)" rx="12"/>
+  <rect x="0" y="0" width="900" height="4" fill="url(#accent5)" rx="2"/>
+
+  <text x="450" y="48" text-anchor="middle" fill="#e94560" font-family="'Courier New',monospace" font-size="14" font-weight="bold" letter-spacing="4">SECTION 5</text>
+  <text x="450" y="82" text-anchor="middle" fill="#ffffff" font-family="'Segoe UI',sans-serif" font-size="28" font-weight="bold">The super() Function</text>
+  <text x="450" y="108" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="14">"Hey parent, run YOUR __init__ first, then I'll add my stuff"</text>
+
+  <!-- Full code example -->
+  <rect x="40" y="130" width="520" height="360" rx="10" fill="#16213e" stroke="#0f3460" stroke-width="2"/>
+
+  <!-- Parent class -->
+  <text x="70" y="160" fill="#546e7a" font-family="'Courier New',monospace" font-size="12"># Parent class</text>
+  <text x="70" y="182" fill="#e94560" font-family="'Courier New',monospace" font-size="13">class</text>
+  <text x="113" y="182" fill="#ffd700" font-family="'Courier New',monospace" font-size="13">Character:</text>
+  <text x="90" y="205" fill="#c792ea" font-family="'Courier New',monospace" font-size="13">def</text>
+  <text x="125" y="205" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">__init__</text>
+  <text x="193" y="205" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">(self, name, hp):</text>
+  <text x="110" y="228" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">self.name = name</text>
+  <text x="110" y="251" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">self.hp = hp</text>
+
+  <!-- Divider -->
+  <line x1="60" y1="270" x2="540" y2="270" stroke="#0f3460" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- Child class with super() highlighted -->
+  <text x="70" y="295" fill="#546e7a" font-family="'Courier New',monospace" font-size="12"># Child class</text>
+  <text x="70" y="317" fill="#e94560" font-family="'Courier New',monospace" font-size="13">class</text>
+  <text x="113" y="317" fill="#ffd700" font-family="'Courier New',monospace" font-size="13">Warrior(Character):</text>
+  <text x="90" y="340" fill="#c792ea" font-family="'Courier New',monospace" font-size="13">def</text>
+  <text x="125" y="340" fill="#82aaff" font-family="'Courier New',monospace" font-size="13">__init__</text>
+  <text x="193" y="340" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">(self, name, hp, strength):</text>
+
+  <!-- super() highlight -->
+  <rect x="105" y="350" width="340" height="26" rx="6" fill="#ffd700" opacity="0.1" stroke="#ffd700" stroke-width="1"/>
+  <text x="110" y="369" fill="#ffd700" font-family="'Courier New',monospace" font-size="13" font-weight="bold">super().__init__(name, hp)</text>
+
+  <text x="110" y="396" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">self.strength = strength</text>
+  <text x="350" y="396" fill="#546e7a" font-family="'Courier New',monospace" font-size="11"># new!</text>
+
+  <!-- Usage -->
+  <line x1="60" y1="415" x2="540" y2="415" stroke="#0f3460" stroke-width="1" stroke-dasharray="4"/>
+  <text x="70" y="440" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">w = Warrior(</text>
+  <text x="167" y="440" fill="#c3e88d" font-family="'Courier New',monospace" font-size="13">"Thorin"</text>
+  <text x="240" y="440" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">, 120, 85)</text>
+  <text x="70" y="465" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">print(w.name)</text>
+  <text x="250" y="465" fill="#546e7a" font-family="'Courier New',monospace" font-size="12"># Thorin (from parent!)</text>
+  <text x="70" y="485" fill="#ffffff" font-family="'Courier New',monospace" font-size="13">print(w.strength)</text>
+  <text x="275" y="485" fill="#546e7a" font-family="'Courier New',monospace" font-size="12"># 85 (from child)</text>
+
+  <!-- Right side: Step-by-step flow -->
+  <rect x="590" y="130" width="270" height="200" rx="10" fill="#0f3460" stroke="#ffd700" stroke-width="2"/>
+  <text x="725" y="158" text-anchor="middle" fill="#ffd700" font-family="'Segoe UI',sans-serif" font-size="14" font-weight="bold">🔄 What Happens</text>
+
+  <!-- Step 1 -->
+  <circle cx="620" cy="190" r="12" fill="#e94560"/>
+  <text x="620" y="195" text-anchor="middle" fill="#ffffff" font-family="'Segoe UI',sans-serif" font-size="11" font-weight="bold">1</text>
+  <text x="645" y="195" fill="#ccd6f6" font-family="'Segoe UI',sans-serif" font-size="12">Warrior("Thorin", 120, 85)</text>
+
+  <!-- Step 2 -->
+  <circle cx="620" cy="228" r="12" fill="#ffd700"/>
+  <text x="620" y="233" text-anchor="middle" fill="#0f0f1a" font-family="'Segoe UI',sans-serif" font-size="11" font-weight="bold">2</text>
+  <text x="645" y="233" fill="#ffd700" font-family="'Segoe UI',sans-serif" font-size="12">super() calls Character.__init__</text>
+
+  <!-- Step 3 -->
+  <circle cx="620" cy="266" r="12" fill="#c792ea"/>
+  <text x="620" y="271" text-anchor="middle" fill="#ffffff" font-family="'Segoe UI',sans-serif" font-size="11" font-weight="bold">3</text>
+  <text x="645" y="271" fill="#ccd6f6" font-family="'Segoe UI',sans-serif" font-size="12">Parent sets name &amp; hp</text>
+
+  <!-- Step 4 -->
+  <circle cx="620" cy="304" r="12" fill="#00e676"/>
+  <text x="620" y="309" text-anchor="middle" fill="#0f0f1a" font-family="'Segoe UI',sans-serif" font-size="11" font-weight="bold">4</text>
+  <text x="645" y="309" fill="#ccd6f6" font-family="'Segoe UI',sans-serif" font-size="12">Child adds strength</text>
+
+  <!-- Why super? box -->
+  <rect x="590" y="350" width="270" height="120" rx="10" fill="#16213e" stroke="#00e676" stroke-width="1"/>
+  <text x="725" y="378" text-anchor="middle" fill="#00e676" font-family="'Segoe UI',sans-serif" font-size="14" font-weight="bold">💡 Why super()?</text>
+  <text x="725" y="405" text-anchor="middle" fill="#ccd6f6" font-family="'Segoe UI',sans-serif" font-size="12">Don't repeat yourself!</text>
+  <text x="725" y="428" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="11">Parent already knows how to</text>
+  <text x="725" y="445" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="11">set up name &amp; hp. Let it do</text>
+  <text x="725" y="462" text-anchor="middle" fill="#8892b0" font-family="'Segoe UI',sans-serif" font-size="11">its job, then add your extras.</text>
+
+  <rect x="40" y="495" width="820" height="2" fill="#0f3460"/>
+  <text x="450" y="512" text-anchor="middle" fill="#4a5568" font-family="'Courier New',monospace" font-size="10">U3B3 — OOP Part 2: Methods, Sprites &amp; super() | Principles of Computing</text>
+</svg>

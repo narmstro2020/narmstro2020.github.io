@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loops — Web Dev &amp; Databases</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --red: #e94560;
+      --yellow: #ffc107;
+      --blue: #5dade2;
+      --orange: #ff8c42;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --text-dim: #555;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; line-height: 1.6; }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1;
+      background-image:
+        linear-gradient(rgba(78,204,163,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78,204,163,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* ── Header ── */
+    .lesson-header {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem 2rem;
+      border-bottom: 1px solid var(--surface-light);
+    }
+    .breadcrumb {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+    .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+
+    .unit-badge {
+      display: inline-block;
+      font-family: 'Fira Code', monospace; font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(78,204,163,0.1);
+      border: 1px solid rgba(78,204,163,0.25);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      font-size: 2.4rem; font-weight: 700; line-height: 1.15;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .lesson-desc { color: var(--text-muted); font-size: 1.05rem; max-width: 650px; margin-bottom: 2rem; }
+
+    .timing-bar {
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+      padding: 1rem 1.25rem;
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-radius: 10px; margin-bottom: 2.5rem;
+    }
+    .timing-item { font-family: 'Fira Code', monospace; font-size: 0.78rem; color: var(--text-muted); }
+    .timing-item strong { color: var(--text); }
+
+    .content { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+    .section-label {
+      font-family: 'Fira Code', monospace; font-size: 0.7rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 1.25rem;
+    }
+    .day-section { margin-bottom: 3rem; }
+    .day-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+    .day-num {
+      font-family: 'Fira Code', monospace; font-size: 0.75rem; font-weight: 700;
+      color: var(--bg); background: var(--accent);
+      padding: 0.2rem 0.6rem; border-radius: 6px;
+    }
+    .day-num.upcoming {
+      background: var(--yellow); color: var(--bg);
+    }
+    .day-num.completed {
+      background: var(--text-dim); color: var(--bg);
+    }
+    .day-title { font-size: 1.2rem; font-weight: 600; }
+    .day-time {
+      font-family: 'Fira Code', monospace; font-size: 0.7rem;
+      color: var(--text-dim); margin-left: auto;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .resource-card {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: var(--surface); border: 1px solid var(--surface-light);
+      padding: 1.25rem; border-radius: 10px;
+      text-decoration: none; color: var(--text);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .resource-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .resource-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .resource-icon.github { background: rgba(78,204,163,0.1); color: var(--accent); }
+    .resource-icon.canvas { background: rgba(233,69,96,0.1); color: var(--red); }
+    .resource-icon.svg { background: rgba(123,104,238,0.1); color: var(--purple); }
+    .resource-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .resource-desc { font-size: 0.78rem; color: var(--text-muted); }
+
+    .svg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem; margin-top: 1.5rem;
+    }
+    .svg-card {
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-radius: 10px; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .svg-card:hover { border-color: var(--purple); transform: translateY(-2px); }
+    .svg-card img { width: 100%; display: block; }
+    .svg-card-label {
+      padding: 0.75rem 1rem;
+      font-family: 'Fira Code', monospace; font-size: 0.75rem;
+      color: var(--text-muted); border-top: 1px solid var(--surface-light);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="lesson-header">
+    <div class="breadcrumb">
+      <a href="../../index.html">02_WEB</a> / <a href="#">lessons</a> / loops
+    </div>
+    <div class="unit-badge">UNIT 01 — JS REINFORCEMENT</div>
+    <h1>Loops</h1>
+    <p class="lesson-desc">Master for, while, and for...of loops — then use them to dynamically build DOM elements from data.</p>
+    <div class="timing-bar">
+      <div class="timing-item">📅 <strong>2 Days</strong></div>
+      <div class="timing-item">⏱ <strong>86 min</strong> per block</div>
+      <div class="timing-item">📊 <strong>15 pts</strong> each day</div>
+      <div class="timing-item">🔧 <strong>WebStorm + GitHub</strong></div>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- ── DAY 1: Guided Notes ── -->
+    <div class="day-section">
+      <div class="day-header">
+        <span class="day-num">DAY 1</span>
+        <span class="day-title">Guided Notes — Loops (for, while, for...of)</span>
+        <span class="day-time">Thu Feb 26 · 11:01–12:27</span>
+      </div>
+
+      <div class="resource-grid">
+        <a class="resource-card" href="https://github.com/narmstro2020/narmstro2020.github.io/tree/main/02_WEB/lessons/loops/guided-notes-start" target="_blank">
+          <div class="resource-icon github">📂</div>
+          <div>
+            <div class="resource-title">Starter File (GitHub)</div>
+            <div class="resource-desc">Clone → complete TODOs → push → submit link on Canvas</div>
+          </div>
+        </a>
+        <a class="resource-card" href="#">
+          <div class="resource-icon canvas">📝</div>
+          <div>
+            <div class="resource-title">Submit on Canvas</div>
+            <div class="resource-desc">15 pts · Paste your GitHub Pages link</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── DAY 2: Activity (Upcoming) ── -->
+    <div class="day-section">
+      <div class="day-header">
+        <span class="day-num upcoming">DAY 2</span>
+        <span class="day-title">Activity — Dynamic List Builder</span>
+        <span class="day-time">Mon Mar 02 · 11:01–12:27</span>
+      </div>
+      <div class="resource-grid">
+        <div class="resource-card" style="opacity:0.4; pointer-events:none;">
+          <div class="resource-icon github">📂</div>
+          <div>
+            <div class="resource-title">Coming Mar 02</div>
+            <div class="resource-desc">Starter file will be posted before class</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Reference SVGs ── -->
+    <div class="day-section">
+      <p class="section-label">📚 Reference Infographics</p>
+      <div class="svg-grid">
+        <div class="svg-card">
+          <img src="svgs/01-for-loop.svg" alt="for loop syntax">
+          <div class="svg-card-label">01 — for Loop</div>
+        </div>
+        <div class="svg-card">
+          <img src="svgs/02-while-loop.svg" alt="while loop syntax">
+          <div class="svg-card-label">02 — while Loop</div>
+        </div>
+        <div class="svg-card">
+          <img src="svgs/03-for-of-loop.svg" alt="for...of loop syntax">
+          <div class="svg-card-label">03 — for...of Loop</div>
+        </div>
+        <div class="svg-card">
+          <img src="svgs/04-loop-comparison.svg" alt="When to use each loop">
+          <div class="svg-card-label">04 — When to Use Each Loop</div>
+        </div>
+        <div class="svg-card">
+          <img src="svgs/05-dom-loops.svg" alt="DOM manipulation with loops">
+          <div class="svg-card-label">05 — DOM + Loops Pattern</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>
