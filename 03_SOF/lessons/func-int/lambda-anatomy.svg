@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#161b22"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="750" fill="url(#bgGrad)" rx="16"/>
+
+  <!-- Title -->
+  <text x="600" y="48" text-anchor="middle" fill="#f0f6fc" font-size="26" font-weight="700" letter-spacing="1">Anatomy of a Lambda Expression</text>
+  <text x="600" y="74" text-anchor="middle" fill="#8b949e" font-size="13">Breaking down the syntax piece by piece</text>
+
+  <!-- ═══ MAIN LAMBDA DISPLAY ═══ -->
+  <rect x="80" y="105" width="1040" height="130" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5" filter="url(#softShadow)"/>
+
+  <!-- The lambda expression in large monospace -->
+  <text x="150" y="180" fill="#c9d1d9" font-size="32" font-family="'JetBrains Mono', 'Fira Code', 'Consolas', monospace">
+    <tspan fill="#d2a8ff">(</tspan><tspan fill="#58a6ff">String</tspan><tspan fill="#f0f6fc"> a</tspan><tspan fill="#d2a8ff">,</tspan><tspan fill="#f0f6fc"> </tspan><tspan fill="#58a6ff">String</tspan><tspan fill="#f0f6fc"> b</tspan><tspan fill="#d2a8ff">)</tspan><tspan fill="#f0f6fc"> </tspan><tspan fill="#ffd33d" font-weight="700">-></tspan><tspan fill="#f0f6fc"> </tspan><tspan fill="#d2a8ff">{</tspan><tspan fill="#f0f6fc"> </tspan><tspan fill="#ff7b72">return</tspan><tspan fill="#f0f6fc"> a </tspan><tspan fill="#ffd33d">+</tspan><tspan fill="#f0f6fc"> </tspan><tspan fill="#3fb950">" "</tspan><tspan fill="#f0f6fc"> </tspan><tspan fill="#ffd33d">+</tspan><tspan fill="#f0f6fc"> b</tspan><tspan fill="#d2a8ff">;</tspan><tspan fill="#f0f6fc"> </tspan><tspan fill="#d2a8ff">}</tspan>
+  </text>
+
+  <!-- Bracket lines pointing to parts -->
+  <!-- Parameters bracket -->
+  <line x1="145" y1="200" x1="145" y2="210" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="145" y1="210" x2="380" y2="210" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="380" y1="200" x2="380" y2="210" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="262" y1="210" x2="262" y2="230" stroke="#58a6ff" stroke-width="2"/>
+
+  <!-- Arrow operator -->
+  <line x1="435" y1="200" x2="435" y2="230" stroke="#ffd33d" stroke-width="2"/>
+
+  <!-- Body bracket -->
+  <line x1="490" y1="200" x2="490" y2="210" stroke="#3fb950" stroke-width="2"/>
+  <line x1="490" y1="210" x2="900" y2="210" stroke="#3fb950" stroke-width="2"/>
+  <line x1="900" y1="200" x2="900" y2="210" stroke="#3fb950" stroke-width="2"/>
+  <line x1="695" y1="210" x2="695" y2="230" stroke="#3fb950" stroke-width="2"/>
+
+  <!-- ═══ THREE LABELED BOXES ═══ -->
+
+  <!-- PARAMETERS box -->
+  <rect x="130" y="240" width="270" height="110" rx="10" fill="#161b22" stroke="#58a6ff" stroke-width="2" filter="url(#softShadow)"/>
+  <rect x="130" y="240" width="270" height="6" rx="10" fill="#58a6ff"/>
+  <rect x="130" y="244" width="270" height="2" fill="#161b22"/>
+  <text x="265" y="274" text-anchor="middle" fill="#58a6ff" font-size="15" font-weight="700">PARAMETERS</text>
+  <text x="265" y="296" text-anchor="middle" fill="#c9d1d9" font-size="12">Input values the lambda receives.</text>
+  <text x="265" y="316" text-anchor="middle" fill="#c9d1d9" font-size="12">Types can be omitted — compiler</text>
+  <text x="265" y="334" text-anchor="middle" fill="#c9d1d9" font-size="12">infers them from the interface.</text>
+
+  <!-- ARROW box -->
+  <rect x="460" y="240" width="160" height="110" rx="10" fill="#161b22" stroke="#ffd33d" stroke-width="2" filter="url(#softShadow)"/>
+  <rect x="460" y="240" width="160" height="6" rx="10" fill="#ffd33d"/>
+  <rect x="460" y="244" width="160" height="2" fill="#161b22"/>
+  <text x="540" y="274" text-anchor="middle" fill="#ffd33d" font-size="15" font-weight="700">ARROW</text>
+  <text x="540" y="296" text-anchor="middle" fill="#c9d1d9" font-size="12">Separates parameters</text>
+  <text x="540" y="316" text-anchor="middle" fill="#c9d1d9" font-size="12">from body.</text>
+  <text x="540" y="336" text-anchor="middle" fill="#8b949e" font-size="11" font-style="italic">Read as "goes to"</text>
+
+  <!-- BODY box -->
+  <rect x="680" y="240" width="350" height="110" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="2" filter="url(#softShadow)"/>
+  <rect x="680" y="240" width="350" height="6" rx="10" fill="#3fb950"/>
+  <rect x="680" y="244" width="350" height="2" fill="#161b22"/>
+  <text x="855" y="274" text-anchor="middle" fill="#3fb950" font-size="15" font-weight="700">BODY</text>
+  <text x="855" y="296" text-anchor="middle" fill="#c9d1d9" font-size="12">The logic — what the lambda does.</text>
+  <text x="855" y="316" text-anchor="middle" fill="#c9d1d9" font-size="12">If single expression: no braces,</text>
+  <text x="855" y="334" text-anchor="middle" fill="#c9d1d9" font-size="12">no return keyword needed.</text>
+
+  <!-- ═══ SHORTHAND RULES ═══ -->
+  <text x="600" y="400" text-anchor="middle" fill="#f0f6fc" font-size="20" font-weight="700">Shorthand Rules</text>
+
+  <!-- Rule 1: Single param -->
+  <rect x="80" y="420" width="340" height="135" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5" filter="url(#softShadow)"/>
+  <circle cx="110" cy="448" r="14" fill="#58a6ff"/>
+  <text x="110" y="453" text-anchor="middle" fill="#0d1117" font-size="14" font-weight="700">1</text>
+  <text x="135" y="453" fill="#f0f6fc" font-size="14" font-weight="600">Single Parameter</text>
+  <text x="100" y="478" fill="#8b949e" font-size="12">Skip the parentheses:</text>
+  <rect x="100" y="490" width="300" height="24" rx="4" fill="#0d1117"/>
+  <text x="110" y="507" fill="#f85149" font-size="13" font-family="'JetBrains Mono', monospace" text-decoration="line-through">(name) -> name.length()</text>
+  <rect x="100" y="520" width="300" height="24" rx="4" fill="#0d1117"/>
+  <text x="110" y="537" fill="#3fb950" font-size="13" font-family="'JetBrains Mono', monospace">name -> name.length()</text>
+
+  <!-- Rule 2: Single expression -->
+  <rect x="440" y="420" width="340" height="135" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5" filter="url(#softShadow)"/>
+  <circle cx="470" cy="448" r="14" fill="#d2a8ff"/>
+  <text x="470" y="453" text-anchor="middle" fill="#0d1117" font-size="14" font-weight="700">2</text>
+  <text x="495" y="453" fill="#f0f6fc" font-size="14" font-weight="600">Single Expression</text>
+  <text x="460" y="478" fill="#8b949e" font-size="12">Skip braces and return:</text>
+  <rect x="460" y="490" width="300" height="24" rx="4" fill="#0d1117"/>
+  <text x="470" y="507" fill="#f85149" font-size="12" font-family="'JetBrains Mono', monospace" text-decoration="line-through">(a,b) -> { return a+b; }</text>
+  <rect x="460" y="520" width="300" height="24" rx="4" fill="#0d1117"/>
+  <text x="470" y="537" fill="#3fb950" font-size="13" font-family="'JetBrains Mono', monospace">(a, b) -> a + b</text>
+
+  <!-- Rule 3: No params -->
+  <rect x="800" y="420" width="320" height="135" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5" filter="url(#softShadow)"/>
+  <circle cx="830" cy="448" r="14" fill="#f0883e"/>
+  <text x="830" y="453" text-anchor="middle" fill="#0d1117" font-size="14" font-weight="700">3</text>
+  <text x="855" y="453" fill="#f0f6fc" font-size="14" font-weight="600">No Parameters</text>
+  <text x="820" y="478" fill="#8b949e" font-size="12">Empty parentheses required:</text>
+  <rect x="820" y="490" width="280" height="24" rx="4" fill="#0d1117"/>
+  <text x="830" y="507" fill="#f85149" font-size="13" font-family="'JetBrains Mono', monospace" text-decoration="line-through">-> "hello"</text>
+  <rect x="820" y="520" width="280" height="24" rx="4" fill="#0d1117"/>
+  <text x="830" y="537" fill="#3fb950" font-size="13" font-family="'JetBrains Mono', monospace">() -> "hello"</text>
+
+  <!-- ═══ ANONYMOUS CLASS → LAMBDA COMPARISON ═══ -->
+  <text x="600" y="600" text-anchor="middle" fill="#f0f6fc" font-size="20" font-weight="700">The Big Picture: Same Thing, Less Ceremony</text>
+
+  <!-- Before box -->
+  <rect x="80" y="618" width="510" height="110" rx="10" fill="#161b22" stroke="#f85149" stroke-width="2" filter="url(#softShadow)"/>
+  <rect x="80" y="618" width="510" height="6" rx="10" fill="#f85149"/>
+  <rect x="80" y="622" width="510" height="2" fill="#161b22"/>
+  <text x="335" y="650" text-anchor="middle" fill="#f85149" font-size="13" font-weight="700">❌  ANONYMOUS CLASS — 5 lines</text>
+  <text x="100" y="672" fill="#c9d1d9" font-size="11.5" font-family="'JetBrains Mono', monospace"><tspan fill="#ff7b72">Comparator</tspan>&lt;String&gt; c = <tspan fill="#ff7b72">new</tspan> Comparator&lt;String&gt;() {</text>
+  <text x="100" y="690" fill="#c9d1d9" font-size="11.5" font-family="'JetBrains Mono', monospace">    <tspan fill="#ff7b72">public int</tspan> compare(String a, String b) {</text>
+  <text x="100" y="708" fill="#c9d1d9" font-size="11.5" font-family="'JetBrains Mono', monospace">        <tspan fill="#ff7b72">return</tspan> a.length() - b.length(); } };</text>
+
+  <!-- Arrow between -->
+  <text x="608" y="680" text-anchor="middle" fill="#ffd33d" font-size="28" font-weight="700">→</text>
+
+  <!-- After box -->
+  <rect x="630" y="618" width="490" height="110" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="2" filter="url(#softShadow)"/>
+  <rect x="630" y="618" width="490" height="6" rx="10" fill="#3fb950"/>
+  <rect x="630" y="622" width="490" height="2" fill="#161b22"/>
+  <text x="875" y="650" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="700">✅  LAMBDA — 1 line</text>
+  <text x="650" y="685" fill="#c9d1d9" font-size="14" font-family="'JetBrains Mono', monospace"><tspan fill="#58a6ff">Comparator</tspan>&lt;String&gt; c =</text>
+  <text x="680" y="708" fill="#c9d1d9" font-size="14" font-family="'JetBrains Mono', monospace">(a, b) <tspan fill="#ffd33d" font-weight="700">-></tspan> a.length() - b.length();</text>
+
+</svg>

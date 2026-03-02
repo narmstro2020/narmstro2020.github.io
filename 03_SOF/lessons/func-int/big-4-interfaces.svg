@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#161b22"/>
+    </linearGradient>
+    <filter id="softShadow2">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <linearGradient id="predGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#58a6ff"/>
+      <stop offset="100%" style="stop-color:#1f6feb"/>
+    </linearGradient>
+    <linearGradient id="funcGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3fb950"/>
+      <stop offset="100%" style="stop-color:#238636"/>
+    </linearGradient>
+    <linearGradient id="consGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0883e"/>
+      <stop offset="100%" style="stop-color:#d47616"/>
+    </linearGradient>
+    <linearGradient id="suppGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d2a8ff"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="800" fill="url(#bgGrad2)" rx="16"/>
+
+  <!-- Title -->
+  <text x="600" y="48" text-anchor="middle" fill="#f0f6fc" font-size="26" font-weight="700" letter-spacing="1">The Big 4: Built-In Functional Interfaces</text>
+  <text x="600" y="74" text-anchor="middle" fill="#8b949e" font-size="13">java.util.function — the interfaces you'll use the most</text>
+
+  <!-- ═══ PREDICATE ═══ -->
+  <rect x="50" y="100" width="540" height="300" rx="12" fill="#161b22" stroke="#58a6ff" stroke-width="2" filter="url(#softShadow2)"/>
+  <rect x="50" y="100" width="540" height="8" rx="12" fill="url(#predGrad)"/>
+  <rect x="50" y="106" width="540" height="2" fill="#161b22"/>
+
+  <!-- Icon & Title -->
+  <text x="85" y="143" fill="#58a6ff" font-size="28">❓</text>
+  <text x="120" y="143" fill="#58a6ff" font-size="22" font-weight="700">Predicate&lt;T&gt;</text>
+  <text x="380" y="143" fill="#8b949e" font-size="13" font-style="italic">"Is this true?"</text>
+
+  <!-- Signature -->
+  <rect x="75" y="158" width="490" height="28" rx="5" fill="#0d1117"/>
+  <text x="90" y="177" fill="#d2a8ff" font-size="13" font-family="'JetBrains Mono', monospace"><tspan fill="#58a6ff">boolean</tspan> <tspan fill="#f0f6fc">test</tspan>(<tspan fill="#58a6ff">T</tspan> value)</text>
+
+  <!-- Flow diagram -->
+  <!-- Input -->
+  <rect x="95" y="205" width="100" height="40" rx="8" fill="#1c2128" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="145" y="230" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="600">Input T</text>
+  <!-- Arrow -->
+  <line x1="195" y1="225" x2="240" y2="225" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrBlue)"/>
+  <polygon points="235,220 245,225 235,230" fill="#58a6ff"/>
+  <!-- Box -->
+  <rect x="245" y="200" width="120" height="50" rx="8" fill="#1f6feb" opacity="0.2" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="305" y="222" text-anchor="middle" fill="#58a6ff" font-size="12" font-weight="600">PREDICATE</text>
+  <text x="305" y="238" text-anchor="middle" fill="#8b949e" font-size="10">test()</text>
+  <!-- Arrow out -->
+  <line x1="365" y1="225" x2="410" y2="225" stroke="#58a6ff" stroke-width="2"/>
+  <polygon points="405,220 415,225 405,230" fill="#58a6ff"/>
+  <!-- Output -->
+  <rect x="415" y="205" width="100" height="40" rx="8" fill="#1c2128" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="465" y="230" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="600">boolean</text>
+
+  <!-- Example -->
+  <rect x="75" y="265" width="490" height="52" rx="5" fill="#0d1117"/>
+  <text x="90" y="285" fill="#8b949e" font-size="11" font-family="'JetBrains Mono', monospace">// Check if health is above zero</text>
+  <text x="90" y="305" fill="#c9d1d9" font-size="12" font-family="'JetBrains Mono', monospace"><tspan fill="#58a6ff">Predicate</tspan>&lt;Integer&gt; isAlive = hp <tspan fill="#ffd33d">-></tspan> hp > 0;</text>
+
+  <!-- Use cases -->
+  <text x="85" y="340" fill="#8b949e" font-size="11">▸ Filtering lists  ▸ Validation  ▸ Conditional checks</text>
+
+  <!-- Chaining -->
+  <text x="85" y="380" fill="#58a6ff" font-size="11" font-weight="600">Chaining:</text>
+  <text x="160" y="380" fill="#c9d1d9" font-size="11" font-family="'JetBrains Mono', monospace">.and()  .or()  .negate()</text>
+
+  <!-- ═══ FUNCTION ═══ -->
+  <rect x="610" y="100" width="540" height="300" rx="12" fill="#161b22" stroke="#3fb950" stroke-width="2" filter="url(#softShadow2)"/>
+  <rect x="610" y="100" width="540" height="8" rx="12" fill="url(#funcGrad)"/>
+  <rect x="610" y="106" width="540" height="2" fill="#161b22"/>
+
+  <!-- Icon & Title -->
+  <text x="645" y="143" fill="#3fb950" font-size="28">🔄</text>
+  <text x="680" y="143" fill="#3fb950" font-size="22" font-weight="700">Function&lt;T, R&gt;</text>
+  <text x="920" y="143" fill="#8b949e" font-size="13" font-style="italic">"Transform this"</text>
+
+  <!-- Signature -->
+  <rect x="635" y="158" width="490" height="28" rx="5" fill="#0d1117"/>
+  <text x="650" y="177" fill="#d2a8ff" font-size="13" font-family="'JetBrains Mono', monospace"><tspan fill="#3fb950">R</tspan> <tspan fill="#f0f6fc">apply</tspan>(<tspan fill="#58a6ff">T</tspan> value)</text>
+
+  <!-- Flow diagram -->
+  <rect x="655" y="205" width="100" height="40" rx="8" fill="#1c2128" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="705" y="230" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="600">Input T</text>
+  <line x1="755" y1="225" x2="800" y2="225" stroke="#3fb950" stroke-width="2"/>
+  <polygon points="795,220 805,225 795,230" fill="#3fb950"/>
+  <rect x="805" y="200" width="120" height="50" rx="8" fill="#238636" opacity="0.2" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="865" y="222" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="600">FUNCTION</text>
+  <text x="865" y="238" text-anchor="middle" fill="#8b949e" font-size="10">apply()</text>
+  <line x1="925" y1="225" x2="970" y2="225" stroke="#3fb950" stroke-width="2"/>
+  <polygon points="965,220 975,225 965,230" fill="#3fb950"/>
+  <rect x="975" y="205" width="100" height="40" rx="8" fill="#1c2128" stroke="#d2a8ff" stroke-width="1.5"/>
+  <text x="1025" y="230" text-anchor="middle" fill="#d2a8ff" font-size="13" font-weight="600">Output R</text>
+
+  <!-- Example -->
+  <rect x="635" y="265" width="490" height="52" rx="5" fill="#0d1117"/>
+  <text x="650" y="285" fill="#8b949e" font-size="11" font-family="'JetBrains Mono', monospace">// Convert name to scoreboard format</text>
+  <text x="650" y="305" fill="#c9d1d9" font-size="12" font-family="'JetBrains Mono', monospace"><tspan fill="#3fb950">Function</tspan>&lt;String,String&gt; fmt = s <tspan fill="#ffd33d">-></tspan> s.toUpperCase();</text>
+
+  <!-- Use cases -->
+  <text x="645" y="340" fill="#8b949e" font-size="11">▸ Data conversion  ▸ Mapping  ▸ Formatting</text>
+
+  <!-- Chaining -->
+  <text x="645" y="380" fill="#3fb950" font-size="11" font-weight="600">Chaining:</text>
+  <text x="720" y="380" fill="#c9d1d9" font-size="11" font-family="'JetBrains Mono', monospace">.andThen()  .compose()</text>
+
+  <!-- ═══ CONSUMER ═══ -->
+  <rect x="50" y="420" width="540" height="300" rx="12" fill="#161b22" stroke="#f0883e" stroke-width="2" filter="url(#softShadow2)"/>
+  <rect x="50" y="420" width="540" height="8" rx="12" fill="url(#consGrad)"/>
+  <rect x="50" y="426" width="540" height="2" fill="#161b22"/>
+
+  <!-- Icon & Title -->
+  <text x="85" y="463" fill="#f0883e" font-size="28">📥</text>
+  <text x="120" y="463" fill="#f0883e" font-size="22" font-weight="700">Consumer&lt;T&gt;</text>
+  <text x="380" y="463" fill="#8b949e" font-size="13" font-style="italic">"Do something with this"</text>
+
+  <!-- Signature -->
+  <rect x="75" y="478" width="490" height="28" rx="5" fill="#0d1117"/>
+  <text x="90" y="497" fill="#d2a8ff" font-size="13" font-family="'JetBrains Mono', monospace"><tspan fill="#f0883e">void</tspan> <tspan fill="#f0f6fc">accept</tspan>(<tspan fill="#58a6ff">T</tspan> value)</text>
+
+  <!-- Flow diagram -->
+  <rect x="95" y="525" width="100" height="40" rx="8" fill="#1c2128" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="145" y="550" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="600">Input T</text>
+  <line x1="195" y1="545" x2="240" y2="545" stroke="#f0883e" stroke-width="2"/>
+  <polygon points="235,540 245,545 235,550" fill="#f0883e"/>
+  <rect x="245" y="520" width="120" height="50" rx="8" fill="#d47616" opacity="0.15" stroke="#f0883e" stroke-width="1.5"/>
+  <text x="305" y="542" text-anchor="middle" fill="#f0883e" font-size="12" font-weight="600">CONSUMER</text>
+  <text x="305" y="558" text-anchor="middle" fill="#8b949e" font-size="10">accept()</text>
+  <line x1="365" y1="545" x2="410" y2="545" stroke="#f0883e" stroke-width="2" stroke-dasharray="6,4"/>
+  <polygon points="405,540 415,545 405,550" fill="#f0883e" opacity="0.5"/>
+  <rect x="415" y="530" width="100" height="30" rx="8" fill="#1c2128" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="465" y="550" text-anchor="middle" fill="#484f58" font-size="12" font-weight="600">void</text>
+
+  <!-- Example -->
+  <rect x="75" y="585" width="490" height="52" rx="5" fill="#0d1117"/>
+  <text x="90" y="605" fill="#8b949e" font-size="11" font-family="'JetBrains Mono', monospace">// Log enemy deaths to console</text>
+  <text x="90" y="625" fill="#c9d1d9" font-size="12" font-family="'JetBrains Mono', monospace"><tspan fill="#f0883e">Consumer</tspan>&lt;Enemy&gt; log = e <tspan fill="#ffd33d">-></tspan> System.out.println(e);</text>
+
+  <!-- Use cases -->
+  <text x="85" y="660" fill="#8b949e" font-size="11">▸ Logging  ▸ Printing  ▸ Updating state  ▸ Side effects</text>
+
+  <!-- Chaining -->
+  <text x="85" y="700" fill="#f0883e" font-size="11" font-weight="600">Chaining:</text>
+  <text x="160" y="700" fill="#c9d1d9" font-size="11" font-family="'JetBrains Mono', monospace">.andThen()</text>
+
+  <!-- ═══ SUPPLIER ═══ -->
+  <rect x="610" y="420" width="540" height="300" rx="12" fill="#161b22" stroke="#d2a8ff" stroke-width="2" filter="url(#softShadow2)"/>
+  <rect x="610" y="420" width="540" height="8" rx="12" fill="url(#suppGrad)"/>
+  <rect x="610" y="426" width="540" height="2" fill="#161b22"/>
+
+  <!-- Icon & Title -->
+  <text x="645" y="463" fill="#d2a8ff" font-size="28">🏭</text>
+  <text x="680" y="463" fill="#d2a8ff" font-size="22" font-weight="700">Supplier&lt;T&gt;</text>
+  <text x="920" y="463" fill="#8b949e" font-size="13" font-style="italic">"Give me something"</text>
+
+  <!-- Signature -->
+  <rect x="635" y="478" width="490" height="28" rx="5" fill="#0d1117"/>
+  <text x="650" y="497" fill="#d2a8ff" font-size="13" font-family="'JetBrains Mono', monospace"><tspan fill="#d2a8ff">T</tspan> <tspan fill="#f0f6fc">get</tspan>()</text>
+
+  <!-- Flow diagram -->
+  <rect x="695" y="530" width="100" height="30" rx="8" fill="#1c2128" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="745" y="550" text-anchor="middle" fill="#484f58" font-size="12" font-weight="600">no input</text>
+  <line x1="795" y1="545" x2="840" y2="545" stroke="#d2a8ff" stroke-width="2" stroke-dasharray="6,4"/>
+  <polygon points="835,540 845,545 835,550" fill="#d2a8ff" opacity="0.5"/>
+  <rect x="845" y="520" width="120" height="50" rx="8" fill="#8b5cf6" opacity="0.15" stroke="#d2a8ff" stroke-width="1.5"/>
+  <text x="905" y="542" text-anchor="middle" fill="#d2a8ff" font-size="12" font-weight="600">SUPPLIER</text>
+  <text x="905" y="558" text-anchor="middle" fill="#8b949e" font-size="10">get()</text>
+  <line x1="965" y1="545" x2="1010" y2="545" stroke="#d2a8ff" stroke-width="2"/>
+  <polygon points="1005,540 1015,545 1005,550" fill="#d2a8ff"/>
+  <rect x="1015" y="525" width="100" height="40" rx="8" fill="#1c2128" stroke="#d2a8ff" stroke-width="1.5"/>
+  <text x="1065" y="550" text-anchor="middle" fill="#d2a8ff" font-size="13" font-weight="600">Output T</text>
+
+  <!-- Example -->
+  <rect x="635" y="585" width="490" height="52" rx="5" fill="#0d1117"/>
+  <text x="650" y="605" fill="#8b949e" font-size="11" font-family="'JetBrains Mono', monospace">// Generate random spawn position</text>
+  <text x="650" y="625" fill="#c9d1d9" font-size="12" font-family="'JetBrains Mono', monospace"><tspan fill="#d2a8ff">Supplier</tspan>&lt;Double&gt; rng = () <tspan fill="#ffd33d">-></tspan> Math.random()*100;</text>
+
+  <!-- Use cases -->
+  <text x="645" y="660" fill="#8b949e" font-size="11">▸ Factories  ▸ Random generation  ▸ Lazy initialization</text>
+
+  <!-- Chaining -->
+  <text x="645" y="700" fill="#d2a8ff" font-size="11" font-weight="600">Chaining:</text>
+  <text x="720" y="700" fill="#8b949e" font-size="11" font-style="italic">None — Suppliers produce, they don't chain</text>
+
+  <!-- ═══ BOTTOM KEY ═══ -->
+  <rect x="370" y="745" width="460" height="36" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="600" y="768" text-anchor="middle" fill="#8b949e" font-size="12">
+    <tspan fill="#58a6ff">■</tspan> T → boolean   
+    <tspan fill="#3fb950">■</tspan> T → R   
+    <tspan fill="#f0883e">■</tspan> T → void   
+    <tspan fill="#d2a8ff">■</tspan> () → T
+  </text>
+
+</svg>

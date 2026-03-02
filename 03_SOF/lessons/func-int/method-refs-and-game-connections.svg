@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#161b22"/>
+    </linearGradient>
+    <filter id="softShadow3">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="750" fill="url(#bgGrad3)" rx="16"/>
+
+  <!-- Title -->
+  <text x="600" y="48" text-anchor="middle" fill="#f0f6fc" font-size="26" font-weight="700" letter-spacing="1">Method References &amp; Game Dev Connections</text>
+  <text x="600" y="74" text-anchor="middle" fill="#8b949e" font-size="13">Even shorter than lambdas — and how this powers your platformer</text>
+
+  <!-- ═══ METHOD REFERENCE TYPES ═══ -->
+  <text x="310" y="112" text-anchor="middle" fill="#f0f6fc" font-size="18" font-weight="700">Method Reference Types</text>
+
+  <!-- Type 1: Static -->
+  <rect x="50" y="128" width="520" height="68" rx="10" fill="#161b22" stroke="#58a6ff" stroke-width="1.5" filter="url(#softShadow3)"/>
+  <rect x="50" y="128" width="6" height="68" rx="3" fill="#58a6ff"/>
+  <text x="80" y="153" fill="#58a6ff" font-size="13" font-weight="700">STATIC METHOD</text>
+  <rect x="80" y="164" width="200" height="22" rx="4" fill="#0d1117"/>
+  <text x="90" y="180" fill="#f85149" font-size="11" font-family="'JetBrains Mono', monospace">s -> Integer.parseInt(s)</text>
+  <text x="298" y="180" fill="#ffd33d" font-size="16" font-weight="700">→</text>
+  <rect x="320" y="164" width="220" height="22" rx="4" fill="#0d1117"/>
+  <text x="330" y="180" fill="#3fb950" font-size="11" font-family="'JetBrains Mono', monospace">Integer::parseInt</text>
+
+  <!-- Type 2: Instance on param -->
+  <rect x="50" y="206" width="520" height="68" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="1.5" filter="url(#softShadow3)"/>
+  <rect x="50" y="206" width="6" height="68" rx="3" fill="#3fb950"/>
+  <text x="80" y="231" fill="#3fb950" font-size="13" font-weight="700">INSTANCE (on parameter)</text>
+  <rect x="80" y="242" width="200" height="22" rx="4" fill="#0d1117"/>
+  <text x="90" y="258" fill="#f85149" font-size="11" font-family="'JetBrains Mono', monospace">s -> s.toUpperCase()</text>
+  <text x="298" y="258" fill="#ffd33d" font-size="16" font-weight="700">→</text>
+  <rect x="320" y="242" width="220" height="22" rx="4" fill="#0d1117"/>
+  <text x="330" y="258" fill="#3fb950" font-size="11" font-family="'JetBrains Mono', monospace">String::toUpperCase</text>
+
+  <!-- Type 3: Instance on object -->
+  <rect x="50" y="284" width="520" height="68" rx="10" fill="#161b22" stroke="#d2a8ff" stroke-width="1.5" filter="url(#softShadow3)"/>
+  <rect x="50" y="284" width="6" height="68" rx="3" fill="#d2a8ff"/>
+  <text x="80" y="309" fill="#d2a8ff" font-size="13" font-weight="700">INSTANCE (on object)</text>
+  <rect x="80" y="320" width="220" height="22" rx="4" fill="#0d1117"/>
+  <text x="90" y="336" fill="#f85149" font-size="11" font-family="'JetBrains Mono', monospace">s -> System.out.println(s)</text>
+  <text x="318" y="336" fill="#ffd33d" font-size="16" font-weight="700">→</text>
+  <rect x="340" y="320" width="200" height="22" rx="4" fill="#0d1117"/>
+  <text x="350" y="336" fill="#3fb950" font-size="11" font-family="'JetBrains Mono', monospace">System.out::println</text>
+
+  <!-- Type 4: Constructor -->
+  <rect x="50" y="362" width="520" height="68" rx="10" fill="#161b22" stroke="#f0883e" stroke-width="1.5" filter="url(#softShadow3)"/>
+  <rect x="50" y="362" width="6" height="68" rx="3" fill="#f0883e"/>
+  <text x="80" y="387" fill="#f0883e" font-size="13" font-weight="700">CONSTRUCTOR</text>
+  <rect x="80" y="398" width="200" height="22" rx="4" fill="#0d1117"/>
+  <text x="90" y="414" fill="#f85149" font-size="11" font-family="'JetBrains Mono', monospace">() -> new ArrayList&lt;&gt;()</text>
+  <text x="298" y="414" fill="#ffd33d" font-size="16" font-weight="700">→</text>
+  <rect x="320" y="398" width="220" height="22" rx="4" fill="#0d1117"/>
+  <text x="330" y="414" fill="#3fb950" font-size="11" font-family="'JetBrains Mono', monospace">ArrayList::new</text>
+
+  <!-- Key insight -->
+  <rect x="50" y="445" width="520" height="40" rx="8" fill="#1c2128" stroke="#ffd33d" stroke-width="1.5"/>
+  <text x="310" y="470" text-anchor="middle" fill="#ffd33d" font-size="12" font-weight="600">💡 Method references compile to the exact same bytecode as the lambda version</text>
+
+  <!-- ═══ GAME DEV CONNECTIONS ═══ -->
+  <text x="880" y="112" text-anchor="middle" fill="#f0f6fc" font-size="18" font-weight="700">🎮 Platformer Connections</text>
+
+  <!-- Connection 1: Input -->
+  <rect x="620" y="128" width="540" height="122" rx="10" fill="#161b22" stroke="#58a6ff" stroke-width="1.5" filter="url(#softShadow3)"/>
+  <rect x="620" y="128" width="540" height="6" rx="10" fill="#58a6ff"/>
+  <rect x="620" y="132" width="540" height="2" fill="#161b22"/>
+  <text x="650" y="157" fill="#58a6ff" font-size="14" font-weight="700">🎮 Input Handling</text>
+  <text x="845" y="157" fill="#8b949e" font-size="11">Functional Interface → InputAction</text>
+  <rect x="640" y="168" width="500" height="68" rx="5" fill="#0d1117"/>
+  <text x="655" y="186" fill="#8b949e" font-size="10.5" font-family="'JetBrains Mono', monospace">Map&lt;Integer, <tspan fill="#58a6ff">InputAction</tspan>&gt; keys = new HashMap&lt;&gt;();</text>
+  <text x="655" y="204" fill="#c9d1d9" font-size="10.5" font-family="'JetBrains Mono', monospace">keys.put(Keys.SPACE, player <tspan fill="#ffd33d">-></tspan> player.jump());</text>
+  <text x="655" y="222" fill="#c9d1d9" font-size="10.5" font-family="'JetBrains Mono', monospace">keys.put(Keys.SHIFT, player <tspan fill="#ffd33d">-></tspan> player.dash());</text>
+
+  <!-- Connection 2: Enemies -->
+  <rect x="620" y="262" width="540" height="122" rx="10" fill="#161b22" stroke="#f0883e" stroke-width="1.5" filter="url(#softShadow3)"/>
+  <rect x="620" y="262" width="540" height="6" rx="10" fill="#f0883e"/>
+  <rect x="620" y="266" width="540" height="2" fill="#161b22"/>
+  <text x="650" y="291" fill="#f0883e" font-size="14" font-weight="700">👾 Enemy Behaviors</text>
+  <text x="880" y="291" fill="#8b949e" font-size="11">Consumer&lt;Enemy&gt; → different AI</text>
+  <rect x="640" y="302" width="500" height="68" rx="5" fill="#0d1117"/>
+  <text x="655" y="320" fill="#c9d1d9" font-size="10.5" font-family="'JetBrains Mono', monospace"><tspan fill="#f0883e">Consumer</tspan>&lt;Enemy&gt; patrol = e <tspan fill="#ffd33d">-></tspan> e.moveBackAndForth();</text>
+  <text x="655" y="338" fill="#c9d1d9" font-size="10.5" font-family="'JetBrains Mono', monospace"><tspan fill="#f0883e">Consumer</tspan>&lt;Enemy&gt; chase  = e <tspan fill="#ffd33d">-></tspan> e.moveToward(player);</text>
+  <text x="655" y="356" fill="#c9d1d9" font-size="10.5" font-family="'JetBrains Mono', monospace"><tspan fill="#f0883e">Consumer</tspan>&lt;Enemy&gt; guard  = e <tspan fill="#ffd33d">-></tspan> e.stayNear(post);</text>
+
+  <!-- Connection 3: Collisions -->
+  <rect x="620" y="396" width="540" height="90" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="1.5" filter="url(#softShadow3)"/>
+  <rect x="620" y="396" width="540" height="6" rx="10" fill="#3fb950"/>
+  <rect x="620" y="400" width="540" height="2" fill="#161b22"/>
+  <text x="650" y="425" fill="#3fb950" font-size="14" font-weight="700">💥 Collision Callbacks</text>
+  <text x="895" y="425" fill="#8b949e" font-size="11">Lambda per object type</text>
+  <rect x="640" y="436" width="500" height="40" rx="5" fill="#0d1117"/>
+  <text x="655" y="454" fill="#c9d1d9" font-size="10.5" font-family="'JetBrains Mono', monospace">coin.onHit(p <tspan fill="#ffd33d">-></tspan> { p.addScore(10); coin.remove(); });</text>
+  <text x="655" y="468" fill="#c9d1d9" font-size="10.5" font-family="'JetBrains Mono', monospace">spike.onHit(p <tspan fill="#ffd33d">-></tspan> p.takeDamage(25));</text>
+
+  <!-- ═══ BOTTOM: THE PIPELINE ═══ -->
+  <rect x="50" y="510" width="1100" height="220" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5" filter="url(#softShadow3)"/>
+  <text x="600" y="545" text-anchor="middle" fill="#f0f6fc" font-size="18" font-weight="700">How It All Fits Together</text>
+
+  <!-- Step 1 -->
+  <rect x="85" y="565" width="200" height="80" rx="10" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="185" y="592" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="700">1. Define Interface</text>
+  <text x="185" y="614" text-anchor="middle" fill="#8b949e" font-size="11">@FunctionalInterface</text>
+  <text x="185" y="630" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="'JetBrains Mono', monospace">void execute(Player p)</text>
+
+  <!-- Arrow -->
+  <line x1="285" y1="605" x2="330" y2="605" stroke="#484f58" stroke-width="2"/>
+  <polygon points="325,600 335,605 325,610" fill="#484f58"/>
+
+  <!-- Step 2 -->
+  <rect x="335" y="565" width="200" height="80" rx="10" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="435" y="592" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="700">2. Accept as Param</text>
+  <text x="435" y="614" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="'JetBrains Mono', monospace">void bind(int key,</text>
+  <text x="435" y="630" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="'JetBrains Mono', monospace">  InputAction action)</text>
+
+  <!-- Arrow -->
+  <line x1="535" y1="605" x2="580" y2="605" stroke="#484f58" stroke-width="2"/>
+  <polygon points="575,600 585,605 575,610" fill="#484f58"/>
+
+  <!-- Step 3 -->
+  <rect x="585" y="565" width="220" height="80" rx="10" fill="#0d1117" stroke="#ffd33d" stroke-width="1.5"/>
+  <text x="695" y="592" text-anchor="middle" fill="#ffd33d" font-size="13" font-weight="700">3. Pass Lambda</text>
+  <text x="695" y="614" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="'JetBrains Mono', monospace">bind(Keys.SPACE,</text>
+  <text x="695" y="630" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="'JetBrains Mono', monospace">  p -> p.jump())</text>
+
+  <!-- Arrow -->
+  <line x1="805" y1="605" x2="850" y2="605" stroke="#484f58" stroke-width="2"/>
+  <polygon points="845,600 855,605 845,610" fill="#484f58"/>
+
+  <!-- Step 4 -->
+  <rect x="855" y="565" width="250" height="80" rx="10" fill="#0d1117" stroke="#d2a8ff" stroke-width="1.5"/>
+  <text x="980" y="592" text-anchor="middle" fill="#d2a8ff" font-size="13" font-weight="700">4. Execute at Runtime</text>
+  <text x="980" y="614" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="'JetBrains Mono', monospace">if (keyPressed(SPACE))</text>
+  <text x="980" y="630" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="'JetBrains Mono', monospace">  action.execute(player);</text>
+
+  <!-- Bottom insight -->
+  <text x="600" y="700" text-anchor="middle" fill="#8b949e" font-size="12">The interface defines the <tspan fill="#58a6ff" font-weight="600">shape</tspan>, the lambda provides the <tspan fill="#3fb950" font-weight="600">behavior</tspan>, and the method calls it at the right <tspan fill="#d2a8ff" font-weight="600">time</tspan>.</text>
+
+</svg>
