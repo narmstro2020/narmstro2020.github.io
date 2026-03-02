@@ -1,0 +1,325 @@
+/* ============================================
+       DESIGN SYSTEM — 02_WEB Dark Theme
+       ============================================ */
+:root {
+    --bg: #0f0f1a;
+    --surface: #1a1a2e;
+    --surface-light: #252540;
+    --accent: #4ecca3;
+    --purple: #7b68ee;
+    --yellow: #ffc107;
+    --red: #e94560;
+    --blue: #4ea8de;
+    --text: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --text-dim: #606080;
+    --radius: 10px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--surface-light);
+}
+
+.header .tag {
+    display: inline-block;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.tag.red {
+    background: rgba(233, 69, 96, 0.15);
+    color: var(--red);
+    border: 1px solid rgba(233, 69, 96, 0.3);
+}
+
+.tag.green {
+    background: rgba(78, 204, 163, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(78, 204, 163, 0.3);
+}
+
+h1 {
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, var(--red), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.25rem;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Feature Sections */
+.feature {
+    background: var(--surface);
+    border: 1px solid var(--surface-light);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.feature h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.feature h2 .badge {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+}
+
+.badge.for {
+    background: rgba(78, 204, 163, 0.15);
+    color: var(--accent);
+}
+
+.badge.while {
+    background: rgba(255, 193, 7, 0.15);
+    color: var(--yellow);
+}
+
+.badge.forof {
+    background: rgba(78, 168, 222, 0.15);
+    color: var(--blue);
+}
+
+.badge.foreach {
+    background: rgba(123, 104, 238, 0.15);
+    color: var(--purple);
+}
+
+.feature .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--surface-light);
+}
+
+/* Form Controls */
+.input-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+input[type="text"], input[type="number"] {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--surface-light);
+    color: var(--text);
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: var(--accent);
+}
+
+button {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+    white-space: nowrap;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+button.accent {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+button.yellow {
+    background: var(--yellow);
+    color: var(--bg);
+}
+
+button.red {
+    background: var(--red);
+}
+
+button.blue {
+    background: var(--blue);
+    color: var(--bg);
+}
+
+/* Output Areas */
+.output-area {
+    background: var(--bg);
+    border: 1px solid var(--surface-light);
+    border-radius: 8px;
+    padding: 1rem;
+    min-height: 80px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.output-area .placeholder {
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+/* Dynamic List Items */
+.list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.4rem;
+    background: var(--surface);
+    border: 1px solid var(--surface-light);
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.list-item .num {
+    font-family: 'Fira Code', monospace;
+    color: var(--accent);
+    font-size: 0.75rem;
+    margin-right: 0.75rem;
+}
+
+/* Countdown Items */
+.countdown-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.countdown-tile {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-family: 'Fira Code', monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Roster Cards */
+.roster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem;
+}
+
+.roster-card {
+    background: var(--surface);
+    border: 1px solid var(--surface-light);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.roster-card .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.roster-card .name {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.roster-card .role {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Filter Buttons */
+.filter-row {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.filter-btn {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.78rem;
+    border-radius: 6px;
+    background: var(--surface-light);
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    border-color: var(--purple);
+    color: var(--purple);
+    background: rgba(123, 104, 238, 0.1);
+}
+
+/* Skill Tags */
+.skill-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.skill-tag {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    background: rgba(78, 204, 163, 0.08);
+    color: var(--accent);
+    border: 1px solid rgba(78, 204, 163, 0.15);
+}
