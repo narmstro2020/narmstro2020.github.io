@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic List Builder — Loops Activity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+
+<header class="header">
+  <span class="tag red">ACTIVITY</span>
+  <span class="tag green">15 pts</span>
+  <h1>🔄 Dynamic List Builder</h1>
+  <p class="subtitle">Day 2 — Loops + DOM Practice · Mar 2, 2026</p>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════
+     FEATURE 1: Task List (for loop)
+     ══════════════════════════════════════════════════════ -->
+<section class="feature" id="feature-1">
+  <h2>Feature 1: Task List <span class="badge for">for loop</span></h2>
+  <p class="desc">Add tasks to a list. Every time you click "Add", the entire list re-renders using a <code>for</code> loop.</p>
+
+  <div class="input-row">
+    <input type="text" id="task-input" placeholder="Enter a task...">
+    <button class="accent" id="add-task-btn">+ Add Task</button>
+  </div>
+  <button class="red" id="clear-tasks-btn" style="margin-bottom: 1rem; font-size: 0.78rem; padding: 0.4rem 0.85rem;">Clear All</button>
+
+  <div class="output-area" id="task-list">
+    <span class="placeholder">Your tasks will appear here...</span>
+  </div>
+
+  <div class="skill-tags">
+    <span class="skill-tag">querySelector</span>
+    <span class="skill-tag">addEventListener</span>
+    <span class="skill-tag">array.push()</span>
+    <span class="skill-tag">for loop</span>
+    <span class="skill-tag">innerHTML</span>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     FEATURE 2: Countdown Generator (while loop)
+     ══════════════════════════════════════════════════════ -->
+<section class="feature" id="feature-2">
+  <h2>Feature 2: Countdown Generator <span class="badge while">while loop</span></h2>
+  <p class="desc">Enter a number and generate a visual countdown from that number down to 1 using a <code>while</code> loop.</p>
+
+  <div class="input-row">
+    <input type="number" id="countdown-input" placeholder="Enter a number (1–20)" min="1" max="20">
+    <button class="yellow" id="countdown-btn">🚀 Launch Countdown</button>
+  </div>
+
+  <div class="output-area" id="countdown-display">
+    <span class="placeholder">Countdown tiles will appear here...</span>
+  </div>
+
+  <div class="skill-tags">
+    <span class="skill-tag">while loop</span>
+    <span class="skill-tag">Number()</span>
+    <span class="skill-tag">innerHTML</span>
+    <span class="skill-tag">template literals</span>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     FEATURE 3: Student Roster (for...of)
+     ══════════════════════════════════════════════════════ -->
+<section class="feature" id="feature-3">
+  <h2>Feature 3: Student Roster <span class="badge forof">for...of</span></h2>
+  <p class="desc">A pre-loaded array of student names gets rendered as cards using a <code>for...of</code> loop. Click "Load Roster" to display them.</p>
+
+  <button class="blue" id="load-roster-btn" style="margin-bottom: 1rem;">📋 Load Roster</button>
+
+  <div class="output-area" id="roster-display">
+    <span class="placeholder">Student cards will appear here...</span>
+  </div>
+
+  <div class="skill-tags">
+    <span class="skill-tag">for...of</span>
+    <span class="skill-tag">arrays</span>
+    <span class="skill-tag">template literals</span>
+    <span class="skill-tag">innerHTML</span>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     FEATURE 4 (BONUS): Filtered Gallery (forEach)
+     ══════════════════════════════════════════════════════ -->
+<section class="feature" id="feature-4">
+  <h2>Feature 4: Filtered Emoji Gallery <span class="badge foreach">forEach</span></h2>
+  <p class="desc"><strong>BONUS:</strong> Render a gallery of items and let users filter by category using <code>forEach</code> and conditionals.</p>
+
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="food">🍕 Food</button>
+    <button class="filter-btn" data-filter="animal">🐶 Animals</button>
+    <button class="filter-btn" data-filter="sport">⚽ Sports</button>
+  </div>
+
+  <div class="output-area" id="gallery-display">
+    <span class="placeholder">Gallery items will appear here...</span>
+  </div>
+
+  <div class="skill-tags">
+    <span class="skill-tag">forEach</span>
+    <span class="skill-tag">if/else</span>
+    <span class="skill-tag">data attributes</span>
+    <span class="skill-tag">querySelectorAll</span>
+  </div>
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
