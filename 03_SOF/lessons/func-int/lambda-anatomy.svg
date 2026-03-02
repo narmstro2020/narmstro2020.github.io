@@ -30,7 +30,7 @@
 
   <!-- Bracket lines pointing to parts -->
   <!-- Parameters bracket -->
-  <line x1="145" y1="200" x1="145" y2="210" stroke="#58a6ff" stroke-width="2"/>
+  <line x1="145" y1="200" x2="145" y2="210" stroke="#58a6ff" stroke-width="2"/>
   <line x1="145" y1="210" x2="380" y2="210" stroke="#58a6ff" stroke-width="2"/>
   <line x1="380" y1="200" x2="380" y2="210" stroke="#58a6ff" stroke-width="2"/>
   <line x1="262" y1="210" x2="262" y2="230" stroke="#58a6ff" stroke-width="2"/>
