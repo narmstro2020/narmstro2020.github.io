@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380">
+  <defs>
+    <linearGradient id="titleGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff8c42"/>
+      <stop offset="100%" stop-color="#ffc107"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="380" rx="14" fill="#0f0f1a"/>
+  <rect x="1" y="1" width="598" height="378" rx="13" fill="none" stroke="#252540" stroke-width="1.5"/>
+
+  <text x="30" y="40" font-family="Fira Code, monospace" font-size="13" font-weight="700" fill="url(#titleGrad)">04 — Object Literals</text>
+
+  <!-- Object declaration -->
+  <rect x="30" y="58" width="540" height="130" rx="8" fill="#1a1a2e" stroke="#7b68ee" stroke-width="1.5"/>
+  <text x="50" y="80" font-family="Fira Code, monospace" font-size="12" fill="#7b68ee">const</text>
+  <text x="92" y="80" font-family="Fira Code, monospace" font-size="12" fill="#e0e0e0"> student = {</text>
+  <text x="65" y="100" font-family="Fira Code, monospace" font-size="12" fill="#5dade2">  name</text>
+  <text x="110" y="100" font-family="Fira Code, monospace" font-size="12" fill="#e0e0e0">:   </text>
+  <text x="130" y="100" font-family="Fira Code, monospace" font-size="12" fill="#4ecca3">'Aaliyah'</text>
+  <text x="210" y="100" font-family="Fira Code, monospace" font-size="12" fill="#555">,  ← string value</text>
+  <text x="65" y="118" font-family="Fira Code, monospace" font-size="12" fill="#5dade2">  grade</text>
+  <text x="115" y="118" font-family="Fira Code, monospace" font-size="12" fill="#e0e0e0">:  </text>
+  <text x="130" y="118" font-family="Fira Code, monospace" font-size="12" fill="#ffc107">92</text>
+  <text x="152" y="118" font-family="Fira Code, monospace" font-size="12" fill="#555">,       ← number value</text>
+  <text x="65" y="136" font-family="Fira Code, monospace" font-size="12" fill="#5dade2">  isEnrolled</text>
+  <text x="155" y="136" font-family="Fira Code, monospace" font-size="12" fill="#e0e0e0">: </text>
+  <text x="168" y="136" font-family="Fira Code, monospace" font-size="12" fill="#ff8c42">true</text>
+  <text x="200" y="136" font-family="Fira Code, monospace" font-size="12" fill="#555">   ← boolean value</text>
+  <text x="50" y="177" font-family="Fira Code, monospace" font-size="12" fill="#e0e0e0">};</text>
+
+  <!-- Annotations -->
+  <text x="50" y="212" font-family="DM Sans, sans-serif" font-size="11" fill="#a0a0a0" font-weight="700">Accessing properties — two ways:</text>
+
+  <!-- Dot notation -->
+  <rect x="30" y="225" width="255" height="64" rx="8" fill="#1a1a2e" stroke="#4ecca3" stroke-width="1"/>
+  <text x="50" y="244" font-family="Fira Code, monospace" font-size="10" fill="#555">DOT NOTATION (preferred)</text>
+  <text x="50" y="263" font-family="Fira Code, monospace" font-size="12" fill="#e0e0e0">student.<tspan fill="#5dade2">name</tspan>  → <tspan fill="#4ecca3">'Aaliyah'</tspan></text>
+  <text x="50" y="280" font-family="Fira Code, monospace" font-size="12" fill="#e0e0e0">student.<tspan fill="#5dade2">grade</tspan> → <tspan fill="#ffc107">92</tspan></text>
+
+  <!-- Bracket notation -->
+  <rect x="310" y="225" width="260" height="64" rx="8" fill="#1a1a2e" stroke="#7b68ee" stroke-width="1"/>
+  <text x="330" y="244" font-family="Fira Code, monospace" font-size="10" fill="#555">BRACKET NOTATION (dynamic keys)</text>
+  <text x="330" y="263" font-family="Fira Code, monospace" font-size="12" fill="#e0e0e0">student[<tspan fill="#4ecca3">'name'</tspan>]   → <tspan fill="#4ecca3">'Aaliyah'</tspan></text>
+  <text x="330" y="280" font-family="Fira Code, monospace" font-size="12" fill="#e0e0e0">student[<tspan fill="#4ecca3">'grade'</tspan>]  → <tspan fill="#ffc107">92</tspan></text>
+
+  <!-- Add / modify -->
+  <rect x="30" y="308" width="540" height="50" rx="8" fill="#252540" stroke="#555" stroke-width="1"/>
+  <text x="50" y="327" font-family="DM Sans, sans-serif" font-size="11" fill="#a0a0a0">Adding or modifying a property:</text>
+  <text x="50" y="347" font-family="Fira Code, monospace" font-size="11" fill="#e0e0e0">student.<tspan fill="#5dade2">school</tspan> = <tspan fill="#4ecca3">'Westview High'</tspan>;  <tspan fill="#555">← adds new key, or updates existing one</tspan></text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="titleGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff8c42"/>
+      <stop offset="100%" stop-color="#ffc107"/>
+    </linearGradient>
+    <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4ecca3"/>
+    </marker>
+  </defs>
+  <rect width="600" height="400" rx="14" fill="#0f0f1a"/>
+  <rect x="1" y="1" width="598" height="398" rx="13" fill="none" stroke="#252540" stroke-width="1.5"/>
+
+  <text x="30" y="40" font-family="Fira Code, monospace" font-size="13" font-weight="700" fill="url(#titleGrad)">05 — DOM Rendering Pattern</text>
+  <text x="30" y="58" font-family="DM Sans, sans-serif" font-size="11" fill="#555">Array of objects → forEach → create elements → append</text>
+
+  <!-- Step 1 -->
+  <rect x="30" y="72" width="540" height="50" rx="8" fill="#1a1a2e" stroke="#5dade2" stroke-width="1.5"/>
+  <text x="50" y="92" font-family="Fira Code, monospace" font-size="10" fill="#5dade2" font-weight="700">STEP 1 — Select the container</text>
+  <text x="50" y="112" font-family="Fira Code, monospace" font-size="11" fill="#e0e0e0"><tspan fill="#7b68ee">const</tspan> list = document.<tspan fill="#5dade2">querySelector</tspan>(<tspan fill="#4ecca3">'#card-list'</tspan>);</text>
+
+  <!-- Step 2 -->
+  <rect x="30" y="138" width="540" height="50" rx="8" fill="#1a1a2e" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="50" y="158" font-family="Fira Code, monospace" font-size="10" fill="#4ecca3" font-weight="700">STEP 2 — Loop with forEach</text>
+  <text x="50" y="178" font-family="Fira Code, monospace" font-size="11" fill="#e0e0e0">students.<tspan fill="#4ecca3">forEach</tspan>(student =&gt; {  <tspan fill="#555">// runs once per object</tspan></text>
+
+  <!-- Step 3 -->
+  <rect x="30" y="204" width="540" height="50" rx="8" fill="#1a1a2e" stroke="#7b68ee" stroke-width="1.5"/>
+  <text x="50" y="224" font-family="Fira Code, monospace" font-size="10" fill="#7b68ee" font-weight="700">STEP 3 — Create a DOM element</text>
+  <text x="50" y="244" font-family="Fira Code, monospace" font-size="11" fill="#e0e0e0">  <tspan fill="#7b68ee">const</tspan> div = document.<tspan fill="#5dade2">createElement</tspan>(<tspan fill="#4ecca3">'div'</tspan>);  div.className = <tspan fill="#4ecca3">'card'</tspan>;</text>
+
+  <!-- Step 4 -->
+  <rect x="30" y="270" width="540" height="52" rx="8" fill="#1a1a2e" stroke="#ff8c42" stroke-width="1.5"/>
+  <text x="50" y="290" font-family="Fira Code, monospace" font-size="10" fill="#ff8c42" font-weight="700">STEP 4 — Set content &amp; append</text>
+  <text x="50" y="308" font-family="Fira Code, monospace" font-size="10.5" fill="#e0e0e0">  div.innerHTML = <tspan fill="#4ecca3">`&lt;strong&gt;${</tspan><tspan fill="#5dade2">student.name</tspan><tspan fill="#4ecca3">}&lt;/strong&gt; — Grade: ${</tspan><tspan fill="#5dade2">student.grade</tspan><tspan fill="#4ecca3">}`</tspan>;</text>
+  <text x="50" y="322" font-family="Fira Code, monospace" font-size="10.5" fill="#e0e0e0">  list.<tspan fill="#ff8c42">appendChild</tspan>(div);  });</text>
+
+  <!-- Result -->
+  <rect x="30" y="340" width="540" height="44" rx="8" fill="#252540" stroke="#555" stroke-width="1"/>
+  <text x="50" y="358" font-family="DM Sans, sans-serif" font-size="11" fill="#a0a0a0" font-weight="600">💡 This pattern is the foundation of every data-driven web app.</text>
+  <text x="50" y="376" font-family="DM Sans, sans-serif" font-size="11" fill="#555">Fetch from an API → get array of objects → forEach → render cards. Same pattern every time.</text>
+</svg>

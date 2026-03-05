@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="'Courier New', monospace">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#161b22"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="480" fill="url(#bg)" rx="12"/>
+  <rect width="900" height="480" fill="none" stroke="#30363d" stroke-width="1.5" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" fill="#f0f6fc" font-size="18" font-weight="bold" letter-spacing="1">GAME CLASS — __init__ BREAKDOWN</text>
+  <line x1="60" y1="50" x2="840" y2="50" stroke="#21262d" stroke-width="1"/>
+
+  <!-- Code block background -->
+  <rect x="30" y="60" width="420" height="400" rx="8" fill="#0d1117" stroke="#21262d" stroke-width="1.5"/>
+  <rect x="30" y="60" width="420" height="28" rx="8" fill="#1c2128"/>
+  <rect x="30" y="74" width="420" height="14" fill="#1c2128"/>
+  <circle cx="52" cy="74" r="5" fill="#f85149"/>
+  <circle cx="70" cy="74" r="5" fill="#f8c57a"/>
+  <circle cx="88" cy="74" r="5" fill="#56d364"/>
+  <text x="110" y="79" fill="#8b949e" font-size="10">game_class.py</text>
+
+  <!-- Code lines -->
+  <text x="46" y="108" fill="#ff7b72" font-size="12">class</text>
+  <text x="86" y="108" fill="#79c0ff" font-size="12">Game</text>
+  <text x="130" y="108" fill="#e6edf3" font-size="12">():</text>
+
+  <text x="46" y="126" fill="#8b949e" font-size="11">    """A class to control gameplay"""</text>
+
+  <text x="46" y="148" fill="#ff7b72" font-size="12">    def</text>
+  <text x="80" y="148" fill="#d2a8ff" font-size="12">__init__</text>
+  <text x="146" y="148" fill="#e6edf3" font-size="12">(self, player, monster_group):</text>
+
+  <text x="46" y="170" fill="#8b949e" font-size="11">        # Game values</text>
+  <text x="46" y="186" fill="#e6edf3" font-size="12">        self.score = </text><text x="186" y="186" fill="#79c0ff" font-size="12">0</text>
+  <text x="46" y="202" fill="#e6edf3" font-size="12">        self.round_number = </text><text x="234" y="202" fill="#79c0ff" font-size="12">0</text>
+  <text x="46" y="218" fill="#e6edf3" font-size="12">        self.round_time = </text><text x="218" y="218" fill="#79c0ff" font-size="12">0</text>
+  <text x="46" y="234" fill="#e6edf3" font-size="12">        self.frame_count = </text><text x="230" y="234" fill="#79c0ff" font-size="12">0</text>
+  <text x="46" y="250" fill="#e6edf3" font-size="12">        self.player = player</text>
+  <text x="46" y="266" fill="#e6edf3" font-size="12">        self.monster_group = monster_group</text>
+
+  <text x="46" y="286" fill="#8b949e" font-size="11">        # Sound &amp; font</text>
+  <text x="46" y="302" fill="#e6edf3" font-size="12">        self.next_level_sound = </text>
+  <text x="214" y="302" fill="#a5d6ff" font-size="12">Sound("next_level.wav")</text>
+  <text x="46" y="318" fill="#e6edf3" font-size="12">        self.font = </text>
+  <text x="130" y="318" fill="#a5d6ff" font-size="12">Font("Abrushow.ttf", </text><text x="298" y="318" fill="#79c0ff" font-size="12">24</text><text x="314" y="318" fill="#a5d6ff" font-size="12">)</text>
+
+  <text x="46" y="338" fill="#8b949e" font-size="11">        # Images list [0=blue,1=green,2=purple,3=yellow]</text>
+  <text x="46" y="354" fill="#e6edf3" font-size="12">        self.target_monster_images = [</text>
+  <text x="62" y="370" fill="#a5d6ff" font-size="12">    blue, green, purple, yellow</text>
+  <text x="46" y="386" fill="#e6edf3" font-size="12">        ]</text>
+
+  <text x="46" y="406" fill="#8b949e" font-size="11">        # Pick random starting target</text>
+  <text x="46" y="422" fill="#e6edf3" font-size="12">        self.target_monster_type = </text>
+  <text x="232" y="422" fill="#a5d6ff" font-size="12">randint(</text><text x="288" y="422" fill="#79c0ff" font-size="12">0</text><text x="302" y="422" fill="#e6edf3" font-size="12">,</text><text x="310" y="422" fill="#79c0ff" font-size="12">3</text><text x="322" y="422" fill="#a5d6ff" font-size="12">)</text>
+  <text x="46" y="438" fill="#e6edf3" font-size="12">        self.target_monster_image = </text>
+  <text x="236" y="438" fill="#e6edf3" font-size="12">images[type]</text>
+
+  <!-- Annotation panel -->
+  <rect x="470" y="60" width="400" height="400" rx="8" fill="#0d1117" stroke="#21262d" stroke-width="1.5"/>
+  <rect x="470" y="60" width="400" height="28" rx="8" fill="#1c2128"/>
+  <rect x="470" y="74" width="400" height="14" fill="#1c2128"/>
+  <text x="490" y="79" fill="#8b949e" font-size="10">annotations</text>
+
+  <!-- Annotation items -->
+  <rect x="486" y="98" width="8" height="8" rx="2" fill="#1f6feb"/>
+  <text x="502" y="107" fill="#79c0ff" font-size="12" font-weight="bold">Game Values</text>
+  <text x="502" y="122" fill="#8b949e" font-size="11">score, round_number track</text>
+  <text x="502" y="136" fill="#8b949e" font-size="11">progress. round_time uses</text>
+  <text x="502" y="150" fill="#8b949e" font-size="11">frame_count ÷ FPS counting.</text>
+
+  <line x1="486" y1="168" x2="854" y2="168" stroke="#21262d" stroke-width="1"/>
+
+  <rect x="486" y="178" width="8" height="8" rx="2" fill="#3fb950"/>
+  <text x="502" y="187" fill="#56d364" font-size="12" font-weight="bold">References → Composition</text>
+  <text x="502" y="202" fill="#8b949e" font-size="11">self.player and self.monster_group</text>
+  <text x="502" y="216" fill="#8b949e" font-size="11">are passed IN — Game doesn't</text>
+  <text x="502" y="230" fill="#8b949e" font-size="11">create them, it just holds refs.</text>
+
+  <line x1="486" y1="248" x2="854" y2="248" stroke="#21262d" stroke-width="1"/>
+
+  <rect x="486" y="258" width="8" height="8" rx="2" fill="#f8c57a"/>
+  <text x="502" y="267" fill="#f8c57a" font-size="12" font-weight="bold">Image List Pattern</text>
+  <text x="502" y="282" fill="#8b949e" font-size="11">List index = monster type int:</text>
+  <text x="502" y="296" fill="#8b949e" font-size="11">  images[0] → blue monster</text>
+  <text x="502" y="310" fill="#8b949e" font-size="11">  images[1] → green monster</text>
+  <text x="502" y="324" fill="#8b949e" font-size="11">  images[2] → purple monster</text>
+  <text x="502" y="338" fill="#8b949e" font-size="11">  images[3] → yellow monster</text>
+
+  <line x1="486" y1="354" x2="854" y2="354" stroke="#21262d" stroke-width="1"/>
+
+  <rect x="486" y="364" width="8" height="8" rx="2" fill="#f85149"/>
+  <text x="502" y="373" fill="#ff7b72" font-size="12" font-weight="bold">target_monster_type</text>
+  <text x="502" y="388" fill="#8b949e" font-size="11">Stores which TYPE (int) the player</text>
+  <text x="502" y="402" fill="#8b949e" font-size="11">must catch. Randomly chosen at</text>
+  <text x="502" y="416" fill="#8b949e" font-size="11">start. This drives ALL collision</text>
+  <text x="502" y="430" fill="#8b949e" font-size="11">logic in check_collisions().</text>
+
+  <!-- Connecting lines from code to annotations -->
+  <line x1="450" y1="200" x2="486" y2="115" stroke="#1f6feb" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+  <line x1="450" y1="260" x2="486" y2="195" stroke="#3fb950" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+  <line x1="450" y1="362" x2="486" y2="300" stroke="#f8c57a" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+  <line x1="450" y1="430" x2="486" y2="390" stroke="#f85149" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+</svg>

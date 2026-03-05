@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrays, Methods & Objects — Lesson Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #ff8c42;
+      --accent2: #ffc107;
+      --purple: #7b68ee;
+      --green: #4ecca3;
+      --blue: #5dade2;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --text-dim: #555;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh; padding: 3rem 2rem;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* Header */
+    .header { margin-bottom: 3rem; }
+    .breadcrumb {
+      font-family: 'Fira Code', monospace; font-size: 0.7rem;
+      color: var(--text-dim); margin-bottom: 1rem;
+    }
+    .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--text-muted); }
+    h1 {
+      font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .meta {
+      font-family: 'Fira Code', monospace; font-size: 0.75rem;
+      color: var(--text-dim); display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.5rem;
+    }
+    .meta span { display: flex; align-items: center; gap: 0.4rem; }
+
+    /* Objective strip */
+    .objective {
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px; padding: 1rem 1.25rem;
+      font-size: 0.9rem; color: var(--text-muted);
+      margin-bottom: 2.5rem; line-height: 1.6;
+    }
+    .objective strong { color: var(--text); }
+
+    /* Grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem; }
+    .card {
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-radius: 12px; padding: 1.5rem; text-decoration: none; color: var(--text);
+      transition: border-color 0.2s, transform 0.15s;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card-tag {
+      font-family: 'Fira Code', monospace; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.05em; padding: 0.2rem 0.5rem; border-radius: 4px;
+      display: inline-block; width: fit-content;
+    }
+    .tag-notes  { background: rgba(78,204,163,0.12); color: var(--green); border: 1px solid rgba(78,204,163,0.25); }
+    .tag-sol    { background: rgba(229,57,53,0.1);  color: #e94560; border: 1px solid rgba(229,57,53,0.25); }
+    .card-title { font-size: 1rem; font-weight: 600; }
+    .card-desc  { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* SVG section */
+    .section-title {
+      font-family: 'Fira Code', monospace; font-size: 0.7rem;
+      font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 1rem;
+    }
+    .svg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 1rem; }
+    .svg-card {
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-radius: 10px; overflow: hidden; text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .svg-card:hover { border-color: var(--accent); }
+    .svg-card img { width: 100%; display: block; }
+    .svg-card-label {
+      padding: 0.5rem 0.75rem;
+      font-family: 'Fira Code', monospace; font-size: 0.68rem;
+      color: var(--text-dim); border-top: 1px solid var(--surface-light);
+    }
+
+    /* Standards */
+    .standards {
+      margin-top: 2.5rem; padding: 1rem 1.25rem;
+      background: var(--surface); border: 1px solid var(--surface-light); border-radius: 8px;
+      font-size: 0.8rem; color: var(--text-dim);
+    }
+    .standards strong { color: var(--text-muted); font-family: 'Fira Code', monospace; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <div class="breadcrumb">
+        <a href="../../index.html">02_WEB</a> / arrays
+      </div>
+      <h1>Arrays, Methods &amp; Objects</h1>
+      <div class="meta">
+        <span>📅 Wed Mar 05</span>
+        <span>⏱ 86 min block</span>
+        <span>📘 Day 1 of 2 — Guided Notes</span>
+        <span>🏷 Unit 1 · Lesson 5</span>
+      </div>
+    </div>
+
+    <div class="objective">
+      <strong>Learning objective:</strong> Students will declare and access arrays, use mutation methods (push, pop, shift, unshift), transform and filter arrays with forEach / map / filter, create object literals and access properties, and render an array of objects as DOM cards using the template literal + appendChild pattern.
+    </div>
+
+    <div class="section-title">📄 Guided Notes</div>
+    <div class="grid">
+      <a class="card" href="guided-notes-start/index.html">
+        <span class="card-tag tag-notes">STARTER</span>
+        <div class="card-title">Guided Notes — Starter</div>
+        <div class="card-desc">19 TODOs covering arrays, mutation, forEach / map / filter, object literals, and DOM rendering. Students fill in blanks during teacher-led instruction.</div>
+      </a>
+      <a class="card" href="guided-notes-solution/index.html">
+        <span class="card-tag tag-sol">SOLUTION</span>
+        <div class="card-title">Guided Notes — Solution</div>
+        <div class="card-desc">Complete answer key with all TODOs resolved and live output running in the right panel.</div>
+      </a>
+    </div>
+
+    <div class="section-title">🗂 Reference SVGs</div>
+    <div class="svg-grid">
+      <a class="svg-card" href="svgs/01-array-anatomy.svg" target="_blank">
+        <img src="svgs/01-array-anatomy.svg" alt="Array anatomy">
+        <div class="svg-card-label">01 — Array Anatomy</div>
+      </a>
+      <a class="svg-card" href="svgs/02-mutating-arrays.svg" target="_blank">
+        <img src="svgs/02-mutating-arrays.svg" alt="Mutating arrays">
+        <div class="svg-card-label">02 — Mutating Arrays</div>
+      </a>
+      <a class="svg-card" href="svgs/03-foreach-map-filter.svg" target="_blank">
+        <img src="svgs/03-foreach-map-filter.svg" alt="forEach map filter">
+        <div class="svg-card-label">03 — forEach / map / filter</div>
+      </a>
+      <a class="svg-card" href="svgs/04-objects.svg" target="_blank">
+        <img src="svgs/04-objects.svg" alt="Object literals">
+        <div class="svg-card-label">04 — Object Literals</div>
+      </a>
+      <a class="svg-card" href="svgs/05-dom-rendering.svg" target="_blank">
+        <img src="svgs/05-dom-rendering.svg" alt="DOM rendering pattern">
+        <div class="svg-card-label">05 — DOM Rendering Pattern</div>
+      </a>
+    </div>
+
+    <div class="standards">
+      <strong>Indiana NLPS 7185 alignment:</strong>
+      &nbsp;7185.D.1 — Data structures &amp; manipulation &nbsp;·&nbsp;
+      7185.D.2 — Object-based data modeling &nbsp;·&nbsp;
+      7185.W.3 — Dynamic DOM manipulation
+    </div>
+
+  </div>
+</body>
+</html>

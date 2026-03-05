@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrays, Methods & Objects — Guided Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --red: #e94560;
+      --yellow: #ffc107;
+      --blue: #5dade2;
+      --orange: #ff8c42;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --text-dim: #555;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif; line-height: 1.6;
+      display: grid; grid-template-columns: 1fr 1fr;
+      height: 100vh;
+    }
+
+    /* ── Left Panel ── */
+    .notes-panel {
+      overflow-y: auto; padding: 2rem 2.5rem 4rem;
+      border-right: 1px solid var(--surface-light);
+    }
+    .notes-panel h1 {
+      font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .notes-panel .subtitle {
+      font-family: 'Fira Code', monospace; font-size: 0.75rem;
+      color: var(--text-dim); margin-bottom: 2rem;
+    }
+    .section { margin-bottom: 2.5rem; }
+    .section-badge {
+      display: inline-block;
+      font-family: 'Fira Code', monospace; font-size: 0.65rem;
+      font-weight: 700; letter-spacing: 0.05em;
+      padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.6rem;
+    }
+    .section-badge.warmup { background: rgba(229,57,53,0.15); color: var(--red); border: 1px solid rgba(229,57,53,0.3); }
+    .section-badge.core   { background: rgba(78,204,163,0.12); color: var(--accent); border: 1px solid rgba(78,204,163,0.25); }
+    .section-badge.adv    { background: rgba(123,104,238,0.12); color: var(--purple); border: 1px solid rgba(123,104,238,0.25); }
+    .section-badge.dom    { background: rgba(93,173,226,0.12); color: var(--blue); border: 1px solid rgba(93,173,226,0.25); }
+    .section h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; color: var(--text); }
+    .section p  { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .code-block {
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-radius: 8px; padding: 1rem 1.25rem;
+      font-family: 'Fira Code', monospace; font-size: 0.8rem;
+      line-height: 1.9; white-space: pre; overflow-x: auto;
+    }
+    .todo { color: var(--orange); font-weight: 600; }
+    .comment { color: var(--text-dim); }
+    .kw   { color: var(--purple); }
+    .str  { color: var(--accent); }
+    .num  { color: var(--yellow); }
+    .fn   { color: var(--blue); }
+    .blank {
+      display: inline-block; min-width: 80px;
+      border-bottom: 2px solid var(--orange);
+      color: transparent; background: rgba(255,140,66,0.08);
+      border-radius: 2px; height: 1.1em; vertical-align: middle;
+    }
+
+    /* ── Right Panel ── */
+    .output-panel {
+      display: flex; flex-direction: column;
+      background: var(--surface); overflow: hidden;
+    }
+    .output-header {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 1.5rem; background: var(--surface-light);
+      font-family: 'Fira Code', monospace; font-size: 0.75rem;
+      color: var(--text-muted); border-bottom: 1px solid var(--bg);
+      flex-shrink: 0;
+    }
+    .output-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    #output {
+      flex: 1; overflow-y: auto; padding: 1.25rem 1.5rem;
+      font-family: 'Fira Code', monospace; font-size: 0.8rem;
+      line-height: 1.9; color: var(--text-muted);
+    }
+    #output .label { color: var(--text-dim); }
+    #output .divider { color: var(--surface-light); }
+
+    /* DOM render zones */
+    .render-zone {
+      margin-top: 1rem; padding: 1rem;
+      background: var(--bg); border-radius: 8px;
+      border: 1px dashed var(--surface-light);
+    }
+    .render-zone h4 {
+      font-family: 'Fira Code', monospace; font-size: 0.65rem;
+      color: var(--text-dim); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 0.75rem;
+    }
+    .card {
+      background: var(--surface-light); border-radius: 8px;
+      padding: 0.75rem 1rem; margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+    }
+    .card .name { font-weight: 600; color: var(--accent); }
+    .card .detail { color: var(--text-muted); font-size: 0.75rem; }
+
+    @media (max-width: 900px) {
+      body { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notes-panel">
+    <h1>Arrays, Methods &amp; Objects</h1>
+    <p class="subtitle">Day 1 · Wed Mar 05 · Guided Notes · STARTER</p>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- WARM-UP: Loops Review -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="section">
+      <span class="section-badge warmup">⚡ Warm-Up — Loops Review</span>
+      <h2>Quick Loop Recall</h2>
+      <p>Fill in the blanks from last lesson's Dynamic List Builder.</p>
+      <div class="code-block"><span class="comment">// TODO 1: Write a for loop that counts from 1 to 5</span>
+<span class="todo">// YOUR CODE HERE</span>
+
+<span class="comment">// TODO 2: Write a for...of loop over this array</span>
+<span class="kw">const</span> fruits = [<span class="str">'apple'</span>, <span class="str">'banana'</span>, <span class="str">'cherry'</span>];
+<span class="todo">// YOUR CODE HERE — log each fruit</span></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SECTION 1: Array Basics -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="section">
+      <span class="section-badge core">📘 Section 1 — Array Basics</span>
+      <h2>Creating &amp; Accessing Arrays</h2>
+      <p>An array is an ordered list of values. Each item has an <strong>index</strong> starting at 0.</p>
+      <div class="code-block"><span class="comment">// TODO 3: Declare an array of 3 colors</span>
+<span class="kw">const</span> colors = <span class="todo">/* YOUR CODE HERE */</span>;
+
+<span class="comment">// TODO 4: Log the first color (index 0)</span>
+console.<span class="fn">log</span>(<span class="todo">/* YOUR CODE HERE */</span>);
+
+<span class="comment">// TODO 5: Log the array's length</span>
+console.<span class="fn">log</span>(<span class="todo">/* YOUR CODE HERE */</span>);</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SECTION 2: Mutating Arrays -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="section">
+      <span class="section-badge core">📘 Section 2 — Mutating Arrays</span>
+      <h2>push, pop, shift, unshift</h2>
+      <p><code>push</code> adds to the end · <code>pop</code> removes from the end · <code>shift</code> removes from front · <code>unshift</code> adds to front.</p>
+      <div class="code-block"><span class="kw">const</span> nums = [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>];
+
+<span class="comment">// TODO 6: Add 40 to the end using push</span>
+<span class="todo">// YOUR CODE HERE</span>
+
+<span class="comment">// TODO 7: Remove the last item using pop — store it in a variable</span>
+<span class="kw">const</span> removed = <span class="todo">/* YOUR CODE HERE */</span>;
+console.<span class="fn">log</span>(<span class="str">'Removed:'</span>, removed);  <span class="comment">// → 40</span>
+
+<span class="comment">// TODO 8: Remove the first item using shift — store in a variable</span>
+<span class="kw">const</span> first = <span class="todo">/* YOUR CODE HERE */</span>;
+console.<span class="fn">log</span>(<span class="str">'First was:'</span>, first);    <span class="comment">// → 10</span></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SECTION 3: Array Methods -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="section">
+      <span class="section-badge core">📘 Section 3 — Array Methods</span>
+      <h2>forEach, map, filter</h2>
+      <p>These methods let you <em>iterate</em> and <em>transform</em> arrays without writing manual loops.</p>
+      <div class="code-block"><span class="kw">const</span> scores = [<span class="num">88</span>, <span class="num">72</span>, <span class="num">95</span>, <span class="num">61</span>, <span class="num">83</span>];
+
+<span class="comment">// TODO 9: Use forEach to log each score</span>
+scores.<span class="fn">forEach</span>(<span class="todo">/* YOUR CODE HERE */</span>);
+
+<span class="comment">// TODO 10: Use map to create a new array — each score + 5 bonus points</span>
+<span class="kw">const</span> boosted = scores.<span class="fn">map</span>(<span class="todo">/* YOUR CODE HERE */</span>);
+console.<span class="fn">log</span>(boosted);
+
+<span class="comment">// TODO 11: Use filter to get only scores >= 80</span>
+<span class="kw">const</span> passing = scores.<span class="fn">filter</span>(<span class="todo">/* YOUR CODE HERE */</span>);
+console.<span class="fn">log</span>(passing);</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SECTION 4: Objects -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="section">
+      <span class="section-badge adv">🔷 Section 4 — Objects</span>
+      <h2>Object Literals &amp; Property Access</h2>
+      <p>An object stores related data as <strong>key: value</strong> pairs. Access properties with dot notation or bracket notation.</p>
+      <div class="code-block"><span class="comment">// TODO 12: Create a student object with name, grade, and isEnrolled</span>
+<span class="kw">const</span> student = <span class="todo">/* YOUR CODE HERE */</span>;
+
+<span class="comment">// TODO 13: Log the student's name using dot notation</span>
+console.<span class="fn">log</span>(<span class="todo">/* YOUR CODE HERE */</span>);
+
+<span class="comment">// TODO 14: Add a new property 'school' with value 'Westview High'</span>
+<span class="todo">// YOUR CODE HERE</span>
+
+console.<span class="fn">log</span>(student);</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SECTION 5: Array of Objects -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="section">
+      <span class="section-badge adv">🔷 Section 5 — Arrays of Objects</span>
+      <h2>The Pattern We Use Everywhere</h2>
+      <p>Real data is almost always an <strong>array of objects</strong> — like a table in a database.</p>
+      <div class="code-block"><span class="kw">const</span> students = [
+  { name: <span class="str">'Aaliyah'</span>,  grade: <span class="num">92</span>, club: <span class="str">'Robotics'</span> },
+  { name: <span class="str">'Marcus'</span>,   grade: <span class="num">78</span>, club: <span class="str">'Chess'</span>    },
+  { name: <span class="str">'Priya'</span>,    grade: <span class="num">95</span>, club: <span class="str">'Robotics'</span> },
+  { name: <span class="str">'Devon'</span>,    grade: <span class="num">85</span>, club: <span class="str">'Art'</span>      },
+];
+
+<span class="comment">// TODO 15: Use forEach to log each student's name and grade</span>
+students.<span class="fn">forEach</span>(<span class="todo">/* YOUR CODE HERE */</span>);
+
+<span class="comment">// TODO 16: Use filter to get only Robotics club students</span>
+<span class="kw">const</span> robotics = students.<span class="fn">filter</span>(<span class="todo">/* YOUR CODE HERE */</span>);
+console.<span class="fn">log</span>(robotics);</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SECTION 6: DOM + Arrays of Objects -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="section">
+      <span class="section-badge dom">🌐 Section 6 — DOM Rendering</span>
+      <h2>Rendering Cards from an Array</h2>
+      <p>Loop over an array of objects and build DOM elements for each one — the core pattern of every data-driven web app.</p>
+      <div class="code-block"><span class="comment">// TODO 17: Select #card-list from the DOM</span>
+<span class="kw">const</span> cardList = <span class="todo">/* YOUR CODE HERE */</span>;
+
+<span class="comment">// TODO 18: forEach over students — for each student:</span>
+<span class="comment">//   1. Create a div with class 'card'</span>
+<span class="comment">//   2. Set innerHTML to show name + grade</span>
+<span class="comment">//   3. Append to cardList</span>
+students.<span class="fn">forEach</span>(<span class="todo">/* YOUR CODE HERE */</span>);
+
+<span class="comment">// ── BONUS ──────────────────────────────────────</span>
+<span class="comment">// TODO 19 (BONUS): Use map to create an array of</span>
+<span class="comment">// just student names, then join() into a string</span>
+<span class="comment">// and log "Class roster: Aaliyah, Marcus, ..."</span>
+<span class="todo">// YOUR CODE HERE</span></div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- Right Panel: Output -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="output-panel">
+    <div class="output-header">
+      <span class="output-dot"></span> Live Output
+    </div>
+    <div id="output">
+      <div class="label">// Console output will appear here as you complete TODOs...</div>
+
+      <div class="render-zone">
+        <h4>🌐 DOM Render — Student Cards (TODO 18)</h4>
+        <div id="card-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Intercept console.log to show output in panel ──
+    const output = document.getElementById('output');
+    const _log = console.log;
+    console.log = function(...args) {
+      _log(...args);
+      const line = document.createElement('div');
+      line.textContent = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+      output.insertBefore(line, output.querySelector('.render-zone'));
+    };
+
+    // ═══════════════════════════════════════════
+    // WARM-UP: Loops Review (TODOs 1–2)
+    // ═══════════════════════════════════════════
+    console.log('── Warm-Up ──');
+
+    // TODO 1: Write a for loop that counts from 1 to 5
+    // YOUR CODE HERE
+
+    const fruits = ['apple', 'banana', 'cherry'];
+    // TODO 2: for...of loop — log each fruit
+    // YOUR CODE HERE
+
+
+    // ═══════════════════════════════════════════
+    // SECTION 1: Array Basics (TODOs 3–5)
+    // ═══════════════════════════════════════════
+    console.log('── Section 1: Array Basics ──');
+
+    // TODO 3: Declare an array of 3 colors
+    const colors = /* YOUR CODE HERE */;
+
+    // TODO 4: Log the first color (index 0)
+    console.log(/* YOUR CODE HERE */);
+
+    // TODO 5: Log the array's length
+    console.log(/* YOUR CODE HERE */);
+
+
+    // ═══════════════════════════════════════════
+    // SECTION 2: Mutating Arrays (TODOs 6–8)
+    // ═══════════════════════════════════════════
+    console.log('── Section 2: Mutating Arrays ──');
+
+    const nums = [10, 20, 30];
+
+    // TODO 6: Add 40 to the end using push
+    // YOUR CODE HERE
+
+    // TODO 7: Remove the last item using pop — store in removed
+    const removed = /* YOUR CODE HERE */;
+    console.log('Removed:', removed);
+
+    // TODO 8: Remove the first item using shift — store in first
+    const first = /* YOUR CODE HERE */;
+    console.log('First was:', first);
+
+
+    // ═══════════════════════════════════════════
+    // SECTION 3: Array Methods (TODOs 9–11)
+    // ═══════════════════════════════════════════
+    console.log('── Section 3: forEach / map / filter ──');
+
+    const scores = [88, 72, 95, 61, 83];
+
+    // TODO 9: forEach — log each score
+    scores.forEach(/* YOUR CODE HERE */);
+
+    // TODO 10: map — each score + 5 bonus points
+    const boosted = scores.map(/* YOUR CODE HERE */);
+    console.log('Boosted:', boosted);
+
+    // TODO 11: filter — only scores >= 80
+    const passing = scores.filter(/* YOUR CODE HERE */);
+    console.log('Passing:', passing);
+
+
+    // ═══════════════════════════════════════════
+    // SECTION 4: Objects (TODOs 12–14)
+    // ═══════════════════════════════════════════
+    console.log('── Section 4: Objects ──');
+
+    // TODO 12: Create a student object with name, grade, isEnrolled
+    const student = /* YOUR CODE HERE */;
+
+    // TODO 13: Log the student's name using dot notation
+    console.log(/* YOUR CODE HERE */);
+
+    // TODO 14: Add a 'school' property
+    // YOUR CODE HERE
+
+    console.log(student);
+
+
+    // ═══════════════════════════════════════════
+    // SECTION 5: Arrays of Objects (TODOs 15–16)
+    // ═══════════════════════════════════════════
+    console.log('── Section 5: Arrays of Objects ──');
+
+    const students = [
+      { name: 'Aaliyah', grade: 92, club: 'Robotics' },
+      { name: 'Marcus',  grade: 78, club: 'Chess'    },
+      { name: 'Priya',   grade: 95, club: 'Robotics' },
+      { name: 'Devon',   grade: 85, club: 'Art'      },
+    ];
+
+    // TODO 15: forEach — log each student's name and grade
+    students.forEach(/* YOUR CODE HERE */);
+
+    // TODO 16: filter — only Robotics club students
+    const robotics = students.filter(/* YOUR CODE HERE */);
+    console.log('Robotics:', robotics);
+
+
+    // ═══════════════════════════════════════════
+    // SECTION 6: DOM Rendering (TODOs 17–18)
+    // ═══════════════════════════════════════════
+    console.log('── Section 6: DOM Cards ──');
+
+    // TODO 17: Select #card-list
+    const cardList = /* YOUR CODE HERE */;
+
+    // TODO 18: forEach over students — create .card divs
+    students.forEach(/* YOUR CODE HERE */);
+
+
+    // ═══════════════════════════════════════════
+    // BONUS (TODO 19)
+    // ═══════════════════════════════════════════
+
+    // TODO 19 (BONUS): map to names array → join → log roster
+    // YOUR CODE HERE
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="'Courier New', monospace">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1117"/>
+      <stop offset="100%" style="stop-color:#161b22"/>
+    </linearGradient>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1f6feb"/>
+      <stop offset="50%" style="stop-color:#3fb950"/>
+      <stop offset="100%" style="stop-color:#1f6feb"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="500" fill="url(#bg)" rx="12"/>
+  <rect width="900" height="500" fill="none" stroke="#30363d" stroke-width="1.5" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" fill="#f0f6fc" font-size="18" font-weight="bold" letter-spacing="1">PLAYER CLASS + HUD DRAWING</text>
+  <line x1="60" y1="50" x2="840" y2="50" stroke="#21262d" stroke-width="1"/>
+
+  <!-- PLAYER code panel -->
+  <rect x="30" y="62" width="400" height="420" rx="8" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
+  <rect x="30" y="62" width="400" height="28" rx="8" fill="#1c2128"/>
+  <rect x="30" y="76" width="400" height="14" fill="#1c2128"/>
+  <text x="50" y="81" fill="#8b949e" font-size="10">Player Class</text>
+
+  <text x="46" y="112" fill="#ff7b72" font-size="12">class</text>
+  <text x="86" y="112" fill="#79c0ff" font-size="12">Player</text>
+  <text x="140" y="112" fill="#e6edf3" font-size="12">(pygame.sprite.Sprite):</text>
+
+  <text x="46" y="136" fill="#ff7b72" font-size="12">    def</text>
+  <text x="80" y="136" fill="#d2a8ff" font-size="12">__init__</text>
+  <text x="146" y="136" fill="#e6edf3" font-size="12">(self):</text>
+  <text x="46" y="152" fill="#e6edf3" font-size="12">        super().__init__()</text>
+  <text x="46" y="168" fill="#e6edf3" font-size="12">        self.image = </text><text x="162" y="168" fill="#a5d6ff" font-size="12">load("knight.png")</text>
+  <text x="46" y="184" fill="#e6edf3" font-size="12">        self.rect = self.image.</text><text x="228" y="184" fill="#a5d6ff" font-size="12">get_rect()</text>
+  <text x="46" y="200" fill="#e6edf3" font-size="12">        self.rect.centerx = </text><text x="224" y="200" fill="#79c0ff" font-size="12">WINDOW_WIDTH//2</text>
+  <text x="46" y="216" fill="#e6edf3" font-size="12">        self.rect.bottom = </text><text x="218" y="216" fill="#79c0ff" font-size="12">WINDOW_HEIGHT</text>
+  <text x="46" y="232" fill="#e6edf3" font-size="12">        self.lives = </text><text x="158" y="232" fill="#79c0ff" font-size="12">5</text>
+  <text x="46" y="248" fill="#e6edf3" font-size="12">        self.warps = </text><text x="162" y="248" fill="#79c0ff" font-size="12">2</text>
+  <text x="46" y="264" fill="#e6edf3" font-size="12">        self.velocity = </text><text x="186" y="264" fill="#79c0ff" font-size="12">8</text>
+
+  <!-- divider -->
+  <line x1="46" y1="278" x2="414" y2="278" stroke="#21262d" stroke-width="1"/>
+
+  <text x="46" y="296" fill="#ff7b72" font-size="12">    def</text>
+  <text x="80" y="296" fill="#d2a8ff" font-size="12">update</text>
+  <text x="134" y="296" fill="#e6edf3" font-size="12">(self):</text>
+  <text x="46" y="312" fill="#e6edf3" font-size="12">        keys = </text><text x="120" y="312" fill="#a5d6ff" font-size="12">pygame.key.get_pressed()</text>
+  <text x="46" y="328" fill="#ff7b72" font-size="12">        if</text>
+  <text x="74" y="328" fill="#e6edf3" font-size="12"> keys[K_LEFT] </text><text x="162" y="328" fill="#ff7b72" font-size="12">and</text>
+  <text x="194" y="328" fill="#e6edf3" font-size="12"> self.rect.left &gt; </text><text x="318" y="328" fill="#79c0ff" font-size="12">0</text><text x="330" y="328" fill="#e6edf3" font-size="12">:</text>
+  <text x="46" y="344" fill="#e6edf3" font-size="12">            self.rect.x -= self.velocity</text>
+  <text x="46" y="358" fill="#8b949e" font-size="11">        # ... (RIGHT, UP, DOWN similar)</text>
+
+  <!-- divider -->
+  <line x1="46" y1="370" x2="414" y2="370" stroke="#21262d" stroke-width="1"/>
+
+  <text x="46" y="388" fill="#ff7b72" font-size="12">    def</text>
+  <text x="80" y="388" fill="#d2a8ff" font-size="12">warp</text>
+  <text x="120" y="388" fill="#e6edf3" font-size="12">(self):</text>
+  <text x="46" y="404" fill="#ff7b72" font-size="12">        if</text>
+  <text x="74" y="404" fill="#e6edf3" font-size="12"> self.warps &gt; </text><text x="170" y="404" fill="#79c0ff" font-size="12">0</text><text x="182" y="404" fill="#e6edf3" font-size="12">:</text>
+  <text x="46" y="420" fill="#e6edf3" font-size="12">            self.warps -= </text><text x="210" y="420" fill="#79c0ff" font-size="12">1</text>
+  <text x="46" y="436" fill="#e6edf3" font-size="12">            self.rect.bottom = WINDOW_HEIGHT</text>
+
+  <text x="46" y="458" fill="#ff7b72" font-size="12">    def</text>
+  <text x="80" y="458" fill="#d2a8ff" font-size="12">reset</text>
+  <text x="122" y="458" fill="#e6edf3" font-size="12">(self):</text>
+  <text x="46" y="474" fill="#e6edf3" font-size="12">        self.rect.centerx = WINDOW_WIDTH//2</text>
+
+  <!-- HUD panel (right) -->
+  <rect x="448" y="62" width="422" height="420" rx="8" fill="#0d1117" stroke="#1f6feb" stroke-width="1.5"/>
+  <rect x="448" y="62" width="422" height="28" rx="8" fill="#1c2128"/>
+  <rect x="448" y="76" width="422" height="14" fill="#1c2128"/>
+  <text x="468" y="81" fill="#8b949e" font-size="10">HUD Layout — game.draw()</text>
+
+  <!-- Simulated game screen -->
+  <rect x="464" y="100" width="390" height="220" rx="6" fill="#0a0a14" stroke="#30363d" stroke-width="1"/>
+
+  <!-- HUD text overlays on simulated screen -->
+  <text x="474" y="120" fill="#ffffff" font-size="11">Score: 0</text>
+  <text x="474" y="136" fill="#ffffff" font-size="11">Lives: 5</text>
+  <text x="474" y="152" fill="#ffffff" font-size="11">Current Round: 1</text>
+
+  <!-- Center "Current Catch" label -->
+  <text x="659" y="120" text-anchor="middle" fill="#ffffff" font-size="11">Current Catch</text>
+  <!-- monster icon box -->
+  <rect x="627" y="126" width="64" height="64" rx="4" fill="#1a1a2e" stroke="#14b0eb" stroke-width="2"/>
+  <text x="659" y="165" text-anchor="middle" fill="#14b0eb" font-size="20">👾</text>
+
+  <!-- Top right -->
+  <text x="844" y="120" text-anchor="end" fill="#ffffff" font-size="11">Round Time: 0</text>
+  <text x="844" y="136" text-anchor="end" fill="#ffffff" font-size="11">Warps: 2</text>
+
+  <!-- Play area boundary line -->
+  <rect x="464" y="200" width="390" height="120" rx="0" fill="none" stroke="#14b0eb" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="659" y="258" text-anchor="middle" fill="#14b0eb" font-size="10" opacity="0.6">PLAY AREA</text>
+  <text x="659" y="272" text-anchor="middle" fill="#14b0eb" font-size="10" opacity="0.6">(bounded rect drawn by game.draw)</text>
+
+  <!-- Bottom zone -->
+  <rect x="464" y="290" width="390" height="30" rx="0" fill="#1a1a0a" opacity="0.5"/>
+  <text x="659" y="310" text-anchor="middle" fill="#f8c57a" font-size="10">SAFE ZONE (bottom 100px)</text>
+  <text x="659" y="322" text-anchor="middle" fill="#8b949e" font-size="9">Player starts here, warp returns here</text>
+
+  <!-- Annotations below screen -->
+  <line x1="464" y1="334" x2="854" y2="334" stroke="#21262d" stroke-width="1"/>
+
+  <rect x="464" y="344" width="8" height="8" rx="2" fill="#1f6feb"/>
+  <text x="478" y="353" fill="#79c0ff" font-size="11" font-weight="bold">Boundary Rect</text>
+  <text x="478" y="366" fill="#8b949e" font-size="10">pygame.draw.rect() draws the colored</text>
+  <text x="478" y="379" fill="#8b949e" font-size="10">border around play area (y=100 to y-100)</text>
+
+  <line x1="464" y1="392" x2="854" y2="392" stroke="#21262d" stroke-width="1"/>
+
+  <rect x="464" y="402" width="8" height="8" rx="2" fill="#3fb950"/>
+  <text x="478" y="411" fill="#56d364" font-size="11" font-weight="bold">Target Monster Display</text>
+  <text x="478" y="424" fill="#8b949e" font-size="10">Centered at top. Outline rect drawn in the</text>
+  <text x="478" y="437" fill="#8b949e" font-size="10">COLOR of the type: BLUE/GREEN/PURPLE/YELLOW</text>
+
+  <line x1="464" y1="450" x2="854" y2="450" stroke="#21262d" stroke-width="1"/>
+  <rect x="464" y="460" width="8" height="8" rx="2" fill="#f8c57a"/>
+  <text x="478" y="469" fill="#f8c57a" font-size="11" font-weight="bold">frame_count trick</text>
+  <text x="478" y="482" fill="#8b949e" font-size="10">frame_count++ each loop. When == FPS (60), round_time += 1</text>
+</svg>
