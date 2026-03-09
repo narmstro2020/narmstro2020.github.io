@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Java Streams — Guided Notes</title>
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --surface: #16213e;
+      --surface2: #0f3460;
+      --accent: #e94560;
+      --accent2: #533483;
+      --green: #4ecca3;
+      --yellow: #f5a623;
+      --text: #e0e0e0;
+      --text-dim: #9a9ab0;
+      --code-bg: #0d1117;
+      --border: #2a2a4a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 0 0 60px;
+    }
+
+    /* HEADER */
+    .hero {
+      background: linear-gradient(135deg, #0f3460 0%, #533483 60%, #e94560 100%);
+      padding: 48px 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "≫ STREAM";
+      position: absolute;
+      right: 40px; top: 24px;
+      font-size: 80px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.06);
+      letter-spacing: -4px;
+      pointer-events: none;
+    }
+    .course-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      color: rgba(255,255,255,0.75);
+      font-size: 15px;
+      max-width: 560px;
+    }
+    .meta-row {
+      display: flex;
+      gap: 28px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .meta-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .meta-value { font-size: 14px; font-weight: 700; color: #fff; }
+
+    /* LAYOUT */
+    .content { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+
+    /* SECTION HEADERS */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 44px 0 18px;
+    }
+    .section-num {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px;
+      flex-shrink: 0;
+    }
+    .num-accent  { background: var(--accent); color: #fff; }
+    .num-green   { background: var(--green); color: #111; }
+    .num-purple  { background: var(--accent2); color: #fff; }
+    .num-yellow  { background: var(--yellow); color: #111; }
+    .section-header h2 { font-size: 20px; font-weight: 800; color: #fff; }
+
+    /* CARDS */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .card.green h3  { color: var(--green); }
+    .card.purple h3 { color: #a78bfa; }
+    .card.yellow h3 { color: var(--yellow); }
+
+    /* CODE BLOCKS */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 18px;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin: 12px 0;
+      color: #c9d1d9;
+    }
+    pre.green-bar  { border-left-color: var(--green); }
+    pre.purple-bar { border-left-color: #a78bfa; }
+    pre.yellow-bar { border-left-color: var(--yellow); }
+
+    .kw    { color: #ff7b72; }    /* keywords */
+    .type  { color: #79c0ff; }    /* types */
+    .str   { color: #a5d6ff; }    /* strings */
+    .num   { color: #f2cc60; }    /* numbers/values */
+    .cmt   { color: #8b949e; font-style: italic; } /* comments */
+    .method{ color: #d2a8ff; }    /* methods */
+    .cls   { color: #ffa657; }    /* class names */
+
+    /* RESPONSE BOXES */
+    .response-block {
+      background: var(--surface2);
+      border: 1.5px dashed var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 10px 0;
+    }
+    .response-block label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .response-block .lines {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .response-block .line {
+      border-bottom: 1px solid var(--border);
+      min-height: 28px;
+      padding-bottom: 2px;
+    }
+
+    /* PIPELINE VISUAL */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 16px 0;
+      background: var(--code-bg);
+      border-radius: 10px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+    }
+    .pipe-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .pipe-box {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      text-align: center;
+      min-width: 110px;
+    }
+    .pipe-source   { background: #1f6feb33; border: 2px solid #1f6feb; color: #79c0ff; }
+    .pipe-inter    { background: #39d35333; border: 2px solid #3fb950; color: #4ecca3; }
+    .pipe-terminal { background: #f7850033; border: 2px solid #f78500; color: #f5a623; }
+    .pipe-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .pipe-arrow {
+      font-size: 22px;
+      color: var(--text-dim);
+      margin: 0 4px;
+      padding-bottom: 18px;
+    }
+
+    /* COMPARISON TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13.5px; }
+    .compare-table th {
+      background: var(--surface2);
+      color: var(--text-dim);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+    }
+    .compare-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .op-name { font-family: 'Cascadia Code', monospace; color: #d2a8ff; font-weight: 700; }
+    .op-type-badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-inter    { background: #39d35322; color: var(--green); }
+    .badge-terminal { background: #f7850022; color: var(--yellow); }
+
+    /* CALLOUT */
+    .callout {
+      display: flex;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 14px 0;
+    }
+    .callout.green { border-left-color: var(--green); }
+    .callout.yellow { border-left-color: var(--yellow); }
+    .callout.purple { border-left-color: #a78bfa; }
+    .callout-icon { font-size: 20px; flex-shrink: 0; padding-top: 1px; }
+    .callout-body p { font-size: 14px; color: var(--text); margin-top: 4px; }
+    .callout-body strong { color: #fff; }
+
+    /* SCORE BADGE */
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green);
+      margin: 20px 0 0;
+    }
+
+    /* PLATFORMER CONNECTION */
+    .platformer-box {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      border: 1px solid #1f6feb55;
+      border-left: 4px solid #58a6ff;
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 16px 0;
+    }
+    .platformer-box .pt-tag {
+      display: inline-block;
+      background: #1f6feb33;
+      color: #79c0ff;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .platformer-box p { font-size: 14px; color: var(--text); }
+
+    /* DIVIDER */
+    hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+    /* FILL-IN BLANKS */
+    .blank {
+      display: inline-block;
+      border-bottom: 2px solid var(--accent);
+      min-width: 120px;
+      height: 20px;
+      margin: 0 4px;
+      vertical-align: bottom;
+    }
+
+    code {
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 12.5px;
+      color: #d2a8ff;
+    }
+
+    @media print {
+      body { background: #fff; color: #000; }
+      .hero { background: #333 !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="course-tag">Web Dev &amp; Databases · Java Concepts</div>
+  <h1>Java Streams</h1>
+  <p>Process collections of data with elegant, readable pipelines — no loops required.</p>
+  <div class="meta-row">
+    <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value">Guided Notes</span></div>
+    <div class="meta-item"><span class="meta-label">Points</span><span class="meta-value">5 pts</span></div>
+    <div class="meta-item"><span class="meta-label">Day</span><span class="meta-value">Day 1 of 2</span></div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ========== SECTION 1: What Is a Stream? ========== -->
+  <div class="section-header">
+    <div class="section-num num-accent">1</div>
+    <h2>What Is a Stream?</h2>
+  </div>
+
+  <div class="card">
+    <h3>Definition</h3>
+    <p>A <strong>Stream</strong> in Java is a sequence of elements that supports <em>chained operations</em> to process data from a source (like a list or array). Streams let you <strong>filter, transform, and reduce</strong> collections of data without writing manual loops.</p>
+  </div>
+
+  <div class="callout">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>Not the Same as File I/O!</strong>
+      <p>Java has two different things called "streams." <code>InputStream</code> / <code>OutputStream</code> deal with reading files and network data. <code>java.util.stream.Stream</code> is for processing collections. We're talking about the second kind today.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>The Big Idea: Pipelines</h3>
+    <p>A Stream works like a factory assembly line. Data flows in from a <strong>source</strong>, passes through one or more <strong>intermediate operations</strong> (each producing a new stream), and finally exits through a <strong>terminal operation</strong> that produces a result.</p>
+  </div>
+
+  <div class="pipeline">
+    <div class="pipe-stage">
+      <div class="pipe-box pipe-source">Source<br/><small>List / Array / Set</small></div>
+      <div class="pipe-label">origin</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-stage">
+      <div class="pipe-box pipe-inter">filter()</div>
+      <div class="pipe-label">intermediate</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-stage">
+      <div class="pipe-box pipe-inter">map()</div>
+      <div class="pipe-label">intermediate</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-stage">
+      <div class="pipe-box pipe-terminal">collect()</div>
+      <div class="pipe-label">terminal</div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Key Rule:</strong>
+      <p>Each intermediate operation returns a <em>new Stream</em> — so you can chain them. A terminal operation <em>consumes</em> the stream and returns a final result (a list, a number, void, etc.). Once consumed, the stream is <strong>done</strong> — you can't reuse it.</p>
+    </div>
+  </div>
+
+  <!-- Response 1 -->
+  <div class="response-block">
+    <label>① In your own words, what is a Java Stream? How is it different from a regular for-loop?</label>
+    <div class="lines">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <!-- ========== SECTION 2: Creating a Stream ========== -->
+  <div class="section-header">
+    <div class="section-num num-green">2</div>
+    <h2>Creating a Stream</h2>
+  </div>
+
+  <div class="card green">
+    <h3>Common Ways to Get a Stream</h3>
+    <p>The most common source is a <code>List</code> or other <code>Collection</code>:</p>
+  </div>
+
+<pre class="green-bar"><span class="kw">import</span> java.util.List;
+<span class="kw">import</span> java.util.stream.Stream;
+
+List&lt;<span class="type">String</span>&gt; names = List.of(<span class="str">"Mario"</span>, <span class="str">"Luigi"</span>, <span class="str">"Peach"</span>, <span class="str">"Bowser"</span>);
+
+<span class="cmt">// Option 1: .stream() on any Collection</span>
+names.<span class="method">stream</span>()
+
+<span class="cmt">// Option 2: Stream.of() for quick inline streams</span>
+Stream.<span class="method">of</span>(<span class="str">"Mario"</span>, <span class="str">"Luigi"</span>, <span class="str">"Peach"</span>)
+
+<span class="cmt">// Option 3: Arrays.stream() for arrays</span>
+<span class="type">int</span>[] scores = {<span class="num">100</span>, <span class="num">200</span>, <span class="num">50</span>};
+Arrays.<span class="method">stream</span>(scores)</pre>
+
+  <!-- ========== SECTION 3: Intermediate Operations ========== -->
+  <div class="section-header">
+    <div class="section-num num-purple">3</div>
+    <h2>Intermediate Operations</h2>
+  </div>
+
+  <div class="card purple">
+    <h3>What They Do</h3>
+    <p>Intermediate operations <strong>transform or filter</strong> elements and always return a new Stream. They are <em>lazy</em> — they don't run until a terminal operation is called.</p>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Type</th>
+        <th>What It Does</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="op-name">filter()</span></td>
+        <td><span class="op-type-badge badge-inter">Intermediate</span></td>
+        <td>Keeps elements that match a condition (Predicate)</td>
+        <td><code>.filter(n -> n > 0)</code></td>
+      </tr>
+      <tr>
+        <td><span class="op-name">map()</span></td>
+        <td><span class="op-type-badge badge-inter">Intermediate</span></td>
+        <td>Transforms each element into something else (Function)</td>
+        <td><code>.map(s -> s.toUpperCase())</code></td>
+      </tr>
+      <tr>
+        <td><span class="op-name">sorted()</span></td>
+        <td><span class="op-type-badge badge-inter">Intermediate</span></td>
+        <td>Sorts elements in natural or custom order</td>
+        <td><code>.sorted()</code></td>
+      </tr>
+      <tr>
+        <td><span class="op-name">distinct()</span></td>
+        <td><span class="op-type-badge badge-inter">Intermediate</span></td>
+        <td>Removes duplicate elements</td>
+        <td><code>.distinct()</code></td>
+      </tr>
+      <tr>
+        <td><span class="op-name">limit(n)</span></td>
+        <td><span class="op-type-badge badge-inter">Intermediate</span></td>
+        <td>Takes only the first <em>n</em> elements</td>
+        <td><code>.limit(5)</code></td>
+      </tr>
+      <tr>
+        <td><span class="op-name">peek()</span></td>
+        <td><span class="op-type-badge badge-inter">Intermediate</span></td>
+        <td>Inspects each element without changing it (great for debugging)</td>
+        <td><code>.peek(System.out::println)</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout purple">
+    <div class="callout-icon">🔗</div>
+    <div class="callout-body">
+      <strong>Lambdas and Functional Interfaces</strong>
+      <p>Each stream operation takes a functional interface as its argument — <code>Predicate</code> for <code>filter()</code>, <code>Function</code> for <code>map()</code>, <code>Consumer</code> for <code>forEach()</code>. That's why you pass lambda expressions like <code>x -&gt; x &gt; 0</code> directly into them!</p>
+    </div>
+  </div>
+
+  <!-- Response 2 -->
+  <div class="response-block">
+    <label>② What functional interface type does <code>filter()</code> accept? What does the lambda expression need to return for filter to work?</label>
+    <div class="lines">
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <!-- ========== SECTION 4: Terminal Operations ========== -->
+  <div class="section-header">
+    <div class="section-num num-yellow">4</div>
+    <h2>Terminal Operations</h2>
+  </div>
+
+  <div class="card yellow">
+    <h3>What They Do</h3>
+    <p>Terminal operations <strong>trigger the pipeline</strong> and produce a final result — a value, a list, or a side effect like printing. After a terminal operation, the stream is <em>consumed</em> and cannot be used again.</p>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Type</th>
+        <th>Returns</th>
+        <th>Use Case</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="op-name">forEach()</span></td>
+        <td><span class="op-type-badge badge-terminal">Terminal</span></td>
+        <td><code>void</code></td>
+        <td>Run an action on each element</td>
+      </tr>
+      <tr>
+        <td><span class="op-name">collect()</span></td>
+        <td><span class="op-type-badge badge-terminal">Terminal</span></td>
+        <td>Collection (List, Set, Map)</td>
+        <td>Gather results into a new list</td>
+      </tr>
+      <tr>
+        <td><span class="op-name">count()</span></td>
+        <td><span class="op-type-badge badge-terminal">Terminal</span></td>
+        <td><code>long</code></td>
+        <td>Count matching elements</td>
+      </tr>
+      <tr>
+        <td><span class="op-name">findFirst()</span></td>
+        <td><span class="op-type-badge badge-terminal">Terminal</span></td>
+        <td><code>Optional&lt;T&gt;</code></td>
+        <td>Get the first element (may not exist)</td>
+      </tr>
+      <tr>
+        <td><span class="op-name">anyMatch()</span></td>
+        <td><span class="op-type-badge badge-terminal">Terminal</span></td>
+        <td><code>boolean</code></td>
+        <td>True if any element matches condition</td>
+      </tr>
+      <tr>
+        <td><span class="op-name">reduce()</span></td>
+        <td><span class="op-type-badge badge-terminal">Terminal</span></td>
+        <td><code>Optional&lt;T&gt;</code></td>
+        <td>Combine all elements into one value</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout yellow">
+    <div class="callout-icon">📦</div>
+    <div class="callout-body">
+      <strong>The Most Common Terminal: <code>collect(Collectors.toList())</code></strong>
+      <p>To turn a stream back into a usable list, use: <code>.collect(Collectors.toList())</code>. You'll also see <code>Collectors.toUnmodifiableList()</code> and <code>Collectors.joining()</code> for Strings.</p>
+    </div>
+  </div>
+
+  <!-- ========== SECTION 5: Full Examples ========== -->
+  <div class="section-header">
+    <div class="section-num num-accent">5</div>
+    <h2>Putting It Together — Full Examples</h2>
+  </div>
+
+  <div class="card">
+    <h3>Example A — Filter &amp; Collect</h3>
+    <p>Get all names that start with "B" and collect them into a new list:</p>
+  </div>
+<pre><span class="type">List</span>&lt;<span class="type">String</span>&gt; names = <span class="type">List</span>.<span class="method">of</span>(<span class="str">"Bowser"</span>, <span class="str">"Mario"</span>, <span class="str">"Boo"</span>, <span class="str">"Peach"</span>, <span class="str">"Birdo"</span>);
+
+<span class="type">List</span>&lt;<span class="type">String</span>&gt; bNames = names.<span class="method">stream</span>()
+    .<span class="method">filter</span>(name -> name.<span class="method">startsWith</span>(<span class="str">"B"</span>))
+    .<span class="method">collect</span>(<span class="cls">Collectors</span>.<span class="method">toList</span>());
+
+<span class="cmt">// bNames → ["Bowser", "Boo", "Birdo"]</span></pre>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Example B — Map &amp; Collect</h3>
+    <p>Transform a list of integers into their squared values:</p>
+  </div>
+<pre><span class="type">List</span>&lt;<span class="type">Integer</span>&gt; nums = <span class="type">List</span>.<span class="method">of</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>);
+
+<span class="type">List</span>&lt;<span class="type">Integer</span>&gt; squares = nums.<span class="method">stream</span>()
+    .<span class="method">map</span>(n -> n * n)
+    .<span class="method">collect</span>(<span class="cls">Collectors</span>.<span class="method">toList</span>());
+
+<span class="cmt">// squares → [1, 4, 9, 16, 25]</span></pre>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Example C — Filter + Map + Count</h3>
+    <p>How many enemies have more than 50 HP?</p>
+  </div>
+<pre><span class="type">List</span>&lt;<span class="cls">Enemy</span>&gt; enemies = <span class="cmt">/* ... */</span>;
+
+<span class="kw">long</span> toughCount = enemies.<span class="method">stream</span>()
+    .<span class="method">filter</span>(e -> e.<span class="method">getHp</span>() &gt; <span class="num">50</span>)
+    .<span class="method">count</span>();
+
+System.out.<span class="method">println</span>(<span class="str">"Tough enemies: "</span> + toughCount);</pre>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Example D — Sorted + Limit + forEach</h3>
+    <p>Print the top 3 highest scores:</p>
+  </div>
+<pre><span class="type">List</span>&lt;<span class="type">Integer</span>&gt; scores = <span class="type">List</span>.<span class="method">of</span>(<span class="num">400</span>, <span class="num">100</span>, <span class="num">850</span>, <span class="num">300</span>, <span class="num">720</span>);
+
+scores.<span class="method">stream</span>()
+    .<span class="method">sorted</span>((a, b) -> b - a)   <span class="cmt">// descending</span>
+    .<span class="method">limit</span>(<span class="num">3</span>)
+    .<span class="method">forEach</span>(System.out::println);
+
+<span class="cmt">// prints: 850, 720, 400</span></pre>
+
+  <!-- Response 3 -->
+  <div class="response-block">
+    <label>③ Trace through Example D. List what each operation does to the data, step by step.</label>
+    <div class="lines">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <!-- ========== SECTION 6: Lazy Evaluation ========== -->
+  <div class="section-header">
+    <div class="section-num num-green">6</div>
+    <h2>Lazy Evaluation</h2>
+  </div>
+
+  <div class="card green">
+    <h3>Streams Don't Run Until Asked</h3>
+    <p>Intermediate operations are <em>lazy</em> — they build up a plan but don't execute it until a terminal operation triggers the pipeline. This makes streams efficient: elements that don't need to be processed won't be.</p>
+  </div>
+
+<pre class="green-bar"><span class="cmt">// This builds a pipeline but runs NOTHING yet:</span>
+Stream&lt;<span class="type">String</span>&gt; pipeline = names.<span class="method">stream</span>()
+    .<span class="method">filter</span>(n -> {
+        System.out.<span class="method">println</span>(<span class="str">"Filtering: "</span> + n);
+        <span class="kw">return</span> n.<span class="method">length</span>() &gt; <span class="num">4</span>;
+    });
+
+<span class="cmt">// Nothing prints yet! The pipeline hasn't run.</span>
+
+<span class="cmt">// NOW it runs (terminal operation triggers everything):</span>
+pipeline.<span class="method">forEach</span>(System.out::println);</pre>
+
+  <div class="callout green">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-body">
+      <strong>Why does this matter?</strong>
+      <p>If you use <code>limit(1)</code> after a filter, Java only processes elements until one match is found — it doesn't process the entire list. This is called <strong>short-circuiting</strong>.</p>
+    </div>
+  </div>
+
+  <!-- Response 4 -->
+  <div class="response-block">
+    <label>④ Fill in the blanks: Intermediate operations are <span class="blank"></span>, meaning they don't run until a <span class="blank"></span> operation is called. This is beneficial because <span class="blank"></span>.</label>
+    <div class="lines">
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <!-- ========== SECTION 7: Streams in Your Platformer ========== -->
+  <div class="section-header">
+    <div class="section-num num-accent">7</div>
+    <h2>Streams in Your Platformer</h2>
+  </div>
+
+  <div class="platformer-box">
+    <div class="pt-tag">🎮 Platformer Connection</div>
+    <p>Your game is full of collections — lists of enemies, coins, platforms, and projectiles. Streams let you query and transform those collections without messy loops. Here are some places you'll use them:</p>
+  </div>
+
+<pre><span class="cmt">// 1. Find all active enemies still on screen</span>
+<span class="type">List</span>&lt;<span class="cls">Enemy</span>&gt; activeEnemies = enemies.<span class="method">stream</span>()
+    .<span class="method">filter</span>(<span class="cls">Enemy</span>::<span class="method">isAlive</span>)
+    .<span class="method">filter</span>(e -> e.<span class="method">isOnScreen</span>(camera))
+    .<span class="method">collect</span>(<span class="cls">Collectors</span>.<span class="method">toList</span>());
+
+<span class="cmt">// 2. Count remaining coins in the level</span>
+<span class="kw">long</span> coinsLeft = coins.<span class="method">stream</span>()
+    .<span class="method">filter</span>(c -> !c.<span class="method">isCollected</span>())
+    .<span class="method">count</span>();
+
+<span class="cmt">// 3. Get names of all platforms sorted by x-position</span>
+<span class="type">List</span>&lt;<span class="type">String</span>&gt; sortedPlatforms = platforms.<span class="method">stream</span>()
+    .<span class="method">sorted</span>((a, b) -> <span class="cls">Float</span>.<span class="method">compare</span>(a.<span class="method">getX</span>(), b.<span class="method">getX</span>()))
+    .<span class="method">map</span>(<span class="cls">Platform</span>::<span class="method">getName</span>)
+    .<span class="method">collect</span>(<span class="cls">Collectors</span>.<span class="method">toList</span>());</pre>
+
+  <!-- Response 5 -->
+  <div class="response-block">
+    <label>⑤ Think about your platformer project. Describe one place where you currently use a for-loop to process a list of game objects. How could you rewrite that with a Stream?</label>
+    <div class="lines">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- ========== SECTION 8: Quick Reference ========== -->
+  <div class="section-header">
+    <div class="section-num num-purple">8</div>
+    <h2>Quick Reference Cheat Sheet</h2>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Stream Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Filter a list by condition</td>
+        <td><code>.stream().filter(x -&gt; condition).collect(toList())</code></td>
+      </tr>
+      <tr>
+        <td>Transform every element</td>
+        <td><code>.stream().map(x -&gt; transform(x)).collect(toList())</code></td>
+      </tr>
+      <tr>
+        <td>Count matching elements</td>
+        <td><code>.stream().filter(x -&gt; condition).count()</code></td>
+      </tr>
+      <tr>
+        <td>Print all elements</td>
+        <td><code>.stream().forEach(System.out::println)</code></td>
+      </tr>
+      <tr>
+        <td>Sort and take top N</td>
+        <td><code>.stream().sorted(comparator).limit(N).collect(toList())</code></td>
+      </tr>
+      <tr>
+        <td>Check if any match</td>
+        <td><code>.stream().anyMatch(x -&gt; condition)</code></td>
+      </tr>
+      <tr>
+        <td>Get first match</td>
+        <td><code>.stream().filter(x -&gt; condition).findFirst().orElse(null)</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Score -->
+  <div class="score-badge">
+    <span>📋</span>
+    <span>Guided Notes — 5 points · Submit via Canvas</span>
+  </div>
+
+  <p style="color: var(--text-dim); font-size:13px; margin-top:12px; margin-bottom: 60px;">
+    Complete all five numbered response blocks above. Tomorrow's activity will have you apply Streams directly inside the platformer codebase.
+  </p>
+
+</div>
+</body>
+</html>

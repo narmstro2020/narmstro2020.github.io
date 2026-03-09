@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500" font-family="'Segoe UI', Arial, sans-serif">
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="#1a1a2e" rx="16"/>
+
+  <!-- Title -->
+  <text x="450" y="44" text-anchor="middle" fill="#e0e0e0" font-size="20" font-weight="800">Java Stream Pipeline</text>
+  <text x="450" y="64" text-anchor="middle" fill="#9a9ab0" font-size="13">Source → Intermediate Operations (lazy) → Terminal Operation (triggers execution)</text>
+
+  <!-- ===== ROW 1: Pipeline Stages ===== -->
+
+  <!-- SOURCE -->
+  <rect x="40" y="100" width="160" height="90" rx="12" fill="#1f3a5f" stroke="#3b82f6" stroke-width="2"/>
+  <text x="120" y="132" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700" letter-spacing="1">SOURCE</text>
+  <text x="120" y="155" text-anchor="middle" fill="#e0e0e0" font-size="14" font-weight="600">List / Array</text>
+  <text x="120" y="175" text-anchor="middle" fill="#9a9ab0" font-size="11">Collection.stream()</text>
+
+  <!-- Arrow 1 -->
+  <line x1="202" y1="145" x2="238" y2="145" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="238,140 248,145 238,150" fill="#4b5563"/>
+
+  <!-- FILTER -->
+  <rect x="250" y="100" width="140" height="90" rx="12" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
+  <text x="320" y="132" text-anchor="middle" fill="#86efac" font-size="12" font-weight="700" letter-spacing="1">INTERMEDIATE</text>
+  <text x="320" y="155" text-anchor="middle" fill="#e0e0e0" font-size="15" font-weight="700">filter()</text>
+  <text x="320" y="175" text-anchor="middle" fill="#9a9ab0" font-size="11">Predicate → Stream</text>
+
+  <!-- Arrow 2 -->
+  <line x1="392" y1="145" x2="428" y2="145" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="428,140 438,145 428,150" fill="#4b5563"/>
+
+  <!-- MAP -->
+  <rect x="440" y="100" width="140" height="90" rx="12" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
+  <text x="510" y="132" text-anchor="middle" fill="#86efac" font-size="12" font-weight="700" letter-spacing="1">INTERMEDIATE</text>
+  <text x="510" y="155" text-anchor="middle" fill="#e0e0e0" font-size="15" font-weight="700">map()</text>
+  <text x="510" y="175" text-anchor="middle" fill="#9a9ab0" font-size="11">Function → Stream</text>
+
+  <!-- Arrow 3 -->
+  <line x1="582" y1="145" x2="618" y2="145" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="618,140 628,145 618,150" fill="#4b5563"/>
+
+  <!-- TERMINAL -->
+  <rect x="630" y="100" width="160" height="90" rx="12" fill="#431407" stroke="#f97316" stroke-width="2"/>
+  <text x="710" y="132" text-anchor="middle" fill="#fdba74" font-size="12" font-weight="700" letter-spacing="1">TERMINAL</text>
+  <text x="710" y="155" text-anchor="middle" fill="#e0e0e0" font-size="15" font-weight="700">collect()</text>
+  <text x="710" y="175" text-anchor="middle" fill="#9a9ab0" font-size="11">Triggers execution</text>
+
+  <!-- ===== LAZY BAND ===== -->
+  <rect x="248" y="96" width="336" height="98" rx="12" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.5"/>
+  <text x="416" y="220" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">⚡ LAZY — nothing runs until terminal is called</text>
+
+  <!-- ===== DIVIDER ===== -->
+  <line x1="60" y1="248" x2="840" y2="248" stroke="#2a2a4a" stroke-width="1.5"/>
+
+  <!-- ===== SECTION: INTERMEDIATE OPS ===== -->
+  <text x="60" y="275" fill="#86efac" font-size="13" font-weight="800">INTERMEDIATE OPERATIONS</text>
+  <text x="450" y="275" fill="#fdba74" font-size="13" font-weight="800">TERMINAL OPERATIONS</text>
+
+  <!-- Left ops -->
+  <g>
+    <!-- filter -->
+    <rect x="60" y="288" width="100" height="40" rx="8" fill="#166534" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="110" y="313" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">filter()</text>
+
+    <!-- map -->
+    <rect x="170" y="288" width="100" height="40" rx="8" fill="#166534" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="220" y="313" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">map()</text>
+
+    <!-- sorted -->
+    <rect x="60" y="338" width="100" height="40" rx="8" fill="#166534" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="110" y="363" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">sorted()</text>
+
+    <!-- distinct -->
+    <rect x="170" y="338" width="100" height="40" rx="8" fill="#166534" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="220" y="363" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">distinct()</text>
+
+    <!-- limit -->
+    <rect x="60" y="388" width="100" height="40" rx="8" fill="#166534" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="110" y="413" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">limit(n)</text>
+
+    <!-- peek -->
+    <rect x="170" y="388" width="100" height="40" rx="8" fill="#166534" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="220" y="413" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">peek()</text>
+
+    <text x="175" y="450" text-anchor="middle" fill="#9a9ab0" font-size="11">Returns a new Stream → chainable</text>
+  </g>
+
+  <!-- Vertical divider -->
+  <line x1="420" y1="260" x2="420" y2="475" stroke="#2a2a4a" stroke-width="1.5"/>
+
+  <!-- Right ops -->
+  <g>
+    <!-- forEach -->
+    <rect x="450" y="288" width="110" height="40" rx="8" fill="#7c2d12" stroke="#f97316" stroke-width="1.5"/>
+    <text x="505" y="313" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">forEach()</text>
+
+    <!-- collect -->
+    <rect x="570" y="288" width="110" height="40" rx="8" fill="#7c2d12" stroke="#f97316" stroke-width="1.5"/>
+    <text x="625" y="313" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">collect()</text>
+
+    <!-- count -->
+    <rect x="690" y="288" width="110" height="40" rx="8" fill="#7c2d12" stroke="#f97316" stroke-width="1.5"/>
+    <text x="745" y="313" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">count()</text>
+
+    <!-- findFirst -->
+    <rect x="450" y="338" width="110" height="40" rx="8" fill="#7c2d12" stroke="#f97316" stroke-width="1.5"/>
+    <text x="505" y="363" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">findFirst()</text>
+
+    <!-- anyMatch -->
+    <rect x="570" y="338" width="110" height="40" rx="8" fill="#7c2d12" stroke="#f97316" stroke-width="1.5"/>
+    <text x="625" y="363" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">anyMatch()</text>
+
+    <!-- reduce -->
+    <rect x="690" y="338" width="110" height="40" rx="8" fill="#7c2d12" stroke="#f97316" stroke-width="1.5"/>
+    <text x="745" y="363" text-anchor="middle" fill="#e0e0e0" font-size="13" font-weight="700">reduce()</text>
+
+    <text x="630" y="410" text-anchor="middle" fill="#9a9ab0" font-size="11">Consumes the stream — returns result or side effect</text>
+  </g>
+
+  <!-- Footer note -->
+  <text x="450" y="478" text-anchor="middle" fill="#533483" font-size="12" font-weight="600">Web Dev &amp; Databases · Java Streams</text>
+
+</svg>
