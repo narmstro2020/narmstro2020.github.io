@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic List Builder — Loops Activity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --yellow: #ffc107;
+      --red: #e94560;
+      --blue: #4ea8de;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --text-dim: #606080;
+      --radius: 10px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--surface-light);
+    }
+    .header .tag {
+      display: inline-block;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .tag.red { background: rgba(233,69,96,0.15); color: var(--red); border: 1px solid rgba(233,69,96,0.3); }
+    .tag.green { background: rgba(78,204,163,0.15); color: var(--accent); border: 1px solid rgba(78,204,163,0.3); }
+    h1 {
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, var(--red), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.25rem;
+    }
+    .subtitle { color: var(--text-muted); font-size: 0.9rem; }
+    .feature {
+      background: var(--surface);
+      border: 1px solid var(--surface-light);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .feature h2 {
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .feature h2 .badge {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.65rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+    .badge.for { background: rgba(78,204,163,0.15); color: var(--accent); }
+    .badge.while { background: rgba(255,193,7,0.15); color: var(--yellow); }
+    .badge.forof { background: rgba(78,168,222,0.15); color: var(--blue); }
+    .badge.foreach { background: rgba(123,104,238,0.15); color: var(--purple); }
+    .feature .desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--surface-light);
+    }
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    input[type="text"], input[type="number"] {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--surface-light);
+      color: var(--text);
+      padding: 0.6rem 0.85rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--accent); }
+    button {
+      background: var(--purple);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+      white-space: nowrap;
+    }
+    button:hover { transform: translateY(-1px); opacity: 0.9; }
+    button.accent { background: var(--accent); color: var(--bg); }
+    button.yellow { background: var(--yellow); color: var(--bg); }
+    button.red { background: var(--red); }
+    button.blue { background: var(--blue); color: var(--bg); }
+    .output-area {
+      background: var(--bg);
+      border: 1px solid var(--surface-light);
+      border-radius: 8px;
+      padding: 1rem;
+      min-height: 80px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .output-area .placeholder { color: var(--text-dim); font-style: italic; }
+    .list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.4rem;
+      background: var(--surface);
+      border: 1px solid var(--surface-light);
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+    .list-item .num {
+      font-family: 'Fira Code', monospace;
+      color: var(--accent);
+      font-size: 0.75rem;
+      margin-right: 0.75rem;
+    }
+    .countdown-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .countdown-tile {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.75rem;
+    }
+    .roster-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-light);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .roster-card .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .roster-card .name { font-weight: 600; font-size: 0.9rem; }
+    .roster-card .role { font-size: 0.75rem; color: var(--text-muted); }
+    .filter-row {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .filter-btn {
+      padding: 0.4rem 0.85rem;
+      font-size: 0.78rem;
+      border-radius: 6px;
+      background: var(--surface-light);
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--purple);
+      color: var(--purple);
+      background: rgba(123,104,238,0.1);
+    }
+    .skill-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .skill-tag {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.6rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      background: rgba(78,204,163,0.08);
+      color: var(--accent);
+      border: 1px solid rgba(78,204,163,0.15);
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <span class="tag red">ACTIVITY — SOLUTION</span>
+  <span class="tag green">15 pts</span>
+  <h1>🔄 Dynamic List Builder</h1>
+  <p class="subtitle">Day 2 — Loops + DOM Practice · Mar 2, 2026</p>
+</header>
+
+<section class="feature" id="feature-1">
+  <h2>Feature 1: Task List <span class="badge for">for loop</span></h2>
+  <p class="desc">Add tasks to a list. Every time you click "Add", the entire list re-renders using a <code>for</code> loop.</p>
+  <div class="input-row">
+    <input type="text" id="task-input" placeholder="Enter a task...">
+    <button class="accent" id="add-task-btn">+ Add Task</button>
+  </div>
+  <button class="red" id="clear-tasks-btn" style="margin-bottom: 1rem; font-size: 0.78rem; padding: 0.4rem 0.85rem;">Clear All</button>
+  <div class="output-area" id="task-list">
+    <span class="placeholder">Your tasks will appear here...</span>
+  </div>
+</section>
+
+<section class="feature" id="feature-2">
+  <h2>Feature 2: Countdown Generator <span class="badge while">while loop</span></h2>
+  <p class="desc">Enter a number and generate a visual countdown from that number down to 1 using a <code>while</code> loop.</p>
+  <div class="input-row">
+    <input type="number" id="countdown-input" placeholder="Enter a number (1–20)" min="1" max="20">
+    <button class="yellow" id="countdown-btn">🚀 Launch Countdown</button>
+  </div>
+  <div class="output-area" id="countdown-display">
+    <span class="placeholder">Countdown tiles will appear here...</span>
+  </div>
+</section>
+
+<section class="feature" id="feature-3">
+  <h2>Feature 3: Student Roster <span class="badge forof">for...of</span></h2>
+  <p class="desc">A pre-loaded array of student names gets rendered as cards using a <code>for...of</code> loop. Click "Load Roster" to display them.</p>
+  <button class="blue" id="load-roster-btn" style="margin-bottom: 1rem;">📋 Load Roster</button>
+  <div class="output-area" id="roster-display">
+    <span class="placeholder">Student cards will appear here...</span>
+  </div>
+</section>
+
+<section class="feature" id="feature-4">
+  <h2>Feature 4: Filtered Emoji Gallery <span class="badge foreach">forEach</span></h2>
+  <p class="desc"><strong>BONUS:</strong> Render a gallery of items and let users filter by category using <code>forEach</code> and conditionals.</p>
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="food">🍕 Food</button>
+    <button class="filter-btn" data-filter="animal">🐶 Animals</button>
+    <button class="filter-btn" data-filter="sport">⚽ Sports</button>
+  </div>
+  <div class="output-area" id="gallery-display">
+    <span class="placeholder">Gallery items will appear here...</span>
+  </div>
+</section>
+
+
+<script>
+  // ============================================================
+  // 🔄 DYNAMIC LIST BUILDER — SOLUTION
+  // ============================================================
+
+  // ╔══════════════════════════════════════════════════════╗
+  // ║  FEATURE 1: Task List (for loop)                     ║
+  // ╚══════════════════════════════════════════════════════╝
+
+  const tasks = [];
+
+  // TODO 1 ✅
+  const taskInput = document.querySelector("#task-input");
+  const addTaskBtn = document.querySelector("#add-task-btn");
+  const taskList = document.querySelector("#task-list");
+  const clearTasksBtn = document.querySelector("#clear-tasks-btn");
+
+  // TODO 2 ✅
+  function renderTasks() {
+    if (tasks.length === 0) {
+      taskList.innerHTML = '<span class="placeholder">Your tasks will appear here...</span>';
+      return;
+    }
+
+    let html = "";
+    for (let i = 0; i < tasks.length; i++) {
+      html += `<div class="list-item">
+        <span><span class="num">${i + 1}.</span> ${tasks[i]}</span>
+      </div>`;
+    }
+    taskList.innerHTML = html;
+  }
+
+  // TODO 3 ✅
+  addTaskBtn.addEventListener("click", function() {
+    const task = taskInput.value;
+    if (task !== "") {
+      tasks.push(task);
+      taskInput.value = "";
+      renderTasks();
+    }
+  });
+
+  clearTasksBtn.addEventListener("click", function() {
+    tasks.length = 0;
+    renderTasks();
+  });
+
+
+  // ╔══════════════════════════════════════════════════════╗
+  // ║  FEATURE 2: Countdown Generator (while loop)         ║
+  // ╚══════════════════════════════════════════════════════╝
+
+  // TODO 4 ✅
+  const countdownInput = document.querySelector("#countdown-input");
+  const countdownBtn = document.querySelector("#countdown-btn");
+  const countdownDisplay = document.querySelector("#countdown-display");
+
+  // TODO 5 ✅
+  countdownBtn.addEventListener("click", function() {
+    let num = Number(countdownInput.value);
+    let html = "";
+
+    html += '<div class="countdown-grid">';
+
+    while (num >= 1) {
+      let color;
+      if (num > 10) {
+        color = "var(--purple)";
+      } else if (num > 5) {
+        color = "var(--blue)";
+      } else if (num > 3) {
+        color = "var(--yellow)";
+      } else {
+        color = "var(--red)";
+      }
+
+      html += `<div class="countdown-tile" style="background:${color}; color:var(--bg);">${num}</div>`;
+      num--;
+    }
+
+    html += '</div>';
+    countdownDisplay.innerHTML = html;
+  });
+
+
+  // ╔══════════════════════════════════════════════════════╗
+  // ║  FEATURE 3: Student Roster (for...of)                ║
+  // ╚══════════════════════════════════════════════════════╝
+
+  // TODO 6 ✅
+  const students = ["Alice", "Bob", "Carlos", "Diana", "Ethan", "Fiona"];
+
+  // TODO 7 ✅
+  const loadRosterBtn = document.querySelector("#load-roster-btn");
+  const rosterDisplay = document.querySelector("#roster-display");
+
+  // TODO 8 ✅
+  loadRosterBtn.addEventListener("click", function() {
+    let html = "";
+    html += '<div class="roster-grid">';
+
+    for (const student of students) {
+      const initial = student[0];
+      const colors = ["var(--accent)", "var(--purple)", "var(--yellow)", "var(--red)", "var(--blue)"];
+      const colorIndex = student.charCodeAt(0) % colors.length;
+      const bgColor = colors[colorIndex];
+
+      html += `<div class="roster-card">
+        <div class="avatar" style="background:${bgColor}; color:var(--bg);">${initial}</div>
+        <div class="name">${student}</div>
+        <div class="role">Student</div>
+      </div>`;
+    }
+
+    html += '</div>';
+    rosterDisplay.innerHTML = html;
+  });
+
+
+  // ╔══════════════════════════════════════════════════════╗
+  // ║  FEATURE 4 — BONUS: Filtered Emoji Gallery (forEach) ║
+  // ╚══════════════════════════════════════════════════════╝
+
+  // TODO 9 ✅
+  const items = [
+    { emoji: "🍕", name: "Pizza", category: "food" },
+    { emoji: "🍔", name: "Burger", category: "food" },
+    { emoji: "🌮", name: "Taco", category: "food" },
+    { emoji: "🐶", name: "Dog", category: "animal" },
+    { emoji: "🐱", name: "Cat", category: "animal" },
+    { emoji: "🐸", name: "Frog", category: "animal" },
+    { emoji: "⚽", name: "Soccer", category: "sport" },
+    { emoji: "🏀", name: "Basketball", category: "sport" },
+    { emoji: "🏈", name: "Football", category: "sport" },
+  ];
+
+  const galleryDisplay = document.querySelector("#gallery-display");
+  const filterBtns = document.querySelectorAll(".filter-btn");
+
+  // TODO 10 ✅
+  function renderGallery(filter) {
+    let html = "";
+    html += '<div class="roster-grid">';
+
+    items.forEach(function(item) {
+      if (filter === "all" || item.category === filter) {
+        html += `<div class="roster-card">
+          <div style="font-size:2rem; margin-bottom:0.5rem;">${item.emoji}</div>
+          <div class="name">${item.name}</div>
+          <div class="role">${item.category}</div>
+        </div>`;
+      }
+    });
+
+    html += '</div>';
+    galleryDisplay.innerHTML = html;
+  }
+
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      filterBtns.forEach(function(b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      const filter = btn.getAttribute("data-filter");
+      renderGallery(filter);
+    });
+  });
+
+  // Show all items on page load
+  renderGallery("all");
+
+</script>
+
+</body>
+</html>
