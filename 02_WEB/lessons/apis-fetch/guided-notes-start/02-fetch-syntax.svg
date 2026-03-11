@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="'DM Sans', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#8888aa"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="400" fill="url(#bg)" rx="14"/>
+  <rect x="0" y="0" width="800" height="54" fill="#1a1a2e" rx="14"/>
+  <rect x="0" y="40" width="800" height="14" fill="#1a1a2e"/>
+  <text x="28" y="34" fill="#e2e2f0" font-size="18" font-weight="700">fetch() Syntax — Annotated</text>
+
+  <!-- Code block -->
+  <rect x="28" y="64" width="430" height="272" fill="#111125" rx="10" stroke="#2e2e52"/>
+  <text x="44" y="86" fill="#8888aa" font-size="11" font-weight="700" font-family="'Fira Code',monospace">THE FULL PATTERN</text>
+
+  <!-- Line 1: fetch(url) -->
+  <text x="44" y="112" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#82aaff">fetch</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#c3e88d">"https://jsonplaceholder.typicode.com/users"</tspan><tspan fill="#e2e2f0">)</tspan>
+  </text>
+
+  <!-- Line 2: first .then -->
+  <text x="44" y="136" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  .</tspan><tspan fill="#82aaff">then</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#4fc3f7">response</tspan><tspan fill="#e2e2f0"> =&gt; </tspan><tspan fill="#4fc3f7">response</tspan><tspan fill="#e2e2f0">.</tspan><tspan fill="#82aaff">json</tspan><tspan fill="#e2e2f0">())</tspan>
+  </text>
+
+  <!-- Line 3: second .then open -->
+  <text x="44" y="160" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  .</tspan><tspan fill="#82aaff">then</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#4fc3f7">data</tspan><tspan fill="#e2e2f0"> =&gt; {</tspan>
+  </text>
+
+  <!-- Line 4: comment -->
+  <text x="44" y="180" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#546e7a">    // your data array or object lives here</tspan>
+  </text>
+
+  <!-- Line 5: console.log -->
+  <text x="44" y="200" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">    </tspan><tspan fill="#82aaff">console</tspan><tspan fill="#e2e2f0">.</tspan><tspan fill="#82aaff">log</tspan><tspan fill="#e2e2f0">(data);</tspan>
+  </text>
+
+  <!-- Line 6: close second then -->
+  <text x="44" y="220" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  })</tspan>
+  </text>
+
+  <!-- Line 7: .catch open -->
+  <text x="44" y="244" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  .</tspan><tspan fill="#82aaff">catch</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#f78c6c">err</tspan><tspan fill="#e2e2f0"> =&gt; {</tspan>
+  </text>
+
+  <!-- Line 8: console.error -->
+  <text x="44" y="264" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">    </tspan><tspan fill="#82aaff">console</tspan><tspan fill="#e2e2f0">.</tspan><tspan fill="#82aaff">error</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#c3e88d">"Error:"</tspan><tspan fill="#e2e2f0">, </tspan><tspan fill="#f78c6c">err</tspan><tspan fill="#e2e2f0">);</tspan>
+  </text>
+
+  <!-- Line 9: close catch -->
+  <text x="44" y="284" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  });</tspan>
+  </text>
+
+  <!-- Annotations (right side) -->
+  <!-- fetch annotation -->
+  <line x1="462" y1="112" x2="490" y2="112" stroke="#f9a825" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="491" y="96" width="280" height="34" fill="#1a1a2e" rx="6" stroke="rgba(249,168,37,0.3)"/>
+  <text x="505" y="118" fill="#f9a825" font-size="12">Sends an HTTP GET request to the URL</text>
+
+  <!-- first .then annotation -->
+  <line x1="462" y1="136" x2="490" y2="136" stroke="#4fc3f7" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="491" y="120" width="280" height="34" fill="#1a1a2e" rx="6" stroke="rgba(79,195,247,0.3)"/>
+  <text x="505" y="142" fill="#4fc3f7" font-size="12">Receives raw response → parses to JS</text>
+
+  <!-- second .then annotation -->
+  <line x1="462" y1="160" x2="490" y2="174" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="491" y="156" width="280" height="46" fill="#1a1a2e" rx="6" stroke="rgba(102,187,106,0.3)"/>
+  <text x="505" y="175" fill="#66bb6a" font-size="12">Receives your parsed data</text>
+  <text x="505" y="193" fill="#8888aa" font-size="11">Render to the DOM here</text>
+
+  <!-- .catch annotation -->
+  <line x1="462" y1="244" x2="490" y2="244" stroke="#f07178" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="491" y="228" width="280" height="46" fill="#1a1a2e" rx="6" stroke="rgba(240,113,120,0.3)"/>
+  <text x="505" y="247" fill="#f07178" font-size="12">Only runs if the fetch fails</text>
+  <text x="505" y="265" fill="#8888aa" font-size="11">Bad URL, no internet, server error</text>
+
+  <!-- Why two .then() box -->
+  <rect x="28" y="348" width="744" height="40" fill="#1a1a2e" rx="8" stroke="#7c6af7" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="44" y="366" fill="#7c6af7" font-size="11" font-weight="700" font-family="'Fira Code',monospace">WHY TWO .then() CALLS?  </text>
+  <text x="200" y="366" fill="#8888aa" font-size="12">Step 1 receives the </text>
+  <text x="318" y="366" fill="#4fc3f7" font-size="12" font-weight="700">Response object </text>
+  <text x="427" y="366" fill="#8888aa" font-size="12">(headers + status, not data). </text>
+  <text x="597" y="366" fill="#82aaff" font-size="12" font-weight="700">.json() </text>
+  <text x="637" y="366" fill="#8888aa" font-size="12">reads the body async → Step 2.</text>
+</svg>

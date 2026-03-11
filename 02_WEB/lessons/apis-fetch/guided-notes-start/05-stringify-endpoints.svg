@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="'DM Sans', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="420" fill="url(#bg)" rx="14"/>
+  <rect x="0" y="0" width="800" height="54" fill="#1a1a2e" rx="14"/>
+  <rect x="0" y="40" width="800" height="14" fill="#1a1a2e"/>
+  <text x="28" y="34" fill="#e2e2f0" font-size="18" font-weight="700">JSON.stringify + Endpoints</text>
+
+  <!-- JSON.stringify / parse -->
+  <rect x="28" y="64" width="362" height="156" fill="#111125" rx="10" stroke="#2e2e52"/>
+  <text x="44" y="86" fill="#8888aa" font-size="11" font-weight="700" font-family="'Fira Code',monospace">JSON.stringify / JSON.parse</text>
+
+  <text x="44" y="110" fill="#546e7a" font-size="11" font-family="'Fira Code',monospace">// JS object → formatted JSON string (for display)</text>
+  <text x="44" y="130" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#c792ea">const</tspan><tspan fill="#e2e2f0"> </tspan><tspan fill="#4fc3f7">str</tspan><tspan fill="#e2e2f0"> = JSON.</tspan><tspan fill="#82aaff">stringify</tspan><tspan fill="#e2e2f0">(data, </tspan><tspan fill="#f78c6c">null</tspan><tspan fill="#e2e2f0">, </tspan><tspan fill="#f78c6c">2</tspan><tspan fill="#e2e2f0">);</tspan>
+  </text>
+
+  <!-- Annotations for null and 2 -->
+  <line x1="258" y1="138" x2="258" y2="158" stroke="#546e7a" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="258" y="172" fill="#546e7a" font-size="10" font-family="'Fira Code',monospace" text-anchor="middle">replacer</text>
+  <text x="258" y="184" fill="#546e7a" font-size="10" font-family="'Fira Code',monospace" text-anchor="middle">(null = none)</text>
+
+  <line x1="286" y1="138" x2="286" y2="158" stroke="#f9a825" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="286" y="172" fill="#f9a825" font-size="10" font-family="'Fira Code',monospace" text-anchor="middle">indent</text>
+  <text x="286" y="184" fill="#f9a825" font-size="10" font-family="'Fira Code',monospace" text-anchor="middle">2 spaces</text>
+
+  <text x="44" y="202" fill="#546e7a" font-size="11" font-family="'Fira Code',monospace">// JSON string → JS object</text>
+  <text x="44" y="212" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#c792ea">const</tspan><tspan fill="#e2e2f0"> </tspan><tspan fill="#4fc3f7">obj</tspan><tspan fill="#e2e2f0"> = JSON.</tspan><tspan fill="#82aaff">parse</tspan><tspan fill="#e2e2f0">(str);</tspan>
+  </text>
+
+  <!-- Endpoints table -->
+  <rect x="408" y="64" width="364" height="156" fill="#1a1a2e" rx="10" stroke="#2e2e52"/>
+  <text x="424" y="86" fill="#8888aa" font-size="11" font-weight="700" font-family="'Fira Code',monospace">JSONPlaceholder ENDPOINTS</text>
+
+  <rect x="420" y="98" width="340" height="26" fill="#222240" rx="4"/>
+  <text x="436" y="116" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#c3e88d">/users</tspan><tspan fill="#e2e2f0">     </tspan><tspan fill="#8888aa">10 users — name, email, company</tspan>
+  </text>
+
+  <rect x="420" y="128" width="340" height="26" fill="#1a1a2e" rx="4"/>
+  <text x="436" y="146" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#c3e88d">/posts</tspan><tspan fill="#e2e2f0">     </tspan><tspan fill="#8888aa">100 posts — title, body, userId</tspan>
+  </text>
+
+  <rect x="420" y="158" width="340" height="26" fill="#222240" rx="4"/>
+  <text x="436" y="176" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#c3e88d">/todos</tspan><tspan fill="#e2e2f0">     </tspan><tspan fill="#8888aa">200 todos — title, completed</tspan>
+  </text>
+
+  <rect x="420" y="188" width="340" height="26" fill="#1a1a2e" rx="4"/>
+  <text x="436" y="206" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#c3e88d">/users/3</tspan><tspan fill="#e2e2f0">   </tspan><tspan fill="#8888aa">single object, not an array</tspan>
+  </text>
+
+  <!-- Dynamic endpoint -->
+  <rect x="28" y="234" width="362" height="172" fill="#111125" rx="10" stroke="#4fc3f7" stroke-width="1.5"/>
+  <text x="44" y="256" fill="#4fc3f7" font-size="11" font-weight="700" font-family="'Fira Code',monospace">READING DROPDOWN + DYNAMIC URL</text>
+
+  <text x="44" y="278" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#c792ea">const</tspan><tspan fill="#e2e2f0"> </tspan><tspan fill="#4fc3f7">endpoint</tspan><tspan fill="#e2e2f0"> = document.</tspan><tspan fill="#82aaff">querySelector</tspan><tspan fill="#e2e2f0">(</tspan>
+  </text>
+  <text x="44" y="297" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  </tspan><tspan fill="#c3e88d">"#fetch-select"</tspan><tspan fill="#e2e2f0">).</tspan><tspan fill="#4fc3f7">value</tspan><tspan fill="#e2e2f0">;</tspan><tspan fill="#546e7a">  // "/users" or "/posts"</tspan>
+  </text>
+
+  <text x="44" y="322" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#82aaff">fetch</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#c3e88d">`https://...typicode.com</tspan><tspan fill="#4fc3f7">${endpoint}</tspan><tspan fill="#c3e88d">`</tspan><tspan fill="#e2e2f0">)</tspan>
+  </text>
+  <text x="44" y="342" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  .</tspan><tspan fill="#82aaff">then</tspan><tspan fill="#e2e2f0">(res =&gt; res.</tspan><tspan fill="#82aaff">json</tspan><tspan fill="#e2e2f0">())</tspan>
+  </text>
+  <text x="44" y="362" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  .</tspan><tspan fill="#82aaff">then</tspan><tspan fill="#e2e2f0">(data =&gt; { </tspan><tspan fill="#546e7a">/* render */</tspan><tspan fill="#e2e2f0"> });</tspan>
+  </text>
+
+  <text x="44" y="392" fill="#546e7a" font-size="11" font-family="'Fira Code',monospace">// Template literal builds the full URL dynamically</text>
+
+  <!-- if/else per endpoint -->
+  <rect x="408" y="234" width="364" height="172" fill="#111125" rx="10" stroke="#c792ea" stroke-width="1.5"/>
+  <text x="424" y="256" fill="#c792ea" font-size="11" font-weight="700" font-family="'Fira Code',monospace">DIFFERENT FIELDS PER ENDPOINT</text>
+
+  <text x="424" y="278" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#c792ea">if</tspan><tspan fill="#e2e2f0"> (endpoint === </tspan><tspan fill="#c3e88d">'/users'</tspan><tspan fill="#e2e2f0">) {</tspan>
+  </text>
+  <text x="424" y="296" fill="#546e7a" font-family="'Fira Code',monospace" font-size="12">
+    <tspan>  // show name + email</tspan>
+  </text>
+  <text x="424" y="316" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#c792ea">} else if</tspan><tspan fill="#e2e2f0"> (endpoint === </tspan><tspan fill="#c3e88d">'/posts'</tspan><tspan fill="#e2e2f0">) {</tspan>
+  </text>
+  <text x="424" y="334" fill="#546e7a" font-family="'Fira Code',monospace" font-size="12">
+    <tspan>  // title.slice(0,50) + body.slice(0,80)</tspan>
+  </text>
+  <text x="424" y="354" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#c792ea">} else if</tspan><tspan fill="#e2e2f0"> (endpoint === </tspan><tspan fill="#c3e88d">'/todos'</tspan><tspan fill="#e2e2f0">) {</tspan>
+  </text>
+  <text x="424" y="372" fill="#546e7a" font-family="'Fira Code',monospace" font-size="12">
+    <tspan>  // title + completed ? "✓ done" : "○ pending"</tspan>
+  </text>
+  <text x="424" y="392" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">}</tspan>
+  </text>
+</svg>
