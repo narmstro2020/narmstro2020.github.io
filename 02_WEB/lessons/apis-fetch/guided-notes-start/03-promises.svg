@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="'DM Sans', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <marker id="arrY" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f9a825"/>
+    </marker>
+    <marker id="arrG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#66bb6a"/>
+    </marker>
+    <marker id="arrR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f07178"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="400" fill="url(#bg)" rx="14"/>
+  <rect x="0" y="0" width="800" height="54" fill="#1a1a2e" rx="14"/>
+  <rect x="0" y="40" width="800" height="14" fill="#1a1a2e"/>
+  <text x="28" y="34" fill="#e2e2f0" font-size="18" font-weight="700">Promises — Three States</text>
+
+  <!-- State boxes -->
+  <!-- Pending -->
+  <rect x="28" y="70" width="210" height="90" fill="#1a2a3a" rx="10" stroke="#f9a825" stroke-width="2"/>
+  <text x="133" y="100" font-size="24" text-anchor="middle">⏳</text>
+  <text x="133" y="124" fill="#f9a825" font-size="15" font-weight="700" text-anchor="middle">PENDING</text>
+  <text x="133" y="142" fill="#8888aa" font-size="11" text-anchor="middle">waiting for response...</text>
+
+  <!-- Arrow to branch -->
+  <line x1="238" y1="115" x2="278" y2="115" stroke="#f9a825" stroke-width="2" marker-end="url(#arrY)"/>
+
+  <!-- Branch -->
+  <rect x="279" y="96" width="120" height="38" fill="#222240" rx="8" stroke="#2e2e52"/>
+  <text x="339" y="120" fill="#e2e2f0" font-size="13" font-weight="700" text-anchor="middle">Server responds?</text>
+
+  <!-- Success arrow -->
+  <line x1="399" y1="104" x2="448" y2="84" stroke="#66bb6a" stroke-width="2" marker-end="url(#arrG)"/>
+  <text x="425" y="89" fill="#66bb6a" font-size="11" font-weight="700" font-family="'Fira Code',monospace">YES</text>
+
+  <!-- Fulfilled -->
+  <rect x="449" y="60" width="200" height="90" fill="#1a2a1a" rx="10" stroke="#66bb6a" stroke-width="2"/>
+  <text x="549" y="90" font-size="24" text-anchor="middle">✅</text>
+  <text x="549" y="114" fill="#66bb6a" font-size="15" font-weight="700" text-anchor="middle">FULFILLED</text>
+  <text x="549" y="132" fill="#8888aa" font-size="11" text-anchor="middle">.then() callback runs</text>
+
+  <!-- Failure arrow -->
+  <line x1="399" y1="126" x2="448" y2="156" stroke="#f07178" stroke-width="2" marker-end="url(#arrR)"/>
+  <text x="425" y="155" fill="#f07178" font-size="11" font-weight="700" font-family="'Fira Code',monospace">NO</text>
+
+  <!-- Rejected -->
+  <rect x="449" y="148" width="200" height="90" fill="#2a0a0a" rx="10" stroke="#f07178" stroke-width="2"/>
+  <text x="549" y="178" font-size="24" text-anchor="middle">❌</text>
+  <text x="549" y="202" fill="#f07178" font-size="15" font-weight="700" text-anchor="middle">REJECTED</text>
+  <text x="549" y="220" fill="#8888aa" font-size="11" text-anchor="middle">.catch() callback runs</text>
+
+  <!-- Async note -->
+  <rect x="28" y="178" width="210" height="52" fill="#1a1a2e" rx="8" stroke="#2e2e52"/>
+  <text x="133" y="200" fill="#8888aa" font-size="12" text-anchor="middle">Meanwhile, your other</text>
+  <text x="133" y="218" fill="#66bb6a" font-size="13" font-weight="700" text-anchor="middle">code keeps running ✓</text>
+
+  <!-- Code examples -->
+  <rect x="28" y="248" width="360" height="138" fill="#111125" rx="10" stroke="#66bb6a" stroke-width="1.5"/>
+  <text x="44" y="270" fill="#66bb6a" font-size="11" font-weight="700" font-family="'Fira Code',monospace">FULFILLED PATH — .then() receives data</text>
+  <text x="44" y="292" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#82aaff">fetch</tspan><tspan fill="#e2e2f0">(url).</tspan><tspan fill="#82aaff">then</tspan><tspan fill="#e2e2f0">(res =&gt; res.</tspan><tspan fill="#82aaff">json</tspan><tspan fill="#e2e2f0">())</tspan>
+  </text>
+  <text x="44" y="312" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  .</tspan><tspan fill="#82aaff">then</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#4fc3f7">data</tspan><tspan fill="#e2e2f0"> =&gt; {</tspan>
+  </text>
+  <text x="44" y="330" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#546e7a">    // data is your array or object</tspan>
+  </text>
+  <text x="44" y="350" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  });</tspan>
+  </text>
+  <text x="44" y="376" fill="#546e7a" font-size="11" font-family="'Fira Code',monospace">// .then() only runs when fulfilled</tspan>
+
+  <rect x="408" y="248" width="364" height="138" fill="#111125" rx="10" stroke="#f07178" stroke-width="1.5"/>
+  <text x="424" y="270" fill="#f07178" font-size="11" font-weight="700" font-family="'Fira Code',monospace">REJECTED PATH — .catch() receives error</text>
+  <text x="424" y="292" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#82aaff">fetch</tspan><tspan fill="#e2e2f0">(url).</tspan><tspan fill="#82aaff">then</tspan><tspan fill="#e2e2f0">(res =&gt; res.</tspan><tspan fill="#82aaff">json</tspan><tspan fill="#e2e2f0">())</tspan>
+  </text>
+  <text x="424" y="312" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  .</tspan><tspan fill="#82aaff">then</tspan><tspan fill="#e2e2f0">(data =&gt; { ... })</tspan>
+  </text>
+  <text x="424" y="332" font-family="'Fira Code',monospace" font-size="13">
+    <tspan fill="#e2e2f0">  .</tspan><tspan fill="#82aaff">catch</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#f78c6c">err</tspan><tspan fill="#e2e2f0"> =&gt; </tspan><tspan fill="#82aaff">console</tspan><tspan fill="#e2e2f0">.</tspan><tspan fill="#82aaff">error</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#f78c6c">err</tspan><tspan fill="#e2e2f0">));</tspan>
+  </text>
+  <text x="424" y="356" fill="#546e7a" font-size="12" font-family="'Fira Code',monospace">// Always add .catch() — fetches can fail!</text>
+  <text x="424" y="374" fill="#546e7a" font-size="11" font-family="'Fira Code',monospace">// Bad URL, no internet, server timeout</text>
+</svg>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APIs & Fetch — Guided Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ── BANNER ── -->
+<div class="top-banner">
+  <div class="banner-left">
+    <div class="banner-icon">🌐</div>
+    <div>
+      <div class="banner-title">APIs &amp; Fetch — Guided Notes</div>
+      <div class="banner-sub">Day 1 of 2 · Fetch, JSON, Promises, and DOM Rendering</div>
+    </div>
+  </div>
+  <div class="banner-right">
+    <span class="badge badge-unit">Unit 04 · APIs &amp; Fetch</span>
+    <span class="badge badge-day">Day 1</span>
+    <span class="badge badge-pts">15 pts</span>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- ════════════════════════════
+       NOTES PANEL
+  ════════════════════════════ -->
+  <div class="notes-panel">
+
+    <!-- ── Warm-Up ── -->
+    <div class="section-title">Warm-Up · Arrays Review</div>
+
+    <div class="concept">
+      <div class="concept-label">Quick Review</div>
+      <p>Last unit we built a Student Directory using an array of objects — a local array we wrote ourselves. Today we start pulling data from the internet instead. But the rendering pattern stays the same: <strong>loop → build HTML → inject</strong>.</p>
+    </div>
+
+    <!-- TODO 1 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 1</span>
+        <span class="todo-title">Warm-Up — filter the student roster</span>
+      </div>
+      <p>In the script, the <code>roster</code> array is already defined. Use <code>.filter()</code> to find all students with a GPA ≥ 3.5, then display the count in <code>#warmup-result</code>.</p>
+    </div>
+
+    <!-- TODO 2 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 2</span>
+        <span class="todo-title">Wire up the search input</span>
+      </div>
+      <p>Add an <code>input</code> event listener on <code>#warmup-search</code>. Filter <code>roster</code> by name using <code>.toLowerCase().includes()</code> and update <code>#warmup-result</code> with the matching count.</p>
+    </div>
+
+    <!-- ── What is an API ── -->
+    <div class="section-title">Section 1 · What Is an API?</div>
+
+    <div class="concept">
+      <div class="concept-label">API — Application Programming Interface</div>
+      <p>An API is a way for two programs to talk to each other. When your JavaScript asks a server for data, it's using an API.</p>
+      <p>Think of it like a restaurant: <strong>you</strong> (your code) place an order using the <strong>menu</strong> (the API docs), and the <strong>kitchen</strong> (the server) sends back food (data). You don't need to know how the kitchen works — just what to order.</p>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">JSON — JavaScript Object Notation</div>
+      <p>APIs return data in <strong>JSON</strong> format. It looks almost identical to a JavaScript object — keys in double quotes, values as strings, numbers, arrays, or nested objects.</p>
+    </div>
+
+    <pre><span class="cm">// A JSON response from an API looks like this:</span>
+{
+  <span class="str">"id"</span>: <span class="nm">1</span>,
+  <span class="str">"name"</span>: <span class="str">"Leanne Graham"</span>,
+  <span class="str">"email"</span>: <span class="str">"sincere@april.biz"</span>,
+  <span class="str">"company"</span>: {
+    <span class="str">"name"</span>: <span class="str">"Romaguera-Crona"</span>
+  }
+}</pre>
+
+    <!-- TODO 3 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 3</span>
+        <span class="todo-title">What are the two differences between JSON and a JS object?</span>
+      </div>
+      <p>In the comments below TODO 3, write the two key differences. (Hint: look at the key names and think about what's allowed as values.)</p>
+    </div>
+
+    <!-- ── fetch() ── -->
+    <div class="section-title">Section 2 · The fetch() Function</div>
+
+    <div class="concept">
+      <div class="concept-label">fetch(url) — sending a request</div>
+      <p><code>fetch(url)</code> sends an HTTP request to a server and immediately returns a <strong>Promise</strong> — a placeholder for data that will arrive in the future. Your code doesn't stop and wait; it keeps running. When the data arrives, your <code>.then()</code> callback runs.</p>
+    </div>
+
+    <!-- TODO 4 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 4</span>
+        <span class="todo-title">Fill in the blanks — fetch() syntax</span>
+      </div>
+      <p>Complete the code below by replacing each <code>___</code> with the correct keyword or method name. We'll build it step by step together.</p>
+    </div>
+
+    <pre><span class="cm">// TODO 4 — fill in each ___</span>
+<span class="nm">___</span>(<span class="str">"https://jsonplaceholder.typicode.com/users"</span>)
+  .<span class="nm">___</span>(<span class="pr">response</span> =&gt; response.<span class="nm">___</span>())
+  .<span class="nm">___</span>(<span class="pr">data</span> =&gt; {
+    <span class="fn">console</span>.<span class="fn">log</span>(data);
+  })
+  .<span class="nm">___</span>(<span class="pr">err</span> =&gt; {
+    <span class="fn">console</span>.<span class="fn">error</span>(<span class="str">"Error:"</span>, err);
+  });</pre>
+
+    <!-- ── Promises ── -->
+    <div class="section-title">Section 3 · Promises &amp; .then()</div>
+
+    <div class="concept">
+      <div class="concept-label">What is a Promise?</div>
+      <p>A <strong>Promise</strong> represents a value that isn't available yet. It has three states:</p>
+      <p>• <strong>pending</strong> — waiting for the server to respond</p>
+      <p>• <strong>fulfilled</strong> — response arrived, <code>.then()</code> runs</p>
+      <p>• <strong>rejected</strong> — something went wrong, <code>.catch()</code> runs</p>
+    </div>
+
+    <!-- TODO 5 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 5</span>
+        <span class="todo-title">Label the three Promise states in the diagram</span>
+      </div>
+      <p>Write the correct state label next to each scenario in the comments below TODO 5: (a) the fetch was just called and we're waiting, (b) the server returned data, (c) the URL was wrong and no response came back.</p>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">Why TWO .then() calls?</div>
+      <p>The first <code>.then()</code> receives the raw <strong>Response object</strong> — headers, status code, etc. — but not the data itself. Calling <code>.json()</code> on it reads and parses the body, which is itself async (another Promise).</p>
+      <p>The second <code>.then()</code> finally receives your parsed JavaScript data.</p>
+    </div>
+
+    <pre><span class="cm">// Step-by-step: what each .then() receives</span>
+<span class="fn">fetch</span>(<span class="str">"https://jsonplaceholder.typicode.com/users"</span>)
+
+  .<span class="fn">then</span>(<span class="pr">response</span> =&gt; {
+    <span class="fn">console</span>.<span class="fn">log</span>(response.<span class="pr">status</span>);  <span class="cm">// 200</span>
+    <span class="fn">console</span>.<span class="fn">log</span>(response.<span class="pr">ok</span>);      <span class="cm">// true</span>
+    <span class="kw">return</span> response.<span class="fn">json</span>();         <span class="cm">// ← returns another Promise</span>
+  })
+
+  .<span class="fn">then</span>(<span class="pr">data</span> =&gt; {
+    <span class="fn">console</span>.<span class="fn">log</span>(data);               <span class="cm">// ← your array/object ✓</span>
+  });</pre>
+
+    <!-- TODO 6 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 6</span>
+        <span class="todo-title">Write your first fetch() call</span>
+      </div>
+      <p>In the script, find TODO 6. Write a <code>fetch()</code> call to <code>"https://jsonplaceholder.typicode.com/users"</code>. Chain two <code>.then()</code> calls and <code>console.log(data)</code>. Open DevTools (F12 → Console) and verify you see an array of 10 users.</p>
+    </div>
+
+    <!-- ── Rendering to the DOM ── -->
+    <div class="section-title">Section 4 · Rendering API Data to the DOM</div>
+
+    <div class="concept">
+      <div class="concept-label">Same rendering pattern — new data source</div>
+      <p>Once you have <code>data</code> inside the second <code>.then()</code>, use the exact same pattern from last unit: loop with <code>forEach</code>, build an HTML string, and set <code>innerHTML</code>.</p>
+    </div>
+
+    <pre><span class="fn">fetch</span>(<span class="str">"https://jsonplaceholder.typicode.com/users"</span>)
+  .<span class="fn">then</span>(<span class="pr">res</span> =&gt; res.<span class="fn">json</span>())
+  .<span class="fn">then</span>(<span class="pr">users</span> =&gt; {
+    <span class="kw">const</span> <span class="pr">grid</span> = document.<span class="fn">querySelector</span>(<span class="str">"#user-grid"</span>);
+    <span class="kw">let</span> <span class="pr">html</span> = <span class="str">""</span>;
+
+    users.<span class="fn">forEach</span>(<span class="pr">user</span> =&gt; {
+      html += <span class="str">`
+        &lt;<span class="tg">div</span> class="user-card"&gt;
+          &lt;<span class="tg">div</span> class="uc-name"&gt;${user.name}&lt;/<span class="tg">div</span>&gt;
+          &lt;<span class="tg">div</span> class="uc-email"&gt;${user.email}&lt;/<span class="tg">div</span>&gt;
+        &lt;/<span class="tg">div</span>&gt;`</span>;
+    });
+
+    grid.<span class="pr">innerHTML</span> = html;
+  });</pre>
+
+    <!-- TODO 7 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 7</span>
+        <span class="todo-title">Wire the Fetch button → render user cards</span>
+      </div>
+      <p>Select <code>#fetch-btn</code> and add a <code>click</code> listener. When clicked, fetch the users from JSONPlaceholder, then render a card for each user in <code>#user-grid</code> showing their <code>name</code> and <code>email</code>. Update <code>#fetch-status</code> to <code>"Loading..."</code> before the fetch starts.</p>
+    </div>
+
+    <!-- TODO 8 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 8</span>
+        <span class="todo-title">Update status after load</span>
+      </div>
+      <p>After rendering, update <code>#fetch-status</code> to show how many users loaded: <code>"Loaded 10 users"</code>. Use template literals and <code>data.length</code> (or <code>users.length</code>) to make it dynamic.</p>
+    </div>
+
+    <!-- ── JSON.stringify ── -->
+    <div class="section-title">Section 5 · Inspecting the Raw Response</div>
+
+    <div class="concept">
+      <div class="concept-label">JSON.stringify()</div>
+      <p><code>JSON.stringify(obj, null, 2)</code> converts a JavaScript object back into a formatted JSON string. The <code>null</code> and <code>2</code> arguments tell it to indent with 2 spaces — great for reading the structure of API responses.</p>
+    </div>
+
+    <pre><span class="cm">// Convert JS object → JSON string</span>
+<span class="kw">const</span> <span class="pr">str</span> = JSON.<span class="fn">stringify</span>(data, <span class="kw">null</span>, <span class="nm">2</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(str);
+
+<span class="cm">// Convert JSON string → JS object</span>
+<span class="kw">const</span> <span class="pr">obj</span> = JSON.<span class="fn">parse</span>(str);</pre>
+
+    <!-- TODO 9 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 9</span>
+        <span class="todo-title">Display raw JSON in the viewer</span>
+      </div>
+      <p>After rendering cards, set <code>#json-viewer</code>'s <code>textContent</code> to <code>JSON.stringify(data, null, 2)</code>. Then add the class <code>"open"</code> to both <code>#json-viewer</code> and <code>#json-toggle</code> to make them visible.</p>
+    </div>
+
+    <!-- ── Error Handling ── -->
+    <div class="section-title">Section 6 · Error Handling with .catch()</div>
+
+    <div class="warn">
+      <span>⚠️</span>
+      <div>Network requests can fail — bad URL, no internet, server down. Always add <code>.catch()</code> so your app doesn't silently break.</div>
+    </div>
+
+    <pre><span class="fn">fetch</span>(<span class="str">"https://bad-url.invalid/data"</span>)
+  .<span class="fn">then</span>(<span class="pr">res</span> =&gt; res.<span class="fn">json</span>())
+  .<span class="fn">then</span>(<span class="pr">data</span> =&gt; { <span class="cm">/* ... */</span> })
+  .<span class="fn">catch</span>(<span class="pr">err</span> =&gt; {
+    <span class="fn">console</span>.<span class="fn">error</span>(<span class="str">"Fetch failed:"</span>, err.<span class="pr">message</span>);
+    <span class="cm">// update the DOM to show an error to the user</span>
+  });</pre>
+
+    <!-- TODO 10 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 10</span>
+        <span class="todo-title">Add .catch() to your fetch chain</span>
+      </div>
+      <p>Add a <code>.catch(err =&gt; { ... })</code> at the end of your fetch. Inside it, update <code>#fetch-status</code> to show <code>err.message</code> in red, and add the class <code>"open"</code> to <code>#error-display</code> with the same message.</p>
+    </div>
+
+    <!-- TODO 11 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 11</span>
+        <span class="todo-title">Test your error handler</span>
+      </div>
+      <p>Temporarily change your URL to <code>"https://fake.invalid/users"</code>, click Fetch, and confirm your error message appears. Then restore the real URL.</p>
+    </div>
+
+    <!-- ── Endpoint Selection ── -->
+    <div class="section-title">Section 7 · Multiple Endpoints</div>
+
+    <div class="concept">
+      <div class="concept-label">JSONPlaceholder Endpoints</div>
+      <p>JSONPlaceholder has several routes to explore. Each returns different data shapes — notice how the properties you need to render change.</p>
+    </div>
+
+    <pre><span class="cm">// Reading a select dropdown's current value</span>
+<span class="kw">const</span> <span class="pr">endpoint</span> = document
+  .<span class="fn">querySelector</span>(<span class="str">"#fetch-select"</span>)
+  .<span class="pr">value</span>;
+
+<span class="fn">fetch</span>(<span class="str">`https://jsonplaceholder.typicode.com${endpoint}`</span>)
+  .<span class="fn">then</span>(<span class="pr">res</span> =&gt; res.<span class="fn">json</span>())
+  .<span class="fn">then</span>(<span class="pr">data</span> =&gt; { <span class="cm">/* render */</span> });</pre>
+
+    <!-- TODO 12 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 12</span>
+        <span class="todo-title">Read the dropdown and fetch the selected endpoint</span>
+      </div>
+      <p>Update your fetch button's click handler to read <code>#fetch-select</code>'s <code>.value</code> instead of hardcoding <code>"/users"</code>. The base URL stays the same: <code>"https://jsonplaceholder.typicode.com"</code> + the value.</p>
+    </div>
+
+    <!-- TODO 13 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 13</span>
+        <span class="todo-title">Render different fields per endpoint</span>
+      </div>
+      <p>Use an <code>if / else if</code> block inside your <code>.then(data)</code> to render different card content based on the endpoint:</p>
+      <p>• <code>/users</code> → show <code>name</code> + <code>email</code></p>
+      <p>• <code>/posts</code> → show <code>title</code> (truncated to 50 chars) + <code>body</code> (truncated to 80 chars)</p>
+      <p>• <code>/todos</code> → show <code>title</code> + a completed badge: ✓ or ○</p>
+    </div>
+
+    <!-- ── Bonus ── -->
+    <div class="section-title">Bonus</div>
+
+    <div class="tip">
+      <span>💡</span>
+      <div><strong>Early finisher?</strong> Fetch a single resource by ID — e.g. <code>/users/3</code>. A single object comes back instead of an array, so you don't need <code>forEach</code>. Render it directly using dot notation.</div>
+    </div>
+
+    <!-- TODO 14 -->
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 14</span>
+        <span class="todo-title">Bonus — fetch a single user by ID</span>
+      </div>
+      <p>Add a number input (<code>#user-id-input</code>) and a button to your output panel. When clicked, fetch <code>/users/{id}</code> and render just that user's full details: name, email, phone, website, and company name.</p>
+    </div>
+
+  </div><!-- end notes-panel -->
+
+  <!-- ════════════════════════════
+       OUTPUT PANEL
+  ════════════════════════════ -->
+  <div class="output-panel">
+
+    <!-- Warm-Up -->
+    <div class="out-card">
+      <div class="out-card-header">
+        <div class="out-dot warm"></div>
+        Warm-Up · Arrays Review
+      </div>
+      <div class="out-card-body">
+        <div class="warmup-row">
+          <input class="warmup-input" id="warmup-search" type="text" placeholder="Search students by name…">
+          <button class="warmup-btn" id="warmup-btn">Filter GPA ≥ 3.5</button>
+        </div>
+        <div id="warmup-result" class="empty-hint">// complete TODOs 1–2</div>
+      </div>
+    </div>
+
+    <!-- Fetch Controls -->
+    <div class="out-card">
+      <div class="out-card-header">
+        <div class="out-dot fetch"></div>
+        Fetch Controls
+      </div>
+      <div class="out-card-body">
+        <div class="fetch-row">
+          <select class="fetch-select" id="fetch-select">
+            <option value="/users">/users</option>
+            <option value="/posts">/posts</option>
+            <option value="/todos">/todos</option>
+          </select>
+          <button class="fetch-btn" id="fetch-btn">▶ Fetch</button>
+        </div>
+        <div id="fetch-status" class="empty-hint">// complete TODO 7 and click Fetch</div>
+      </div>
+    </div>
+
+    <!-- Render Output -->
+    <div class="out-card">
+      <div class="out-card-header">
+        <div class="out-dot render"></div>
+        Rendered Data
+      </div>
+      <div class="out-card-body">
+        <div id="user-grid">
+          <div class="empty-hint">// data renders here after TODO 7</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JSON Viewer -->
+    <div class="out-card">
+      <div class="out-card-header">
+        <div class="out-dot fetch"></div>
+        Raw JSON Response
+      </div>
+      <div class="out-card-body">
+        <button id="json-toggle">▾ show raw JSON</button>
+        <div id="json-viewer"></div>
+        <div id="error-display"></div>
+      </div>
+    </div>
+
+  </div><!-- end output-panel -->
+
+</div><!-- end main -->
+
+<script src="script.js"></script>
+</body>
+</html>
