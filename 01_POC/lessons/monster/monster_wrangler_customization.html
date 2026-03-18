@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monster Wrangler — Customization Day</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0a0a0f;
+    --panel:     #111118;
+    --border:    #2a2a3a;
+    --accent:    #ff4466;
+    --blue:      #14b0eb;
+    --green:     #57c92f;
+    --purple:    #e249f3;
+    --yellow:    #f39d14;
+    --white:     #e8e8f0;
+    --dim:       #6a6a8a;
+    --code-bg:   #0d0d14;
+    --glow-r:    rgba(255,68,102,0.15);
+    --glow-b:    rgba(20,176,235,0.15);
+    --glow-g:    rgba(87,201,47,0.15);
+    --glow-p:    rgba(226,73,243,0.15);
+    --glow-y:    rgba(243,157,20,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Scanline overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.07) 2px,
+      rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    text-align: center;
+    padding: 48px 24px 36px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-monsters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .monster-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .monster-dot:nth-child(1) { background: var(--blue);   animation-delay: 0s;   box-shadow: 0 0 10px var(--blue); }
+  .monster-dot:nth-child(2) { background: var(--green);  animation-delay: 0.3s; box-shadow: 0 0 10px var(--green); }
+  .monster-dot:nth-child(3) { background: var(--purple); animation-delay: 0.6s; box-shadow: 0 0 10px var(--purple); }
+  .monster-dot:nth-child(4) { background: var(--yellow); animation-delay: 0.9s; box-shadow: 0 0 10px var(--yellow); }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1);    opacity: 1; }
+    50%       { transform: scale(1.3); opacity: 0.7; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+  }
+
+  h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 22px;
+    color: var(--accent);
+    text-shadow: 0 0 20px rgba(255,68,102,0.5), 3px 3px 0 #660022;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    animation: flicker 8s infinite;
+  }
+
+  @keyframes flicker {
+    0%, 95%, 100% { opacity: 1; }
+    96%            { opacity: 0.85; }
+    97%            { opacity: 1; }
+    98%            { opacity: 0.9; }
+  }
+
+  .subtitle {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .meta-row span { color: var(--white); }
+
+  /* ---- INTRO BANNER ---- */
+  .intro {
+    max-width: 860px;
+    margin: 32px auto;
+    padding: 20px 28px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.8;
+  }
+
+  .intro strong { color: var(--white); }
+  .intro .pts { color: var(--accent); font-family: 'Press Start 2P', monospace; font-size: 10px; }
+
+  /* ---- CHALLENGE GRID ---- */
+  .challenges {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    display: grid;
+    gap: 32px;
+  }
+
+  /* ---- SINGLE CHALLENGE CARD ---- */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+  }
+
+  .card:hover { box-shadow: 0 4px 32px rgba(0,0,0,0.5); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-num {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 44px;
+    text-align: center;
+  }
+
+  .card-title-block { flex: 1; }
+
+  .card-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+
+  .card-location {
+    font-size: 11px;
+    color: var(--dim);
+  }
+
+  .card-location code {
+    background: var(--code-bg);
+    padding: 1px 6px;
+    border: 1px solid var(--border);
+    color: var(--blue);
+    font-size: 11px;
+  }
+
+  .card-meta {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .difficulty {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    display: block;
+    margin-bottom: 4px;
+    color: var(--dim);
+  }
+
+  .stars { font-size: 13px; display: block; }
+
+  .card-body { padding: 20px 24px; }
+
+  .card-body p {
+    color: #aaa;
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .card-body p strong { color: var(--white); }
+
+  /* Steps list */
+  .steps {
+    list-style: none;
+    counter-reset: step;
+    margin-bottom: 20px;
+  }
+
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #ccc;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    background: var(--code-bg);
+    border: 1px solid;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Color the step counter per card accent */
+  .c1 .steps li::before { border-color: var(--purple); color: var(--purple); }
+  .c2 .steps li::before { border-color: var(--yellow); color: var(--yellow); }
+  .c3 .steps li::before { border-color: var(--blue);   color: var(--blue); }
+  .c4 .steps li::before { border-color: var(--green);  color: var(--green); }
+
+  /* Code blocks */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 16px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  pre .label {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 9px;
+    font-family: 'Press Start 2P', monospace;
+    color: var(--dim);
+    letter-spacing: 1px;
+  }
+
+  code {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+
+  .kw   { color: #ff79c6; }
+  .fn   { color: #50fa7b; }
+  .str  { color: #f1fa8c; }
+  .num  { color: #bd93f9; }
+  .com  { color: #6272a4; font-style: italic; }
+  .cls  { color: #8be9fd; }
+  .var  { color: #ffb86c; }
+  .new  { color: var(--green); }
+  .old  { color: var(--accent); text-decoration: line-through; opacity: 0.6; }
+
+  /* Resource link box */
+  .resource-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: var(--code-bg);
+    border: 1px solid;
+    margin-bottom: 16px;
+    font-size: 12px;
+  }
+
+  .resource-box .icon { font-size: 20px; flex-shrink: 0; }
+  .resource-box a { color: var(--blue); text-decoration: none; }
+  .resource-box a:hover { text-decoration: underline; }
+  .resource-box p { margin: 0; color: #aaa; }
+
+  /* Card color accents */
+  .c1 { border-top: 3px solid var(--purple); }
+  .c2 { border-top: 3px solid var(--yellow); }
+  .c3 { border-top: 3px solid var(--blue);   }
+  .c4 { border-top: 3px solid var(--green);  }
+
+  .c1 .card-num { color: var(--purple); text-shadow: 0 0 12px var(--purple); }
+  .c2 .card-num { color: var(--yellow); text-shadow: 0 0 12px var(--yellow); }
+  .c3 .card-num { color: var(--blue);   text-shadow: 0 0 12px var(--blue);   }
+  .c4 .card-num { color: var(--green);  text-shadow: 0 0 12px var(--green);  }
+
+  .c1 .card-title { color: var(--purple); }
+  .c2 .card-title { color: var(--yellow); }
+  .c3 .card-title { color: var(--blue);   }
+  .c4 .card-title { color: var(--green);  }
+
+  .c1 .resource-box { border-color: var(--purple); background: var(--glow-p); }
+  .c2 .resource-box { border-color: var(--yellow); background: var(--glow-y); }
+  .c3 .resource-box { border-color: var(--blue);   background: var(--glow-b); }
+  .c4 .resource-box { border-color: var(--green);  background: var(--glow-g); }
+
+  /* Tip callout */
+  .tip {
+    border-left: 3px solid var(--dim);
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.02);
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 16px;
+  }
+  .tip strong { color: var(--white); }
+
+  /* Challenge complete checklist */
+  .checklist {
+    list-style: none;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed var(--border);
+    margin-top: 16px;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #aaa;
+    padding: 3px 0;
+  }
+
+  .checklist li::before {
+    content: '□';
+    color: var(--dim);
+    font-size: 14px;
+  }
+
+  /* Submission footer */
+  footer {
+    max-width: 860px;
+    margin: 0 auto 60px;
+    padding: 24px 28px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+    text-align: center;
+  }
+
+  footer h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  footer p { color: #aaa; font-size: 12px; margin-bottom: 6px; }
+  footer .pts { color: var(--accent); font-family: 'Press Start 2P', monospace; font-size: 11px; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    h1 { font-size: 14px; }
+    .card-header { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-monsters">
+    <div class="monster-dot"></div>
+    <div class="monster-dot"></div>
+    <div class="monster-dot"></div>
+    <div class="monster-dot"></div>
+  </div>
+  <h1>MONSTER WRANGLER</h1>
+  <p class="subtitle">Customization Day</p>
+  <div class="meta-row">
+    <div>Date: <span>March 13, 2025</span></div>
+    <div>Unit: <span>3 — OOP + Game Projects</span></div>
+    <div>Points: <span>15 pts</span></div>
+    <div>Period: <span>86 min</span></div>
+  </div>
+</header>
+
+<!-- INTRO -->
+<div class="intro">
+  <strong>Your game works. Now make it yours.</strong><br><br>
+  Today you'll extend Monster Wrangler with <strong>two or more</strong> of the four customizations below.
+  Each one targets a different part of the codebase — artwork, scoring, player mechanics, and the HUD.
+  Complete any two for full credit; complete all four for bragging rights.<br><br>
+  <span class="pts">★ REQUIRED:</span> Challenge 1 (New Monster) must be one of your two choices.
+  Every student creates a custom sprite today.
+</div>
+
+<!-- CHALLENGES -->
+<div class="challenges">
+
+  <!-- ========== CARD 1: NEW MONSTER ========== -->
+  <div class="card c1">
+    <div class="card-header">
+      <div class="card-num">1</div>
+      <div class="card-title-block">
+        <div class="card-title">NEW MONSTER TYPE</div>
+        <div class="card-location">
+          Touches: <code>Game.__init__</code> &nbsp;
+          <code>Game.draw</code> &nbsp;
+          <code>Game.start_new_round</code>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span class="difficulty">DIFFICULTY</span>
+        <span class="stars">⭐⭐⭐</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>
+        The game currently has four monster colors: blue, green, purple, and yellow.
+        You're going to create a <strong>fifth monster</strong> — design the sprite yourself,
+        then wire it into the game so it spawns, bounces, and can be caught like the others.
+      </p>
+
+      <div class="resource-box c1">
+        <span class="icon">🎨</span>
+        <div>
+          <strong>Piskel — Free Browser Sprite Editor</strong><br>
+          <p>Open an existing monster PNG, recolor it, and export as a new PNG. No account required.</p>
+          <a href="https://www.piskelapp.com" target="_blank">→ piskelapp.com</a>
+        </div>
+      </div>
+
+      <ul class="steps">
+        <li>
+          Go to <strong>piskelapp.com</strong>. Click <em>Create Sprite</em>.
+          Import one of the existing monster PNGs (File → Import from disk), recolor or modify it,
+          then export as <code>red_monster.png</code> (or your own color name).
+          Save the file in the same folder as your Python project.
+        </li>
+        <li>
+          In <code>Game.__init__</code>, load your new image and add it to the images list.
+          Your new monster will be <strong>type 4</strong>.
+<pre><code><span class="com"># In Game.__init__ — add after yellow_image</span>
+<span class="var">red_image</span> = pygame.image.<span class="fn">load</span>(<span class="str">"red_monster.png"</span>)
+<span class="var">self</span>.target_monster_images = [
+    blue_image, green_image, purple_image, yellow_image,
+    <span class="new">red_image  # index 4 → your new monster</span>
+]
+<span class="com"># Update the random range to include type 4</span>
+<span class="var">self</span>.target_monster_type = random.<span class="fn">randint</span>(<span class="old">0, 3</span>)
+<span class="var">self</span>.target_monster_type = random.<span class="fn">randint</span>(<span class="new">0, 4</span>)</code><span class="label">__init__</span></pre>
+        </li>
+        <li>
+          In <code>Game.draw</code>, add your new monster's color to the <code>colors</code> list
+          so the HUD border and outline box show the right color.
+<pre><code><span class="com"># In Game.draw — update the colors list</span>
+<span class="var">RED</span> = (<span class="num">220</span>, <span class="num">50</span>, <span class="num">50</span>)   <span class="com"># or pick your own RGB</span>
+<span class="var">colors</span> = [BLUE, GREEN, PURPLE, YELLOW, <span class="new">RED</span>]</code><span class="label">draw</span></pre>
+        </li>
+        <li>
+          In <code>Game.start_new_round</code>, add a fifth spawn line inside the loop
+          so your new monster appears each round.
+<pre><code><span class="com"># In Game.start_new_round — add inside the for loop</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(self.round_number):
+    self.monster_group.<span class="fn">add</span>(Monster(..., self.target_monster_images[<span class="num">0</span>], <span class="num">0</span>))
+    self.monster_group.<span class="fn">add</span>(Monster(..., self.target_monster_images[<span class="num">1</span>], <span class="num">1</span>))
+    self.monster_group.<span class="fn">add</span>(Monster(..., self.target_monster_images[<span class="num">2</span>], <span class="num">2</span>))
+    self.monster_group.<span class="fn">add</span>(Monster(..., self.target_monster_images[<span class="num">3</span>], <span class="num">3</span>))
+    <span class="new">self.monster_group.add(Monster(..., self.target_monster_images[4], 4))</span></code><span class="label">start_new_round</span></pre>
+        </li>
+      </ul>
+
+      <ul class="checklist">
+        <li>New PNG file saved in project folder</li>
+        <li>Red (or custom) monster appears and bounces in the play area</li>
+        <li>HUD border and outline box change to your color when red is the target</li>
+        <li>Catching the red monster scores points and removes it</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ========== CARD 2: SCORE FORMULA ========== -->
+  <div class="card c2">
+    <div class="card-header">
+      <div class="card-num">2</div>
+      <div class="card-title-block">
+        <div class="card-title">CUSTOM SCORE FORMULA</div>
+        <div class="card-location">
+          Touches: <code>Game.start_new_round</code> &nbsp;
+          <code>Game.check_collisions</code>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span class="difficulty">DIFFICULTY</span>
+        <span class="stars">⭐</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>
+        Right now the game uses two scoring moments:
+        a flat <strong>100 × round</strong> per catch and a time-based
+        <strong>round completion bonus</strong>. You'll redesign both to create
+        a scoring system that feels like your own.
+      </p>
+
+      <div class="tip">
+        <strong>Hint:</strong> The current bonus formula is
+        <code>int(10000 * round_number / (1 + round_time))</code>.
+        A fast round on round 5 is worth a lot; a slow round on round 1 is worth almost nothing.
+        Think about what you want to reward before you start changing numbers.
+      </div>
+
+      <ul class="steps">
+        <li>
+          Change the <strong>per-catch score</strong> in <code>check_collisions</code>.
+          The current formula scales with round number — you could make it flat,
+          add a streak multiplier, or scale with time remaining instead.
+<pre><code><span class="com"># In check_collisions — find this line:</span>
+<span class="var">self</span>.score += <span class="num">100</span> * <span class="var">self</span>.round_number  <span class="com"># original</span>
+
+<span class="com"># Ideas to try:</span>
+<span class="var">self</span>.score += <span class="num">500</span>                         <span class="com"># flat 500 per catch</span>
+<span class="var">self</span>.score += <span class="num">200</span> * <span class="var">self</span>.round_number      <span class="com"># double the scaling</span>
+<span class="var">self</span>.score += <span class="fn">max</span>(<span class="num">50</span>, <span class="num">300</span> - <span class="var">self</span>.round_time * <span class="num">5</span>) <span class="com"># speed bonus per catch</span></code><span class="label">check_collisions</span></pre>
+        </li>
+        <li>
+          Change the <strong>round completion bonus</strong> in <code>start_new_round</code>.
+          Try adjusting the constants, or replace the formula entirely.
+<pre><code><span class="com"># In start_new_round — find this line:</span>
+<span class="var">self</span>.score += <span class="fn">int</span>(<span class="num">10000</span> * <span class="var">self</span>.round_number / (<span class="num">1</span> + <span class="var">self</span>.round_time))
+
+<span class="com"># Ideas to try:</span>
+<span class="var">self</span>.score += <span class="fn">max</span>(<span class="num">0</span>, <span class="num">5000</span> - <span class="var">self</span>.round_time * <span class="num">25</span>)  <span class="com"># flat ceiling</span>
+<span class="var">self</span>.score += <span class="var">self</span>.round_number * <span class="num">1000</span>             <span class="com"># ignore time entirely</span>
+<span class="var">self</span>.score += <span class="fn">int</span>(<span class="num">20000</span> * <span class="var">self</span>.round_number / (<span class="num">1</span> + <span class="var">self</span>.round_time))</code><span class="label">start_new_round</span></pre>
+        </li>
+      </ul>
+
+      <ul class="checklist">
+        <li>Per-catch score is different from the original 100 × round</li>
+        <li>Round completion bonus uses a formula you designed</li>
+        <li>Score on HUD reflects your changes as you play</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ========== CARD 3: WARP UPGRADE ========== -->
+  <div class="card c3">
+    <div class="card-header">
+      <div class="card-num">3</div>
+      <div class="card-title-block">
+        <div class="card-title">WARP UPGRADE</div>
+        <div class="card-location">
+          Touches: <code>Player.warp</code> &nbsp;
+          <code>Game.start_new_round</code>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span class="difficulty">DIFFICULTY</span>
+        <span class="stars">⭐⭐</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>
+        Currently, SPACE warps the player to the <strong>exact center-bottom</strong> of the screen
+        every time. This is safe but predictable. You'll upgrade the warp so it teleports the player
+        to a <strong>random safe X position</strong> along the bottom — making it more exciting
+        and less of a guaranteed escape hatch.
+      </p>
+
+      <ul class="steps">
+        <li>
+          In <code>Player.warp</code>, replace the fixed <code>centerx</code> with a
+          random x position. The player must stay inside the window bounds.
+<pre><code><span class="kw">def</span> <span class="fn">warp</span>(self):
+    <span class="kw">if</span> self.warps > <span class="num">0</span>:
+        self.warps -= <span class="num">1</span>
+        self.warp_sound.<span class="fn">play</span>()
+        self.rect.bottom = WINDOW_HEIGHT
+
+        <span class="com"># Original: always center</span>
+        <span class="old"># (no x change — player keeps current x)</span>
+
+        <span class="com"># New: random safe x position</span>
+        <span class="new">self.rect.centerx = random.randint(</span>
+        <span class="new">    self.rect.width // 2,</span>
+        <span class="new">    WINDOW_WIDTH - self.rect.width // 2</span>
+        <span class="new">)</span></code><span class="label">Player.warp</span></pre>
+        </li>
+        <li>
+          Adjust the starting warp count and the warp refill per round to match your new design.
+          More warps = easier game; fewer = more tension.
+<pre><code><span class="com"># In Player.__init__</span>
+self.warps = <span class="new">3</span>   <span class="com"># was 2 — try different starting counts</span>
+
+<span class="com"># In Game.start_new_round</span>
+self.player.warps = <span class="new">3</span>   <span class="com"># refill to match your starting value</span></code><span class="label">__init__ + start_new_round</span></pre>
+        </li>
+      </ul>
+
+      <div class="tip">
+        <strong>Challenge extension:</strong> After the warp, flash the player's rect a different
+        color for half a second using <code>pygame.time.get_ticks()</code> to track elapsed time.
+      </div>
+
+      <ul class="checklist">
+        <li>SPACE warps to a random x position (not always center)</li>
+        <li>Player still stays within window bounds after warp</li>
+        <li>Warp count and refill match your chosen starting value</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ========== CARD 4: HIGH SCORE ========== -->
+  <div class="card c4">
+    <div class="card-header">
+      <div class="card-num">4</div>
+      <div class="card-title-block">
+        <div class="card-title">HIGH SCORE TRACKER</div>
+        <div class="card-location">
+          Touches: <code>Game.__init__</code> &nbsp;
+          <code>Game.reset_game</code> &nbsp;
+          <code>Game.draw</code>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span class="difficulty">DIFFICULTY</span>
+        <span class="stars">⭐⭐</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>
+        The game currently forgets your best score the moment you reset.
+        You'll add a <strong>persistent high score</strong> that survives game resets —
+        it only goes up, never down — and display it in the HUD alongside the current score.
+      </p>
+
+      <ul class="steps">
+        <li>
+          Add <code>self.high_score</code> to <code>Game.__init__</code>.
+          It starts at 0 and <em>never</em> gets reset to 0 — that's the key.
+<pre><code><span class="com"># In Game.__init__ — add with the other score values</span>
+self.score = <span class="num">0</span>
+<span class="new">self.high_score = 0</span></code><span class="label">__init__</span></pre>
+        </li>
+        <li>
+          In <code>Game.reset_game</code>, update the high score <em>before</em>
+          resetting the current score to 0.
+<pre><code><span class="kw">def</span> <span class="fn">reset_game</span>(self):
+    <span class="com"># Save the high score BEFORE wiping the current score</span>
+    <span class="new">if self.score > self.high_score:</span>
+    <span class="new">    self.high_score = self.score</span>
+
+    self.score = <span class="num">0</span>          <span class="com"># this resets — high_score does not</span>
+    self.round_number = <span class="num">0</span>
+    self.player.lives = <span class="num">5</span>
+    self.player.warps = <span class="num">2</span>
+    self.player.<span class="fn">reset</span>()
+    self.<span class="fn">start_new_round</span>()</code><span class="label">reset_game</span></pre>
+        </li>
+        <li>
+          In <code>Game.draw</code>, build a new text surface for the high score
+          and blit it to the HUD. Pick a position that doesn't overlap existing text.
+<pre><code><span class="com"># In Game.draw — add with the other text surfaces</span>
+<span class="var">hi_text</span>  = self.font.<span class="fn">render</span>(<span class="str">"Best: " + str(self.high_score)</span>, True, YELLOW)
+<span class="var">hi_rect</span>  = hi_text.<span class="fn">get_rect</span>()
+<span class="var">hi_rect</span>.topright = (WINDOW_WIDTH - <span class="num">10</span>, <span class="num">65</span>)   <span class="com"># below Warps</span>
+
+<span class="com"># Don't forget to blit it!</span>
+display_surface.<span class="fn">blit</span>(hi_text, hi_rect)</code><span class="label">draw</span></pre>
+        </li>
+      </ul>
+
+      <ul class="checklist">
+        <li>"Best: XXXX" appears in the HUD</li>
+        <li>High score does not reset when the game resets</li>
+        <li>High score updates correctly when you beat your previous best</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- SUBMISSION FOOTER -->
+<footer>
+  <h3>📤 SUBMISSION</h3>
+  <p>Complete <strong>at least 2 challenges</strong> (Challenge 1 required + one more).</p>
+  <p>Push your updated <code>monster_wrangler.py</code> and any new PNG files to GitHub.</p>
+  <p>Submit the GitHub link on Canvas.</p>
+  <br>
+  <span class="pts">15 POINTS</span>
+</footer>
+
+</body>
+</html>
