@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>U4B1 — Exceptions & List Comprehensions | Guided Notes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Syne:wght@400;600;700;800&display=swap');
+
+    :root {
+      --bg:            #0a0a1a;
+      --surface:       #12122a;
+      --surface-light: #1a1a38;
+      --border:        #2a2a4a;
+      --text:          #ccd6f6;
+      --text-muted:    #8892b0;
+      --text-dim:      #5a6070;
+      --accent:        #e94560;
+      --green:         #4ade80;
+      --blue:          #61afef;
+      --purple:        #c678dd;
+      --yellow:        #ffd700;
+      --orange:        #e5a46b;
+      --teal:          #56b6c2;
+      --accent-glow:   rgba(233,69,96,0.15);
+      --green-glow:    rgba(74,222,128,0.12);
+      --blue-glow:     rgba(97,175,239,0.12);
+      --purple-glow:   rgba(198,120,221,0.12);
+      --yellow-glow:   rgba(255,215,0,0.12);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .container { max-width: 920px; margin: 0 auto; }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--accent);
+      position: relative;
+    }
+    .lesson-tag {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+    }
+    header h1 span { color: var(--accent); }
+    .header-meta {
+      margin-top: 0.75rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .header-meta strong { color: var(--text); }
+
+    /* ── DAY BANNER ── */
+    .day-banner {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: linear-gradient(135deg, #1a1038, #12122a);
+      border: 1px solid var(--purple);
+      border-left: 4px solid var(--purple);
+      border-radius: 10px;
+      padding: 0.9rem 1.25rem;
+      margin: 2rem 0 1.5rem;
+    }
+    .day-banner.day2 { border-color: var(--teal); border-left-color: var(--teal); background: linear-gradient(135deg, #0d1f1f, #12122a); }
+    .day-badge {
+      background: var(--purple);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .day-banner.day2 .day-badge { background: var(--teal); }
+    .day-banner h2 { font-size: 1.15rem; font-weight: 700; color: #fff; }
+    .day-banner span { color: var(--text-muted); font-size: 0.85rem; margin-left: auto; white-space: nowrap; }
+
+    /* ── SECTION ── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-num {
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-header h2 { font-size: 1.1rem; font-weight: 700; }
+    .section-time {
+      margin-left: auto;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    p { color: var(--text-muted); margin-bottom: 0.75rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      font-family: 'Fira Code', monospace;
+      background: #0d0d1f;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      font-size: 0.85rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+      color: var(--text);
+    }
+    .kw  { color: var(--purple); font-weight: 600; }
+    .fn  { color: var(--blue); }
+    .st  { color: var(--green); }
+    .cm  { color: var(--text-dim); font-style: italic; }
+    .nm  { color: var(--orange); }
+    .op  { color: var(--accent); }
+    .cls { color: var(--yellow); }
+    .ex  { color: #ff7b72; font-weight: 600; }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      background: rgba(97,175,239,0.12);
+      color: var(--blue);
+      padding: 0.15em 0.45em;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background: var(--blue-glow);
+      border: 1px solid rgba(97,175,239,0.25);
+      border-left: 3px solid var(--blue);
+      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+      margin: 0.75rem 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .info-box.warn {
+      background: rgba(255,215,0,0.08);
+      border-color: rgba(255,215,0,0.25);
+      border-left-color: var(--yellow);
+    }
+    .info-box.tip {
+      background: var(--green-glow);
+      border-color: rgba(74,222,128,0.25);
+      border-left-color: var(--green);
+    }
+    .info-box strong { color: var(--text); }
+
+    /* ── DIAGRAM / TABLE ── */
+    .exception-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 0.75rem 0;
+    }
+    .exception-table th {
+      background: var(--surface-light);
+      color: var(--text);
+      font-weight: 700;
+      text-align: left;
+      padding: 0.55rem 0.85rem;
+      border: 1px solid var(--border);
+    }
+    .exception-table td {
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    .exception-table td:first-child {
+      font-family: 'Fira Code', monospace;
+      color: #ff7b72;
+      font-size: 0.82rem;
+    }
+    .exception-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+    /* ── FLOW DIAGRAM ── */
+    .flow-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      margin: 1rem 0;
+      font-size: 0.83rem;
+    }
+    .flow-box {
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 1.2rem;
+      text-align: center;
+      font-family: 'Fira Code', monospace;
+      width: 100%;
+      max-width: 360px;
+    }
+    .flow-box.try-box   { border-color: var(--blue);   background: var(--blue-glow);   color: var(--blue); }
+    .flow-box.exc-box   { border-color: var(--accent);  background: var(--accent-glow);  color: var(--accent); }
+    .flow-box.else-box  { border-color: var(--green);  background: var(--green-glow);  color: var(--green); }
+    .flow-box.fin-box   { border-color: var(--yellow); background: var(--yellow-glow); color: var(--yellow); }
+    .flow-arrow { color: var(--text-dim); font-size: 1.2rem; line-height: 1; padding: 0.15rem 0; }
+    .flow-label { font-size: 0.75rem; color: var(--text-dim); margin: -0.1rem 0; }
+
+    /* ── COMPARISON ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 0.75rem 0;
+    }
+    @media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-card {
+      background: #0d0d1f;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .compare-card .card-label {
+      padding: 0.4rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .compare-card.loop-card .card-label  { background: rgba(97,175,239,0.15);  color: var(--blue); }
+    .compare-card.comp-card .card-label  { background: rgba(74,222,128,0.15);  color: var(--green); }
+    .compare-card pre { border: none; border-radius: 0; margin: 0; background: transparent; }
+
+    /* ── TODO BLOCK ── */
+    .todo-block {
+      background: var(--accent-glow);
+      border: 1px solid rgba(233,69,96,0.3);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-top: 1rem;
+    }
+    .todo-block h3 {
+      color: var(--accent);
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .todo-block p { font-size: 0.88rem; margin-bottom: 0.4rem; }
+    .todo-block ol { color: var(--text-muted); font-size: 0.88rem; padding-left: 1.4rem; }
+    .todo-block ol li { margin-bottom: 0.25rem; }
+    .todo-block code { background: rgba(255,255,255,0.08); color: var(--orange); }
+
+    /* ── LIST COMP SYNTAX ── */
+    .syntax-box {
+      background: #0d0d1f;
+      border: 1px solid rgba(255,215,0,0.3);
+      border-radius: 10px;
+      padding: 1.1rem 1.3rem;
+      margin: 0.85rem 0;
+      text-align: center;
+    }
+    .syntax-box .syntax-line {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .syntax-box .syntax-labels {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .syn-label { font-size: 0.75rem; color: var(--text-dim); text-align: center; }
+    .syn-label span { display: block; font-family: 'Fira Code', monospace; font-weight: 600; }
+    .syn-label span.c-expr   { color: var(--green); }
+    .syn-label span.c-var    { color: var(--blue); }
+    .syn-label span.c-iter   { color: var(--purple); }
+    .syn-label span.c-cond   { color: var(--yellow); }
+
+    /* ── EXIT TICKET ── */
+    .exit-ticket {
+      background: linear-gradient(135deg, #1a1038, #0d0d1f);
+      border: 1px solid rgba(198,120,221,0.4);
+      border-radius: 12px;
+      padding: 1.5rem 1.6rem;
+      margin-top: 2rem;
+    }
+    .exit-ticket .section-header { border-bottom-color: rgba(198,120,221,0.3); }
+    .exit-ticket .section-num { background: var(--purple); }
+    .exit-ticket .todo-block {
+      background: var(--purple-glow);
+      border-color: rgba(198,120,221,0.3);
+      border-left-color: var(--purple);
+    }
+    .exit-ticket .todo-block h3 { color: var(--purple); }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="lesson-tag">U4B1 · Guided Notes</div>
+    <h1>Exceptions &amp; <span>List Comprehensions</span></h1>
+    <div class="header-meta">
+      <span>📅 <strong>Apr 6–7</strong></span>
+      <span>⏱ <strong>11:01 AM – 12:27 PM</strong> (86 min each)</span>
+      <span>📌 <strong>PCEP PE1 4.3 + PE1 3.1.8</strong></span>
+      <span>💾 Submit on GitHub → Canvas <strong>(5 pts)</strong></span>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- DAY 1 — EXCEPTIONS -->
+  <!-- ══════════════════════════════════════════════════════ -->
+
+  <div class="day-banner">
+    <div class="day-badge">Day 1 · Apr 6</div>
+    <h2>Exceptions &amp; Error Handling</h2>
+    <span>try · except · else · finally · raise</span>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>What Is an Exception?</h2>
+      <span class="section-time">~10 min</span>
+    </div>
+
+    <p>When Python encounters something it can't do — dividing by zero, opening a missing file, converting a word to a number — it <strong>raises an exception</strong> and stops executing. Without handling, your program crashes.</p>
+
+    <pre><span class="cm"># Run this — what happens?</span>
+<span class="fn">int</span>(<span class="st">"dragon"</span>)      <span class="cm"># ValueError: invalid literal for int()</span>
+<span class="nm">10</span> <span class="op">/</span> <span class="nm">0</span>              <span class="cm"># ZeroDivisionError: division by zero</span>
+my_list[<span class="nm">99</span>]        <span class="cm"># IndexError: list index out of range</span></pre>
+
+    <p>Exceptions aren't bugs — they're Python's way of <em>communicating</em> what went wrong. Our job is to <strong>catch</strong> them so the game (or program) keeps running.</p>
+
+    <table class="exception-table">
+      <thead>
+        <tr><th>Exception</th><th>Triggered When…</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ValueError</td><td>Right type, wrong value</td><td><code>int("hello")</code></td></tr>
+        <tr><td>TypeError</td><td>Wrong type entirely</td><td><code>"hp" + 100</code></td></tr>
+        <tr><td>ZeroDivisionError</td><td>Dividing by zero</td><td><code>score / 0</code></td></tr>
+        <tr><td>IndexError</td><td>List index doesn't exist</td><td><code>party[10]</code></td></tr>
+        <tr><td>KeyError</td><td>Dict key not found</td><td><code>stats["mana"]</code></td></tr>
+        <tr><td>FileNotFoundError</td><td>File path doesn't exist</td><td><code>open("save.txt")</code></td></tr>
+        <tr><td>NameError</td><td>Variable not defined</td><td><code>print(dragon)</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="todo-block">
+      <h3>⚔️ TODO 1 — Crash the Program (on purpose)</h3>
+      <p>In your starter file, try three of the crashes above. Run it, read the full traceback, and answer the comment questions: <em>What type of exception? What line?</em></p>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2><code>try</code> / <code>except</code> — The Basics</h2>
+      <span class="section-time">~10 min</span>
+    </div>
+
+    <p>Wrap risky code in a <code>try</code> block. If an exception fires, Python jumps to the matching <code>except</code> block instead of crashing.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-box try-box">try: (risky code runs here)</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-label">exception raised?</div>
+      <div class="flow-arrow">↓ yes</div>
+      <div class="flow-box exc-box">except ExceptionType: (handle it)</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-label">program continues normally</div>
+    </div>
+
+    <pre><span class="cm"># Basic structure</span>
+<span class="kw">try</span>:
+    raw <span class="op">=</span> <span class="fn">input</span>(<span class="st">"Enter your hero's level: "</span>)
+    level <span class="op">=</span> <span class="fn">int</span>(raw)          <span class="cm"># could raise ValueError</span>
+    <span class="fn">print</span>(<span class="st">f"Level </span><span class="op">{</span>level<span class="op">}</span><span class="st"> hero ready!"</span>)
+<span class="kw">except</span> <span class="ex">ValueError</span>:
+    <span class="fn">print</span>(<span class="st">"Invalid! Please enter a number."</span>)
+
+<span class="cm"># Catching ANY exception (use sparingly — too broad)</span>
+<span class="kw">try</span>:
+    risky_operation()
+<span class="kw">except</span> <span class="ex">Exception</span> <span class="kw">as</span> e:
+    <span class="fn">print</span>(<span class="st">f"Something went wrong: </span><span class="op">{</span>e<span class="op">}</span><span class="st">"</span>)</pre>
+
+    <div class="info-box warn">
+      <strong>⚠️ Avoid bare <code>except:</code></strong> — It catches <em>everything</em>, including keyboard interrupts and system exits. Always name at least <code>Exception</code>.
+    </div>
+
+    <div class="todo-block">
+      <h3>⚔️ TODO 2 — Safe Level Input</h3>
+      <ol>
+        <li>Write a <code>try/except ValueError</code> block that asks for a hero's level</li>
+        <li>If valid: print <code>"Welcome, Level X hero!"</code></li>
+        <li>If invalid: print <code>"That's not a valid level."</code></li>
+        <li>Test by running twice — once with a number, once with text</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Multiple <code>except</code> Clauses</h2>
+      <span class="section-time">~10 min</span>
+    </div>
+
+    <p>You can handle different exceptions differently by stacking <code>except</code> blocks. Python tries them top to bottom — first match wins.</p>
+
+    <pre><span class="kw">def</span> <span class="fn">get_party_member</span>(party, index):
+    <span class="kw">try</span>:
+        index <span class="op">=</span> <span class="fn">int</span>(index)        <span class="cm"># ValueError if not a number</span>
+        <span class="kw">return</span> party[index]        <span class="cm"># IndexError if out of range</span>
+    <span class="kw">except</span> <span class="ex">ValueError</span>:
+        <span class="fn">print</span>(<span class="st">"Index must be a number."</span>)
+    <span class="kw">except</span> <span class="ex">IndexError</span>:
+        <span class="fn">print</span>(<span class="st">"No party member at that slot."</span>)
+
+party <span class="op">=</span> [<span class="st">"Aria"</span>, <span class="st">"Brom"</span>, <span class="st">"Caela"</span>]
+<span class="fn">get_party_member</span>(party, <span class="st">"two"</span>)   <span class="cm"># ValueError</span>
+<span class="fn">get_party_member</span>(party, <span class="nm">99</span>)     <span class="cm"># IndexError</span>
+
+<span class="cm"># Catching multiple in one line:</span>
+<span class="kw">except</span> (<span class="ex">ValueError</span>, <span class="ex">TypeError</span>):
+    <span class="fn">print</span>(<span class="st">"Bad input type or value."</span>)</pre>
+
+    <div class="todo-block">
+      <h3>⚔️ TODO 3 — Multi-Exception Handler</h3>
+      <ol>
+        <li>Create a dict: <code>{"hp": 80, "mp": 40, "gold": 120}</code></li>
+        <li>Write a function <code>get_stat(stats, key)</code> that returns <code>stats[key]</code></li>
+        <li>Add a <code>KeyError</code> handler: print <code>"Stat not found."</code></li>
+        <li>Add a <code>TypeError</code> handler: print <code>"Key must be a string."</code></li>
+        <li>Test with a valid key, a missing key, and an integer key</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2><code>else</code> and <code>finally</code></h2>
+      <span class="section-time">~10 min</span>
+    </div>
+
+    <p>The full <code>try</code> structure has four optional clauses. <code>else</code> runs only when <em>no</em> exception occurred. <code>finally</code> runs <em>no matter what</em>.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-box try-box">try: risky code</div>
+      <div class="flow-arrow">↓ exception?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;width:100%;max-width:420px;">
+        <div class="flow-box exc-box" style="text-align:center;">except:<br><small>yes → handle</small></div>
+        <div class="flow-box else-box" style="text-align:center;">else:<br><small>no → success code</small></div>
+      </div>
+      <div class="flow-arrow">↓ always</div>
+      <div class="flow-box fin-box">finally: cleanup (always runs)</div>
+    </div>
+
+    <pre><span class="kw">def</span> <span class="fn">load_save_file</span>(filename):
+    <span class="kw">try</span>:
+        f <span class="op">=</span> <span class="fn">open</span>(filename)
+        data <span class="op">=</span> f.read()
+    <span class="kw">except</span> <span class="ex">FileNotFoundError</span>:
+        <span class="fn">print</span>(<span class="st">"Save file not found — starting fresh!"</span>)
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">f"Loaded </span><span class="op">{</span><span class="fn">len</span>(data)<span class="op">}</span><span class="st"> bytes."</span>)  <span class="cm"># only if open() succeeded</span>
+    <span class="kw">finally</span>:
+        <span class="fn">print</span>(<span class="st">"Load attempt complete."</span>)  <span class="cm"># always</span></pre>
+
+    <div class="info-box tip">
+      <strong>💡 Rule of thumb:</strong> Put <em>success</em> logic in <code>else</code> (not in <code>try</code>) to keep the try block as small as possible — only the line that might fail goes in there.
+    </div>
+
+    <div class="todo-block">
+      <h3>⚔️ TODO 4 — Full try / except / else / finally</h3>
+      <ol>
+        <li>Write a function <code>heal_hero(hero_hp, heal_amount)</code></li>
+        <li>In <code>try</code>: convert <code>heal_amount</code> to int, then compute <code>new_hp = hero_hp + heal_amount</code></li>
+        <li>In <code>except ValueError</code>: print <code>"Invalid heal amount."</code></li>
+        <li>In <code>else</code>: print <code>f"Healed! HP: {new_hp}"</code></li>
+        <li>In <code>finally</code>: print <code>"Healing attempt over."</code></li>
+        <li>Call it twice: once with <code>"25"</code>, once with <code>"max"</code></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>Raising Exceptions with <code>raise</code></h2>
+      <span class="section-time">~10 min</span>
+    </div>
+
+    <p>You can raise your own exceptions to enforce rules — for example, rejecting impossible HP values before they cause weird bugs later.</p>
+
+    <pre><span class="cm"># Raise a built-in exception with a custom message</span>
+<span class="kw">def</span> <span class="fn">set_hp</span>(value):
+    <span class="kw">if</span> value <span class="op">&lt;</span> <span class="nm">0</span>:
+        <span class="kw">raise</span> <span class="ex">ValueError</span>(<span class="st">f"HP cannot be negative: </span><span class="op">{</span>value<span class="op">}</span><span class="st">"</span>)
+    <span class="kw">if</span> <span class="fn">type</span>(value) <span class="kw">is</span> <span class="kw">not</span> <span class="cls">int</span>:
+        <span class="kw">raise</span> <span class="ex">TypeError</span>(<span class="st">"HP must be an integer."</span>)
+    <span class="kw">return</span> value
+
+<span class="cm"># The caller handles it:</span>
+<span class="kw">try</span>:
+    hero_hp <span class="op">=</span> <span class="fn">set_hp</span>(<span class="op">-</span><span class="nm">10</span>)
+<span class="kw">except</span> <span class="ex">ValueError</span> <span class="kw">as</span> e:
+    <span class="fn">print</span>(<span class="st">f"Error: </span><span class="op">{</span>e<span class="op">}</span><span class="st">"</span>)
+    hero_hp <span class="op">=</span> <span class="nm">0</span>  <span class="cm"># safe default</span></pre>
+
+    <div class="info-box">
+      <strong>Pattern:</strong> Functions <em>raise</em> exceptions to signal invalid input. The calling code <em>catches</em> them and decides what to do. This keeps validation logic in one place.
+    </div>
+
+    <div class="todo-block">
+      <h3>⚔️ TODO 5 — Raise Your Own</h3>
+      <ol>
+        <li>Write <code>create_hero(name, level)</code></li>
+        <li>Raise <code>ValueError</code> if <code>level &lt; 1</code> or <code>level &gt; 99</code></li>
+        <li>Raise <code>TypeError</code> if <code>name</code> is not a string</li>
+        <li>Otherwise return <code>{"name": name, "level": level}</code></li>
+        <li>Test with a valid hero, an out-of-range level, and an integer name</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- DAY 2 — LIST COMPREHENSIONS -->
+  <!-- ══════════════════════════════════════════════════════ -->
+
+  <div class="day-banner day2">
+    <div class="day-badge">Day 2 · Apr 7</div>
+    <h2>List Comprehensions</h2>
+    <span>transform · filter · nest · when to use</span>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>From Loops to Comprehensions</h2>
+      <span class="section-time">~12 min</span>
+    </div>
+
+    <p>A <strong>list comprehension</strong> builds a new list in a single, readable expression. Any <code>for</code> loop that appends to an empty list can be rewritten as one.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card loop-card">
+        <div class="card-label">🔄 for loop</div>
+        <pre><span class="cm"># Square each level</span>
+squares <span class="op">=</span> []
+<span class="kw">for</span> n <span class="kw">in</span> [<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>]:
+    squares.append(n <span class="op">**</span> <span class="nm">2</span>)
+<span class="cm"># [1, 4, 9, 16, 25]</span></pre>
+      </div>
+      <div class="compare-card comp-card">
+        <div class="card-label">✨ comprehension</div>
+        <pre><span class="cm"># Same result, one line</span>
+squares <span class="op">=</span> [n <span class="op">**</span> <span class="nm">2</span>
+          <span class="kw">for</span> n <span class="kw">in</span> [<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>]]
+<span class="cm"># [1, 4, 9, 16, 25]</span></pre>
+      </div>
+    </div>
+
+    <div class="syntax-box">
+      <div class="syntax-line">
+        [ <span style="color:var(--green)">expression</span> &nbsp;<span style="color:var(--purple)">for</span>&nbsp; <span style="color:var(--blue)">var</span> &nbsp;<span style="color:var(--purple)">in</span>&nbsp; <span style="color:var(--orange)">iterable</span> ]
+      </div>
+      <div class="syntax-labels">
+        <div class="syn-label"><span class="c-expr">expression</span>what to put in the list</div>
+        <div class="syn-label"><span class="c-var">var</span>loop variable</div>
+        <div class="syn-label"><span class="c-iter" style="color:var(--orange)">iterable</span>anything you can loop over</div>
+      </div>
+    </div>
+
+    <pre><span class="cm"># Examples with RPG data</span>
+names  <span class="op">=</span> [<span class="st">"aria"</span>, <span class="st">"brom"</span>, <span class="st">"caela"</span>]
+upper  <span class="op">=</span> [n.upper() <span class="kw">for</span> n <span class="kw">in</span> names]
+<span class="cm"># ["ARIA", "BROM", "CAELA"]</span>
+
+levels <span class="op">=</span> [<span class="nm">1</span>, <span class="nm">5</span>, <span class="nm">12</span>, <span class="nm">20</span>]
+xp     <span class="op">=</span> [lvl <span class="op">*</span> <span class="nm">100</span> <span class="kw">for</span> lvl <span class="kw">in</span> levels]
+<span class="cm"># [100, 500, 1200, 2000]</span></pre>
+
+    <div class="todo-block">
+      <h3>🧪 TODO 6 — Basic Comprehensions</h3>
+      <ol>
+        <li>Given <code>weapons = ["dagger", "sword", "staff", "bow"]</code>, use a comprehension to make a list of their lengths</li>
+        <li>Given <code>damage = [15, 22, 8, 30, 11]</code>, make a list where each value is doubled</li>
+        <li>Rewrite each as a <code>for</code> loop in a comment so you can see the equivalence</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>Filtering with <code>if</code></h2>
+      <span class="section-time">~10 min</span>
+    </div>
+
+    <p>Add an <code>if</code> condition at the end to <strong>filter</strong> which items make it into the new list. Items that don't pass the condition are skipped entirely.</p>
+
+    <div class="syntax-box">
+      <div class="syntax-line">
+        [ <span style="color:var(--green)">expression</span> &nbsp;<span style="color:var(--purple)">for</span>&nbsp; <span style="color:var(--blue)">var</span> &nbsp;<span style="color:var(--purple)">in</span>&nbsp; <span style="color:var(--orange)">iterable</span> &nbsp;<span style="color:var(--yellow)">if condition</span> ]
+      </div>
+      <div class="syntax-labels">
+        <div class="syn-label"><span class="c-cond">if condition</span>skip if False</div>
+      </div>
+    </div>
+
+    <pre><span class="cm"># Only keep heroes with level >= 10</span>
+party <span class="op">=</span> [
+    {<span class="st">"name"</span>: <span class="st">"Aria"</span>,  <span class="st">"level"</span>: <span class="nm">15</span>},
+    {<span class="st">"name"</span>: <span class="st">"Brom"</span>,  <span class="st">"level"</span>: <span class="nm">7</span>},
+    {<span class="st">"name"</span>: <span class="st">"Caela"</span>, <span class="st">"level"</span>: <span class="nm">22</span>},
+    {<span class="st">"name"</span>: <span class="st">"Dex"</span>,   <span class="st">"level"</span>: <span class="nm">3</span>},
+]
+
+veterans <span class="op">=</span> [h[<span class="st">"name"</span>] <span class="kw">for</span> h <span class="kw">in</span> party <span class="kw">if</span> h[<span class="st">"level"</span>] <span class="op">&gt;=</span> <span class="nm">10</span>]
+<span class="cm"># ["Aria", "Caela"]</span>
+
+<span class="cm"># Filter AND transform in one shot:</span>
+high_dmg <span class="op">=</span> [d <span class="op">*</span> <span class="nm">2</span> <span class="kw">for</span> d <span class="kw">in</span> [<span class="nm">5</span>, <span class="nm">18</span>, <span class="nm">3</span>, <span class="nm">27</span>, <span class="nm">9</span>] <span class="kw">if</span> d <span class="op">&gt;</span> <span class="nm">10</span>]
+<span class="cm"># [36, 54]  — only 18 and 27 passed the filter</span></pre>
+
+    <div class="todo-block">
+      <h3>🧪 TODO 7 — Filter the Party</h3>
+      <ol>
+        <li>Given the <code>party</code> list above, build a list of names for heroes whose level is <strong>odd</strong> (use <code>% 2 != 0</code>)</li>
+        <li>Build a list of levels for heroes whose name starts with a vowel</li>
+        <li>Build a list of names converted to uppercase — but only for heroes level 10 or above</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>Nested Comprehensions</h2>
+      <span class="section-time">~10 min</span>
+    </div>
+
+    <p>You can nest a <code>for</code> clause to iterate over a 2D structure (a list of lists), or to combine two sequences — just like nested <code>for</code> loops.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card loop-card">
+        <div class="card-label">🔄 nested for loops</div>
+        <pre>grid <span class="op">=</span> []
+<span class="kw">for</span> row <span class="kw">in</span> [[<span class="nm">1</span>,<span class="nm">2</span>],[<span class="nm">3</span>,<span class="nm">4</span>]]:
+  <span class="kw">for</span> n <span class="kw">in</span> row:
+    grid.append(n)
+<span class="cm"># [1, 2, 3, 4]</span></pre>
+      </div>
+      <div class="compare-card comp-card">
+        <div class="card-label">✨ nested comprehension</div>
+        <pre>grid <span class="op">=</span> [n
+        <span class="kw">for</span> row <span class="kw">in</span> [[<span class="nm">1</span>,<span class="nm">2</span>],[<span class="nm">3</span>,<span class="nm">4</span>]]
+        <span class="kw">for</span> n <span class="kw">in</span> row]
+<span class="cm"># [1, 2, 3, 4]</span></pre>
+      </div>
+    </div>
+
+    <pre><span class="cm"># All (attacker, defender) matchup pairs</span>
+team_a <span class="op">=</span> [<span class="st">"Aria"</span>, <span class="st">"Brom"</span>]
+team_b <span class="op">=</span> [<span class="st">"Slag"</span>, <span class="st">"Vorx"</span>]
+
+matchups <span class="op">=</span> [(a, b) <span class="kw">for</span> a <span class="kw">in</span> team_a <span class="kw">for</span> b <span class="kw">in</span> team_b]
+<span class="cm"># [("Aria","Slag"), ("Aria","Vorx"), ("Brom","Slag"), ("Brom","Vorx")]</span>
+
+<span class="cm"># Flatten a dungeon map (list of row lists)</span>
+dungeon <span class="op">=</span> [[<span class="nm">0</span>,<span class="nm">1</span>,<span class="nm">0</span>], [<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">0</span>], [<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">1</span>]]
+walls   <span class="op">=</span> [cell <span class="kw">for</span> row <span class="kw">in</span> dungeon <span class="kw">for</span> cell <span class="kw">in</span> row <span class="kw">if</span> cell <span class="op">==</span> <span class="nm">1</span>]
+<span class="cm"># [1, 1, 1, 1]  — only wall tiles</span></pre>
+
+    <div class="info-box warn">
+      <strong>⚠️ Readability first:</strong> If a nested comprehension takes more than a glance to parse, use a regular loop instead. Clever ≠ clear.
+    </div>
+
+    <div class="todo-block">
+      <h3>🧪 TODO 8 — Flatten the Dungeon</h3>
+      <ol>
+        <li>Given <code>loot_tables = [["gold", "sword"], ["potion", "gold"], ["scroll"]]</code>, flatten into a single list of all drops</li>
+        <li>From the same structure, filter to only drops that equal <code>"gold"</code></li>
+        <li>Generate all pairs <code>(weapon, element)</code> where <code>weapons = ["axe","bow"]</code> and <code>elements = ["fire","ice","lightning"]</code></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>When to Use vs. When to Loop</h2>
+      <span class="section-time">~8 min</span>
+    </div>
+
+    <p>List comprehensions are fast and expressive — but they aren't always the right tool. Use this guide:</p>
+
+    <table class="exception-table">
+      <thead>
+        <tr><th>Situation</th><th>Use…</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Build a new list from transform/filter</td><td style="color:var(--green)">Comprehension ✓</td><td>Concise, readable, fast</td></tr>
+        <tr><td>Logic has 3+ conditions or branches</td><td style="color:var(--blue)">for loop ✓</td><td>Easier to read and debug</td></tr>
+        <tr><td>You need to break/continue mid-loop</td><td style="color:var(--blue)">for loop ✓</td><td>No break/continue in comprehensions</td></tr>
+        <tr><td>Side effects only (print, file write)</td><td style="color:var(--blue)">for loop ✓</td><td>Comprehensions shouldn't cause side effects</td></tr>
+        <tr><td>Nested more than 2 levels deep</td><td style="color:var(--blue)">for loop ✓</td><td>Too hard to read quickly</td></tr>
+        <tr><td>Refactoring existing loop code</td><td style="color:var(--green)">Comprehension ✓</td><td>Great opportunity to simplify</td></tr>
+      </tbody>
+    </table>
+
+    <pre><span class="cm"># ✅ Great comprehension candidate</span>
+alive <span class="op">=</span> [h <span class="kw">for</span> h <span class="kw">in</span> party <span class="kw">if</span> h[<span class="st">"hp"</span>] <span class="op">&gt;</span> <span class="nm">0</span>]
+
+<span class="cm"># ❌ Don't force it — use a loop instead</span>
+result <span class="op">=</span> [
+    process(h) <span class="kw">if</span> h[<span class="st">"level"</span>] <span class="op">&gt;</span> <span class="nm">10</span>
+    <span class="kw">else</span> fallback(h) <span class="kw">if</span> h[<span class="st">"hp"</span>] <span class="op">&gt;</span> <span class="nm">0</span>
+    <span class="kw">else</span> <span class="kw">None</span>
+    <span class="kw">for</span> h <span class="kw">in</span> party <span class="kw">if</span> h[<span class="st">"name"</span>] <span class="op">!=</span> <span class="st">"Dex"</span>
+]  <span class="cm"># ← readable? no. use a for loop.</span></pre>
+
+    <div class="todo-block">
+      <h3>🧪 TODO 9 — Refactor Challenge</h3>
+      <p>Three for-loop snippets are in your starter file. For each one, decide: <em>should this be a comprehension?</em></p>
+      <ol>
+        <li>If yes — rewrite it as a comprehension</li>
+        <li>If no — add a comment explaining <em>why not</em></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- EXIT TICKET -->
+  <div class="exit-ticket">
+    <div class="section-header">
+      <div class="section-num">🎫</div>
+      <h2>Exit Ticket</h2>
+      <span class="section-time">Remaining time · Apr 7</span>
+    </div>
+
+    <p style="color:var(--text-muted)">Combine both topics — no starter scaffold this time. Write it fresh.</p>
+
+    <div class="todo-block">
+      <h3>🎫 TODO 10 — The Dungeon Report</h3>
+      <p>You have this monster list:</p>
+      <pre style="margin:0.5rem 0"><span class="nm">monsters</span> <span class="op">=</span> [
+    {<span class="st">"name"</span>: <span class="st">"Goblin"</span>,   <span class="st">"hp"</span>: <span class="nm">30</span>,  <span class="st">"gold"</span>: <span class="st">"5"</span>},
+    {<span class="st">"name"</span>: <span class="st">"Troll"</span>,    <span class="st">"hp"</span>: <span class="nm">80</span>,  <span class="st">"gold"</span>: <span class="st">"twenty"</span>},
+    {<span class="st">"name"</span>: <span class="st">"Skeleton"</span>, <span class="st">"hp"</span>: <span class="nm">20</span>,  <span class="st">"gold"</span>: <span class="st">"12"</span>},
+    {<span class="st">"name"</span>: <span class="st">"Dragon"</span>,   <span class="st">"hp"</span>: <span class="nm">200</span>, <span class="st">"gold"</span>: <span class="st">"500"</span>},
+    {<span class="st">"name"</span>: <span class="st">"Bat"</span>,      <span class="st">"hp"</span>: <span class="nm">10</span>,  <span class="st">"gold"</span>: <span class="st">"1"</span>},
+]</pre>
+      <ol>
+        <li>Use a comprehension to get <strong>names</strong> of all monsters with <code>hp &gt; 25</code></li>
+        <li>Write a function <code>safe_gold(m)</code> that uses <code>try/except</code> to convert <code>m["gold"]</code> to int — return <code>0</code> on failure</li>
+        <li>Use a comprehension + your function to build a list of <strong>gold amounts</strong> for each monster</li>
+        <li>Print the total loot collected</li>
+        <li><em>Bonus:</em> wrap step 3 in a function <code>collect_loot(monsters)</code> that raises <code>ValueError</code> if the list is empty</li>
+      </ol>
+    </div>
+  </div>
+
+  <footer>
+    <p>Principles of Computing · Unit 04 | U4B1 — Exceptions &amp; List Comprehensions</p>
+    <p>📅 April 6–7, 2026 &nbsp;·&nbsp; Submit: Push to GitHub (public) → paste link on Canvas <strong>(5 pts)</strong></p>
+  </footer>
+
+</div>
+</body>
+</html>
