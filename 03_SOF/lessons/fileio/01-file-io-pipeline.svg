@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 400" font-family="sans-serif">
+  <!-- Background -->
+  <rect width="700" height="400" rx="16" fill="#0f0f1a"/>
+  <rect x="1" y="1" width="698" height="398" rx="15" fill="none" stroke="#252540" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="350" y="38" font-size="18" font-weight="700" fill="#ffc107" text-anchor="middle">Java File I/O — Data Flow Pipeline</text>
+  <text x="350" y="58" font-size="11" fill="#a0a0a0" text-anchor="middle">How data moves between your program and the filesystem</text>
+
+  <!-- READING ROW -->
+  <text x="40" y="100" font-size="13" font-weight="700" fill="#4ecca3">READING</text>
+
+  <!-- File on disk -->
+  <rect x="40" y="115" width="110" height="55" rx="8" fill="rgba(78,204,163,0.08)" stroke="rgba(78,204,163,0.3)" stroke-width="1"/>
+  <text x="95" y="138" font-size="11" font-weight="600" fill="#e0e0e0" text-anchor="middle">📄 File on Disk</text>
+  <text x="95" y="155" font-family="monospace" font-size="9" fill="#a0a0a0" text-anchor="middle">scores.txt</text>
+
+  <!-- Arrow -->
+  <line x1="155" y1="142" x2="185" y2="142" stroke="#4ecca3" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- FileReader -->
+  <rect x="190" y="115" width="120" height="55" rx="8" fill="rgba(123,104,238,0.08)" stroke="rgba(123,104,238,0.3)" stroke-width="1"/>
+  <text x="250" y="138" font-family="monospace" font-size="11" font-weight="600" fill="#7b68ee" text-anchor="middle">FileReader</text>
+  <text x="250" y="155" font-size="9" fill="#a0a0a0" text-anchor="middle">bytes → chars</text>
+
+  <!-- Arrow -->
+  <line x1="315" y1="142" x2="345" y2="142" stroke="#4ecca3" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- BufferedReader -->
+  <rect x="350" y="115" width="140" height="55" rx="8" fill="rgba(123,104,238,0.08)" stroke="rgba(123,104,238,0.3)" stroke-width="1"/>
+  <text x="420" y="138" font-family="monospace" font-size="11" font-weight="600" fill="#7b68ee" text-anchor="middle">BufferedReader</text>
+  <text x="420" y="155" font-size="9" fill="#a0a0a0" text-anchor="middle">buffered + readLine()</text>
+
+  <!-- Arrow -->
+  <line x1="495" y1="142" x2="525" y2="142" stroke="#4ecca3" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- String in program -->
+  <rect x="530" y="115" width="130" height="55" rx="8" fill="rgba(78,204,163,0.08)" stroke="rgba(78,204,163,0.3)" stroke-width="1"/>
+  <text x="595" y="138" font-size="11" font-weight="600" fill="#e0e0e0" text-anchor="middle">🎮 Your Program</text>
+  <text x="595" y="155" font-family="monospace" font-size="9" fill="#4ecca3" text-anchor="middle">String line</text>
+
+  <!-- WRITING ROW -->
+  <text x="40" y="215" font-size="13" font-weight="700" fill="#e94560">WRITING</text>
+
+  <!-- Program data -->
+  <rect x="40" y="230" width="130" height="55" rx="8" fill="rgba(233,69,96,0.08)" stroke="rgba(233,69,96,0.3)" stroke-width="1"/>
+  <text x="105" y="253" font-size="11" font-weight="600" fill="#e0e0e0" text-anchor="middle">🎮 Your Program</text>
+  <text x="105" y="270" font-family="monospace" font-size="9" fill="#e94560" text-anchor="middle">String data</text>
+
+  <!-- Arrow -->
+  <line x1="175" y1="257" x2="205" y2="257" stroke="#e94560" stroke-width="2" marker-end="url(#arrowRed)"/>
+
+  <!-- BufferedWriter -->
+  <rect x="210" y="230" width="140" height="55" rx="8" fill="rgba(123,104,238,0.08)" stroke="rgba(123,104,238,0.3)" stroke-width="1"/>
+  <text x="280" y="253" font-family="monospace" font-size="11" font-weight="600" fill="#7b68ee" text-anchor="middle">BufferedWriter</text>
+  <text x="280" y="270" font-size="9" fill="#a0a0a0" text-anchor="middle">buffered + flush()</text>
+
+  <!-- Arrow -->
+  <line x1="355" y1="257" x2="385" y2="257" stroke="#e94560" stroke-width="2" marker-end="url(#arrowRed)"/>
+
+  <!-- FileWriter -->
+  <rect x="390" y="230" width="120" height="55" rx="8" fill="rgba(123,104,238,0.08)" stroke="rgba(123,104,238,0.3)" stroke-width="1"/>
+  <text x="450" y="253" font-family="monospace" font-size="11" font-weight="600" fill="#7b68ee" text-anchor="middle">FileWriter</text>
+  <text x="450" y="270" font-size="9" fill="#a0a0a0" text-anchor="middle">chars → bytes</text>
+
+  <!-- Arrow -->
+  <line x1="515" y1="257" x2="545" y2="257" stroke="#e94560" stroke-width="2" marker-end="url(#arrowRed)"/>
+
+  <!-- File on disk -->
+  <rect x="550" y="230" width="110" height="55" rx="8" fill="rgba(233,69,96,0.08)" stroke="rgba(233,69,96,0.3)" stroke-width="1"/>
+  <text x="605" y="253" font-size="11" font-weight="600" fill="#e0e0e0" text-anchor="middle">📄 File on Disk</text>
+  <text x="605" y="270" font-family="monospace" font-size="9" fill="#a0a0a0" text-anchor="middle">scores.txt</text>
+
+  <!-- TRY-WITH-RESOURCES box -->
+  <rect x="40" y="315" width="620" height="65" rx="10" fill="rgba(255,193,7,0.06)" stroke="rgba(255,193,7,0.25)" stroke-width="1"/>
+  <text x="60" y="340" font-size="13" font-weight="700" fill="#ffc107">💡 try-with-resources</text>
+  <text x="60" y="358" font-size="11" fill="#a0a0a0">Readers &amp; Writers implement <tspan font-family="monospace" fill="#7b68ee">AutoCloseable</tspan>. Declare them in <tspan font-family="monospace" fill="#4ecca3">try(...)</tspan> and Java closes them automatically —</text>
+  <text x="60" y="374" font-size="11" fill="#a0a0a0">no <tspan font-family="monospace" fill="#e94560">finally</tspan> block needed. This prevents resource leaks even if exceptions occur.</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#4ecca3"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#e94560"/>
+    </marker>
+  </defs>
+</svg>

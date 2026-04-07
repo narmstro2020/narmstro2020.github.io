@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 380" font-family="sans-serif">
+  <!-- Background -->
+  <rect width="700" height="380" rx="16" fill="#0f0f1a"/>
+  <rect x="1" y="1" width="698" height="378" rx="15" fill="none" stroke="#252540" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="350" y="38" font-size="18" font-weight="700" fill="#ffc107" text-anchor="middle">synchronized — Preventing Race Conditions</text>
+  <text x="350" y="58" font-size="11" fill="#a0a0a0" text-anchor="middle">What happens when two threads modify the same data at the same time?</text>
+
+  <!-- WITHOUT synchronized (left) -->
+  <rect x="25" y="80" width="315" height="275" rx="12" fill="rgba(233,69,96,0.04)" stroke="rgba(233,69,96,0.2)" stroke-width="1"/>
+  <text x="182" y="105" font-size="14" font-weight="700" fill="#e94560" text-anchor="middle">❌ WITHOUT synchronized</text>
+
+  <!-- Thread A -->
+  <rect x="45" y="120" width="120" height="30" rx="6" fill="rgba(93,173,226,0.12)" stroke="rgba(93,173,226,0.3)" stroke-width="1"/>
+  <text x="105" y="140" font-size="10" font-weight="600" fill="#5dade2" text-anchor="middle">Thread A</text>
+
+  <!-- Thread B -->
+  <rect x="200" y="120" width="120" height="30" rx="6" fill="rgba(255,140,66,0.12)" stroke="rgba(255,140,66,0.3)" stroke-width="1"/>
+  <text x="260" y="140" font-size="10" font-weight="600" fill="#ff8c42" text-anchor="middle">Thread B</text>
+
+  <!-- Shared score -->
+  <rect x="110" y="165" width="130" height="28" rx="6" fill="rgba(255,193,7,0.1)" stroke="rgba(255,193,7,0.3)" stroke-width="1"/>
+  <text x="175" y="184" font-family="monospace" font-size="10" fill="#ffc107" text-anchor="middle">score = 100</text>
+
+  <!-- Race condition steps -->
+  <text x="50" y="215" font-family="monospace" font-size="9" fill="#5dade2">A reads: 100</text>
+  <text x="205" y="230" font-family="monospace" font-size="9" fill="#ff8c42">B reads: 100</text>
+  <text x="50" y="245" font-family="monospace" font-size="9" fill="#5dade2">A writes: 110</text>
+  <text x="205" y="260" font-family="monospace" font-size="9" fill="#ff8c42">B writes: 110</text>
+
+  <rect x="60" y="275" width="250" height="28" rx="6" fill="rgba(233,69,96,0.1)" stroke="rgba(233,69,96,0.3)" stroke-width="1"/>
+  <text x="185" y="294" font-size="10" font-weight="600" fill="#e94560" text-anchor="middle">Result: 110 (should be 120!) 💥</text>
+
+  <!-- Broken arrow -->
+  <text x="182" y="332" font-size="10" fill="#a0a0a0" text-anchor="middle">B's +10 was lost — a <tspan font-weight="700" fill="#e94560">race condition</tspan></text>
+
+  <!-- WITH synchronized (right) -->
+  <rect x="360" y="80" width="315" height="275" rx="12" fill="rgba(78,204,163,0.04)" stroke="rgba(78,204,163,0.2)" stroke-width="1"/>
+  <text x="517" y="105" font-size="14" font-weight="700" fill="#4ecca3" text-anchor="middle">✅ WITH synchronized</text>
+
+  <!-- Thread A -->
+  <rect x="380" y="120" width="120" height="30" rx="6" fill="rgba(93,173,226,0.12)" stroke="rgba(93,173,226,0.3)" stroke-width="1"/>
+  <text x="440" y="140" font-size="10" font-weight="600" fill="#5dade2" text-anchor="middle">Thread A</text>
+
+  <!-- Thread B -->
+  <rect x="535" y="120" width="120" height="30" rx="6" fill="rgba(255,140,66,0.12)" stroke="rgba(255,140,66,0.3)" stroke-width="1"/>
+  <text x="595" y="140" font-size="10" font-weight="600" fill="#ff8c42" text-anchor="middle">Thread B</text>
+
+  <!-- Lock icon -->
+  <rect x="445" y="165" width="130" height="28" rx="6" fill="rgba(255,193,7,0.1)" stroke="rgba(255,193,7,0.3)" stroke-width="1"/>
+  <text x="510" y="184" font-family="monospace" font-size="10" fill="#ffc107" text-anchor="middle">🔒 score = 100</text>
+
+  <!-- Correct steps -->
+  <text x="385" y="215" font-family="monospace" font-size="9" fill="#5dade2">A locks, reads: 100</text>
+  <text x="385" y="230" font-family="monospace" font-size="9" fill="#5dade2">A writes: 110, unlocks</text>
+  <text x="540" y="245" font-family="monospace" font-size="9" fill="#ff8c42">B locks, reads: 110</text>
+  <text x="540" y="260" font-family="monospace" font-size="9" fill="#ff8c42">B writes: 120, unlocks</text>
+
+  <rect x="395" y="275" width="250" height="28" rx="6" fill="rgba(78,204,163,0.1)" stroke="rgba(78,204,163,0.3)" stroke-width="1"/>
+  <text x="520" y="294" font-size="10" font-weight="600" fill="#4ecca3" text-anchor="middle">Result: 120 (correct!) ✅</text>
+
+  <text x="517" y="332" font-size="10" fill="#a0a0a0" text-anchor="middle">Only one thread enters at a time — <tspan font-weight="700" fill="#4ecca3">thread safe</tspan></text>
+</svg>

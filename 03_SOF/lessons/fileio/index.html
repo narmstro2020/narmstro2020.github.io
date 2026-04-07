@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guided Notes — File I/O &amp; Multithreading</title>
+  <style>
+    /* ============================================
+       Guided Notes — File I/O & Multithreading
+       Fill in each TODO as we go through the notes.
+       Submit this file to Canvas when complete.
+       ============================================ */
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface-light: #252540;
+      --accent: #4ecca3;
+      --purple: #7b68ee;
+      --yellow: #ffc107;
+      --red: #e94560;
+      --blue: #5dade2;
+      --orange: #ff8c42;
+      --text: #e0e0e0;
+      --text-muted: #a0a0a0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6; padding: 2rem; max-width: 860px; margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.8rem; margin-bottom: 0.25rem;
+      background: linear-gradient(135deg, var(--yellow), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+
+    .section {
+      background: var(--surface); border: 1px solid var(--surface-light);
+      border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .section h2 {
+      font-size: 1.15rem; color: var(--yellow); margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--surface-light);
+    }
+    .section h3 {
+      font-size: 0.95rem; color: var(--accent); margin: 1.25rem 0 0.5rem;
+    }
+    .section p, .section li {
+      font-size: 0.88rem; color: var(--text-muted); line-height: 1.7;
+    }
+    .section ul { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+    .section li { margin-bottom: 0.25rem; }
+
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: rgba(123,104,238,0.1); color: var(--purple);
+      padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.85rem;
+    }
+
+    pre {
+      background: #0a0a15; border: 1px solid var(--surface-light);
+      border-radius: 8px; padding: 1rem; margin: 0.75rem 0;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.82rem; line-height: 1.7; overflow-x: auto;
+      color: var(--text-muted);
+    }
+    pre .kw { color: var(--purple); font-weight: 600; }
+    pre .type { color: var(--blue); }
+    pre .str { color: var(--accent); }
+    pre .cmt { color: #555; font-style: italic; }
+    pre .num { color: var(--orange); }
+    pre .method { color: var(--yellow); }
+
+    .todo {
+      background: rgba(233,69,96,0.06); border: 1px dashed rgba(233,69,96,0.35);
+      border-radius: 8px; padding: 1rem; margin: 1rem 0;
+    }
+    .todo-label {
+      font-size: 0.75rem; font-weight: 700; color: var(--red);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;
+    }
+    .todo p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .todo textarea {
+      width: 100%; min-height: 60px; background: #0a0a15; color: var(--text);
+      border: 1px solid var(--surface-light); border-radius: 6px;
+      padding: 0.75rem; font-family: 'Segoe UI', sans-serif; font-size: 0.85rem;
+      line-height: 1.5; resize: vertical;
+    }
+    .todo textarea:focus { outline: none; border-color: var(--red); }
+
+    .callout {
+      border-left: 3px solid var(--accent); padding: 0.75rem 1rem;
+      background: rgba(78,204,163,0.05); border-radius: 0 6px 6px 0;
+      margin: 0.75rem 0;
+    }
+    .callout.warn {
+      border-left-color: var(--orange);
+      background: rgba(255,140,66,0.05);
+    }
+    .callout.game {
+      border-left-color: var(--purple);
+      background: rgba(123,104,238,0.05);
+    }
+    .callout p { font-size: 0.85rem; }
+
+    .divider {
+      border: none; border-top: 1px solid var(--surface-light);
+      margin: 2rem 0;
+    }
+
+    @media print {
+      body { background: white; color: #222; }
+      .section { border-color: #ccc; background: #fafafa; }
+      pre { background: #f5f5f5; border-color: #ddd; }
+      .todo { background: #fff0f0; border-color: #e94560; }
+      .todo textarea { background: white; border-color: #ccc; min-height: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📝 File I/O &amp; Multithreading</h1>
+  <p class="subtitle">L06 — Guided Notes · Apr 7, 2026 · 5 pts</p>
+
+  <!-- ══════════════════════════════════════════════════
+       PART 1: FILE I/O
+       ══════════════════════════════════════════════════ -->
+
+  <div class="section">
+    <h2>Part 1 — Why File I/O?</h2>
+    <p>Everything your program stores in variables disappears when the program ends. <strong>File I/O</strong> (Input/Output) lets you <em>persist</em> data — saving it to a file so it survives between runs.</p>
+
+    <div class="callout game">
+      <p>🎮 <strong>Platformer connection:</strong> File I/O is how your game will save high scores, load level data, and store player settings between sessions.</p>
+    </div>
+
+    <h3>The Two Directions</h3>
+    <ul>
+      <li><strong>Input (Reading):</strong> File → Program — loading data from a file into your code</li>
+      <li><strong>Output (Writing):</strong> Program → File — saving data from your code into a file</li>
+    </ul>
+  </div>
+
+  <!-- ─────── READING ─────── -->
+  <div class="section">
+    <h2>Section 1 — Reading Files with BufferedReader</h2>
+    <p>Java uses a "wrapper" pattern for I/O. You wrap a <code>FileReader</code> (reads raw characters) inside a <code>BufferedReader</code> (adds buffering and the <code>readLine()</code> method).</p>
+
+    <pre><span class="kw">try</span> (<span class="type">BufferedReader</span> reader = <span class="kw">new</span> <span class="type">BufferedReader</span>(
+        <span class="kw">new</span> <span class="type">FileReader</span>(<span class="str">"scores.txt"</span>))) {
+
+    <span class="type">String</span> line;
+    <span class="kw">while</span> ((line = reader.<span class="method">readLine</span>()) != <span class="kw">null</span>) {
+        System.out.<span class="method">println</span>(line);
+    }
+
+} <span class="kw">catch</span> (<span class="type">IOException</span> e) {
+    e.<span class="method">printStackTrace</span>();
+}</pre>
+
+    <h3>Key Details</h3>
+    <ul>
+      <li><code>readLine()</code> returns one line at a time, or <code>null</code> when the file ends</li>
+      <li>The <code>while</code> loop reads until <code>null</code> — a standard Java I/O pattern</li>
+      <li>Both <code>FileReader</code> and <code>BufferedReader</code> live in <code>java.io</code></li>
+    </ul>
+
+    <div class="todo">
+      <div class="todo-label">TODO 1</div>
+      <p>In the code above, what does <code>BufferedReader</code> add that <code>FileReader</code> alone doesn't provide? Why is buffering helpful?</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── TRY-WITH-RESOURCES ─────── -->
+  <div class="section">
+    <h2>Section 2 — try-with-resources</h2>
+    <p>Notice the <code>try (...)</code> syntax — this is <strong>try-with-resources</strong>. Any object declared inside the parentheses that implements <code>AutoCloseable</code> is automatically closed when the block ends, even if an exception is thrown.</p>
+
+    <h3>Why It Matters</h3>
+    <p>Files are <em>system resources</em>. If you open a file and forget to close it (or an exception skips your <code>.close()</code> call), you create a <strong>resource leak</strong>. Try-with-resources guarantees cleanup.</p>
+
+    <h3>Old Way (avoid this):</h3>
+    <pre><span class="type">BufferedReader</span> reader = <span class="kw">null</span>;
+<span class="kw">try</span> {
+    reader = <span class="kw">new</span> <span class="type">BufferedReader</span>(<span class="kw">new</span> <span class="type">FileReader</span>(<span class="str">"data.txt"</span>));
+    <span class="cmt">// ... use reader ...</span>
+} <span class="kw">catch</span> (<span class="type">IOException</span> e) {
+    e.<span class="method">printStackTrace</span>();
+} <span class="kw">finally</span> {
+    <span class="kw">if</span> (reader != <span class="kw">null</span>) reader.<span class="method">close</span>(); <span class="cmt">// messy!</span>
+}</pre>
+
+    <h3>New Way (use this):</h3>
+    <pre><span class="kw">try</span> (<span class="type">BufferedReader</span> reader = <span class="kw">new</span> <span class="type">BufferedReader</span>(
+        <span class="kw">new</span> <span class="type">FileReader</span>(<span class="str">"data.txt"</span>))) {
+    <span class="cmt">// ... use reader ...</span>
+} <span class="kw">catch</span> (<span class="type">IOException</span> e) {
+    e.<span class="method">printStackTrace</span>();
+}
+<span class="cmt">// reader is automatically closed here — even if an exception occurred</span></pre>
+
+    <div class="todo">
+      <div class="todo-label">TODO 2</div>
+      <p>What interface must a class implement to be used in try-with-resources? What happens if an exception occurs inside the try block — does the resource still get closed?</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── WRITING ─────── -->
+  <div class="section">
+    <h2>Section 3 — Writing Files with BufferedWriter</h2>
+    <p>Writing follows the same wrapper pattern: <code>FileWriter</code> inside <code>BufferedWriter</code>. You can also use <code>PrintWriter</code> for convenience methods like <code>println()</code>.</p>
+
+    <h3>BufferedWriter</h3>
+    <pre><span class="kw">try</span> (<span class="type">BufferedWriter</span> writer = <span class="kw">new</span> <span class="type">BufferedWriter</span>(
+        <span class="kw">new</span> <span class="type">FileWriter</span>(<span class="str">"highscores.txt"</span>))) {
+
+    writer.<span class="method">write</span>(<span class="str">"Player1: 9500"</span>);
+    writer.<span class="method">newLine</span>();
+    writer.<span class="method">write</span>(<span class="str">"Player2: 8200"</span>);
+    writer.<span class="method">newLine</span>();
+
+} <span class="kw">catch</span> (<span class="type">IOException</span> e) {
+    e.<span class="method">printStackTrace</span>();
+}</pre>
+
+    <h3>PrintWriter (more convenient)</h3>
+    <pre><span class="kw">try</span> (<span class="type">PrintWriter</span> pw = <span class="kw">new</span> <span class="type">PrintWriter</span>(
+        <span class="kw">new</span> <span class="type">FileWriter</span>(<span class="str">"highscores.txt"</span>))) {
+
+    pw.<span class="method">println</span>(<span class="str">"Player1: 9500"</span>);
+    pw.<span class="method">println</span>(<span class="str">"Player2: 8200"</span>);
+
+} <span class="kw">catch</span> (<span class="type">IOException</span> e) {
+    e.<span class="method">printStackTrace</span>();
+}</pre>
+
+    <div class="callout warn">
+      <p>⚠️ <strong>FileWriter overwrites by default!</strong> To append instead, pass <code>true</code> as the second argument: <code>new FileWriter("file.txt", true)</code></p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-label">TODO 3</div>
+      <p>What is the difference between <code>BufferedWriter</code> and <code>PrintWriter</code>? Which would you prefer to use, and why?</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── JSON WITH GSON ─────── -->
+  <div class="section">
+    <h2>Section 4 — Structured Data with JSON &amp; Gson</h2>
+    <p>Plain text files work for simple data, but games need <strong>structured data</strong> — objects with fields. <strong>JSON</strong> (JavaScript Object Notation) is a lightweight format, and <strong>Gson</strong> is a Google library that converts Java objects ↔ JSON automatically.</p>
+
+    <h3>A JSON File (playerdata.json)</h3>
+    <pre>{
+  <span class="str">"name"</span>: <span class="str">"Mario"</span>,
+  <span class="str">"lives"</span>: <span class="num">3</span>,
+  <span class="str">"score"</span>: <span class="num">14500</span>,
+  <span class="str">"currentLevel"</span>: <span class="str">"world-1-2"</span>
+}</pre>
+
+    <h3>Java Object → JSON (Serialization)</h3>
+    <pre><span class="type">Gson</span> gson = <span class="kw">new</span> <span class="type">GsonBuilder</span>().<span class="method">setPrettyPrinting</span>().<span class="method">create</span>();
+<span class="type">String</span> json = gson.<span class="method">toJson</span>(playerData);
+
+<span class="kw">try</span> (<span class="type">FileWriter</span> fw = <span class="kw">new</span> <span class="type">FileWriter</span>(<span class="str">"playerdata.json"</span>)) {
+    gson.<span class="method">toJson</span>(playerData, fw);
+}</pre>
+
+    <h3>JSON → Java Object (Deserialization)</h3>
+    <pre><span class="kw">try</span> (<span class="type">FileReader</span> fr = <span class="kw">new</span> <span class="type">FileReader</span>(<span class="str">"playerdata.json"</span>)) {
+    <span class="type">PlayerData</span> data = gson.<span class="method">fromJson</span>(fr, <span class="type">PlayerData</span>.class);
+    System.out.<span class="method">println</span>(data.<span class="method">getName</span>());  <span class="cmt">// "Mario"</span>
+}</pre>
+
+    <div class="callout game">
+      <p>🎮 <strong>Platformer connection:</strong> You'll use Gson to save/load your game state — player position, lives, score, and current level — to a JSON file.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-label">TODO 4</div>
+      <p>Why would you use JSON instead of a plain text file for saving game data? Give at least two reasons.</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════
+       PART 2: MULTITHREADING
+       ══════════════════════════════════════════════════ -->
+
+  <div class="section">
+    <h2>Part 2 — Why Multithreading?</h2>
+    <p>By default, your Java program runs on a <strong>single thread</strong> — one instruction at a time, in order. <strong>Multithreading</strong> lets your program do multiple things simultaneously.</p>
+
+    <div class="callout game">
+      <p>🎮 <strong>Platformer connection:</strong> libGDX's render loop runs on a single thread. If you load a large tilemap on that thread, the game <em>freezes</em> until loading finishes. Threads let you load assets in the background while showing a loading screen.</p>
+    </div>
+
+    <h3>Real-World Examples</h3>
+    <ul>
+      <li>Loading assets in the background while showing a progress bar</li>
+      <li>A web server handling thousands of requests at once</li>
+      <li>Your computer running Spotify, IntelliJ, and Chrome simultaneously</li>
+    </ul>
+  </div>
+
+  <!-- ─────── THREAD & RUNNABLE ─────── -->
+  <div class="section">
+    <h2>Section 5 — Creating Threads</h2>
+    <p>There are two main ways to create a thread in Java:</p>
+
+    <h3>Option 1: Lambda with Thread (preferred)</h3>
+    <pre><span class="type">Thread</span> t = <span class="kw">new</span> <span class="type">Thread</span>(() -> {
+    System.out.<span class="method">println</span>(<span class="str">"Running on: "</span> +
+        Thread.<span class="method">currentThread</span>().<span class="method">getName</span>());
+});
+t.<span class="method">start</span>();  <span class="cmt">// starts a NEW thread — don't call run() directly!</span></pre>
+
+    <h3>Option 2: Implementing Runnable</h3>
+    <pre><span class="kw">public class</span> <span class="type">AssetLoader</span> <span class="kw">implements</span> <span class="type">Runnable</span> {
+    @Override
+    <span class="kw">public void</span> <span class="method">run</span>() {
+        System.out.<span class="method">println</span>(<span class="str">"Loading textures..."</span>);
+        <span class="cmt">// ... heavy work here ...</span>
+    }
+}
+
+<span class="type">Thread</span> loader = <span class="kw">new</span> <span class="type">Thread</span>(<span class="kw">new</span> <span class="type">AssetLoader</span>());
+loader.<span class="method">start</span>();</pre>
+
+    <div class="callout warn">
+      <p>⚠️ <strong>start() vs run():</strong> Calling <code>start()</code> creates a new thread and runs the code on it. Calling <code>run()</code> directly just executes the code on the <em>current</em> thread — no multithreading happens!</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-label">TODO 5</div>
+      <p>Why does <code>Runnable</code> work as a lambda? Think about what you learned in the Functional Interfaces unit — what makes an interface "functional"?</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── EXECUTORSERVICE ─────── -->
+  <div class="section">
+    <h2>Section 6 — ExecutorService (Thread Pools)</h2>
+    <p>Creating individual <code>Thread</code> objects is fine for simple cases, but in real applications you use an <strong>ExecutorService</strong> — a managed pool of reusable threads.</p>
+
+    <pre><span class="kw">import</span> java.util.concurrent.*;
+
+<span class="type">ExecutorService</span> pool = Executors.<span class="method">newFixedThreadPool</span>(<span class="num">3</span>);
+
+pool.<span class="method">submit</span>(() -> <span class="method">loadTextures</span>());
+pool.<span class="method">submit</span>(() -> <span class="method">loadSounds</span>());
+pool.<span class="method">submit</span>(() -> <span class="method">loadLevelData</span>());
+
+pool.<span class="method">shutdown</span>();  <span class="cmt">// no new tasks, finish current ones</span></pre>
+
+    <h3>Why Use a Pool?</h3>
+    <ul>
+      <li><strong>Reusable:</strong> Threads are expensive to create — a pool reuses them</li>
+      <li><strong>Bounded:</strong> <code>newFixedThreadPool(3)</code> limits to 3 threads, preventing resource overload</li>
+      <li><strong>Managed:</strong> The pool handles scheduling and lifecycle for you</li>
+    </ul>
+
+    <div class="todo">
+      <div class="todo-label">TODO 6</div>
+      <p>If you have 10 tasks to run but create a pool of 3 threads, what happens? Do tasks get dropped, or something else?</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── SYNCHRONIZED ─────── -->
+  <div class="section">
+    <h2>Section 7 — Synchronized &amp; Thread Safety</h2>
+    <p>When multiple threads access the <em>same</em> variable, things can go wrong. This is called a <strong>race condition</strong>.</p>
+
+    <h3>The Problem</h3>
+    <pre><span class="kw">private int</span> score = <span class="num">0</span>;
+
+<span class="cmt">// Thread A and Thread B both call this at the same time:</span>
+<span class="kw">public void</span> <span class="method">addPoints</span>(<span class="kw">int</span> points) {
+    score = score + points;  <span class="cmt">// READ score, ADD, WRITE back</span>
+}
+<span class="cmt">// If both read score=100 simultaneously, both write 110</span>
+<span class="cmt">// Final result: 110 instead of 120 — a lost update!</span></pre>
+
+    <h3>The Fix: synchronized</h3>
+    <pre><span class="kw">public synchronized void</span> <span class="method">addPoints</span>(<span class="kw">int</span> points) {
+    score = score + points;
+}
+<span class="cmt">// Now only one thread can enter this method at a time</span></pre>
+
+    <p>The <code>synchronized</code> keyword acts like a lock on the method. Only one thread can hold the lock at a time — others must wait their turn.</p>
+
+    <div class="todo">
+      <div class="todo-label">TODO 7</div>
+      <p>In your platformer, which pieces of game data might need to be <code>synchronized</code> if multiple threads could access them? Give an example scenario.</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── GAME THREAD ─────── -->
+  <div class="section">
+    <h2>Section 8 — The Game Thread in libGDX</h2>
+    <p>libGDX runs your game on a <strong>single thread</strong> — the <strong>GL thread</strong> (or render thread). The <code>render()</code> method is called ~60 times per second on this thread.</p>
+
+    <h3>Rules of the GL Thread</h3>
+    <ul>
+      <li><strong>All rendering must happen on the GL thread</strong> — you cannot draw from a background thread</li>
+      <li><strong>Never block the GL thread</strong> — file loading, network calls, or <code>Thread.sleep()</code> will freeze the game</li>
+      <li><strong>AssetManager</strong> solves this — it loads assets on a background thread and hands them to the GL thread when ready</li>
+    </ul>
+
+    <pre><span class="cmt">// In your game's render() method:</span>
+<span class="kw">if</span> (assetManager.<span class="method">update</span>()) {
+    <span class="cmt">// All assets loaded — switch to GameScreen</span>
+    setScreen(<span class="kw">new</span> <span class="type">GameScreen</span>());
+} <span class="kw">else</span> {
+    <span class="cmt">// Still loading — show progress</span>
+    <span class="kw">float</span> progress = assetManager.<span class="method">getProgress</span>();
+    drawLoadingBar(progress);
+}</pre>
+
+    <div class="callout game">
+      <p>🎮 <strong>Platformer connection:</strong> You'll use <code>AssetManager</code> to load textures, sounds, and tilemaps without freezing your game. This is multithreading in action — AssetManager uses a background thread internally.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-label">TODO 8</div>
+      <p>Explain in your own words why loading a large tilemap directly in <code>render()</code> would be a problem. What would the player experience?</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── SUMMARY ─────── -->
+  <div class="section">
+    <h2>Summary — Key Takeaways</h2>
+    <ul>
+      <li><strong>BufferedReader / BufferedWriter</strong> — wrap raw readers/writers for efficiency and convenience</li>
+      <li><strong>try-with-resources</strong> — automatically closes resources, prevents leaks</li>
+      <li><strong>Gson</strong> — converts Java objects ↔ JSON for structured data persistence</li>
+      <li><strong>Thread / Runnable</strong> — run code on a separate thread with <code>start()</code></li>
+      <li><strong>ExecutorService</strong> — managed thread pool for running multiple tasks</li>
+      <li><strong>synchronized</strong> — prevents race conditions when threads share data</li>
+      <li><strong>libGDX GL thread</strong> — never block it; use AssetManager for background loading</li>
+    </ul>
+
+    <div class="todo">
+      <div class="todo-label">TODO 9</div>
+      <p>Pick ONE concept from today's notes that you think will be most useful for your platformer project. Explain what you'd use it for and why.</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+</body>
+</html>
