@@ -1,0 +1,59 @@
+<svg viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg" style="background:#0f0f1a">
+  <defs>
+    <linearGradient id="hg5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c6af7"/>
+      <stop offset="100%" stop-color="#4fc3f7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="600" height="52" fill="#1a1a2e"/>
+  <text x="20" y="33" font-family="'Fira Code',monospace" font-size="14" font-weight="700" fill="url(#hg5)">05 — Loading State Pattern</text>
+
+  <!-- Three states -->
+  <!-- IDLE -->
+  <rect x="20" y="68" width="172" height="80" rx="8" fill="#1a1a2e" stroke="#2e2e52"/>
+  <circle cx="44" cy="96" r="8" fill="#2e2e52"/>
+  <text x="60" y="100" font-family="'Fira Code',monospace" font-size="12" font-weight="600" fill="#8888aa">IDLE</text>
+  <text x="36" y="128" font-family="'DM Sans',sans-serif" font-size="11" fill="#8888aa">Waiting for user click</text>
+
+  <!-- Arrow -->
+  <text x="202" y="108" font-size="16" fill="#f9a825">→</text>
+
+  <!-- LOADING -->
+  <rect x="214" y="68" width="172" height="80" rx="8" fill="#1a1a2e" stroke="#f9a825"/>
+  <circle cx="238" cy="96" r="8" fill="rgba(249,168,37,0.3)" stroke="#f9a825"/>
+  <text x="254" y="100" font-family="'Fira Code',monospace" font-size="12" font-weight="600" fill="#f9a825">LOADING</text>
+  <text x="230" y="128" font-family="'DM Sans',sans-serif" font-size="11" fill="#f9a825">"Loading..." shown</text>
+
+  <!-- Arrow -->
+  <text x="396" y="108" font-size="16" fill="#f9a825">→</text>
+
+  <!-- SUCCESS -->
+  <rect x="408" y="68" width="172" height="80" rx="8" fill="#1a1a2e" stroke="#66bb6a"/>
+  <circle cx="432" cy="96" r="8" fill="rgba(102,187,106,0.3)" stroke="#66bb6a"/>
+  <text x="432" y="100" font-family="'Fira Code',monospace" font-size="9" fill="#66bb6a" text-anchor="middle">✓</text>
+  <text x="448" y="100" font-family="'Fira Code',monospace" font-size="12" font-weight="600" fill="#66bb6a">SUCCESS</text>
+  <text x="424" y="128" font-family="'DM Sans',sans-serif" font-size="11" fill="#66bb6a">Data rendered</text>
+
+  <!-- or ERROR -->
+  <line x1="300" y1="148" x2="300" y2="168" stroke="#f07178" stroke-width="1.5"/>
+  <text x="314" y="164" font-family="'DM Sans',sans-serif" font-size="10" fill="#f07178">or</text>
+
+  <rect x="214" y="172" width="172" height="58" rx="8" fill="#1a1a2e" stroke="#f07178"/>
+  <circle cx="238" cy="196" r="8" fill="rgba(240,113,120,0.3)" stroke="#f07178"/>
+  <text x="238" y="200" font-family="'Fira Code',monospace" font-size="9" fill="#f07178" text-anchor="middle">✗</text>
+  <text x="254" y="200" font-family="'Fira Code',monospace" font-size="12" font-weight="600" fill="#f07178">ERROR</text>
+  <text x="230" y="220" font-family="'DM Sans',sans-serif" font-size="11" fill="#f07178">Error message shown</text>
+
+  <!-- Code pattern -->
+  <rect x="20" y="250" width="560" height="76" rx="8" fill="#111125" stroke="#2e2e52"/>
+  <text x="32" y="272" font-family="'Fira Code',monospace" font-size="11" font-weight="600" fill="#f9a825">THE PATTERN</text>
+
+  <text x="32" y="296" font-family="'Fira Code',monospace" font-size="11">
+    <tspan fill="#4fc3f7">status</tspan><tspan fill="#e2e2f0"> = </tspan><tspan fill="#c3e88d">"Loading..."</tspan><tspan fill="#546e7a">  // before fetch</tspan>
+  </text>
+  <text x="32" y="316" font-family="'Fira Code',monospace" font-size="11">
+    <tspan fill="#4fc3f7">status</tspan><tspan fill="#e2e2f0"> = </tspan><tspan fill="#c3e88d">"Loaded!"</tspan><tspan fill="#546e7a">     // in try, after data</tspan><tspan fill="#e2e2f0">  |  </tspan><tspan fill="#4fc3f7">status</tspan><tspan fill="#e2e2f0"> = </tspan><tspan fill="#c3e88d">"Error!"</tspan><tspan fill="#546e7a">  // in catch</tspan>
+  </text>
+</svg>

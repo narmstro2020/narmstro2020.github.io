@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Async/Await, Error Handling & POST — Guided Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #0f0f1a;
+      --surface:  #1a1a2e;
+      --surface2: #222240;
+      --border:   #2e2e52;
+      --accent:   #7c6af7;
+      --accent2:  #4fc3f7;
+      --accent3:  #f9a825;
+      --accent4:  #66bb6a;
+      --text:     #e2e2f0;
+      --muted:    #8888aa;
+      --keyword:  #c792ea;
+      --string:   #c3e88d;
+      --func:     #82aaff;
+      --num:      #f78c6c;
+      --comment:  #546e7a;
+      --prop:     #4fc3f7;
+      --tag:      #f07178;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Top Banner ── */
+    .top-banner {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      border-bottom: 2px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .banner-left { display: flex; align-items: center; gap: 12px; }
+    .banner-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .banner-title { font-size: 16px; font-weight: 700; }
+    .banner-sub { font-size: 12px; color: var(--muted); }
+    .banner-right { display: flex; gap: 8px; align-items: center; }
+    .badge {
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 700;
+      font-family: 'Fira Code', monospace;
+    }
+    .badge-unit { background: rgba(124,106,247,0.15); color: var(--accent); border: 1px solid rgba(124,106,247,0.3); }
+    .badge-day  { background: rgba(79,195,247,0.15);  color: var(--accent2); border: 1px solid rgba(79,195,247,0.3); }
+    .badge-pts  { background: rgba(249,168,37,0.15);  color: var(--accent3); border: 1px solid rgba(249,168,37,0.3); }
+
+    /* ── Main Split ── */
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── Notes Panel (Left) ── */
+    .notes-panel {
+      overflow-y: auto;
+      padding: 24px 28px 60px;
+      border-right: 1px solid var(--border);
+    }
+    .section-title {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--accent);
+      margin: 28px 0 12px; padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    .concept {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    .concept-label {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px; font-weight: 600;
+      color: var(--accent2);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .concept p { font-size: 14px; color: var(--text); }
+    .concept code {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      background: var(--surface2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent2);
+    }
+
+    .todo {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent3);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    .todo-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 8px;
+    }
+    .todo-num {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px; font-weight: 700;
+      background: rgba(249,168,37,0.15);
+      color: var(--accent3);
+      padding: 2px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(249,168,37,0.3);
+    }
+    .todo-title {
+      font-weight: 600; font-size: 14px;
+    }
+    .todo p, .todo ul { font-size: 13px; color: var(--muted); }
+    .todo ul { padding-left: 18px; margin-top: 4px; }
+    .todo li { margin-bottom: 2px; }
+
+    .code-ref {
+      background: #111125;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 8px 0;
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+    .kw  { color: var(--keyword); }
+    .fn  { color: var(--func); }
+    .str { color: var(--string); }
+    .num { color: var(--num); }
+    .cmt { color: var(--comment); }
+    .prp { color: var(--prop); }
+    .tg  { color: var(--tag); }
+
+    .part-label {
+      display: inline-block;
+      font-family: 'Fira Code', monospace;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 10px; border-radius: 12px;
+      margin-bottom: 10px;
+    }
+    .part-a { background: rgba(79,195,247,0.15); color: var(--accent2); border: 1px solid rgba(79,195,247,0.3); }
+    .part-b { background: rgba(249,168,37,0.15); color: var(--accent3); border: 1px solid rgba(249,168,37,0.3); }
+
+    /* ── Output Panel (Right) ── */
+    .output-panel {
+      overflow-y: auto;
+      padding: 24px 28px 60px;
+      background: #0a0a14;
+    }
+    .output-title {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px; font-weight: 600;
+      color: var(--accent4);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+    }
+
+    .output-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .output-section h3 {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px; color: var(--accent2);
+      margin-bottom: 10px;
+    }
+
+    button {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px; font-weight: 600;
+      border: none; border-radius: 6px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #0f0f1a;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--border); }
+    .btn-danger {
+      background: rgba(240,113,120,0.15);
+      color: var(--tag);
+      border: 1px solid rgba(240,113,120,0.3);
+    }
+
+    .status {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      padding: 6px 0;
+      min-height: 24px;
+    }
+    .status.loading { color: var(--accent3); }
+    .status.success { color: var(--accent4); }
+    .status.error   { color: var(--tag); }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+    .card .name {
+      font-weight: 600; font-size: 13px;
+      color: var(--accent2);
+    }
+    .card .detail {
+      font-size: 11px; color: var(--muted);
+      font-family: 'Fira Code', monospace;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-group label {
+      display: block;
+      font-family: 'Fira Code', monospace;
+      font-size: 11px; color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+    }
+    .form-group textarea {
+      min-height: 60px;
+      resize: vertical;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .response-display {
+      background: #111125;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: var(--string);
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 150px;
+      overflow-y: auto;
+      display: none;
+    }
+    .response-display.visible { display: block; }
+
+    .btn-row {
+      display: flex; gap: 8px; margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── BANNER ── -->
+<div class="top-banner">
+  <div class="banner-left">
+    <div class="banner-icon">⚡</div>
+    <div>
+      <div class="banner-title">Async/Await, Error Handling &amp; POST Requests</div>
+      <div class="banner-sub">Guided Notes · Streamlined Fetch Patterns + Sending Data</div>
+    </div>
+  </div>
+  <div class="banner-right">
+    <span class="badge badge-unit">Unit 2 · APIs &amp; Fetch</span>
+    <span class="badge badge-day">Day 3–4</span>
+    <span class="badge badge-pts">15 pts</span>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- ════════════════════════════
+       LEFT: NOTES PANEL
+  ════════════════════════════ -->
+  <div class="notes-panel">
+
+    <!-- ────────────────────────────
+         WARM-UP
+    ──────────────────────────── -->
+    <div class="section-title">Warm-Up · Fetch Review</div>
+
+    <div class="concept">
+      <div class="concept-label">Quick Recall</div>
+      <p>Last time we used <code>fetch()</code> with <code>.then()</code> chains to GET data from JSONPlaceholder. Today we learn a cleaner syntax (<code>async/await</code>) and how to <strong>send</strong> data with POST requests.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 1</span>
+        <span class="todo-title">Warm-Up — Fetch users with .then()</span>
+      </div>
+      <p>Wire the <strong>"Fetch Users (.then)"</strong> button. Use a <code>.then()</code> chain to fetch <code>https://jsonplaceholder.typicode.com/users</code>, then render each user's <code>name</code> and <code>email</code> as cards in <code>#warmup-grid</code>.</p>
+      <div class="code-ref">
+        <span class="fn">fetch</span>(<span class="str">"url"</span>)<br>
+        &nbsp;&nbsp;.<span class="fn">then</span>(<span class="prp">res</span> <span class="kw">=&gt;</span> <span class="prp">res</span>.<span class="fn">json</span>())<br>
+        &nbsp;&nbsp;.<span class="fn">then</span>(<span class="prp">data</span> <span class="kw">=&gt;</span> { <span class="cmt">/* render */</span> })
+      </div>
+    </div>
+
+    <!-- ────────────────────────────
+         PART A: ASYNC / AWAIT
+    ──────────────────────────── -->
+    <div class="section-title">Part A · Async / Await</div>
+    <span class="part-label part-a">PART A — CLEANER SYNTAX</span>
+
+    <div class="concept">
+      <div class="concept-label">What is async/await?</div>
+      <p><code>async/await</code> is syntactic sugar over Promises. Instead of chaining <code>.then()</code>, we use the <code>await</code> keyword to pause until a Promise resolves. The function must be marked <code>async</code>.</p>
+      <div class="code-ref">
+        <span class="cmt">// .then() chain (what you know)</span><br>
+        <span class="fn">fetch</span>(<span class="str">"url"</span>).<span class="fn">then</span>(<span class="prp">r</span> <span class="kw">=&gt;</span> <span class="prp">r</span>.<span class="fn">json</span>()).<span class="fn">then</span>(<span class="prp">d</span> <span class="kw">=&gt;</span> <span class="fn">console</span>.<span class="fn">log</span>(<span class="prp">d</span>));<br><br>
+        <span class="cmt">// async/await (cleaner version)</span><br>
+        <span class="kw">async function</span> <span class="fn">getData</span>() {<br>
+        &nbsp;&nbsp;<span class="kw">const</span> <span class="prp">response</span> = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"url"</span>);<br>
+        &nbsp;&nbsp;<span class="kw">const</span> <span class="prp">data</span> = <span class="kw">await</span> <span class="prp">response</span>.<span class="fn">json</span>();<br>
+        &nbsp;&nbsp;<span class="fn">console</span>.<span class="fn">log</span>(<span class="prp">data</span>);<br>
+        }
+      </div>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 2</span>
+        <span class="todo-title">Rewrite fetch with async/await</span>
+      </div>
+      <p>Wire the <strong>"Fetch Users (async/await)"</strong> button. Write an <code>async</code> function that uses <code>await fetch()</code> and <code>await response.json()</code>. Render the same user cards to <code>#async-grid</code>.</p>
+    </div>
+
+    <!-- ────────────────────────────
+         TRY/CATCH
+    ──────────────────────────── -->
+    <div class="section-title">Part A · Try / Catch Error Handling</div>
+
+    <div class="concept">
+      <div class="concept-label">try / catch replaces .catch()</div>
+      <p>With <code>async/await</code>, we wrap our code in a <code>try { }</code> block. If anything fails, execution jumps to the <code>catch { }</code> block — just like <code>.catch()</code> on a Promise chain.</p>
+      <div class="code-ref">
+        <span class="kw">async function</span> <span class="fn">getData</span>() {<br>
+        &nbsp;&nbsp;<span class="kw">try</span> {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">const</span> <span class="prp">res</span> = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"url"</span>);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">const</span> <span class="prp">data</span> = <span class="kw">await</span> <span class="prp">res</span>.<span class="fn">json</span>();<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// use data...</span><br>
+        &nbsp;&nbsp;} <span class="kw">catch</span> (<span class="prp">error</span>) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">console</span>.<span class="fn">error</span>(<span class="str">"Failed:"</span>, <span class="prp">error</span>);<br>
+        &nbsp;&nbsp;}<br>
+        }
+      </div>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 3</span>
+        <span class="todo-title">Add try/catch to your async function</span>
+      </div>
+      <p>Wrap your TODO 2 code in <code>try/catch</code>. In the <code>catch</code> block, display the error message in <code>#async-status</code> with the class <code>"error"</code>.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 4</span>
+        <span class="todo-title">Add a loading state</span>
+      </div>
+      <p>Before the <code>await fetch()</code> call, set <code>#async-status</code> text to <code>"Loading..."</code> with class <code>"loading"</code>. After success, update it to <code>"Loaded X users"</code> with class <code>"success"</code>.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 5</span>
+        <span class="todo-title">Test your error handling</span>
+      </div>
+      <p>Temporarily change the URL to <code>"https://jsonplaceholder.typicode.com/BADURL"</code>. Click the button — you should see your error message. Then fix the URL back.</p>
+    </div>
+
+    <!-- ────────────────────────────
+         PART B: POST REQUESTS
+    ──────────────────────────── -->
+    <div class="section-title">Part B · POST Requests</div>
+    <span class="part-label part-b">PART B — SENDING DATA</span>
+
+    <div class="concept">
+      <div class="concept-label">GET vs POST</div>
+      <p><strong>GET</strong> = "give me data" (what we've been doing).<br>
+         <strong>POST</strong> = "here's some data, save it." POST requests include a <em>body</em> — the data you're sending — and a <code>Content-Type</code> header telling the server the format.</p>
+      <div class="code-ref">
+        <span class="kw">const</span> <span class="prp">response</span> = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"url"</span>, {<br>
+        &nbsp;&nbsp;<span class="prp">method</span>: <span class="str">"POST"</span>,<br>
+        &nbsp;&nbsp;<span class="prp">headers</span>: {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Content-Type"</span>: <span class="str">"application/json"</span><br>
+        &nbsp;&nbsp;},<br>
+        &nbsp;&nbsp;<span class="prp">body</span>: <span class="fn">JSON</span>.<span class="fn">stringify</span>({<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="prp">title</span>: <span class="str">"My Post"</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="prp">body</span>: <span class="str">"Hello world"</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="prp">userId</span>: <span class="num">1</span><br>
+        &nbsp;&nbsp;})<br>
+        });
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">Key Pieces of a POST request</div>
+      <p><strong>method:</strong> <code>"POST"</code> — tells the server we're sending, not requesting.<br>
+         <strong>headers:</strong> <code>"Content-Type": "application/json"</code> — tells the server the body is JSON.<br>
+         <strong>body:</strong> <code>JSON.stringify(object)</code> — converts our JS object to a JSON string for transport.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 6</span>
+        <span class="todo-title">Read form values into an object</span>
+      </div>
+      <p>When the <strong>"Submit Post"</strong> button is clicked, read the values from <code>#post-title</code> and <code>#post-body</code> inputs. Create a JS object: <code>{ title, body, userId: 1 }</code>.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 7</span>
+        <span class="todo-title">Send a POST request</span>
+      </div>
+      <p>Using <code>async/await</code> + <code>try/catch</code>, send the object to <code>https://jsonplaceholder.typicode.com/posts</code> with method <code>"POST"</code>, the correct headers, and <code>JSON.stringify()</code> for the body.</p>
+      <ul>
+        <li>Set <code>#post-status</code> to <code>"Sending..."</code> before the request</li>
+        <li>Parse the response with <code>await response.json()</code></li>
+        <li>Display the response in <code>#post-response</code></li>
+      </ul>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 8</span>
+        <span class="todo-title">Display the server response</span>
+      </div>
+      <p>After a successful POST, show the returned data in <code>#post-response</code> using <code>JSON.stringify(data, null, 2)</code>. Add class <code>"visible"</code> to make it appear. Update <code>#post-status</code> to <code>"Post created! ID: X"</code>.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 9</span>
+        <span class="todo-title">Handle POST errors</span>
+      </div>
+      <p>In your <code>catch</code> block, set <code>#post-status</code> to <code>"Error: " + error.message</code> with class <code>"error"</code>.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 10</span>
+        <span class="todo-title">Clear the form after success</span>
+      </div>
+      <p>After a successful POST, reset both input fields to empty strings and hide the response display.</p>
+    </div>
+
+    <!-- ────────────────────────────
+         BONUS
+    ──────────────────────────── -->
+    <div class="section-title">Bonus Challenge</div>
+
+    <div class="todo">
+      <div class="todo-header">
+        <span class="todo-num">TODO 11</span>
+        <span class="todo-title">Bonus — Disable button during request</span>
+      </div>
+      <p>Disable the submit button when a POST starts (set <code>disabled = true</code>). Re-enable it in both the success and catch blocks. This prevents double-submits.</p>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════
+       RIGHT: OUTPUT PANEL
+  ════════════════════════════ -->
+  <div class="output-panel">
+    <div class="output-title">▸ Live Output</div>
+
+    <!-- ── Warm-Up Output ── -->
+    <div class="output-section">
+      <h3>Warm-Up · .then() Review</h3>
+      <button id="warmup-btn" class="btn-secondary">Fetch Users (.then)</button>
+      <div id="warmup-status" class="status"></div>
+      <div id="warmup-grid" class="card-grid"></div>
+    </div>
+
+    <!-- ── Async/Await Output ── -->
+    <div class="output-section">
+      <h3>Part A · Async/Await + Try/Catch</h3>
+      <div class="btn-row">
+        <button id="async-btn" class="btn-primary">Fetch Users (async/await)</button>
+        <button id="error-test-btn" class="btn-danger">Test Bad URL</button>
+      </div>
+      <div id="async-status" class="status"></div>
+      <div id="async-grid" class="card-grid"></div>
+    </div>
+
+    <!-- ── POST Output ── -->
+    <div class="output-section">
+      <h3>Part B · POST Request</h3>
+      <div class="form-group">
+        <label for="post-title">title</label>
+        <input type="text" id="post-title" placeholder="Enter a post title...">
+      </div>
+      <div class="form-group">
+        <label for="post-body">body</label>
+        <textarea id="post-body" placeholder="Write something..."></textarea>
+      </div>
+      <div class="btn-row">
+        <button id="post-btn" class="btn-primary">Submit Post</button>
+        <button id="clear-btn" class="btn-secondary">Clear</button>
+      </div>
+      <div id="post-status" class="status"></div>
+      <div id="post-response" class="response-display"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════
+     SCRIPT — Student TODOs
+════════════════════════════ -->
+<script src="script.js"></script>
+</body>
+</html>

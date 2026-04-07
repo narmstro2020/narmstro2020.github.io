@@ -1,0 +1,68 @@
+<svg viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" style="background:#0f0f1a">
+  <defs>
+    <linearGradient id="hg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c6af7"/>
+      <stop offset="100%" stop-color="#4fc3f7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="600" height="52" fill="#1a1a2e"/>
+  <text x="20" y="33" font-family="'Fira Code',monospace" font-size="14" font-weight="700" fill="url(#hg4)">04 — POST Request Anatomy</text>
+
+  <!-- Code block -->
+  <rect x="20" y="68" width="360" height="330" rx="8" fill="#111125" stroke="#2e2e52"/>
+
+  <text x="36" y="96" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#c792ea">const </tspan><tspan fill="#4fc3f7">response</tspan><tspan fill="#e2e2f0"> = </tspan><tspan fill="#c792ea">await </tspan><tspan fill="#82aaff">fetch</tspan><tspan fill="#e2e2f0">(</tspan><tspan fill="#c3e88d">"url"</tspan><tspan fill="#e2e2f0">, {</tspan>
+  </text>
+
+  <text x="36" y="128" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#4fc3f7">  method</tspan><tspan fill="#e2e2f0">: </tspan><tspan fill="#c3e88d">"POST"</tspan><tspan fill="#e2e2f0">,</tspan>
+  </text>
+
+  <text x="36" y="176" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#4fc3f7">  headers</tspan><tspan fill="#e2e2f0">: {</tspan>
+  </text>
+  <text x="36" y="200" font-family="'Fira Code',monospace" font-size="11">
+    <tspan fill="#e2e2f0">    </tspan><tspan fill="#c3e88d">"Content-Type"</tspan><tspan fill="#e2e2f0">:</tspan>
+  </text>
+  <text x="36" y="220" font-family="'Fira Code',monospace" font-size="11">
+    <tspan fill="#e2e2f0">      </tspan><tspan fill="#c3e88d">"application/json"</tspan>
+  </text>
+  <text x="36" y="240" font-family="'Fira Code',monospace" font-size="12" fill="#e2e2f0">  },</text>
+
+  <text x="36" y="280" font-family="'Fira Code',monospace" font-size="12">
+    <tspan fill="#4fc3f7">  body</tspan><tspan fill="#e2e2f0">: </tspan><tspan fill="#82aaff">JSON</tspan><tspan fill="#e2e2f0">.</tspan><tspan fill="#82aaff">stringify</tspan><tspan fill="#e2e2f0">({</tspan>
+  </text>
+  <text x="36" y="304" font-family="'Fira Code',monospace" font-size="11">
+    <tspan fill="#4fc3f7">    title</tspan><tspan fill="#e2e2f0">: </tspan><tspan fill="#c3e88d">"My Post"</tspan><tspan fill="#e2e2f0">,</tspan>
+  </text>
+  <text x="36" y="324" font-family="'Fira Code',monospace" font-size="11">
+    <tspan fill="#4fc3f7">    body</tspan><tspan fill="#e2e2f0">: </tspan><tspan fill="#c3e88d">"Hello world"</tspan><tspan fill="#e2e2f0">,</tspan>
+  </text>
+  <text x="36" y="344" font-family="'Fira Code',monospace" font-size="11">
+    <tspan fill="#4fc3f7">    userId</tspan><tspan fill="#e2e2f0">: </tspan><tspan fill="#f78c6c">1</tspan>
+  </text>
+  <text x="36" y="364" font-family="'Fira Code',monospace" font-size="12" fill="#e2e2f0">  })</text>
+  <text x="36" y="386" font-family="'Fira Code',monospace" font-size="12" fill="#e2e2f0">});</text>
+
+  <!-- Annotations -->
+  <!-- method -->
+  <line x1="382" y1="124" x2="405" y2="124" stroke="#f9a825" stroke-width="1.5"/>
+  <rect x="408" y="110" width="176" height="32" rx="6" fill="rgba(249,168,37,0.1)" stroke="rgba(249,168,37,0.3)"/>
+  <text x="420" y="130" font-family="'DM Sans',sans-serif" font-size="11" fill="#f9a825">① Tells server: "I'm sending"</text>
+
+  <!-- headers -->
+  <line x1="382" y1="208" x2="405" y2="208" stroke="#4fc3f7" stroke-width="1.5"/>
+  <rect x="408" y="190" width="176" height="40" rx="6" fill="rgba(79,195,247,0.1)" stroke="rgba(79,195,247,0.3)"/>
+  <text x="420" y="207" font-family="'DM Sans',sans-serif" font-size="11" fill="#4fc3f7">② Tells server: "The data</text>
+  <text x="420" y="223" font-family="'DM Sans',sans-serif" font-size="11" fill="#4fc3f7">   I'm sending is JSON"</text>
+
+  <!-- body -->
+  <line x1="382" y1="304" x2="405" y2="304" stroke="#66bb6a" stroke-width="1.5"/>
+  <rect x="408" y="284" width="176" height="56" rx="6" fill="rgba(102,187,106,0.1)" stroke="rgba(102,187,106,0.3)"/>
+  <text x="420" y="303" font-family="'DM Sans',sans-serif" font-size="11" fill="#66bb6a">③ The actual data.</text>
+  <text x="420" y="319" font-family="'Fira Code',monospace" font-size="10" fill="#66bb6a">JSON.stringify()</text>
+  <text x="420" y="335" font-family="'DM Sans',sans-serif" font-size="11" fill="#8888aa">converts object → string</text>
+</svg>
