@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 380" font-family="sans-serif">
+  <rect width="700" height="380" rx="16" fill="#0f0f1a"/>
+  <rect x="1" y="1" width="698" height="378" rx="15" fill="none" stroke="#252540" stroke-width="1"/>
+  <text x="350" y="38" font-size="18" font-weight="700" fill="#ffc107" text-anchor="middle">Sprite Sheet → TextureRegion[] → Animation</text>
+  <text x="350" y="58" font-size="11" fill="#a0a0a0" text-anchor="middle">One image file becomes many frames, then one Animation</text>
+
+  <!-- Sprite sheet label -->
+  <text x="40" y="95" font-size="12" font-weight="700" fill="#4ecca3">1. Sprite Sheet (one PNG)</text>
+  <!-- 4 frames as a strip -->
+  <g>
+    <rect x="40" y="105" width="60" height="60" rx="4" fill="rgba(123,104,238,0.15)" stroke="#7b68ee" stroke-width="1"/>
+    <text x="70" y="140" font-size="24" text-anchor="middle">🏃</text>
+    <rect x="102" y="105" width="60" height="60" rx="4" fill="rgba(123,104,238,0.15)" stroke="#7b68ee" stroke-width="1"/>
+    <text x="132" y="140" font-size="24" text-anchor="middle">🏃</text>
+    <rect x="164" y="105" width="60" height="60" rx="4" fill="rgba(123,104,238,0.15)" stroke="#7b68ee" stroke-width="1"/>
+    <text x="194" y="140" font-size="24" text-anchor="middle">🏃</text>
+    <rect x="226" y="105" width="60" height="60" rx="4" fill="rgba(123,104,238,0.15)" stroke="#7b68ee" stroke-width="1"/>
+    <text x="256" y="140" font-size="24" text-anchor="middle">🏃</text>
+  </g>
+  <text x="163" y="180" font-family="monospace" font-size="10" fill="#a0a0a0" text-anchor="middle">run.png (256×64)</text>
+
+  <!-- Arrow -->
+  <line x1="310" y1="135" x2="345" y2="135" stroke="#ffc107" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="327" y="125" font-family="monospace" font-size="9" fill="#ffc107" text-anchor="middle">split()</text>
+
+  <!-- TextureRegion array -->
+  <text x="360" y="95" font-size="12" font-weight="700" fill="#4ecca3">2. TextureRegion[]</text>
+  <g>
+    <rect x="360" y="105" width="40" height="40" rx="3" fill="rgba(78,204,163,0.15)" stroke="#4ecca3" stroke-width="1"/>
+    <text x="380" y="130" font-size="14" text-anchor="middle">🏃</text>
+    <text x="380" y="158" font-family="monospace" font-size="9" fill="#a0a0a0" text-anchor="middle">[0]</text>
+    <rect x="405" y="105" width="40" height="40" rx="3" fill="rgba(78,204,163,0.15)" stroke="#4ecca3" stroke-width="1"/>
+    <text x="425" y="130" font-size="14" text-anchor="middle">🏃</text>
+    <text x="425" y="158" font-family="monospace" font-size="9" fill="#a0a0a0" text-anchor="middle">[1]</text>
+    <rect x="450" y="105" width="40" height="40" rx="3" fill="rgba(78,204,163,0.15)" stroke="#4ecca3" stroke-width="1"/>
+    <text x="470" y="130" font-size="14" text-anchor="middle">🏃</text>
+    <text x="470" y="158" font-family="monospace" font-size="9" fill="#a0a0a0" text-anchor="middle">[2]</text>
+    <rect x="495" y="105" width="40" height="40" rx="3" fill="rgba(78,204,163,0.15)" stroke="#4ecca3" stroke-width="1"/>
+    <text x="515" y="130" font-size="14" text-anchor="middle">🏃</text>
+    <text x="515" y="158" font-family="monospace" font-size="9" fill="#a0a0a0" text-anchor="middle">[3]</text>
+  </g>
+
+  <!-- Arrow -->
+  <line x1="555" y1="125" x2="590" y2="125" stroke="#ffc107" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Animation -->
+  <text x="595" y="95" font-size="12" font-weight="700" fill="#4ecca3">3. Animation</text>
+  <rect x="595" y="105" width="70" height="55" rx="6" fill="rgba(255,193,7,0.15)" stroke="#ffc107" stroke-width="1"/>
+  <text x="630" y="138" font-size="22" text-anchor="middle">🎞️</text>
+
+  <!-- Code -->
+  <rect x="40" y="215" width="620" height="150" rx="10" fill="rgba(78,204,163,0.04)" stroke="rgba(78,204,163,0.2)"/>
+  <text x="55" y="238" font-family="monospace" font-size="11" fill="#7b68ee">Texture <tspan fill="#e0e0e0">sheet =</tspan> new Texture(<tspan fill="#4ecca3">"run.png"</tspan>);</text>
+  <text x="55" y="258" font-family="monospace" font-size="11" fill="#7b68ee">TextureRegion[][] <tspan fill="#e0e0e0">tmp =</tspan> TextureRegion.<tspan fill="#ffc107">split</tspan>(sheet, 64, 64);</text>
+  <text x="55" y="278" font-family="monospace" font-size="11" fill="#7b68ee">TextureRegion[] <tspan fill="#e0e0e0">frames = tmp[0];</tspan>  <tspan fill="#555">// row 0 has our 4 frames</tspan></text>
+  <text x="55" y="308" font-family="monospace" font-size="11" fill="#7b68ee">Animation&lt;TextureRegion&gt; <tspan fill="#e0e0e0">runAnim =</tspan></text>
+  <text x="55" y="328" font-family="monospace" font-size="11" fill="#e0e0e0">    new <tspan fill="#7b68ee">Animation</tspan>&lt;&gt;(<tspan fill="#ff8c42">0.1f</tspan>, frames);  <tspan fill="#555">// 0.1s per frame = 10 fps</tspan></text>
+  <text x="55" y="352" font-family="monospace" font-size="11" fill="#e0e0e0">runAnim.<tspan fill="#ffc107">setPlayMode</tspan>(Animation.PlayMode.<tspan fill="#ff8c42">LOOP</tspan>);</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#ffc107"/>
+    </marker>
+  </defs>
+</svg>

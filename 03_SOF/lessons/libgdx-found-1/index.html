@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guided Notes — Animation &amp; Sprite Sheets</title>
+  <style>
+    :root { --bg:#0f0f1a; --surface:#1a1a2e; --surface-light:#252540;
+      --accent:#4ecca3; --purple:#7b68ee; --yellow:#ffc107; --red:#e94560;
+      --blue:#5dade2; --orange:#ff8c42; --text:#e0e0e0; --text-muted:#a0a0a0; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Segoe UI',sans-serif;
+      line-height:1.6; padding:2rem; max-width:860px; margin:0 auto; }
+    h1 { font-size:1.8rem; margin-bottom:0.25rem;
+      background:linear-gradient(135deg,var(--yellow),var(--accent));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .subtitle { color:var(--text-muted); font-size:0.9rem; margin-bottom:2rem; }
+    .section { background:var(--surface); border:1px solid var(--surface-light);
+      border-radius:10px; padding:1.5rem; margin-bottom:1.5rem; }
+    .section h2 { font-size:1.15rem; color:var(--yellow); margin-bottom:0.75rem;
+      padding-bottom:0.5rem; border-bottom:1px solid var(--surface-light); }
+    .section h3 { font-size:0.95rem; color:var(--accent); margin:1.25rem 0 0.5rem; }
+    .section p, .section li { font-size:0.88rem; color:var(--text-muted); line-height:1.7; }
+    .section ul { padding-left:1.5rem; margin-bottom:0.75rem; }
+    .section li { margin-bottom:0.25rem; }
+    code { font-family:'Consolas',monospace; background:rgba(123,104,238,0.1);
+      color:var(--purple); padding:0.1rem 0.4rem; border-radius:4px; font-size:0.85rem; }
+    pre { background:#0a0a15; border:1px solid var(--surface-light); border-radius:8px;
+      padding:1rem; margin:0.75rem 0; font-family:'Consolas',monospace;
+      font-size:0.82rem; line-height:1.7; overflow-x:auto; color:var(--text-muted); }
+    pre .kw { color:var(--purple); font-weight:600; }
+    pre .type { color:var(--blue); }
+    pre .str { color:var(--accent); }
+    pre .cmt { color:#555; font-style:italic; }
+    pre .num { color:var(--orange); }
+    pre .method { color:var(--yellow); }
+    .todo { background:rgba(233,69,96,0.06); border:1px dashed rgba(233,69,96,0.35);
+      border-radius:8px; padding:1rem; margin:1rem 0; }
+    .todo-label { font-size:0.75rem; font-weight:700; color:var(--red);
+      text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.5rem; }
+    .todo p { font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem; }
+    .todo textarea { width:100%; min-height:60px; background:#0a0a15; color:var(--text);
+      border:1px solid var(--surface-light); border-radius:6px; padding:0.75rem;
+      font-family:'Segoe UI',sans-serif; font-size:0.85rem; line-height:1.5; resize:vertical; }
+    .todo textarea:focus { outline:none; border-color:var(--red); }
+    .callout { border-left:3px solid var(--accent); padding:0.75rem 1rem;
+      background:rgba(78,204,163,0.05); border-radius:0 6px 6px 0; margin:0.75rem 0; }
+    .callout.warn { border-left-color:var(--orange); background:rgba(255,140,66,0.05); }
+    .callout.game { border-left-color:var(--purple); background:rgba(123,104,238,0.05); }
+    .callout p { font-size:0.85rem; }
+    @media print {
+      body { background:white; color:#222; }
+      .section { border-color:#ccc; background:#fafafa; }
+      pre { background:#f5f5f5; border-color:#ddd; }
+      .todo { background:#fff0f0; border-color:#e94560; }
+      .todo textarea { background:white; border-color:#ccc; min-height:80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📝 Animation &amp; Sprite Sheets</h1>
+  <p class="subtitle">L07 — Guided Notes · Apr 13, 2026 · 5 pts · Final Project Prep</p>
+
+  <div class="section">
+    <h2>Why Animation?</h2>
+    <p>A static sprite doesn't feel alive. Animation turns a single frozen image into a character that <em>runs</em>, <em>jumps</em>, and <em>reacts</em>. In libGDX, animation is just <strong>a sequence of still images played in rapid succession</strong> — like a flipbook.</p>
+    <div class="callout game">
+      <p>🎮 <strong>Platformer connection:</strong> Your player will need at minimum 3 animations — <strong>idle</strong>, <strong>run</strong>, and <strong>jump</strong>. Enemies and collectibles will animate too.</p>
+    </div>
+  </div>
+
+  <!-- ─────── SPRITE SHEETS ─────── -->
+  <div class="section">
+    <h2>Section 1 — Sprite Sheets</h2>
+    <p>A <strong>sprite sheet</strong> is a single image file containing multiple animation frames laid out in a grid. Instead of loading 8 separate PNGs, you load one and slice it up in code.</p>
+
+    <h3>Why a Sheet Instead of Individual Files?</h3>
+    <ul>
+      <li><strong>Performance:</strong> One texture upload to the GPU instead of many</li>
+      <li><strong>Memory:</strong> No per-file overhead</li>
+      <li><strong>Batch rendering:</strong> libGDX can draw all frames from one texture in a single GPU call</li>
+      <li><strong>Organization:</strong> All frames of one animation stay together</li>
+    </ul>
+
+    <h3>Typical Layout</h3>
+    <p>Frames are usually laid out in a grid — each cell is the same size (e.g. 64×64 pixels). Rows often represent different animations (row 0 = idle, row 1 = run, row 2 = jump).</p>
+
+    <div class="todo">
+      <div class="todo-label">TODO 1</div>
+      <p>Why is loading one sprite sheet better than loading 16 individual PNG files for an animation? Give at least two reasons.</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── TEXTUREREGION ─────── -->
+  <div class="section">
+    <h2>Section 2 — TextureRegion &amp; split()</h2>
+    <p>A <code>TextureRegion</code> is a rectangular slice of a larger <code>Texture</code>. It tells libGDX: "draw only this portion of the image." The static method <code>TextureRegion.split()</code> chops a sheet into a 2D array automatically.</p>
+
+    <pre><span class="type">Texture</span> sheet = <span class="kw">new</span> <span class="type">Texture</span>(<span class="str">"player.png"</span>);  <span class="cmt">// 256×192 image</span>
+
+<span class="cmt">// Slice into 64×64 cells → returns TextureRegion[3][4]</span>
+<span class="type">TextureRegion</span>[][] grid = <span class="type">TextureRegion</span>.<span class="method">split</span>(sheet, <span class="num">64</span>, <span class="num">64</span>);
+
+<span class="type">TextureRegion</span>[] idleFrames = grid[<span class="num">0</span>];  <span class="cmt">// row 0</span>
+<span class="type">TextureRegion</span>[] runFrames  = grid[<span class="num">1</span>];  <span class="cmt">// row 1</span>
+<span class="type">TextureRegion</span>[] jumpFrames = grid[<span class="num">2</span>];  <span class="cmt">// row 2</span></pre>
+
+    <div class="callout warn">
+      <p>⚠️ <code>split()</code> returns a 2D array: <code>[rows][cols]</code>. Rows first, then columns — a common source of off-by-one confusion.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-label">TODO 2</div>
+      <p>If your sprite sheet is 320×128 pixels and each frame is 64×64, how many rows and columns will <code>split()</code> produce? How many total frames?</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── ANIMATION CLASS ─────── -->
+  <div class="section">
+    <h2>Section 3 — The Animation Class</h2>
+    <p>libGDX provides a generic <code>Animation&lt;T&gt;</code> class. For sprite animations, <code>T</code> is <code>TextureRegion</code>. You pass it the frame duration and the array of frames.</p>
+
+    <pre><span class="kw">import</span> com.badlogic.gdx.graphics.g2d.<span class="type">Animation</span>;
+<span class="kw">import</span> com.badlogic.gdx.graphics.g2d.<span class="type">TextureRegion</span>;
+
+<span class="type">Animation</span>&lt;<span class="type">TextureRegion</span>&gt; runAnim =
+    <span class="kw">new</span> <span class="type">Animation</span>&lt;&gt;(<span class="num">0.1f</span>, runFrames);
+
+runAnim.<span class="method">setPlayMode</span>(<span class="type">Animation</span>.PlayMode.LOOP);</pre>
+
+    <h3>Frame Duration</h3>
+    <p>The first argument is <strong>seconds per frame</strong>, not total duration. Smaller = faster animation.</p>
+    <ul>
+      <li><code>0.1f</code> → 10 frames per second (smooth walking)</li>
+      <li><code>0.05f</code> → 20 fps (fast run)</li>
+      <li><code>0.25f</code> → 4 fps (slow idle breathing)</li>
+    </ul>
+
+    <h3>Play Modes</h3>
+    <ul>
+      <li><code>NORMAL</code> — plays once, stays on last frame (good for death)</li>
+      <li><code>LOOP</code> — restarts from frame 0 forever (good for idle/run)</li>
+      <li><code>LOOP_PINGPONG</code> — 0→N→0→N (good for hovering enemies)</li>
+      <li><code>LOOP_REVERSED</code> — plays backwards repeatedly</li>
+    </ul>
+
+    <div class="todo">
+      <div class="todo-label">TODO 3</div>
+      <p>Match each game action with the PlayMode you'd use for it, and explain why:<br>
+      (a) player death animation  &nbsp;&nbsp; (b) coin spinning  &nbsp;&nbsp; (c) flag waving in the wind</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── STATETIME ─────── -->
+  <div class="section">
+    <h2>Section 4 — stateTime: The Animation Clock</h2>
+    <p>An <code>Animation</code> object is stateless — it doesn't know how long it's been playing. <strong>You</strong> track time in a field called <code>stateTime</code>, adding <code>delta</code> every frame.</p>
+
+    <pre><span class="kw">private float</span> stateTime = <span class="num">0f</span>;
+
+@Override
+<span class="kw">public void</span> <span class="method">render</span>(<span class="kw">float</span> delta) {
+    stateTime += delta;  <span class="cmt">// accumulate time</span>
+
+    <span class="type">TextureRegion</span> currentFrame =
+        runAnim.<span class="method">getKeyFrame</span>(stateTime, <span class="kw">true</span>);
+    <span class="cmt">// second arg: looping? (overrides PlayMode if set)</span>
+
+    batch.<span class="method">begin</span>();
+    batch.<span class="method">draw</span>(currentFrame, player.x, player.y);
+    batch.<span class="method">end</span>();
+}</pre>
+
+    <div class="callout">
+      <p>💡 <strong>Why it works:</strong> <code>getKeyFrame(stateTime)</code> returns the frame whose duration range contains <code>stateTime</code>. If frames are 0.1s each and stateTime=0.25s, you get frame 2.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-label">TODO 4</div>
+      <p>What would happen if you <em>forgot</em> to add <code>delta</code> to <code>stateTime</code> each frame? Describe what the player would see on screen.</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── STATE MACHINE ─────── -->
+  <div class="section">
+    <h2>Section 5 — Switching Animations with State</h2>
+    <p>A real character has multiple animations. Which one plays depends on what the character is <em>doing</em>. Use an <code>enum</code> to track state.</p>
+
+    <pre><span class="kw">enum</span> <span class="type">State</span> { IDLE, RUNNING, JUMPING, FALLING }
+
+<span class="type">State</span> state = <span class="type">State</span>.IDLE;
+
+<span class="cmt">// Each frame, decide which state the player is in:</span>
+<span class="kw">if</span> (velocity.y &gt; <span class="num">0</span>)        state = <span class="type">State</span>.JUMPING;
+<span class="kw">else if</span> (velocity.y &lt; <span class="num">0</span>)  state = <span class="type">State</span>.FALLING;
+<span class="kw">else if</span> (velocity.x != <span class="num">0</span>) state = <span class="type">State</span>.RUNNING;
+<span class="kw">else</span>                       state = <span class="type">State</span>.IDLE;
+
+<span class="cmt">// Pick the right animation based on state</span>
+<span class="type">Animation</span>&lt;<span class="type">TextureRegion</span>&gt; current = <span class="kw">switch</span> (state) {
+    <span class="kw">case</span> IDLE    -&gt; idleAnim;
+    <span class="kw">case</span> RUNNING -&gt; runAnim;
+    <span class="kw">case</span> JUMPING -&gt; jumpAnim;
+    <span class="kw">case</span> FALLING -&gt; fallAnim;
+};</pre>
+
+    <div class="callout warn">
+      <p>⚠️ When switching animations, consider <strong>resetting</strong> <code>stateTime = 0</code> so the new animation starts from frame 0 instead of mid-way through.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-label">TODO 5</div>
+      <p>Why is an enum better than using int or String constants for tracking player state? Think about the Java concepts you've already learned.</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── FLIPPING ─────── -->
+  <div class="section">
+    <h2>Section 6 — Flipping for Direction</h2>
+    <p>You usually draw characters facing right by default. To face left, flip the texture horizontally — no need for duplicate left-facing art.</p>
+
+    <pre><span class="kw">boolean</span> facingRight = <span class="kw">true</span>;
+
+<span class="kw">if</span> (Gdx.input.<span class="method">isKeyPressed</span>(Keys.LEFT))  facingRight = <span class="kw">false</span>;
+<span class="kw">if</span> (Gdx.input.<span class="method">isKeyPressed</span>(Keys.RIGHT)) facingRight = <span class="kw">true</span>;
+
+<span class="type">TextureRegion</span> frame = runAnim.<span class="method">getKeyFrame</span>(stateTime, <span class="kw">true</span>);
+
+<span class="cmt">// Flip if needed — isFlipX() prevents double-flipping</span>
+<span class="kw">if</span> (!facingRight &amp;&amp; !frame.<span class="method">isFlipX</span>()) frame.<span class="method">flip</span>(<span class="kw">true</span>, <span class="kw">false</span>);
+<span class="kw">else if</span> (facingRight &amp;&amp; frame.<span class="method">isFlipX</span>()) frame.<span class="method">flip</span>(<span class="kw">true</span>, <span class="kw">false</span>);
+
+batch.<span class="method">draw</span>(frame, player.x, player.y);</pre>
+
+    <div class="todo">
+      <div class="todo-label">TODO 6</div>
+      <p>Why does the code check <code>isFlipX()</code> before flipping? What bug would appear without that check?</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+  <!-- ─────── SUMMARY ─────── -->
+  <div class="section">
+    <h2>Summary — Key Takeaways</h2>
+    <ul>
+      <li><strong>Sprite sheet</strong> — one image, many frames, one GPU upload</li>
+      <li><strong>TextureRegion.split()</strong> — slices the sheet into a 2D array of regions</li>
+      <li><strong>Animation&lt;TextureRegion&gt;</strong> — wraps frames + duration + play mode</li>
+      <li><strong>stateTime</strong> — you track elapsed time, libGDX picks the right frame</li>
+      <li><strong>PlayMode</strong> — NORMAL for one-shot, LOOP for repeating, PINGPONG for back-and-forth</li>
+      <li><strong>State enum</strong> — cleanly switch between idle/run/jump animations</li>
+      <li><strong>flip()</strong> — mirror a frame horizontally for left/right direction</li>
+    </ul>
+
+    <div class="todo">
+      <div class="todo-label">TODO 7</div>
+      <p>List the animations your platformer will need (at minimum 3). For each, write what PlayMode you'd use and roughly how fast (frame duration).</p>
+      <textarea placeholder="Type your answer here..."></textarea>
+    </div>
+  </div>
+
+</body>
+</html>

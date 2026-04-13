@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 340" font-family="sans-serif">
+  <rect width="700" height="340" rx="16" fill="#0f0f1a"/>
+  <rect x="1" y="1" width="698" height="338" rx="15" fill="none" stroke="#252540" stroke-width="1"/>
+  <text x="350" y="38" font-size="18" font-weight="700" fill="#ffc107" text-anchor="middle">stateTime — The Animation Clock</text>
+  <text x="350" y="58" font-size="11" fill="#a0a0a0" text-anchor="middle">Accumulate deltaTime each frame, then ask the Animation which frame to draw</text>
+
+  <!-- Timeline -->
+  <line x1="40" y1="130" x2="660" y2="130" stroke="#252540" stroke-width="2"/>
+  <g font-family="monospace" font-size="10" fill="#a0a0a0">
+    <line x1="40" y1="125" x2="40" y2="135" stroke="#4ecca3" stroke-width="2"/>
+    <text x="40" y="150" text-anchor="middle">0.0s</text>
+    <line x1="195" y1="125" x2="195" y2="135" stroke="#4ecca3" stroke-width="2"/>
+    <text x="195" y="150" text-anchor="middle">0.1s</text>
+    <line x1="350" y1="125" x2="350" y2="135" stroke="#4ecca3" stroke-width="2"/>
+    <text x="350" y="150" text-anchor="middle">0.2s</text>
+    <line x1="505" y1="125" x2="505" y2="135" stroke="#4ecca3" stroke-width="2"/>
+    <text x="505" y="150" text-anchor="middle">0.3s</text>
+    <line x1="660" y1="125" x2="660" y2="135" stroke="#4ecca3" stroke-width="2"/>
+    <text x="660" y="150" text-anchor="middle">0.4s</text>
+  </g>
+  <!-- Frames above -->
+  <g>
+    <rect x="50" y="85" width="40" height="35" rx="3" fill="rgba(78,204,163,0.15)" stroke="#4ecca3"/>
+    <text x="70" y="108" font-size="14" text-anchor="middle">🏃</text>
+    <text x="70" y="80" font-family="monospace" font-size="9" fill="#4ecca3" text-anchor="middle">frame 0</text>
+    <rect x="205" y="85" width="40" height="35" rx="3" fill="rgba(78,204,163,0.15)" stroke="#4ecca3"/>
+    <text x="225" y="108" font-size="14" text-anchor="middle">🏃</text>
+    <text x="225" y="80" font-family="monospace" font-size="9" fill="#4ecca3" text-anchor="middle">frame 1</text>
+    <rect x="360" y="85" width="40" height="35" rx="3" fill="rgba(78,204,163,0.15)" stroke="#4ecca3"/>
+    <text x="380" y="108" font-size="14" text-anchor="middle">🏃</text>
+    <text x="380" y="80" font-family="monospace" font-size="9" fill="#4ecca3" text-anchor="middle">frame 2</text>
+    <rect x="515" y="85" width="40" height="35" rx="3" fill="rgba(78,204,163,0.15)" stroke="#4ecca3"/>
+    <text x="535" y="108" font-size="14" text-anchor="middle">🏃</text>
+    <text x="535" y="80" font-family="monospace" font-size="9" fill="#4ecca3" text-anchor="middle">frame 3</text>
+    <rect x="618" y="85" width="40" height="35" rx="3" fill="rgba(255,193,7,0.15)" stroke="#ffc107"/>
+    <text x="638" y="108" font-size="14" text-anchor="middle">🔁</text>
+    <text x="638" y="80" font-family="monospace" font-size="9" fill="#ffc107" text-anchor="middle">loop → 0</text>
+  </g>
+
+  <!-- Code -->
+  <rect x="40" y="180" width="620" height="140" rx="10" fill="rgba(123,104,238,0.04)" stroke="rgba(123,104,238,0.2)"/>
+  <text x="55" y="205" font-family="monospace" font-size="11" fill="#7b68ee">float <tspan fill="#e0e0e0">stateTime = 0f;</tspan>  <tspan fill="#555">// field in your Player/Screen class</tspan></text>
+  <text x="55" y="235" font-family="monospace" font-size="11" fill="#e0e0e0">@Override <tspan fill="#555">// in render(float delta)</tspan></text>
+  <text x="55" y="255" font-family="monospace" font-size="11" fill="#e0e0e0">stateTime += <tspan fill="#ff8c42">delta</tspan>;  <tspan fill="#555">// add elapsed time each frame</tspan></text>
+  <text x="55" y="278" font-family="monospace" font-size="11" fill="#7b68ee">TextureRegion <tspan fill="#e0e0e0">current = runAnim.</tspan><tspan fill="#ffc107">getKeyFrame</tspan>(stateTime, <tspan fill="#ff8c42">true</tspan>);</text>
+  <text x="70" y="295" font-family="monospace" font-size="9" fill="#555">// second arg = looping</text>
+  <text x="55" y="312" font-family="monospace" font-size="11" fill="#e0e0e0">batch.<tspan fill="#ffc107">draw</tspan>(current, player.x, player.y);</text>
+
+  <defs>
+    <marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#ffc107"/>
+    </marker>
+  </defs>
+</svg>
