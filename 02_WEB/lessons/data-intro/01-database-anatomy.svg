@@ -1,0 +1,18 @@
+<svg viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg" style="background:#0f0f1a">
+<rect x="0" y="0" width="600" height="52" fill="#1a1a2e"/>
+<text x="20" y="33" font-family="Fira Code,monospace" font-size="14" font-weight="700" fill="#4fc3f7">01 — Database Anatomy</text>
+<rect x="40" y="80" width="520" height="240" rx="10" fill="#1a1a2e" stroke="#2e2e52"/>
+<text x="60" y="108" font-family="Fira Code,monospace" font-size="13" font-weight="700" fill="#f9a825">Table: students</text>
+<line x1="40" y1="120" x2="560" y2="120" stroke="#2e2e52"/>
+<rect x="60" y="134" width="120" height="30" fill="#0a0a14" stroke="#2e2e52"/><text x="72" y="153" font-family="Fira Code,monospace" font-size="12" fill="#f9a825">id (PK)</text>
+<rect x="180" y="134" width="160" height="30" fill="#0a0a14" stroke="#2e2e52"/><text x="192" y="153" font-family="Fira Code,monospace" font-size="12" fill="#f9a825">name</text>
+<rect x="340" y="134" width="100" height="30" fill="#0a0a14" stroke="#2e2e52"/><text x="352" y="153" font-family="Fira Code,monospace" font-size="12" fill="#f9a825">grade</text>
+<rect x="440" y="134" width="100" height="30" fill="#0a0a14" stroke="#2e2e52"/><text x="452" y="153" font-family="Fira Code,monospace" font-size="12" fill="#f9a825">gpa</text>
+<text x="72" y="188" font-family="Fira Code,monospace" font-size="12" fill="#f07178">1</text><text x="192" y="188" font-family="Fira Code,monospace" font-size="12" fill="#e2e2f0">Jordan</text><text x="352" y="188" font-family="Fira Code,monospace" font-size="12" fill="#f78c6c">11</text><text x="452" y="188" font-family="Fira Code,monospace" font-size="12" fill="#f78c6c">3.8</text>
+<text x="72" y="218" font-family="Fira Code,monospace" font-size="12" fill="#f07178">2</text><text x="192" y="218" font-family="Fira Code,monospace" font-size="12" fill="#e2e2f0">Alex</text><text x="352" y="218" font-family="Fira Code,monospace" font-size="12" fill="#f78c6c">10</text><text x="452" y="218" font-family="Fira Code,monospace" font-size="12" fill="#f78c6c">3.2</text>
+<text x="72" y="248" font-family="Fira Code,monospace" font-size="12" fill="#f07178">3</text><text x="192" y="248" font-family="Fira Code,monospace" font-size="12" fill="#e2e2f0">Sam</text><text x="352" y="248" font-family="Fira Code,monospace" font-size="12" fill="#f78c6c">12</text><text x="452" y="248" font-family="Fira Code,monospace" font-size="12" fill="#f78c6c">3.9</text>
+<line x1="180" y1="170" x2="570" y2="170" stroke="#f9a825" stroke-width="1.5" stroke-dasharray="3,2"/>
+<text x="580" y="174" font-family="DM Sans" font-size="11" fill="#f9a825">← row</text>
+<line x1="240" y1="130" x2="240" y2="280" stroke="#7c6af7" stroke-width="1.5" stroke-dasharray="3,2"/>
+<text x="210" y="300" font-family="DM Sans" font-size="11" fill="#7c6af7">↑ column</text>
+</svg>

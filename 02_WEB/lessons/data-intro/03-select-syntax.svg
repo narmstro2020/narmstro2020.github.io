@@ -1,0 +1,12 @@
+<svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" style="background:#0f0f1a">
+<rect x="0" y="0" width="600" height="52" fill="#1a1a2e"/>
+<text x="20" y="33" font-family="Fira Code,monospace" font-size="14" font-weight="700" fill="#4fc3f7">03 — SELECT Syntax</text>
+<rect x="40" y="80" width="520" height="60" rx="8" fill="#111125" stroke="#2e2e52"/>
+<text x="60" y="118" font-family="Fira Code,monospace" font-size="14"><tspan fill="#c792ea">SELECT</tspan><tspan fill="#e2e2f0"> * </tspan><tspan fill="#c792ea">FROM</tspan><tspan fill="#82aaff"> students</tspan><tspan fill="#e2e2f0">;</tspan></text>
+<text x="60" y="158" font-family="DM Sans" font-size="11" fill="#8888aa">* = all columns</text>
+<rect x="40" y="175" width="520" height="60" rx="8" fill="#111125" stroke="#2e2e52"/>
+<text x="60" y="213" font-family="Fira Code,monospace" font-size="14"><tspan fill="#c792ea">SELECT</tspan><tspan fill="#4fc3f7"> name</tspan><tspan fill="#e2e2f0">, </tspan><tspan fill="#4fc3f7">gpa</tspan><tspan fill="#c792ea"> FROM</tspan><tspan fill="#82aaff"> students</tspan><tspan fill="#e2e2f0">;</tspan></text>
+<text x="60" y="253" font-family="DM Sans" font-size="11" fill="#8888aa">specific columns only</text>
+<rect x="40" y="268" width="520" height="42" rx="6" fill="rgba(249,168,37,0.08)" stroke="#f9a825"/>
+<text x="60" y="294" font-family="DM Sans" font-size="12" fill="#f9a825">💡 The order: SELECT [what] FROM [where]</text>
+</svg>

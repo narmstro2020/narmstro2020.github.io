@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supabase Setup & SQL Intro — Guided Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#222240;--border:#2e2e52;
+--accent:#7c6af7;--accent2:#4fc3f7;--accent3:#f9a825;--accent4:#66bb6a;
+--text:#e2e2f0;--muted:#8888aa;--keyword:#c792ea;--string:#c3e88d;
+--func:#82aaff;--num:#f78c6c;--comment:#546e7a;--prop:#4fc3f7;--tag:#f07178;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;
+font-size:15px;line-height:1.6;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+.top-banner{background:linear-gradient(135deg,#1a1a2e,#16213e 60%,#0f3460);
+border-bottom:2px solid var(--border);padding:12px 24px;
+display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.banner-left{display:flex;align-items:center;gap:12px;}
+.banner-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--accent4),var(--accent2));
+border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.banner-title{font-size:16px;font-weight:700;}
+.banner-sub{font-size:12px;color:var(--muted);}
+.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Fira Code',monospace;margin-left:6px;}
+.badge-unit{background:rgba(124,106,247,0.15);color:var(--accent);border:1px solid rgba(124,106,247,0.3);}
+.badge-pts{background:rgba(249,168,37,0.15);color:var(--accent3);border:1px solid rgba(249,168,37,0.3);}
+.main{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden;}
+.notes-panel{overflow-y:auto;padding:24px 28px 60px;border-right:1px solid var(--border);}
+.section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+color:var(--accent);margin:28px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.section-title:first-child{margin-top:0;}
+.concept{background:var(--surface);border:1px solid var(--border);border-radius:8px;
+padding:14px 16px;margin-bottom:14px;}
+.concept-label{font-family:'Fira Code',monospace;font-size:11px;font-weight:600;
+color:var(--accent2);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;}
+.concept p{font-size:14px;}
+.concept code{font-family:'Fira Code',monospace;font-size:12px;background:var(--surface2);
+padding:2px 6px;border-radius:4px;color:var(--accent2);}
+.todo{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent3);
+border-radius:8px;padding:14px 16px;margin-bottom:14px;}
+.todo-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.todo-num{font-family:'Fira Code',monospace;font-size:11px;font-weight:700;
+background:rgba(249,168,37,0.15);color:var(--accent3);padding:2px 10px;border-radius:12px;border:1px solid rgba(249,168,37,0.3);}
+.todo-title{font-weight:600;font-size:14px;}
+.todo p,.todo ul{font-size:13px;color:var(--muted);}
+.todo ul{padding-left:18px;margin-top:4px;}
+.code-ref{background:#111125;border:1px solid var(--border);border-radius:6px;
+padding:10px 14px;margin:8px 0;font-family:'Fira Code',monospace;font-size:12px;line-height:1.7;overflow-x:auto;}
+.kw{color:var(--keyword);}.fn{color:var(--func);}.str{color:var(--string);}
+.num{color:var(--num);}.cmt{color:var(--comment);}.prp{color:var(--prop);}.tg{color:var(--tag);}
+.output-panel{overflow-y:auto;padding:24px 28px 60px;background:#0a0a14;}
+.output-title{font-family:'Fira Code',monospace;font-size:12px;font-weight:600;
+color:var(--accent4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;}
+.db-table{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.db-table-header{background:var(--surface2);padding:10px 14px;font-family:'Fira Code',monospace;
+font-size:12px;color:var(--accent2);border-bottom:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:8px 12px;text-align:left;font-size:12px;border-bottom:1px solid var(--border);}
+th{background:#0a0a14;color:var(--accent3);font-family:'Fira Code',monospace;font-weight:600;}
+td{font-family:'Fira Code',monospace;color:var(--text);}
+tr:last-child td{border-bottom:none;}
+.pk{color:var(--tag);font-weight:700;}
+.query-box{background:#111125;border:1px solid var(--border);border-left:3px solid var(--accent);
+border-radius:6px;padding:12px 14px;margin-bottom:12px;font-family:'Fira Code',monospace;font-size:12px;}
+.query-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<div class="top-banner">
+  <div class="banner-left">
+    <div class="banner-icon">🗄️</div>
+    <div>
+      <div class="banner-title">Supabase Setup + Intro to Databases & SQL</div>
+      <div class="banner-sub">Day 13 · Unit 3 Kickoff · Teacher-Led Guided Notes</div>
+    </div>
+  </div>
+  <div>
+    <span class="badge badge-unit">Unit 3 · SQL & Supabase</span>
+    <span class="badge badge-pts">15 pts</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="notes-panel">
+
+    <div class="section-title">Part 1 · Supabase Setup</div>
+
+    <div class="concept">
+      <div class="concept-label">What is Supabase?</div>
+      <p>Supabase is a <strong>Backend-as-a-Service</strong> — it gives us a real PostgreSQL database in the cloud, a dashboard to manage it, and a JavaScript library to connect our web apps. Think of it as "our database on the internet."</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 1</span><span class="todo-title">Create your Supabase account</span></div>
+      <p>Go to <code>supabase.com</code> → Sign up with GitHub → Create a new project:</p>
+      <ul>
+        <li>Project name: <code>webdev-class</code></li>
+        <li>Database password: <strong>WRITE IT DOWN</strong> (you'll need it later)</li>
+        <li>Region: East US (closest)</li>
+      </ul>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 2</span><span class="todo-title">Explore the dashboard</span></div>
+      <p>In the left sidebar, find and click on each of these:</p>
+      <ul>
+        <li><strong>Table Editor</strong> — visual spreadsheet-like view of your data</li>
+        <li><strong>SQL Editor</strong> — where we write queries today</li>
+        <li><strong>Database</strong> → Tables (all your tables live here)</li>
+      </ul>
+    </div>
+
+    <div class="section-title">Part 2 · Database Fundamentals</div>
+
+    <div class="concept">
+      <div class="concept-label">Tables, Rows, Columns</div>
+      <p>A <strong>database</strong> holds one or more <strong>tables</strong>. Each table is like a spreadsheet:</p>
+      <ul style="padding-left:18px;margin-top:6px;font-size:13px;">
+        <li><strong>Columns</strong> = fields (name, email, age)</li>
+        <li><strong>Rows</strong> = records (one student, one product)</li>
+        <li><strong>Primary key</strong> = a unique ID for each row (usually <code>id</code>)</li>
+      </ul>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">Common Data Types</div>
+      <p><code>text</code> — strings &nbsp;·&nbsp; <code>int8</code> / <code>int4</code> — whole numbers &nbsp;·&nbsp; <code>bool</code> — true/false &nbsp;·&nbsp; <code>timestamp</code> — date + time &nbsp;·&nbsp; <code>uuid</code> — unique ID</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 3</span><span class="todo-title">Create the `students` table</span></div>
+      <p>In Table Editor → New Table. Name: <code>students</code>. Add columns:</p>
+      <ul>
+        <li><code>id</code> — int8, primary key, auto-increment (already there)</li>
+        <li><code>name</code> — text, not null</li>
+        <li><code>grade</code> — int4</li>
+        <li><code>gpa</code> — float4</li>
+      </ul>
+      <p>Uncheck "Enable Row Level Security" for class practice. Save.</p>
+    </div>
+
+    <div class="section-title">Part 3 · SQL — The Language of Databases</div>
+
+    <div class="concept">
+      <div class="concept-label">What is SQL?</div>
+      <p><strong>SQL</strong> (Structured Query Language) is how we talk to databases. Four main commands:</p>
+      <ul style="padding-left:18px;margin-top:6px;font-size:13px;">
+        <li><code>SELECT</code> — read data</li>
+        <li><code>INSERT</code> — add rows</li>
+        <li><code>UPDATE</code> — change rows (next lesson)</li>
+        <li><code>DELETE</code> — remove rows (next lesson)</li>
+      </ul>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">INSERT — Adding Data</div>
+      <div class="code-ref">
+<span class="kw">INSERT INTO</span> <span class="fn">students</span> (<span class="prp">name</span>, <span class="prp">grade</span>, <span class="prp">gpa</span>)<br>
+<span class="kw">VALUES</span> (<span class="str">'Jordan'</span>, <span class="num">11</span>, <span class="num">3.8</span>);
+      </div>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 4</span><span class="todo-title">Insert your first row</span></div>
+      <p>In SQL Editor, write and run an INSERT statement to add a student with your name, grade 11, gpa 3.8. Click <strong>Run</strong>. Check Table Editor to see the row appear!</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 5</span><span class="todo-title">Insert 4 more students</span></div>
+      <p>Use one INSERT with multiple VALUES rows:</p>
+      <div class="code-ref">
+<span class="kw">INSERT INTO</span> <span class="fn">students</span> (<span class="prp">name</span>, <span class="prp">grade</span>, <span class="prp">gpa</span>) <span class="kw">VALUES</span><br>
+&nbsp;&nbsp;(<span class="str">'Alex'</span>, <span class="num">10</span>, <span class="num">3.2</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Sam'</span>, <span class="num">12</span>, <span class="num">3.9</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Riley'</span>, <span class="num">11</span>, <span class="num">2.8</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Casey'</span>, <span class="num">9</span>, <span class="num">3.5</span>);
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">SELECT — Reading Data</div>
+      <div class="code-ref">
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="fn">students</span>;&nbsp;&nbsp;<span class="cmt">-- all columns, all rows</span><br>
+<span class="kw">SELECT</span> <span class="prp">name</span>, <span class="prp">gpa</span> <span class="kw">FROM</span> <span class="fn">students</span>;&nbsp;<span class="cmt">-- just 2 cols</span>
+      </div>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 6</span><span class="todo-title">Run a SELECT *</span></div>
+      <p>Select all columns, all rows from <code>students</code>. You should see all 5 students.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 7</span><span class="todo-title">Select only name and gpa</span></div>
+      <p>Write a SELECT that returns just the <code>name</code> and <code>gpa</code> columns.</p>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">WHERE — Filtering</div>
+      <p>Add conditions with <code>WHERE</code>. Operators: <code>=</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>AND</code>, <code>OR</code>.</p>
+      <div class="code-ref">
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="fn">students</span> <span class="kw">WHERE</span> <span class="prp">gpa</span> &gt;= <span class="num">3.5</span>;
+      </div>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 8</span><span class="todo-title">Filter: GPA ≥ 3.5</span></div>
+      <p>Write a SELECT that returns only students with a GPA of 3.5 or higher.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 9</span><span class="todo-title">Filter: Seniors only</span></div>
+      <p>Write a SELECT that returns only students where <code>grade = 12</code>.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 10</span><span class="todo-title">Combine conditions with AND</span></div>
+      <p>Find students who are in grade 11 <strong>AND</strong> have a GPA above 3.0.</p>
+    </div>
+
+    <div class="todo">
+      <div class="todo-header"><span class="todo-num">TODO 11</span><span class="todo-title">BONUS — ORDER BY</span></div>
+      <p>Select all students, sorted by GPA highest to lowest. Hint: <code>ORDER BY gpa DESC</code></p>
+    </div>
+
+  </div>
+
+  <div class="output-panel">
+    <div class="output-title">▸ Visual Reference</div>
+
+    <div class="db-table">
+      <div class="db-table-header">students (sample after TODOs 4–5)</div>
+      <table>
+        <thead><tr><th>id</th><th>name</th><th>grade</th><th>gpa</th></tr></thead>
+        <tbody>
+          <tr><td class="pk">1</td><td>Jordan</td><td>11</td><td>3.8</td></tr>
+          <tr><td class="pk">2</td><td>Alex</td><td>10</td><td>3.2</td></tr>
+          <tr><td class="pk">3</td><td>Sam</td><td>12</td><td>3.9</td></tr>
+          <tr><td class="pk">4</td><td>Riley</td><td>11</td><td>2.8</td></tr>
+          <tr><td class="pk">5</td><td>Casey</td><td>9</td><td>3.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="query-box">
+      <div class="query-label">TODO 8 expected result</div>
+      <span class="cmt">-- Jordan (3.8), Sam (3.9), Casey (3.5)</span>
+    </div>
+    <div class="query-box">
+      <div class="query-label">TODO 9 expected result</div>
+      <span class="cmt">-- Sam (grade 12, gpa 3.9)</span>
+    </div>
+    <div class="query-box">
+      <div class="query-label">TODO 10 expected result</div>
+      <span class="cmt">-- Jordan (grade 11, gpa 3.8)</span>
+    </div>
+
+    <div class="query-box" style="border-left-color:var(--accent3);">
+      <div class="query-label">Run Queries Here</div>
+      <span style="color:var(--muted);">Supabase Dashboard → SQL Editor → New Query → Type → Run (Ctrl/Cmd + Enter)</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
