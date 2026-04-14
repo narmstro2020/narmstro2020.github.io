@@ -4,10 +4,10 @@ import pygame, random
 pygame.init()
 
 #Set display surface
-# TODO: assign 1200 to WINDOW_WIDTH
-# TODO: assign 700 to WINDOW_HEIGHT
+WINDOW_WIDTH = 1200
+WINDOW_HEIGHT = 700
 # TODO: assign pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) to display_surface
-# TODO: call the pygame.display.set_caption() function.  Passing in "Space Invaders" as the argument.
+pygame.display.set_caption("Space Invaders")
 
 #Set FPS and clock
 # TODO: assign 60 to FPS
@@ -67,40 +67,76 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, bullet_group):
         """Initialize the player"""
         super().__init__()
-        pass
+        # TODO: assign pygame.image.load("player_ship.png") to self.image
+        # TODO: assign self.image.get_rect() to self.rect
+        # TODO: assign WINDOW_WIDTH //2 to self.rect.centerx
+        # TODO: assign WINDOW_HEIGHT to self.rect.bottom
+
+        # TODO: assign 5 to self.lives
+        # TODO: assign 8 to self.velocity
+        # TODO: assign bullet_group to self.bullet_group
+
+        # TODO: assign pygame.mixer.Sound("player_fire.wav") to self.shoot_sound
 
     def update(self):
         """Update the player"""
-        pass
+        # TODO: assign pygame.key.get_pressed() to keys
+
+        #Move the player within the bounds of the screen
+        # TODO: if keys[pygame.K_LEFT] and self.rect.left > 0:
+            # TODO: subtract self.velocity from self.rect.x
+        # TODO: if keys[pygame.K_RIGHT] and self.rect.right < WINDOW_WIDTH:
+            # TODO: add self.velocity to self.rect.x
 
     def fire(self):
         """Fire a bullet"""
-        pass
+        # Restrict the number of bullet on screen at a time
+        # TODO: if len(self.bullet_group) <2:
+            # TODO: call self.shoot_sound.play() with no arguments
+            # TODO: call PlayerBullet() with self.rect.centerx, self.rect.top, and self.bullet_group as the arguments
+
 
     def reset(self):
         """Reset the players position"""
-        pass
+        # TODO: assign WINDOW_WIDTH // 2 to self.rect.centerx
 
 
 class Alien(pygame.sprite.Sprite):
     """A class to model an enemy alien"""
-    
+
     def __init__(self, x, y, velocity, bullet_group):
         """Initialize the alien"""
         super().__init__()
-        pass
+        # TODO: assign pygame.image.load("alien.png") to self.image
+        # TODO: assign self.image.get_rect() to self.rect
+        # TODO: assign (x, y) to self.rect.topleft
+
+        # TODO: assign x to self.starting_x
+        # TODO: assign y to self.starting_y
+
+        # TODO: assign 1 to self.direction
+        # TODO: assign velocity to self.velocity
+        # TODO: assign bullet_group to self.bullet_group
+
+        # TODO: assign pygame.mixer.Sound("alien_fire.wav") to self.shoot_sound
 
     def update(self):
         """Update the alien"""
-        pass
+        # TODO: add self.direction * self.velocity to self.rect.x
+
+        #Randomly fire a bullet
+        # TODO: if random.randint(0, 1000) > 999 and len(self.bullet_group) < 3:
+            #TODO: call self.shoot.sound.play() with no arguments
+            #TODO: call self.fire() with no arguments
 
     def fire(self):
         """Fire a bullet"""
-        pass
+        # TODO: call AlienBullet() with self.rect.centerx, self.rect.bottom, self.bullet_group as the arguments
 
     def reset(self):
         """Reset the alien position"""
-        pass
+        # TODO: assign (self.starting_x, self.starting_y) to self.rect.topleft
+        # TODO: assign 1 to self.direction
 
 
 class PlayerBullet(pygame.sprite.Sprite):
@@ -109,11 +145,21 @@ class PlayerBullet(pygame.sprite.Sprite):
     def __init__(self, x, y, bullet_group):
         """Initialize the bullet"""
         super().__init__()
-        pass
+        # TODO: assign pygame.image.load("green_laser.png") to self.image
+        # TODO: assign self.image.get_rect() to self.rect
+        # TODO: assign x to self.rect.centerx
+        # TODO: assign y to self.rect.centery
+
+        # TODO: assign 10 to self.velocity
+        # TODO: call bullet_group.add() passing in self as the only argument
 
     def update(self):
         """Update the bullet"""
-        pass
+        # TODO: subtract self.velocity from self.rect.y
+
+        #If the bullet is off the screen, kill it
+        # TODO: if self.rect.bottom < 0:
+            # TODO: call self.kill()
 
 
 class AlienBullet(pygame.sprite.Sprite):
@@ -122,11 +168,21 @@ class AlienBullet(pygame.sprite.Sprite):
     def __init__(self, x, y, bullet_group):
         """Initialize the bullet"""
         super().__init__()
-        pass
+        # TODO: assign pygame.image.load("red_laser.png") to self.image
+        # TODO: assign self.image.get_rect() to self.image
+        # TODO: assign x to self.rect.centerx
+        # TODO: assign y to self.rect.centery
+
+        # TODO: assign 10 to self.velocity
+        # TODO: call bullet_group.add() passing in self
 
     def update(self):
         """Update the bullet"""
-        pass
+        # TODO: add self.velocity to self.rect.y
+
+        #If the bullet is off the screen, kill it
+        # TODO: if self.rect.top > WINDOW_HEIGHT:
+            # TODO: call self.kill()
 
 
 #Create bullet groups
