@@ -4,7 +4,7 @@
 
 ---
 
-# DAY 1 — APRIL 15
+# DAY 1 — APRIL 14
 ## Build the Core Engine
 
 > **The setup:** You're building the combat engine for a dungeon RPG — the invisible machinery that runs every battle. Today you build the foundation: a player with stats, functions that modify those stats by reference, and a fight against one enemy using random dice rolls. Tomorrow you expand it: multiple enemies, critical hits, dodge chance, and a healing potion.
@@ -170,7 +170,7 @@ All three checkpoints done? Try one or more of these:
 ---
 ---
 
-# DAY 2 — APRIL 16
+# DAY 2 — APRIL 15
 ## Expand the Engine
 
 > **Day 2 goal:** You have a working 1v1 combat engine. Today you make it feel like a real RPG. You'll add three enemies in sequence, critical hits, dodge chance, and a one-use healing potion.
