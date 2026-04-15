@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPDATE, DELETE & JOINs — Guided Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#222240;--border:#2e2e52;
+--accent:#7c6af7;--accent2:#4fc3f7;--accent3:#f9a825;--accent4:#66bb6a;
+--text:#e2e2f0;--muted:#8888aa;--keyword:#c792ea;--string:#c3e88d;
+--func:#82aaff;--num:#f78c6c;--comment:#546e7a;--prop:#4fc3f7;--tag:#f07178;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;min-height:100vh;}
+.top-banner{background:linear-gradient(135deg,#1a1a2e,#16213e 60%,#0f3460);
+border-bottom:2px solid var(--border);padding:14px 24px;
+display:flex;align-items:center;justify-content:space-between;}
+.banner-left{display:flex;align-items:center;gap:12px;}
+.banner-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--accent3),var(--tag));
+border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.banner-title{font-size:17px;font-weight:700;}
+.banner-sub{font-size:12px;color:var(--muted);}
+.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Fira Code',monospace;margin-left:6px;}
+.b1{background:rgba(124,106,247,0.15);color:var(--accent);border:1px solid rgba(124,106,247,0.3);}
+.b2{background:rgba(249,168,37,0.15);color:var(--accent3);border:1px solid rgba(249,168,37,0.3);}
+.page{max-width:880px;margin:0 auto;padding:36px 28px 80px;}
+.section-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;
+color:var(--accent);margin:40px 0 18px;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+display:flex;align-items:center;gap:12px;}
+.section-title .snum{background:var(--accent);color:var(--bg);width:28px;height:28px;
+border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.concept{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:18px;}
+.concept-label{font-family:'Fira Code',monospace;font-size:11px;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+.concept p{font-size:15px;color:var(--text);}
+.concept code{font-family:'Fira Code',monospace;font-size:13px;background:var(--surface2);padding:2px 7px;border-radius:4px;color:var(--accent2);}
+.code-ref{background:#111125;border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;
+font-family:'Fira Code',monospace;font-size:13px;line-height:1.8;overflow-x:auto;}
+.kw{color:var(--keyword);}.fn{color:var(--func);}.str{color:var(--string);}
+.num{color:var(--num);}.cmt{color:var(--comment);}.prp{color:var(--prop);}.tg{color:var(--tag);}
+.warn{background:rgba(240,113,120,0.08);border:2px solid rgba(240,113,120,0.4);border-radius:10px;
+padding:16px 20px;margin:20px 0;color:var(--tag);font-size:14px;display:flex;gap:14px;align-items:flex-start;}
+.warn .icon{font-size:24px;line-height:1;}
+.warn strong{color:var(--tag);font-weight:700;}
+.todo{background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);
+border:1px solid var(--border);border-left:4px solid var(--accent3);border-radius:10px;
+padding:18px 22px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.todo-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.todo-num{font-family:'Fira Code',monospace;font-size:12px;font-weight:700;
+background:rgba(249,168,37,0.18);color:var(--accent3);padding:3px 12px;border-radius:14px;border:1px solid rgba(249,168,37,0.4);}
+.todo-title{font-weight:600;font-size:15px;}
+.todo p,.todo ul{font-size:14px;color:var(--text);}
+.todo ul{padding-left:20px;margin-top:6px;}
+.todo .hint{font-size:13px;color:var(--muted);font-style:italic;margin-top:8px;padding-left:12px;border-left:2px solid var(--border);}
+.expected{background:rgba(102,187,106,0.06);border:1px solid rgba(102,187,106,0.25);border-radius:6px;
+padding:10px 14px;margin-top:10px;font-size:13px;color:var(--accent4);display:flex;gap:10px;align-items:flex-start;}
+.db-table{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:16px 0;}
+.db-table-header{background:var(--surface2);padding:10px 16px;font-family:'Fira Code',monospace;font-size:13px;color:var(--accent2);
+border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:9px 14px;text-align:left;font-size:13px;border-bottom:1px solid var(--border);}
+th{background:#0a0a14;color:var(--accent3);font-family:'Fira Code',monospace;font-weight:600;font-size:12px;}
+td{font-family:'Fira Code',monospace;color:var(--text);}
+tr:last-child td{border-bottom:none;}
+.pk{color:var(--tag);font-weight:700;}
+.fk{color:var(--accent4);font-weight:700;}
+.table-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;align-items:start;}
+.join-arrow{text-align:center;color:var(--accent4);font-size:11px;font-family:'Fira Code',monospace;
+margin:8px 0;padding:6px;background:rgba(102,187,106,0.08);border-radius:6px;}
+.setup-block{background:#0a0a14;border:1px solid var(--accent4);border-radius:10px;padding:18px 22px;margin:16px 0;}
+.setup-block-label{font-family:'Fira Code',monospace;font-size:11px;font-weight:700;color:var(--accent4);
+text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+.submit{background:rgba(124,106,247,0.06);border:1px solid var(--accent);border-radius:10px;padding:20px 24px;margin-top:40px;}
+.submit h3{color:var(--accent);font-size:16px;margin-bottom:8px;}
+.submit p{font-size:14px;color:var(--text);}
+@media (max-width:680px){.table-pair{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="top-banner">
+  <div class="banner-left">
+    <div class="banner-icon">✏️</div>
+    <div>
+      <div class="banner-title">UPDATE, DELETE & Basic JOINs</div>
+      <div class="banner-sub">Day 15 · Modifying data + Combining tables</div>
+    </div>
+  </div>
+  <div><span class="badge b1">Unit 3 · SQL & Supabase</span><span class="badge b2">15 pts</span></div>
+</div>
+
+<div class="page">
+
+  <div class="concept">
+    <div class="concept-label">From Last Lesson</div>
+    <p>You can now <code>SELECT</code>, <code>INSERT</code>, and filter with <code>WHERE</code>. Today we add the missing pieces: <strong>changing</strong> data (<code>UPDATE</code>), <strong>removing</strong> data (<code>DELETE</code>), and <strong>combining</strong> two tables (<code>JOIN</code>). We'll start by rebuilding a clean <code>movies</code> table so everyone is working with the same data.</p>
+  </div>
+
+  <div class="section-title"><span class="snum">0</span>Setup — Rebuild the Movies Table</div>
+
+  <div class="concept">
+    <div class="concept-label">Start Fresh</div>
+    <p>Whether your <code>movies</code> table from Wednesday is still there or not, we're going to rebuild it cleanly so everyone is on the same page. The block below will <strong>drop the existing table</strong> (if it exists) and recreate it with all 10 movies.</p>
+  </div>
+
+  <div class="setup-block">
+    <div class="setup-block-label">📦 Setup — Copy, Paste, Run in Supabase SQL Editor</div>
+    <div class="code-ref" style="margin:0;border:none;background:transparent;padding:0;">
+<span class="cmt">-- Drop the old table if it exists, then rebuild fresh</span><br>
+<span class="kw">DROP TABLE IF EXISTS</span> <span class="fn">movies</span>;<br><br>
+<span class="kw">CREATE TABLE</span> <span class="fn">movies</span> (<br>
+&nbsp;&nbsp;<span class="prp">id</span> <span class="kw">SERIAL PRIMARY KEY</span>,<br>
+&nbsp;&nbsp;<span class="prp">title</span> <span class="kw">TEXT NOT NULL</span>,<br>
+&nbsp;&nbsp;<span class="prp">genre</span> <span class="kw">TEXT</span>,<br>
+&nbsp;&nbsp;<span class="prp">year</span> <span class="kw">INT4</span>,<br>
+&nbsp;&nbsp;<span class="prp">rating</span> <span class="kw">FLOAT4</span>,<br>
+&nbsp;&nbsp;<span class="prp">runtime</span> <span class="kw">INT4</span><br>
+);<br><br>
+<span class="kw">INSERT INTO</span> <span class="fn">movies</span> (<span class="prp">title</span>, <span class="prp">genre</span>, <span class="prp">year</span>, <span class="prp">rating</span>, <span class="prp">runtime</span>) <span class="kw">VALUES</span><br>
+&nbsp;&nbsp;(<span class="str">'The Matrix'</span>, <span class="str">'Sci-Fi'</span>, <span class="num">1999</span>, <span class="num">8.7</span>, <span class="num">136</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Inception'</span>, <span class="str">'Sci-Fi'</span>, <span class="num">2010</span>, <span class="num">8.8</span>, <span class="num">148</span>),<br>
+&nbsp;&nbsp;(<span class="str">'The Godfather'</span>, <span class="str">'Drama'</span>, <span class="num">1972</span>, <span class="num">9.2</span>, <span class="num">175</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Pulp Fiction'</span>, <span class="str">'Crime'</span>, <span class="num">1994</span>, <span class="num">8.9</span>, <span class="num">154</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Finding Nemo'</span>, <span class="str">'Animation'</span>, <span class="num">2003</span>, <span class="num">8.2</span>, <span class="num">100</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Toy Story'</span>, <span class="str">'Animation'</span>, <span class="num">1995</span>, <span class="num">8.3</span>, <span class="num">81</span>),<br>
+&nbsp;&nbsp;(<span class="str">'The Dark Knight'</span>, <span class="str">'Action'</span>, <span class="num">2008</span>, <span class="num">9.0</span>, <span class="num">152</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Jaws'</span>, <span class="str">'Thriller'</span>, <span class="num">1975</span>, <span class="num">8.1</span>, <span class="num">124</span>),<br>
+&nbsp;&nbsp;(<span class="str">'La La Land'</span>, <span class="str">'Musical'</span>, <span class="num">2016</span>, <span class="num">8.0</span>, <span class="num">128</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Parasite'</span>, <span class="str">'Thriller'</span>, <span class="num">2019</span>, <span class="num">8.5</span>, <span class="num">132</span>);
+    </div>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 1</span><span class="todo-title">Run the setup block + verify</span></div>
+    <p>Paste the entire setup block above into your Supabase SQL Editor and click <strong>Run</strong>. Then run <code>SELECT * FROM movies;</code> in a new query to confirm.</p>
+    <div class="expected"><span>✓</span><div>Expected: 10 rows, columns id / title / genre / year / rating / runtime.</div></div>
+  </div>
+
+  <div class="section-title"><span class="snum">1</span>UPDATE — Changing Data</div>
+
+  <div class="concept">
+    <div class="concept-label">What it does</div>
+    <p><code>UPDATE</code> changes values in rows that already exist. The basic shape:</p>
+    <div class="code-ref">
+<span class="kw">UPDATE</span> <span class="fn">movies</span><br>
+<span class="kw">SET</span> <span class="prp">rating</span> = <span class="num">9.5</span><br>
+<span class="kw">WHERE</span> <span class="prp">title</span> = <span class="str">'The Matrix'</span>;
+    </div>
+  </div>
+
+  <div class="warn">
+    <span class="icon">⚠️</span>
+    <div><strong>The Golden Rule:</strong> Never run UPDATE or DELETE without a WHERE clause. Without one, you change EVERY row in the table. When in doubt, run a SELECT with your WHERE first to preview which rows it will affect.</div>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 2</span><span class="todo-title">Update one movie's rating</span></div>
+    <p>Change the rating of <code>'Toy Story'</code> to <code>8.5</code>. Then run a SELECT on Toy Story to verify.</p>
+    <div class="expected"><span>✓</span><div>Expected: One row updated. Toy Story's rating is now 8.5.</div></div>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 3</span><span class="todo-title">Update multiple columns at once</span></div>
+    <p>Change <code>'Jaws'</code> so its <code>genre</code> is <code>'Horror'</code> AND its <code>rating</code> is <code>8.3</code>. Use commas in the SET clause:</p>
+    <div class="code-ref"><span class="kw">SET</span> <span class="prp">genre</span> = <span class="str">'Horror'</span>, <span class="prp">rating</span> = <span class="num">8.3</span></div>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 4</span><span class="todo-title">Update many rows with one query</span></div>
+    <p>Add 10 minutes of runtime to every Animation movie. The trick: you can use math in SET — <code>runtime = runtime + 10</code> — then filter with WHERE.</p>
+    <div class="expected"><span>✓</span><div>Expected: Finding Nemo (100 → 110), Toy Story (81 → 91).</div></div>
+  </div>
+
+  <div class="section-title"><span class="snum">2</span>DELETE — Removing Rows</div>
+
+  <div class="concept">
+    <div class="concept-label">What it does</div>
+    <p><code>DELETE</code> removes entire rows. You don't pick columns — DELETE removes the whole row that matches.</p>
+    <div class="code-ref">
+<span class="kw">DELETE FROM</span> <span class="fn">movies</span><br>
+<span class="kw">WHERE</span> <span class="prp">title</span> = <span class="str">'La La Land'</span>;
+    </div>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 5</span><span class="todo-title">Delete one movie</span></div>
+    <p>Delete <code>'La La Land'</code> from the table. Verify with <code>SELECT *</code>.</p>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 6</span><span class="todo-title">Delete with a numeric condition</span></div>
+    <p>Delete every movie released before 1980 (<code>year &lt; 1980</code>).</p>
+    <div class="expected"><span>✓</span><div>Expected: 2 rows deleted (The Godfather, Jaws).</div></div>
+  </div>
+
+  <div class="section-title"><span class="snum">3</span>JOINs — Combining Tables</div>
+
+  <div class="concept">
+    <div class="concept-label">Why JOIN?</div>
+    <p>Real databases split data across multiple tables to avoid repeating information. A <code>movies</code> table might store a <code>director_id</code> instead of repeating the director's name in every row. <strong>JOIN</strong> is how we glue the two tables back together when querying.</p>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 7</span><span class="todo-title">Set up the directors table</span></div>
+    <p>Paste the entire setup block below into your SQL Editor and run it. This will:</p>
+    <ul>
+      <li>Add a <code>director_id</code> column to <code>movies</code></li>
+      <li>Create a new <code>directors</code> table with 5 directors</li>
+      <li>Link 5 of your movies to their directors</li>
+    </ul>
+  </div>
+
+  <div class="setup-block">
+    <div class="setup-block-label">📦 Setup — Copy, Paste, Run</div>
+    <div class="code-ref" style="margin:0;border:none;background:transparent;padding:0;">
+<span class="cmt">-- Add foreign key column to movies</span><br>
+<span class="kw">ALTER TABLE</span> <span class="fn">movies</span> <span class="kw">ADD COLUMN</span> <span class="prp">director_id</span> <span class="kw">INT4</span>;<br><br>
+<span class="cmt">-- Create directors table</span><br>
+<span class="kw">CREATE TABLE</span> <span class="fn">directors</span> (<br>
+&nbsp;&nbsp;<span class="prp">id</span> <span class="kw">SERIAL PRIMARY KEY</span>,<br>
+&nbsp;&nbsp;<span class="prp">name</span> <span class="kw">TEXT NOT NULL</span>,<br>
+&nbsp;&nbsp;<span class="prp">country</span> <span class="kw">TEXT</span><br>
+);<br><br>
+<span class="kw">INSERT INTO</span> <span class="fn">directors</span> (<span class="prp">name</span>, <span class="prp">country</span>) <span class="kw">VALUES</span><br>
+&nbsp;&nbsp;(<span class="str">'Wachowskis'</span>, <span class="str">'USA'</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Christopher Nolan'</span>, <span class="str">'UK'</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Francis Ford Coppola'</span>, <span class="str">'USA'</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Quentin Tarantino'</span>, <span class="str">'USA'</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Andrew Stanton'</span>, <span class="str">'USA'</span>);<br><br>
+<span class="cmt">-- Link movies to directors</span><br>
+<span class="kw">UPDATE</span> <span class="fn">movies</span> <span class="kw">SET</span> <span class="prp">director_id</span> = <span class="num">1</span> <span class="kw">WHERE</span> <span class="prp">title</span> = <span class="str">'The Matrix'</span>;<br>
+<span class="kw">UPDATE</span> <span class="fn">movies</span> <span class="kw">SET</span> <span class="prp">director_id</span> = <span class="num">2</span> <span class="kw">WHERE</span> <span class="prp">title</span> = <span class="str">'Inception'</span>;<br>
+<span class="kw">UPDATE</span> <span class="fn">movies</span> <span class="kw">SET</span> <span class="prp">director_id</span> = <span class="num">3</span> <span class="kw">WHERE</span> <span class="prp">title</span> = <span class="str">'The Godfather'</span>;<br>
+<span class="kw">UPDATE</span> <span class="fn">movies</span> <span class="kw">SET</span> <span class="prp">director_id</span> = <span class="num">4</span> <span class="kw">WHERE</span> <span class="prp">title</span> = <span class="str">'Pulp Fiction'</span>;<br>
+<span class="kw">UPDATE</span> <span class="fn">movies</span> <span class="kw">SET</span> <span class="prp">director_id</span> = <span class="num">5</span> <span class="kw">WHERE</span> <span class="prp">title</span> = <span class="str">'Finding Nemo'</span>;
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-label">Foreign Keys — visualizing the link</div>
+    <p>A <strong>foreign key</strong> is a column in one table that points to the primary key of another. <code>movies.director_id</code> → <code>directors.id</code>. Here's what that looks like after the setup:</p>
+  </div>
+
+  <div class="table-pair">
+    <div class="db-table">
+      <div class="db-table-header"><span>movies</span><span style="color:var(--muted);font-size:11px;">FK column</span></div>
+      <table>
+        <thead><tr><th>id</th><th>title</th><th>director_id</th></tr></thead>
+        <tbody>
+          <tr><td class="pk">1</td><td>The Matrix</td><td class="fk">1</td></tr>
+          <tr><td class="pk">2</td><td>Inception</td><td class="fk">2</td></tr>
+          <tr><td class="pk">3</td><td>The Godfather</td><td class="fk">3</td></tr>
+          <tr><td class="pk">4</td><td>Pulp Fiction</td><td class="fk">4</td></tr>
+          <tr><td class="pk">5</td><td>Finding Nemo</td><td class="fk">5</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="db-table">
+      <div class="db-table-header"><span>directors</span><span style="color:var(--muted);font-size:11px;">PK = id</span></div>
+      <table>
+        <thead><tr><th>id</th><th>name</th><th>country</th></tr></thead>
+        <tbody>
+          <tr><td class="pk">1</td><td>Wachowskis</td><td>USA</td></tr>
+          <tr><td class="pk">2</td><td>Nolan</td><td>UK</td></tr>
+          <tr><td class="pk">3</td><td>Coppola</td><td>USA</td></tr>
+          <tr><td class="pk">4</td><td>Tarantino</td><td>USA</td></tr>
+          <tr><td class="pk">5</td><td>Stanton</td><td>USA</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="join-arrow">▲ &nbsp; movies.director_id &nbsp; ─── matches ───▶ &nbsp; directors.id &nbsp; ▲</div>
+
+  <div class="concept">
+    <div class="concept-label">INNER JOIN Syntax</div>
+    <div class="code-ref">
+<span class="kw">SELECT</span> <span class="fn">movies</span>.<span class="prp">title</span>, <span class="fn">directors</span>.<span class="prp">name</span><br>
+<span class="kw">FROM</span> <span class="fn">movies</span><br>
+<span class="kw">JOIN</span> <span class="fn">directors</span><br>
+&nbsp;&nbsp;<span class="kw">ON</span> <span class="fn">movies</span>.<span class="prp">director_id</span> = <span class="fn">directors</span>.<span class="prp">id</span>;
+    </div>
+    <p style="margin-top:10px;">Read it as: <em>"Get title from movies and name from directors, where the movie's director_id matches the director's id."</em></p>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 8</span><span class="todo-title">Your first JOIN</span></div>
+    <p>Write a JOIN that returns the movie <code>title</code> alongside its director's <code>name</code> for every linked movie.</p>
+    <div class="expected"><span>✓</span><div>Expected: 5 rows — one per linked movie, each paired with its director's name.</div></div>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 9</span><span class="todo-title">JOIN + WHERE</span></div>
+    <p>Show the title and director name for movies with a rating <strong>above 8.5</strong>.</p>
+    <div class="hint">Hint: WHERE goes at the end, AFTER the ON clause.</div>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 10</span><span class="todo-title">JOIN with director's country</span></div>
+    <p>Return the title, director name, AND director's country for every movie. You'll need 3 columns in your SELECT.</p>
+  </div>
+
+  <div class="todo">
+    <div class="todo-header"><span class="todo-num">TODO 11</span><span class="todo-title">BONUS — Filter on the joined table</span></div>
+    <p>Show only the movies whose director is from <code>'USA'</code>. The WHERE clause can reference columns from EITHER joined table.</p>
+    <div class="expected"><span>✓</span><div>Expected: 4 movies (excludes Inception, since Nolan is UK).</div></div>
+  </div>
+
+  <div class="submit">
+    <h3>📤 Submission</h3>
+    <p>Screenshot each query + result in the SQL Editor. Drop all 11 into a single Google Doc or PDF and submit to Canvas. <strong>15 pts total.</strong></p>
+  </div>
+
+</div>
+</body></html>
