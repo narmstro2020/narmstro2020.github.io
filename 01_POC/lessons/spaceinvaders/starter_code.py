@@ -19,11 +19,29 @@ class Game():
 
     def __init__(self, player, alien_group, player_bullet_group, alien_bullet_group):
         """Initialize the game"""
-        pass
+        #Set game values
+        # TODO: assign 1 to self.round_number
+        # TODO: assign 0 to self.score
+
+        # TODO: assign player to self.player
+        # TODO: assign alien_group to self.alien_group
+        # TODO: assign player_bullet_group to self.player_bullet_group
+        # TODO: assign alien_bullet_group to self.alien_bullet_group
+
+        #Set sounds and music
+        # TODO: assign pygame.mixer.Sound("new_round.wav") to self.new_round_sound
+        # TODO: assign pygame.mixer.Sound("breach.wav") to self.breach_sound
+        # TODO: assign pygame.mixer.Sound("alien_hit.wav") to self.alien_hit_sound
+        # TODO: assign pygame.mixer.Sound("player_hit.wav") to self.player_hit_sound
+
+        #Set font
+        # TODO: assign pygame.font.Font("Facon.ttf", 32) to self.font
 
     def update(self):
         """Update the game"""
-        pass
+        # TODO: call self.shift_aliens() with no args
+        # TODO: call self.check_collisions() with no args
+        # TODO: call self.check_round_completion() with no args
 
     def draw(self):
         """Draw the HUD and other information to display"""
@@ -33,7 +51,6 @@ class Game():
         """Shift a wave of aliens down the screen and reverse direction"""
         pass
 
-
     def check_collisions(self):
         """Check for collisions"""
         pass
@@ -42,23 +59,84 @@ class Game():
         """Check to see if a player has completed a single round"""
         pass
 
-
     def start_new_round(self):
         """Start a new round"""
-        pass
+        # Create a grid of Aliens 11 columns and 5 rows.
+        # TODO: for col in range(11):
+            # TODO: for row in range(5):
+                # TODO: assign Alien() to alien with the following args for Alien()
+                # first arg (x) is going to be 64 + col * 64
+                # second arg (y) is going to be 64 + row * 64
+                # third arg (velocity) is going to be self.round_number
+                # fourth arg is self.alien_bullet_group
+
+        # Pause the game and prompt user to start
+        # TODO: call self.new_round_sound.play() with no args
+        # TODO: call self.pause_game() with the following args for self.pause_game()
+        # first arg (main_text) f"Space Invaders Round {self.round_number}"
+        # second arg (sub_text) "Press 'Enter' to being"
 
     def check_game_status(self, main_text, sub_text):
         """Check to see the status of the game and how the player died"""
         pass
 
-
     def pause_game(self, main_text, sub_text):
         """Pauses the game"""
-        pass
+        global running
+
+        # Set Colors
+        # TODO: assign (255, 255, 255) to WHITE
+        # TODO: repeat using (0, 0, 0) for BLACK
+
+        # Create main pause text
+        # TODO: assign self.font.render(main_text, True, WHITE) to main_text
+        # TODO: assign main_text.get_rect() to main_rect
+        # TODO: assign (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2) to main_rect.center
+
+        #Create sub pause text
+        # TODO: assign self.font.render(sub_text, True, WHITE) to sub_text
+        # TODO: assign sub_text.get_rect() to sub_rect
+        # TODO: assign (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 64) to sub_rect.center
+
+        #Blit the pause text
+        # TODO: call display_surface.fill() with BLACK as its argument
+        # TODO: call display_surface.blit() with main_text, and main_rect as its args
+        # TODO: call display_surface.blit() with sub_text, and sub_rect as its args
+        # TODO: call pygame.display.update() with no args
+
+        #Pause the game until the user hits enter
+        #TODO: assign True to is_paused
+        #TODO: while is_paused:
+            #TODO: for event in pygame.event.get():
+                # The user wants to play again
+                # TODO: if event.type == pygame.KEYDOWN:
+                    # TODO: if event.key == pygame.K_RETURN:
+                        # TODO: assign False to is_paused
+                # The user wants to quit
+                # TODO: if event.type == pygame.QUIT:
+                    # TODO: assign False to is_paused
+                    # TODO: assign False to running
+
+
+
 
     def reset_game(self):
         """Reset the game"""
-        pass
+        # TODO: call self.pause_game() with the following args: f"Final Score: {self.score}", "Press 'Enter' to play again")
+
+        # Reset game values
+        # TODO: assign 0 to self.score
+        # TODO: assign 1 to self.round_number
+
+        # TODO: assign 5 to self.player.lives
+
+        # Empty groups
+        # TODO: call self.alien_group.empty()
+        # TODO: repeat for alien_bullet_group
+        # TODO: repeat for player_bullet_group
+
+        # Start a new game
+        # TODO: call self.start_new_round()
 
 
 class Player(pygame.sprite.Sprite):
