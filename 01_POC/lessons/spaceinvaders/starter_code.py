@@ -69,6 +69,7 @@ class Game():
                 # second arg (y) is going to be 64 + row * 64
                 # third arg (velocity) is going to be self.round_number
                 # fourth arg is self.alien_bullet_group
+                # TODO: call self.alien_bullet_group.add() with alien as its argument
 
         # Pause the game and prompt user to start
         # TODO: call self.new_round_sound.play() with no args
