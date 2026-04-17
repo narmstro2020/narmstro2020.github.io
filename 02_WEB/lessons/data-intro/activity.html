@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity — SQL CRUD & Multi-Table Queries</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#222240;--border:#2e2e52;--accent:#7c6af7;--accent2:#4fc3f7;--accent3:#f9a825;--accent4:#66bb6a;--text:#e2e2f0;--muted:#8888aa;--keyword:#c792ea;--string:#c3e88d;--func:#82aaff;--num:#f78c6c;--comment:#546e7a;--prop:#4fc3f7;--tag:#f07178;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;min-height:100vh;}
+.top-banner{background:linear-gradient(135deg,#1a1a2e,#16213e 60%,#0f3460);border-bottom:2px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.banner-left{display:flex;align-items:center;gap:12px;}
+.banner-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--accent3),var(--accent));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.banner-title{font-size:17px;font-weight:700;}.banner-sub{font-size:12px;color:var(--muted);}
+.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Fira Code',monospace;margin-left:6px;}
+.b1{background:rgba(124,106,247,0.15);color:var(--accent);border:1px solid rgba(124,106,247,0.3);}
+.b2{background:rgba(249,168,37,0.15);color:var(--accent3);border:1px solid rgba(249,168,37,0.3);}
+.page{max-width:880px;margin:0 auto;padding:36px 28px 80px;}
+.section-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--accent);margin:40px 0 18px;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.section-title .snum{background:var(--accent);color:var(--bg);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.concept{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:18px;}
+.concept-label{font-family:'Fira Code',monospace;font-size:11px;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+.concept p{font-size:15px;}.concept code{font-family:'Fira Code',monospace;font-size:13px;background:var(--surface2);padding:2px 7px;border-radius:4px;color:var(--accent2);}
+.code-ref{background:#111125;border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;font-family:'Fira Code',monospace;font-size:13px;line-height:1.8;overflow-x:auto;}
+.kw{color:var(--keyword);}.fn{color:var(--func);}.str{color:var(--string);}.num{color:var(--num);}.cmt{color:var(--comment);}.prp{color:var(--prop);}.tg{color:var(--tag);}
+.challenge{background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);border:1px solid var(--border);border-left:4px solid var(--accent3);border-radius:10px;padding:18px 22px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.ch-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.ch-num{font-family:'Fira Code',monospace;font-size:12px;font-weight:700;background:rgba(249,168,37,0.18);color:var(--accent3);padding:3px 12px;border-radius:14px;border:1px solid rgba(249,168,37,0.4);}
+.ch-title{font-weight:600;font-size:15px;}
+.ch-diff{font-family:'Fira Code',monospace;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:auto;}
+.easy{background:rgba(102,187,106,0.15);color:var(--accent4);}
+.med{background:rgba(249,168,37,0.15);color:var(--accent3);}
+.hard{background:rgba(240,113,120,0.15);color:var(--tag);}
+.challenge p{font-size:14px;margin-bottom:6px;}.challenge .hint{font-size:13px;color:var(--muted);font-style:italic;margin-top:8px;padding-left:12px;border-left:2px solid var(--border);}
+.expected{background:rgba(102,187,106,0.06);border:1px solid rgba(102,187,106,0.25);border-radius:6px;padding:10px 14px;margin-top:10px;font-size:13px;color:var(--accent4);display:flex;gap:10px;}
+.setup-block{background:#0a0a14;border:1px solid var(--accent4);border-radius:10px;padding:18px 22px;margin:16px 0;}
+.setup-block-label{font-family:'Fira Code',monospace;font-size:11px;font-weight:700;color:var(--accent4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+.db-table{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:16px 0;}
+.db-table-header{background:var(--surface2);padding:10px 16px;font-family:'Fira Code',monospace;font-size:13px;color:var(--accent2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:9px 14px;text-align:left;font-size:13px;border-bottom:1px solid var(--border);}
+th{background:#0a0a14;color:var(--accent3);font-family:'Fira Code',monospace;font-weight:600;font-size:12px;}
+td{font-family:'Fira Code',monospace;}.pk{color:var(--tag);font-weight:700;}.fk{color:var(--accent4);font-weight:700;}
+.table-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;align-items:start;}
+.join-arrow{text-align:center;color:var(--accent4);font-size:11px;font-family:'Fira Code',monospace;margin:8px 0;padding:6px;background:rgba(102,187,106,0.08);border-radius:6px;}
+.warn{background:rgba(240,113,120,0.08);border:2px solid rgba(240,113,120,0.4);border-radius:10px;padding:16px 20px;margin:20px 0;color:var(--tag);font-size:14px;display:flex;gap:14px;align-items:flex-start;}.warn .icon{font-size:24px;line-height:1;}
+.submit{background:rgba(124,106,247,0.06);border:1px solid var(--accent);border-radius:10px;padding:20px 24px;margin-top:40px;}.submit h3{color:var(--accent);font-size:16px;margin-bottom:8px;}.submit p{font-size:14px;}
+@media(max-width:680px){.table-pair{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="top-banner">
+  <div class="banner-left"><div class="banner-icon">🎮</div><div><div class="banner-title">Activity — SQL CRUD &amp; Multi-Table Queries</div><div class="banner-sub">Day 16 · UPDATE, DELETE, JOINs Practice · Videogames Database</div></div></div>
+  <div><span class="badge b1">Unit 3 · SQL &amp; Supabase</span><span class="badge b2">15 pts</span></div>
+</div>
+<div class="page">
+
+<div class="section-title"><span class="snum">0</span>Setup — Build the Videogames Database</div>
+
+<div class="concept"><div class="concept-label">Today's Dataset</div>
+<p>Fresh dataset — a <strong>videogames</strong> database with two linked tables: <code>games</code> (10 titles) and <code>studios</code> (5 developers). The tables are already linked with a foreign key so you can practice JOINs right away.</p></div>
+
+<div class="setup-block">
+<div class="setup-block-label">📦 Setup — Copy, Paste, Run in Supabase SQL Editor</div>
+<div class="code-ref" style="margin:0;border:none;background:transparent;padding:0;">
+<span class="cmt">-- Drop old tables if they exist</span><br>
+<span class="kw">DROP TABLE IF EXISTS</span> <span class="fn">games</span>;<br>
+<span class="kw">DROP TABLE IF EXISTS</span> <span class="fn">studios</span>;<br><br>
+<span class="cmt">-- Create studios table</span><br>
+<span class="kw">CREATE TABLE</span> <span class="fn">studios</span> (<br>
+&nbsp;&nbsp;<span class="prp">id</span> <span class="kw">SERIAL PRIMARY KEY</span>,<br>
+&nbsp;&nbsp;<span class="prp">name</span> <span class="kw">TEXT NOT NULL</span>,<br>
+&nbsp;&nbsp;<span class="prp">country</span> <span class="kw">TEXT</span>,<br>
+&nbsp;&nbsp;<span class="prp">founded</span> <span class="kw">INT4</span><br>
+);<br><br>
+<span class="kw">INSERT INTO</span> <span class="fn">studios</span> (<span class="prp">name</span>, <span class="prp">country</span>, <span class="prp">founded</span>) <span class="kw">VALUES</span><br>
+&nbsp;&nbsp;(<span class="str">'Nintendo'</span>, <span class="str">'Japan'</span>, <span class="num">1889</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Rockstar Games'</span>, <span class="str">'USA'</span>, <span class="num">1998</span>),<br>
+&nbsp;&nbsp;(<span class="str">'CD Projekt Red'</span>, <span class="str">'Poland'</span>, <span class="num">1994</span>),<br>
+&nbsp;&nbsp;(<span class="str">'FromSoftware'</span>, <span class="str">'Japan'</span>, <span class="num">1986</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Mojang'</span>, <span class="str">'Sweden'</span>, <span class="num">2009</span>);<br><br>
+<span class="cmt">-- Create games table with foreign key</span><br>
+<span class="kw">CREATE TABLE</span> <span class="fn">games</span> (<br>
+&nbsp;&nbsp;<span class="prp">id</span> <span class="kw">SERIAL PRIMARY KEY</span>,<br>
+&nbsp;&nbsp;<span class="prp">title</span> <span class="kw">TEXT NOT NULL</span>,<br>
+&nbsp;&nbsp;<span class="prp">genre</span> <span class="kw">TEXT</span>,<br>
+&nbsp;&nbsp;<span class="prp">release_year</span> <span class="kw">INT4</span>,<br>
+&nbsp;&nbsp;<span class="prp">rating</span> <span class="kw">FLOAT4</span>,<br>
+&nbsp;&nbsp;<span class="prp">copies_sold_millions</span> <span class="kw">FLOAT4</span>,<br>
+&nbsp;&nbsp;<span class="prp">studio_id</span> <span class="kw">INT4</span><br>
+);<br><br>
+<span class="kw">INSERT INTO</span> <span class="fn">games</span> (<span class="prp">title</span>, <span class="prp">genre</span>, <span class="prp">release_year</span>, <span class="prp">rating</span>, <span class="prp">copies_sold_millions</span>, <span class="prp">studio_id</span>) <span class="kw">VALUES</span><br>
+&nbsp;&nbsp;(<span class="str">'Breath of the Wild'</span>, <span class="str">'Adventure'</span>, <span class="num">2017</span>, <span class="num">9.7</span>, <span class="num">31.2</span>, <span class="num">1</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Mario Kart 8'</span>, <span class="str">'Racing'</span>, <span class="num">2014</span>, <span class="num">9.2</span>, <span class="num">64.3</span>, <span class="num">1</span>),<br>
+&nbsp;&nbsp;(<span class="str">'GTA V'</span>, <span class="str">'Action'</span>, <span class="num">2013</span>, <span class="num">9.5</span>, <span class="num">200.0</span>, <span class="num">2</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Red Dead Redemption 2'</span>, <span class="str">'Action'</span>, <span class="num">2018</span>, <span class="num">9.7</span>, <span class="num">57.0</span>, <span class="num">2</span>),<br>
+&nbsp;&nbsp;(<span class="str">'The Witcher 3'</span>, <span class="str">'RPG'</span>, <span class="num">2015</span>, <span class="num">9.3</span>, <span class="num">50.0</span>, <span class="num">3</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Cyberpunk 2077'</span>, <span class="str">'RPG'</span>, <span class="num">2020</span>, <span class="num">7.2</span>, <span class="num">25.0</span>, <span class="num">3</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Elden Ring'</span>, <span class="str">'RPG'</span>, <span class="num">2022</span>, <span class="num">9.6</span>, <span class="num">23.0</span>, <span class="num">4</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Dark Souls III'</span>, <span class="str">'RPG'</span>, <span class="num">2016</span>, <span class="num">8.9</span>, <span class="num">10.0</span>, <span class="num">4</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Minecraft'</span>, <span class="str">'Sandbox'</span>, <span class="num">2011</span>, <span class="num">9.0</span>, <span class="num">300.0</span>, <span class="num">5</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Minecraft Dungeons'</span>, <span class="str">'Action'</span>, <span class="num">2020</span>, <span class="num">6.8</span>, <span class="num">15.0</span>, <span class="num">5</span>);
+</div></div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">01</span><span class="ch-title">Verify both tables</span><span class="ch-diff easy">SETUP</span></div>
+<p>Run <code>SELECT * FROM games;</code> and <code>SELECT * FROM studios;</code> to confirm.</p>
+<div class="expected"><span>✓</span><div>Expected: 10 games, 5 studios. Every game has a <code>studio_id</code>.</div></div></div>
+
+<div class="table-pair">
+<div class="db-table"><div class="db-table-header"><span>games</span><span style="color:var(--muted);font-size:11px;">10 rows</span></div>
+<table><thead><tr><th>id</th><th>title</th><th>genre</th><th>rating</th><th>copies_M</th><th>studio_id</th></tr></thead>
+<tbody>
+<tr><td class="pk">1</td><td>Breath of the Wild</td><td>Adventure</td><td>9.7</td><td>31.2</td><td class="fk">1</td></tr>
+<tr><td class="pk">2</td><td>Mario Kart 8</td><td>Racing</td><td>9.2</td><td>64.3</td><td class="fk">1</td></tr>
+<tr><td class="pk">3</td><td>GTA V</td><td>Action</td><td>9.5</td><td>200.0</td><td class="fk">2</td></tr>
+<tr><td class="pk">4</td><td>Red Dead 2</td><td>Action</td><td>9.7</td><td>57.0</td><td class="fk">2</td></tr>
+<tr><td class="pk">5</td><td>Witcher 3</td><td>RPG</td><td>9.3</td><td>50.0</td><td class="fk">3</td></tr>
+<tr><td style="color:var(--muted);" colspan="6">... + 5 more rows</td></tr>
+</tbody></table></div>
+<div class="db-table"><div class="db-table-header"><span>studios</span><span style="color:var(--muted);font-size:11px;">5 rows</span></div>
+<table><thead><tr><th>id</th><th>name</th><th>country</th><th>founded</th></tr></thead>
+<tbody>
+<tr><td class="pk">1</td><td>Nintendo</td><td>Japan</td><td>1889</td></tr>
+<tr><td class="pk">2</td><td>Rockstar</td><td>USA</td><td>1998</td></tr>
+<tr><td class="pk">3</td><td>CD Projekt</td><td>Poland</td><td>1994</td></tr>
+<tr><td class="pk">4</td><td>FromSoftware</td><td>Japan</td><td>1986</td></tr>
+<tr><td class="pk">5</td><td>Mojang</td><td>Sweden</td><td>2009</td></tr>
+</tbody></table></div></div>
+
+<div class="join-arrow">▲ &nbsp; games.studio_id &nbsp; ─── matches ───▶ &nbsp; studios.id &nbsp; ▲</div>
+
+<div class="section-title"><span class="snum">1</span>SELECT &amp; WHERE Review</div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">02</span><span class="ch-title">RPG games only</span><span class="ch-diff easy">EASY</span></div>
+<p>Return all columns for every game where <code>genre = 'RPG'</code>.</p>
+<div class="expected"><span>✓</span><div>Expected: 4 rows (Witcher 3, Cyberpunk 2077, Elden Ring, Dark Souls III).</div></div></div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">03</span><span class="ch-title">Mega hits</span><span class="ch-diff easy">EASY</span></div>
+<p>Return the <code>title</code> and <code>copies_sold_millions</code> for games that sold more than 50 million copies.</p></div>
+
+<div class="section-title"><span class="snum">2</span>UPDATE Challenges</div>
+
+<div class="warn"><span class="icon">⚠️</span><div><strong>Reminder:</strong> Always use WHERE with UPDATE. Run a SELECT with your WHERE first to preview which rows will change.</div></div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">04</span><span class="ch-title">Fix Cyberpunk's rating</span><span class="ch-diff med">MEDIUM</span></div>
+<p>After patches and updates, Cyberpunk 2077 improved. Change its <code>rating</code> to <code>8.5</code>.</p></div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">05</span><span class="ch-title">Boost all RPGs</span><span class="ch-diff med">MEDIUM</span></div>
+<p>Add 2 million to <code>copies_sold_millions</code> for every RPG game.</p>
+<div class="hint">Hint: <code>SET copies_sold_millions = copies_sold_millions + 2</code></div></div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">06</span><span class="ch-title">Rename a genre</span><span class="ch-diff med">MEDIUM</span></div>
+<p>Change the genre of <code>'Minecraft'</code> from <code>'Sandbox'</code> to <code>'Survival'</code>. Also update its rating to <code>9.5</code> in the same query.</p></div>
+
+<div class="section-title"><span class="snum">3</span>DELETE Challenges</div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">07</span><span class="ch-title">Remove one game</span><span class="ch-diff med">MEDIUM</span></div>
+<p>Delete <code>'Minecraft Dungeons'</code> from the games table.</p></div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">08</span><span class="ch-title">Delete by condition</span><span class="ch-diff med">MEDIUM</span></div>
+<p>Delete every game with a rating below <code>8.0</code>.</p>
+<div class="hint">Hint: Run <code>SELECT * FROM games WHERE rating &lt; 8.0;</code> first to preview.</div>
+<div class="expected"><span>✓</span><div>If you already updated Cyberpunk to 8.5 in TODO 4 — 0 rows deleted. If not, Cyberpunk (7.2) gets deleted.</div></div></div>
+
+<div class="section-title"><span class="snum">4</span>INSERT Challenges</div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">09</span><span class="ch-title">Add a new studio</span><span class="ch-diff easy">EASY</span></div>
+<p>Insert a new studio: <code>'Epic Games'</code>, country <code>'USA'</code>, founded <code>1991</code>.</p></div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">10</span><span class="ch-title">Add a game from the new studio</span><span class="ch-diff med">MEDIUM</span></div>
+<p>Insert <code>'Fortnite'</code>, genre <code>'Battle Royale'</code>, release year <code>2017</code>, rating <code>8.0</code>, copies sold <code>80.0</code>. Set the <code>studio_id</code> to Epic Games' id.</p>
+<div class="hint">Hint: Run <code>SELECT * FROM studios;</code> to find Epic Games' id first.</div></div>
+
+<div class="section-title"><span class="snum">5</span>JOIN Challenges</div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">11</span><span class="ch-title">Title + studio name</span><span class="ch-diff med">MEDIUM</span></div>
+<p>Write a JOIN that returns each game's <code>title</code> alongside its studio's <code>name</code>.</p>
+<div class="hint">Hint: <code>JOIN studios ON games.studio_id = studios.id</code></div></div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">12</span><span class="ch-title">Japanese studios only</span><span class="ch-diff hard">HARD</span></div>
+<p>Return the game <code>title</code> and studio <code>name</code> for games made by studios in <code>'Japan'</code>.</p>
+<div class="expected"><span>✓</span><div>Expected: Breath of the Wild, Mario Kart 8 (Nintendo), Elden Ring, Dark Souls III (FromSoftware).</div></div></div>
+
+<div class="challenge"><div class="ch-head"><span class="ch-num">13</span><span class="ch-title">Best-sellers with studio info</span><span class="ch-diff hard">HARD</span></div>
+<p>Return <code>title</code>, <code>copies_sold_millions</code>, studio <code>name</code>, and studio <code>country</code> for games that sold over 50 million copies. Sort by copies sold descending.</p>
+<div class="hint">Hint: <code>ORDER BY copies_sold_millions DESC</code> at the end.</div></div>
+
+<div class="challenge" style="border-left-color:var(--accent);"><div class="ch-head"><span class="ch-num">14</span><span class="ch-title">BONUS — Young studios, big games</span><span class="ch-diff hard">BONUS</span></div>
+<p>Return the game <code>title</code>, <code>rating</code>, studio <code>name</code>, and studio <code>founded</code> year — but only for games from studios founded <strong>after 1990</strong> with a rating <strong>above 9.0</strong>.</p>
+<div class="expected"><span>✓</span><div>Expected: GTA V, Red Dead 2 (Rockstar, 1998), Witcher 3 (CD Projekt, 1994), Minecraft (Mojang, 2009).</div></div></div>
+
+<div class="submit"><h3>📤 Submission</h3>
+<p>Screenshot each query + result in the SQL Editor. Drop all 14 into a single Google Doc or PDF and submit to Canvas. <strong>15 pts total</strong> (1 pt each + 1 bonus pt).</p></div>
+
+</div>
+</body></html>
