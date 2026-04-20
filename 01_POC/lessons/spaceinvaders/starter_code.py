@@ -45,7 +45,30 @@ class Game():
 
     def draw(self):
         """Draw the HUD and other information to display"""
-        pass
+        WHITE = (255, 255, 255)
+
+        # Set text
+        # TODO: assign self.font.render() to score_text with f"Score: {self.score}, True, and WHITE as args
+        # TODO: assign score_text.get_rect() to score_rect
+        # TODO: assign WINDOW_WIDTH // 2 to self_rect.centerx
+        # TODO: assign 10 to score_rect.top
+
+        # TODO: assign self.font.render() to round_text with f"Round: {self.round_number}, True, and WHITE as args
+        # TODO: assign round_text.get_rect() to round_rect
+        # TODO: assign (20, 10) to round_rect.topleft
+
+        # TODO: assign self.font.render() to lives_text with f"Lives: {self.player.lives}, True, and WHITE as args
+        # TODO: assign lives_text.get_rect() to lives_rect
+        # TODO: assign (20, 10) to lives_rect.topleft
+
+        #Blit the HUD to the display
+        # TODO: call display_surface.blit() with score_text, score_rect as the args
+        # TODO: call display_surface.blit() with round_text, round_rect as the args
+        # TODO: call display_surface.blit() with lives_text, lives_rect as the args
+        # TODO: call pygame.draw.line() with display_surface, WHITE, (0, 50), (WINDOW_WIDTH, 50), 4 as its args
+        # TODO: repeat the last function call but with display_surface, WHITE, (0, WINDOW_HEIGHT - 100), (WINDOW_WIDTH, WINDOW_HEIGHT - 100), 4 as its args
+
+
 
     def shift_aliens(self):
         """Shift a wave of aliens down the screen and reverse direction"""
@@ -53,11 +76,27 @@ class Game():
 
     def check_collisions(self):
         """Check for collisions"""
-        pass
+        #See if any bullet in the player bullet group hits an alien in the alien group
+        # TODO: if pygame.sprite.groupcollide(self.player_bullet_group, self.alien_group, True, True):
+            # TODO: call self.alien_hit_sound.play()
+            # TODO: add 100 to self.score
+
+        #See if the player has collided with any bullet in the alien bullet group
+        # TODO: if pygame.sprite.spritecollide(self.player, self.alien_bullet_group, True):
+            # TODO: call self.player_hit_sound.play()
+            # TODO: subtract 1 from self.player.lives
+
+            # TODO: call self.check_game_status() with "You've been hit!", "Press 'Enter' to continue" as its 2 args
+
+
+
 
     def check_round_completion(self):
         """Check to see if a player has completed a single round"""
-        pass
+        # TODO: if not (self.alien_group):
+            # TODO: add 1000 * self.round_number to self.score (don't forget it's += when I say add to)
+            # TODO: add 1 to self.round_number
+            # TODO: call self.start_new_round() with no args
 
     def start_new_round(self):
         """Start a new round"""
@@ -79,7 +118,11 @@ class Game():
 
     def check_game_status(self, main_text, sub_text):
         """Check to see the status of the game and how the player died"""
-        pass
+        # TODO: call self.alien_bullet_group.empty() with no args
+        # TODO: same for self.player_bullet_group.empty()
+        # TODO: call self.player.reset()
+        # TODO: for alien in self.alien_group:
+            # TODO: call alien.reset()
 
     def pause_game(self, main_text, sub_text):
         """Pauses the game"""
