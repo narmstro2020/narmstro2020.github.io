@@ -114,7 +114,7 @@ class Game():
         # TODO: call self.new_round_sound.play() with no args
         # TODO: call self.pause_game() with the following args for self.pause_game()
         # first arg (main_text) f"Space Invaders Round {self.round_number}"
-        # second arg (sub_text) "Press 'Enter' to being"
+        # second arg (sub_text) "Press 'Enter' to begin"
 
     def check_game_status(self, main_text, sub_text):
         """Check to see the status of the game and how the player died"""
