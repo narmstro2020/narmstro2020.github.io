@@ -50,7 +50,7 @@ class Game():
         # Set text
         # TODO: assign self.font.render() to score_text with f"Score: {self.score}, True, and WHITE as args
         # TODO: assign score_text.get_rect() to score_rect
-        # TODO: assign WINDOW_WIDTH // 2 to self_rect.centerx
+        # TODO: assign WINDOW_WIDTH // 2 to score_rect
         # TODO: assign 10 to score_rect.top
 
         # TODO: assign self.font.render() to round_text with f"Round: {self.round_number}, True, and WHITE as args
