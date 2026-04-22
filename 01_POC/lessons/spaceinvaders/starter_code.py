@@ -150,6 +150,12 @@ class Game():
         # TODO: for alien in self.alien_group:
             # TODO: call alien.reset()
 
+        #Check if the game is over or if it is a simple round reset
+        if self.player.lives == 0:
+            self.reset_game()
+        else:
+            self.pause_game(main_text, sub_text)
+
     def pause_game(self, main_text, sub_text):
         """Pauses the game"""
         global running
