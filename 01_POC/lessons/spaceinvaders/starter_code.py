@@ -59,7 +59,7 @@ class Game():
 
         # TODO: assign self.font.render() to lives_text with f"Lives: {self.player.lives}, True, and WHITE as args
         # TODO: assign lives_text.get_rect() to lives_rect
-        # TODO: assign (20, 10) to lives_rect.topleft
+        # TODO: assign (WINDOW_WIDTH - 20, 10) to lives_rect.topright
 
         #Blit the HUD to the display
         # TODO: call display_surface.blit() with score_text, score_rect as the args
