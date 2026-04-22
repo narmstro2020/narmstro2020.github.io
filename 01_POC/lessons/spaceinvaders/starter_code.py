@@ -81,7 +81,7 @@ class Game():
         #Shift every alien down, change direction, and check for a breach
         if shift:
             breach = False
-            for alien (self.alien_group.sprites()):
+            for alien in (self.alien_group.sprites()):
                 #Shift down
                 alien.rect.y  += 10 * self.round_number
 
