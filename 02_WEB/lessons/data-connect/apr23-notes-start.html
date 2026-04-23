@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supabase JS — Guided Notes + Guestbook Build</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#222240;--border:#2e2e52;--accent:#7c6af7;--accent2:#4fc3f7;--accent3:#f9a825;--accent4:#66bb6a;--text:#e2e2f0;--muted:#8888aa;--keyword:#c792ea;--string:#c3e88d;--func:#82aaff;--num:#f78c6c;--comment:#546e7a;--prop:#4fc3f7;--tag:#f07178;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;min-height:100vh;}
+.top-banner{background:linear-gradient(135deg,#1a1a2e,#16213e 60%,#0f3460);border-bottom:2px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.banner-left{display:flex;align-items:center;gap:12px;}
+.banner-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--accent4),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.banner-title{font-size:17px;font-weight:700;}.banner-sub{font-size:12px;color:var(--muted);}
+.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Fira Code',monospace;margin-left:6px;}
+.b1{background:rgba(124,106,247,0.15);color:var(--accent);border:1px solid rgba(124,106,247,0.3);}
+.b2{background:rgba(249,168,37,0.15);color:var(--accent3);border:1px solid rgba(249,168,37,0.3);}
+.page{max-width:880px;margin:0 auto;padding:36px 28px 80px;}
+.section-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--accent);margin:40px 0 18px;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.section-title .snum{background:var(--accent);color:var(--bg);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.concept{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:18px;}
+.concept-label{font-family:'Fira Code',monospace;font-size:11px;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+.concept p{font-size:15px;}.concept code{font-family:'Fira Code',monospace;font-size:13px;background:var(--surface2);padding:2px 7px;border-radius:4px;color:var(--accent2);}
+.concept ul{padding-left:20px;margin-top:8px;font-size:14px;}
+.code-ref{background:#111125;border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;font-family:'Fira Code',monospace;font-size:13px;line-height:1.8;overflow-x:auto;}
+.kw{color:var(--keyword);}.fn{color:var(--func);}.str{color:var(--string);}.num{color:var(--num);}.cmt{color:var(--comment);}.prp{color:var(--prop);}.tg{color:var(--tag);}
+.todo{background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);border:1px solid var(--border);border-left:4px solid var(--accent3);border-radius:10px;padding:18px 22px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.todo-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.todo-num{font-family:'Fira Code',monospace;font-size:12px;font-weight:700;background:rgba(249,168,37,0.18);color:var(--accent3);padding:3px 12px;border-radius:14px;border:1px solid rgba(249,168,37,0.4);}
+.todo-title{font-weight:600;font-size:15px;}
+.todo p,.todo ul{font-size:14px;color:var(--text);}.todo ul{padding-left:20px;margin-top:6px;}
+.todo .hint{font-size:13px;color:var(--muted);font-style:italic;margin-top:8px;padding-left:12px;border-left:2px solid var(--border);}
+.expected{background:rgba(102,187,106,0.06);border:1px solid rgba(102,187,106,0.25);border-radius:6px;padding:10px 14px;margin-top:10px;font-size:13px;color:var(--accent4);display:flex;gap:10px;}
+.setup-block{background:#0a0a14;border:1px solid var(--accent4);border-radius:10px;padding:18px 22px;margin:16px 0;}
+.setup-block-label{font-family:'Fira Code',monospace;font-size:11px;font-weight:700;color:var(--accent4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+.warn{background:rgba(240,113,120,0.08);border:2px solid rgba(240,113,120,0.4);border-radius:10px;padding:16px 20px;margin:20px 0;color:var(--tag);font-size:14px;display:flex;gap:14px;align-items:flex-start;}.warn .icon{font-size:24px;line-height:1;}
+.milestone{background:rgba(102,187,106,0.08);border:2px solid rgba(102,187,106,0.3);border-radius:10px;padding:16px 20px;margin:20px 0;color:var(--accent4);font-size:14px;display:flex;gap:14px;align-items:flex-start;}.milestone .icon{font-size:24px;line-height:1;}
+.submit{background:rgba(124,106,247,0.06);border:1px solid var(--accent);border-radius:10px;padding:20px 24px;margin-top:40px;}.submit h3{color:var(--accent);font-size:16px;margin-bottom:8px;}.submit p{font-size:14px;}
+</style>
+</head>
+<body>
+<div class="top-banner">
+  <div class="banner-left"><div class="banner-icon">🔌</div><div><div class="banner-title">Supabase JS — Frontend Meets Database</div><div class="banner-sub">Day 17 · Guided Build · By the end: a working Guestbook app</div></div></div>
+  <div><span class="badge b1">Unit 3 · SQL &amp; Supabase</span><span class="badge b2">15 pts</span></div>
+</div>
+<div class="page">
+
+<div class="concept"><div class="concept-label">The Big Picture</div>
+<p>Until now you've written SQL in the Supabase dashboard. Today we connect <strong>JavaScript in your HTML file</strong> to Supabase, so your web app can read and write data to a real database. By the end of class you'll have a <strong>working guestbook</strong> — a form that saves messages to Supabase and displays them on the page.</p></div>
+
+<!-- ========== SETUP ========== -->
+<div class="section-title"><span class="snum">0</span>Setup — Supabase Table + Project Keys</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 1</span><span class="todo-title">Create the guestbook table in Supabase</span></div>
+<p>Go to your Supabase project → SQL Editor → paste and run:</p>
+<div class="code-ref">
+<span class="kw">CREATE TABLE</span> <span class="fn">guestbook</span> (<br>
+&nbsp;&nbsp;<span class="prp">id</span> <span class="kw">SERIAL PRIMARY KEY</span>,<br>
+&nbsp;&nbsp;<span class="prp">name</span> <span class="kw">TEXT NOT NULL</span>,<br>
+&nbsp;&nbsp;<span class="prp">message</span> <span class="kw">TEXT NOT NULL</span>,<br>
+&nbsp;&nbsp;<span class="prp">created_at</span> <span class="kw">TIMESTAMP DEFAULT NOW()</span><br>
+);<br><br>
+<span class="cmt">-- Disable RLS for class practice</span><br>
+<span class="kw">ALTER TABLE</span> <span class="fn">guestbook</span> <span class="kw">DISABLE ROW LEVEL SECURITY</span>;<br><br>
+<span class="cmt">-- Seed with a couple starter entries</span><br>
+<span class="kw">INSERT INTO</span> <span class="fn">guestbook</span> (<span class="prp">name</span>, <span class="prp">message</span>) <span class="kw">VALUES</span><br>
+&nbsp;&nbsp;(<span class="str">'Mr. Armstrong'</span>, <span class="str">'Welcome to the guestbook!'</span>),<br>
+&nbsp;&nbsp;(<span class="str">'Supabot'</span>, <span class="str">'This message came from the database 🤖'</span>);
+</div>
+<div class="expected"><span>✓</span><div>Verify: <code>SELECT * FROM guestbook;</code> should show 2 rows.</div></div>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 2</span><span class="todo-title">Find your project URL + anon key</span></div>
+<p>In Supabase dashboard → <strong>Settings</strong> (gear icon) → <strong>API</strong>. You need two values:</p>
+<ul>
+  <li><strong>Project URL</strong> — looks like <code>https://abcdefg.supabase.co</code></li>
+  <li><strong>anon public key</strong> — a long string starting with <code>eyJ...</code></li>
+</ul>
+<p>Copy both — you'll paste them into your JavaScript in TODO 4.</p>
+</div>
+
+<!-- ========== PART 1: CONNECT ========== -->
+<div class="section-title"><span class="snum">1</span>Connecting JS to Supabase</div>
+
+<div class="concept"><div class="concept-label">How it works</div>
+<p>Supabase provides a JavaScript library called <code>supabase-js</code>. We load it via a CDN script tag (no install needed), then create a <strong>client</strong> using our project URL and key. The client gives us methods like <code>.select()</code>, <code>.insert()</code>, <code>.update()</code>, and <code>.delete()</code> — these replace the SQL you've been writing manually.</p>
+<div class="code-ref">
+<span class="cmt">// In your HTML &lt;head&gt;:</span><br>
+<span class="tg">&lt;script</span> <span class="prp">src</span>=<span class="str">"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"</span><span class="tg">&gt;&lt;/script&gt;</span><br><br>
+<span class="cmt">// In your &lt;script&gt;:</span><br>
+<span class="kw">const</span> <span class="prp">supabase</span> = <span class="fn">supabase</span>.<span class="fn">createClient</span>(<span class="str">"YOUR_URL"</span>, <span class="str">"YOUR_KEY"</span>);
+</div>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 3</span><span class="todo-title">Create your HTML file</span></div>
+<p>In WebStorm, create a new file: <code>guestbook/index.html</code>. Start with this skeleton:</p>
+<div class="code-ref">
+<span class="tg">&lt;!DOCTYPE html&gt;</span><br>
+<span class="tg">&lt;html</span> <span class="prp">lang</span>=<span class="str">"en"</span><span class="tg">&gt;</span><br>
+<span class="tg">&lt;head&gt;</span><br>
+&nbsp;&nbsp;<span class="tg">&lt;meta</span> <span class="prp">charset</span>=<span class="str">"UTF-8"</span><span class="tg">&gt;</span><br>
+&nbsp;&nbsp;<span class="tg">&lt;title&gt;</span>Guestbook<span class="tg">&lt;/title&gt;</span><br>
+&nbsp;&nbsp;<span class="tg">&lt;script</span> <span class="prp">src</span>=<span class="str">"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"</span><span class="tg">&gt;&lt;/script&gt;</span><br>
+<span class="tg">&lt;/head&gt;</span><br>
+<span class="tg">&lt;body&gt;</span><br>
+&nbsp;&nbsp;<span class="tg">&lt;h1&gt;</span>Guestbook<span class="tg">&lt;/h1&gt;</span><br><br>
+&nbsp;&nbsp;<span class="tg">&lt;form</span> <span class="prp">id</span>=<span class="str">"guest-form"</span><span class="tg">&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tg">&lt;input</span> <span class="prp">type</span>=<span class="str">"text"</span> <span class="prp">id</span>=<span class="str">"name-input"</span> <span class="prp">placeholder</span>=<span class="str">"Your name"</span> <span class="prp">required</span><span class="tg">&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tg">&lt;textarea</span> <span class="prp">id</span>=<span class="str">"msg-input"</span> <span class="prp">placeholder</span>=<span class="str">"Your message"</span> <span class="prp">required</span><span class="tg">&gt;&lt;/textarea&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tg">&lt;button</span> <span class="prp">type</span>=<span class="str">"submit"</span><span class="tg">&gt;</span>Sign Guestbook<span class="tg">&lt;/button&gt;</span><br>
+&nbsp;&nbsp;<span class="tg">&lt;/form&gt;</span><br><br>
+&nbsp;&nbsp;<span class="tg">&lt;div</span> <span class="prp">id</span>=<span class="str">"entries"</span><span class="tg">&gt;&lt;/div&gt;</span><br><br>
+&nbsp;&nbsp;<span class="tg">&lt;script&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// TODOs go here</span><br>
+&nbsp;&nbsp;<span class="tg">&lt;/script&gt;</span><br>
+<span class="tg">&lt;/body&gt;</span><br>
+<span class="tg">&lt;/html&gt;</span>
+</div>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 4</span><span class="todo-title">Initialize the Supabase client</span></div>
+<p>Inside your <code>&lt;script&gt;</code> tag, create the client with your URL and anon key from TODO 2:</p>
+<div class="code-ref">
+<span class="kw">const</span> <span class="prp">SUPABASE_URL</span> = <span class="str">"https://YOUR-PROJECT.supabase.co"</span>;<br>
+<span class="kw">const</span> <span class="prp">SUPABASE_KEY</span> = <span class="str">"eyJ...YOUR_ANON_KEY"</span>;<br>
+<span class="kw">const</span> <span class="prp">db</span> = <span class="fn">supabase</span>.<span class="fn">createClient</span>(<span class="prp">SUPABASE_URL</span>, <span class="prp">SUPABASE_KEY</span>);
+</div>
+<div class="hint">We're naming it <code>db</code> to keep things short. This object is your connection to the database.</div>
+</div>
+
+<!-- ========== PART 2: READ ========== -->
+<div class="section-title"><span class="snum">2</span>Reading Data — .select()</div>
+
+<div class="concept"><div class="concept-label">JS equivalent of SELECT</div>
+<p>Instead of writing <code>SELECT * FROM guestbook</code>, you write:</p>
+<div class="code-ref">
+<span class="kw">const</span> { <span class="prp">data</span>, <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span><br>
+&nbsp;&nbsp;.<span class="fn">from</span>(<span class="str">'guestbook'</span>)<br>
+&nbsp;&nbsp;.<span class="fn">select</span>(<span class="str">'*'</span>)<br>
+&nbsp;&nbsp;.<span class="fn">order</span>(<span class="str">'created_at'</span>, { <span class="prp">ascending</span>: <span class="kw">false</span> });
+</div>
+<p style="margin-top:8px;"><code>data</code> is an array of objects — just like the arrays you've been rendering to the DOM all semester. <code>error</code> is <code>null</code> if everything worked.</p>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 5</span><span class="todo-title">Write the loadEntries() function</span></div>
+<p>Create an <code>async</code> function called <code>loadEntries</code> that:</p>
+<ul>
+  <li>Calls <code>db.from('guestbook').select('*').order('created_at', { ascending: false })</code></li>
+  <li>Checks if <code>error</code> exists — if so, <code>console.error(error)</code> and return</li>
+  <li>Loops through <code>data</code> and builds HTML cards</li>
+  <li>Sets <code>#entries</code> innerHTML to the cards</li>
+</ul>
+<div class="code-ref">
+<span class="cmt">// Card template for each entry:</span><br>
+<span class="str">`&lt;div class="entry"&gt;</span><br>
+<span class="str">&nbsp;&nbsp;&lt;strong&gt;${entry.name}&lt;/strong&gt;</span><br>
+<span class="str">&nbsp;&nbsp;&lt;p&gt;${entry.message}&lt;/p&gt;</span><br>
+<span class="str">&lt;/div&gt;`</span>
+</div>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 6</span><span class="todo-title">Call loadEntries() on page load</span></div>
+<p>At the bottom of your script, call <code>loadEntries();</code> so entries appear as soon as the page opens.</p>
+<div class="expected"><span>✓</span><div>Expected: Open in browser → you should see the 2 seed messages from the database.</div></div>
+</div>
+
+<div class="milestone"><span class="icon">🎉</span><div><strong>Milestone:</strong> Your page is reading live data from Supabase! This is the same pattern as fetch + API, but now the data is YOUR database.</div></div>
+
+<!-- ========== PART 3: CREATE ========== -->
+<div class="section-title"><span class="snum">3</span>Creating Data — .insert()</div>
+
+<div class="concept"><div class="concept-label">JS equivalent of INSERT</div>
+<p>Instead of <code>INSERT INTO guestbook (name, message) VALUES (...)</code>:</p>
+<div class="code-ref">
+<span class="kw">const</span> { <span class="prp">data</span>, <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span><br>
+&nbsp;&nbsp;.<span class="fn">from</span>(<span class="str">'guestbook'</span>)<br>
+&nbsp;&nbsp;.<span class="fn">insert</span>([{ <span class="prp">name</span>: <span class="str">"Jordan"</span>, <span class="prp">message</span>: <span class="str">"Hello!"</span> }]);
+</div>
+<p style="margin-top:8px;">Notice: <code>.insert()</code> takes an <strong>array of objects</strong>. Each object's keys must match your column names.</p>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 7</span><span class="todo-title">Handle the form submit</span></div>
+<p>Add a <code>submit</code> event listener on <code>#guest-form</code>. Inside:</p>
+<ul>
+  <li>Call <code>e.preventDefault()</code> (stops page reload)</li>
+  <li>Read the values from <code>#name-input</code> and <code>#msg-input</code></li>
+  <li>Create an object: <code>{ name: nameValue, message: msgValue }</code></li>
+</ul>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 8</span><span class="todo-title">Insert into Supabase</span></div>
+<p>Inside your submit handler (after TODO 7), use <code>async/await</code> to insert the new entry:</p>
+<div class="code-ref">
+<span class="kw">const</span> { <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span><br>
+&nbsp;&nbsp;.<span class="fn">from</span>(<span class="str">'guestbook'</span>)<br>
+&nbsp;&nbsp;.<span class="fn">insert</span>([{ <span class="prp">name</span>: <span class="prp">nameValue</span>, <span class="prp">message</span>: <span class="prp">msgValue</span> }]);
+</div>
+<p>If <code>error</code> exists, alert the error. Otherwise:</p>
+<ul>
+  <li>Clear both input fields</li>
+  <li>Call <code>loadEntries()</code> to refresh the list</li>
+</ul>
+<div class="expected"><span>✓</span><div>Expected: Type a name + message → click Submit → it appears on the page AND in your Supabase dashboard.</div></div>
+</div>
+
+<div class="milestone"><span class="icon">🚀</span><div><strong>Milestone:</strong> You just built a full-stack app! Data flows from your form → JavaScript → Supabase database → back to the page. This is the same pattern your final project will use.</div></div>
+
+<!-- ========== PART 4: DELETE ========== -->
+<div class="section-title"><span class="snum">4</span>Deleting Data — .delete()</div>
+
+<div class="concept"><div class="concept-label">JS equivalent of DELETE</div>
+<div class="code-ref">
+<span class="kw">const</span> { <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span><br>
+&nbsp;&nbsp;.<span class="fn">from</span>(<span class="str">'guestbook'</span>)<br>
+&nbsp;&nbsp;.<span class="fn">delete</span>()<br>
+&nbsp;&nbsp;.<span class="fn">eq</span>(<span class="str">'id'</span>, <span class="prp">entryId</span>);
+</div>
+<p style="margin-top:8px;"><code>.eq()</code> is the JS equivalent of <code>WHERE id = X</code>. Same golden rule applies — always filter!</p>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 9</span><span class="todo-title">Add delete buttons to each entry</span></div>
+<p>In your <code>loadEntries()</code> card template, add a delete button with the entry's id:</p>
+<div class="code-ref">
+<span class="str">`&lt;button onclick="deleteEntry(${entry.id})"&gt;✕&lt;/button&gt;`</span>
+</div>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 10</span><span class="todo-title">Write the deleteEntry() function</span></div>
+<p>Create an <code>async</code> function <code>deleteEntry(id)</code> that:</p>
+<ul>
+  <li>Calls <code>db.from('guestbook').delete().eq('id', id)</code></li>
+  <li>Checks for errors</li>
+  <li>Calls <code>loadEntries()</code> to refresh</li>
+</ul>
+<div class="expected"><span>✓</span><div>Expected: Click ✕ on any entry → it disappears from the page AND from Supabase.</div></div>
+</div>
+
+<!-- ========== PART 5: STRETCH ========== -->
+<div class="section-title"><span class="snum">5</span>Stretch Goals</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 11</span><span class="todo-title">BONUS — Add CSS styling</span></div>
+<p>Style your guestbook! Add a <code>&lt;style&gt;</code> block. Ideas: dark background, styled cards, form layout, hover effects on the delete button, timestamp display.</p>
+</div>
+
+<div class="todo"><div class="todo-header"><span class="todo-num">TODO 12</span><span class="todo-title">BONUS — Display the timestamp</span></div>
+<p>Add <code>created_at</code> to each card. Format it nicely:</p>
+<div class="code-ref">
+<span class="kw">new</span> <span class="fn">Date</span>(<span class="prp">entry</span>.<span class="prp">created_at</span>).<span class="fn">toLocaleString</span>()
+</div>
+</div>
+
+<!-- ========== CHEAT SHEET ========== -->
+<div class="concept"><div class="concept-label">🗂️ Supabase JS Cheat Sheet</div>
+<div class="code-ref" style="line-height:2;">
+<span class="cmt">// READ (SELECT * FROM table)</span><br>
+<span class="kw">const</span> { <span class="prp">data</span>, <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span>.<span class="fn">from</span>(<span class="str">'table'</span>).<span class="fn">select</span>(<span class="str">'*'</span>);<br><br>
+<span class="cmt">// CREATE (INSERT INTO table)</span><br>
+<span class="kw">const</span> { <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span>.<span class="fn">from</span>(<span class="str">'table'</span>).<span class="fn">insert</span>([{ <span class="prp">col</span>: <span class="str">'val'</span> }]);<br><br>
+<span class="cmt">// UPDATE (UPDATE table SET col = val WHERE id = X)</span><br>
+<span class="kw">const</span> { <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span>.<span class="fn">from</span>(<span class="str">'table'</span>).<span class="fn">update</span>({ <span class="prp">col</span>: <span class="str">'val'</span> }).<span class="fn">eq</span>(<span class="str">'id'</span>, <span class="prp">x</span>);<br><br>
+<span class="cmt">// DELETE (DELETE FROM table WHERE id = X)</span><br>
+<span class="kw">const</span> { <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span>.<span class="fn">from</span>(<span class="str">'table'</span>).<span class="fn">delete</span>().<span class="fn">eq</span>(<span class="str">'id'</span>, <span class="prp">x</span>);
+</div>
+</div>
+
+<div class="submit"><h3>📤 Submission</h3>
+<p>Push your <code>guestbook/index.html</code> to GitHub. Submit your GitHub link on Canvas. <strong>15 pts.</strong></p>
+<p>Your app should: load existing entries on page open, let you add new entries via the form, and delete entries with the ✕ button.</p></div>
+
+</div>
+</body></html>
