@@ -31,17 +31,21 @@ You only do this once. Follow each step exactly.
 
 ```cmake
 cmake_minimum_required(VERSION 3.26)
-project(RaylibTest)
+project(ray1)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
-set(RAYLIB_DIR "C:/raylib")
+include(FetchContent)
 
-add_executable(RaylibTest main.cpp)
+FetchContent_Declare(
+        raylib
+        GIT_REPOSITORY https://github.com/raysan5/raylib.git
+        GIT_TAG master
+)
+FetchContent_MakeAvailable(raylib)
 
-target_include_directories(RaylibTest PRIVATE ${RAYLIB_DIR}/include)
-target_link_directories(RaylibTest PRIVATE ${RAYLIB_DIR}/lib)
-target_link_libraries(RaylibTest raylib opengl32 gdi32 winmm)
+add_executable(ray1 main.cpp)
+target_link_libraries(ray1 raylib)
 ```
 
 3. CLion will show a banner saying CMake needs to reload — click **Reload CMake Project**.
