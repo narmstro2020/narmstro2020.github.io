@@ -90,7 +90,7 @@ class Game():
                 alien.rect.x += alien.direction * alien.velocity
 
                 #Check if an alien reached the ship
-                if alien.rect.bottom >= WINDOW_HEIGHT - 100
+                if alien.rect.bottom >= WINDOW_HEIGHT - 100:
                     breach = True
 
             #Aliens breached the line
