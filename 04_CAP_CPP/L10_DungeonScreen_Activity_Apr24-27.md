@@ -21,14 +21,20 @@ Create a new CLion project called `DungeonScreen`. Set up `CMakeLists.txt` the s
 cmake_minimum_required(VERSION 3.26)
 project(DungeonScreen)
 
-set(CMAKE_CXX_STANDARD 17)
-set(RAYLIB_DIR "C:/raylib")
+set(CMAKE_CXX_STANDARD 20)
+
+include(FetchContent)
+
+FetchContent_Declare(
+        raylib
+        GIT_REPOSITORY https://github.com/raysan5/raylib.git
+        GIT_TAG master
+)
+FetchContent_MakeAvailable(raylib)
 
 add_executable(DungeonScreen main.cpp)
+target_link_libraries(DungeonScreen raylib)
 
-target_include_directories(DungeonScreen PRIVATE ${RAYLIB_DIR}/include)
-target_link_directories(DungeonScreen PRIVATE ${RAYLIB_DIR}/lib)
-target_link_libraries(DungeonScreen raylib opengl32 gdi32 winmm)
 ```
 
 Start `main.cpp` with this skeleton:
