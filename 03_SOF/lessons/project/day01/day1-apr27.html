@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 1 — Project Foundation · Apr 27</title>
+  <style>
+    :root { --bg:#0f0f1a; --surface:#1a1a2e; --surface-light:#252540;
+      --accent:#4ecca3; --purple:#7b68ee; --yellow:#ffc107; --red:#e94560;
+      --blue:#5dade2; --orange:#ff8c42; --text:#e0e0e0; --text-muted:#a0a0a0; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Segoe UI',sans-serif;
+      line-height:1.7; padding:2rem; max-width:860px; margin:0 auto; }
+    h1 { font-size:1.8rem; margin-bottom:0.25rem;
+      background:linear-gradient(135deg,var(--yellow),var(--accent));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .subtitle { color:var(--text-muted); font-size:0.9rem; margin-bottom:2rem; }
+    .section { background:var(--surface); border:1px solid var(--surface-light);
+      border-radius:10px; padding:1.5rem; margin-bottom:1.5rem; }
+    .section h2 { font-size:1.15rem; color:var(--yellow); margin-bottom:0.75rem;
+      padding-bottom:0.5rem; border-bottom:1px solid var(--surface-light); }
+    .section h3 { font-size:0.95rem; color:var(--accent); margin:1.25rem 0 0.5rem; }
+    .section p, .section li { font-size:0.88rem; color:var(--text-muted); line-height:1.7; }
+    .section ol, .section ul { padding-left:1.5rem; margin-bottom:0.75rem; }
+    .section li { margin-bottom:0.4rem; }
+    code { font-family:'Consolas',monospace; background:rgba(123,104,238,0.1);
+      color:var(--purple); padding:0.1rem 0.4rem; border-radius:4px; font-size:0.85rem; }
+    pre { background:#0a0a15; border:1px solid var(--surface-light); border-radius:8px;
+      padding:1rem; margin:0.75rem 0; font-family:'Consolas',monospace;
+      font-size:0.82rem; line-height:1.7; overflow-x:auto; color:var(--text-muted); }
+    pre .kw { color:var(--purple); font-weight:600; }
+    pre .type { color:var(--blue); }
+    pre .str { color:var(--accent); }
+    pre .cmt { color:#555; font-style:italic; }
+    pre .num { color:var(--orange); }
+    pre .method { color:var(--yellow); }
+    .callout { border-left:3px solid var(--accent); padding:0.75rem 1rem;
+      background:rgba(78,204,163,0.05); border-radius:0 6px 6px 0; margin:0.75rem 0; }
+    .callout.warn { border-left-color:var(--orange); background:rgba(255,140,66,0.05); }
+    .callout.important { border-left-color:var(--red); background:rgba(233,69,96,0.05); }
+    .callout p { font-size:0.85rem; }
+    .step-num { display:inline-block; background:var(--purple); color:white; font-weight:700;
+      font-size:0.75rem; width:1.6rem; height:1.6rem; line-height:1.6rem;
+      text-align:center; border-radius:50%; margin-right:0.5rem; }
+    .checklist { list-style:none; padding-left:0; }
+    .checklist li { padding:0.4rem 0; padding-left:1.5rem; position:relative; }
+    .checklist li::before { content:'☐'; position:absolute; left:0; color:var(--accent); font-size:1rem; }
+    a { color:var(--accent); }
+    @media print { body { background:white; color:#222; }
+      .section { border-color:#ccc; background:#fafafa; }
+      pre { background:#f5f5f5; border-color:#ddd; } }
+  </style>
+</head>
+<body>
+
+  <h1>🎮 Day 1 — Project Foundation</h1>
+  <p class="subtitle">Apr 27, 2026 · Final Project · 86 minutes</p>
+
+  <div class="section">
+    <h2>Today's Goal</h2>
+    <p>By the end of class, you should have a running libGDX project with a player that moves, jumps, and lands on the ground — pushed to GitHub. This is the skeleton everything else builds on.</p>
+    <div class="callout important">
+      <p>🚨 <strong>Do NOT skip the GitHub setup.</strong> If your project isn't on GitHub by the end of today, you risk losing all your work. Set it up first, code second.</p>
+    </div>
+  </div>
+
+  <!-- ─────── STEP 1: PROJECT SETUP ─────── -->
+  <div class="section">
+    <h2><span class="step-num">1</span> Create Your Project (~15 min)</h2>
+
+    <h3>Option A — Start Fresh (recommended for a clean project)</h3>
+    <ol>
+      <li>Go to <a href="https://libgdx.com/wiki/start/project-generation" target="_blank">gdx-liftoff</a> or use the gdx-liftoff tool</li>
+      <li>Settings:
+        <ul>
+          <li><strong>Project name:</strong> Your game name (e.g. <code>PlatformerGame</code>)</li>
+          <li><strong>Package:</strong> <code>io.github.yourusername</code></li>
+          <li><strong>Platforms:</strong> Check <code>lwjgl3</code> (desktop) only</li>
+          <li><strong>Java version:</strong> 17 or higher</li>
+        </ul>
+      </li>
+      <li>Generate and open in IntelliJ</li>
+      <li>Wait for Gradle to finish importing (bottom progress bar)</li>
+      <li>Run the <code>lwjgl3</code> launcher to verify it works (you should see the libGDX logo)</li>
+    </ol>
+
+    <h3>Option B — Continue from Activities</h3>
+    <p>You can build on top of your existing project from the animation and gameplay activities. Just rename/reorganize:</p>
+    <ol>
+      <li>Keep your existing project</li>
+      <li>Delete or rename <code>AnimationDemoScreen.java</code>, <code>AnimationActivityScreen.java</code>, and <code>GameplayScreen.java</code> — you'll build fresh versions</li>
+      <li>Keep the sprite PNGs in <code>assets/</code></li>
+    </ol>
+
+    <div class="callout warn">
+      <p>⚠️ <strong>Make sure your <code>build.gradle</code> has Java 17:</strong> Open <code>core/build.gradle</code> and verify <code>sourceCompatibility = 17</code> and <code>targetCompatibility = 17</code>. If they say <code>1.8</code>, change them now.</p>
+    </div>
+  </div>
+
+  <!-- ─────── STEP 2: GITHUB ─────── -->
+  <div class="section">
+    <h2><span class="step-num">2</span> Set Up GitHub (~10 min)</h2>
+    <ol>
+      <li>Create a new repository on <a href="https://github.com/new" target="_blank">github.com</a>:
+        <ul>
+          <li>Name it your game name</li>
+          <li>Set it to <strong>Public</strong> (so Mr. Armstrong can see it)</li>
+          <li>Check <strong>"Add .gitignore"</strong> and select <strong>Gradle</strong></li>
+        </ul>
+      </li>
+      <li>In IntelliJ, open <strong>Terminal</strong> (bottom tab) and run:</li>
+    </ol>
+    <pre>git init
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
+git add .
+git commit -m "Initial project setup"
+git branch -M main
+git push -u origin main</pre>
+
+    <div class="callout">
+      <p>💡 <strong>From now on, commit at the end of every class:</strong></p>
+    </div>
+    <pre>git add .
+git commit -m "Day 1 - player movement and gravity"
+git push</pre>
+  </div>
+
+  <!-- ─────── STEP 3: MAIN.JAVA ─────── -->
+  <div class="section">
+    <h2><span class="step-num">3</span> Set Up Main.java (~5 min)</h2>
+    <p>Your <code>Main.java</code> should extend <code>Game</code> (not <code>ApplicationAdapter</code>) so you can use <code>setScreen()</code>.</p>
+    <pre><span class="kw">package</span> io.github.yourusername;
+
+<span class="kw">import</span> com.badlogic.gdx.<span class="type">Game</span>;
+
+<span class="kw">public class</span> <span class="type">Main</span> <span class="kw">extends</span> <span class="type">Game</span> {
+    @Override
+    <span class="kw">public void</span> <span class="method">create</span>() {
+        setScreen(<span class="kw">new</span> <span class="type">GameScreen</span>(<span class="kw">this</span>));
+    }
+}</pre>
+
+    <div class="callout">
+      <p>💡 Passing <code>this</code> to <code>GameScreen</code> gives it a reference to the <code>Game</code> object, which it will need later for screen transitions (e.g. <code>game.setScreen(new GameOverScreen(game))</code>).</p>
+    </div>
+  </div>
+
+  <!-- ─────── STEP 4: GAME SCREEN ─────── -->
+  <div class="section">
+    <h2><span class="step-num">4</span> Build GameScreen.java (~45 min)</h2>
+    <p>This is where you'll spend most of today. Build it piece by piece — run after each piece to make sure it works.</p>
+
+    <h3>4a — Skeleton</h3>
+    <pre><span class="kw">package</span> io.github.yourusername;
+
+<span class="kw">import</span> com.badlogic.gdx.*;
+<span class="kw">import</span> com.badlogic.gdx.graphics.*;
+<span class="kw">import</span> com.badlogic.gdx.graphics.g2d.*;
+<span class="kw">import</span> com.badlogic.gdx.math.<span class="type">Rectangle</span>;
+
+<span class="kw">public class</span> <span class="type">GameScreen</span> <span class="kw">implements</span> <span class="type">Screen</span> {
+
+    <span class="kw">private final</span> <span class="type">Game</span> game;
+
+    <span class="cmt">// Constants</span>
+    <span class="kw">private static final float</span> GRAVITY = <span class="num">-500f</span>;
+    <span class="kw">private static final float</span> JUMP_VELOCITY = <span class="num">300f</span>;
+    <span class="kw">private static final float</span> MOVE_SPEED = <span class="num">150f</span>;
+    <span class="kw">private static final float</span> GROUND_Y = <span class="num">50f</span>;
+
+    <span class="cmt">// Rendering</span>
+    <span class="kw">private</span> <span class="type">SpriteBatch</span> batch;
+    <span class="kw">private</span> <span class="type">OrthographicCamera</span> camera;
+    <span class="kw">private</span> <span class="type">Texture</span> playerTexture;
+
+    <span class="cmt">// Player state</span>
+    <span class="kw">private float</span> playerX = <span class="num">100f</span>;
+    <span class="kw">private float</span> playerY = GROUND_Y;
+    <span class="kw">private float</span> velocityY = <span class="num">0f</span>;
+    <span class="kw">private boolean</span> onGround = <span class="kw">true</span>;
+
+    <span class="kw">public</span> <span class="type">GameScreen</span>(<span class="type">Game</span> game) {
+        <span class="kw">this</span>.game = game;
+    }
+
+    @Override
+    <span class="kw">public void</span> <span class="method">show</span>() {
+        <span class="cmt">// Step 4b goes here</span>
+    }
+
+    @Override
+    <span class="kw">public void</span> <span class="method">render</span>(<span class="kw">float</span> delta) {
+        <span class="cmt">// Steps 4c, 4d, 4e go here</span>
+    }
+
+    @Override <span class="kw">public void</span> <span class="method">resize</span>(<span class="kw">int</span> w, <span class="kw">int</span> h) { camera.setToOrtho(<span class="kw">false</span>, w, h); }
+    @Override <span class="kw">public void</span> <span class="method">pause</span>() {}
+    @Override <span class="kw">public void</span> <span class="method">resume</span>() {}
+    @Override <span class="kw">public void</span> <span class="method">hide</span>() {}
+
+    @Override
+    <span class="kw">public void</span> <span class="method">dispose</span>() {
+        batch.<span class="method">dispose</span>();
+        playerTexture.<span class="method">dispose</span>();
+    }
+}</pre>
+
+    <p><strong>Run it.</strong> It should compile (but crash because <code>show()</code> is empty). That's fine — you'll fill it in next.</p>
+
+    <h3>4b — Initialize in show()</h3>
+    <pre>@Override
+<span class="kw">public void</span> <span class="method">show</span>() {
+    batch = <span class="kw">new</span> <span class="type">SpriteBatch</span>();
+    camera = <span class="kw">new</span> <span class="type">OrthographicCamera</span>();
+    camera.<span class="method">setToOrtho</span>(<span class="kw">false</span>, <span class="num">640</span>, <span class="num">480</span>);
+
+    <span class="cmt">// For today, use a simple placeholder texture.</span>
+    <span class="cmt">// You'll replace this with a sprite sheet on Day 2.</span>
+    playerTexture = <span class="kw">new</span> <span class="type">Texture</span>(<span class="str">"player.png"</span>);
+}</pre>
+    <p><strong>Run it.</strong> You should see nothing on screen (haven't drawn yet). No crash = good.</p>
+
+    <h3>4c — Draw the player in render()</h3>
+    <pre>@Override
+<span class="kw">public void</span> <span class="method">render</span>(<span class="kw">float</span> delta) {
+    Gdx.gl.<span class="method">glClearColor</span>(<span class="num">0.1f</span>, <span class="num">0.1f</span>, <span class="num">0.15f</span>, <span class="num">1f</span>);
+    Gdx.gl.<span class="method">glClear</span>(GL20.GL_COLOR_BUFFER_BIT);
+
+    batch.<span class="method">setProjectionMatrix</span>(camera.combined);
+    batch.<span class="method">begin</span>();
+    batch.<span class="method">draw</span>(playerTexture, playerX, playerY, <span class="num">64</span>, <span class="num">64</span>);
+    batch.<span class="method">end</span>();
+}</pre>
+    <p><strong>Run it.</strong> You should see your player sprite on screen, frozen in place.</p>
+
+    <h3>4d — Add input handling</h3>
+    <p>Add this <strong>before</strong> the drawing code in <code>render()</code>:</p>
+    <pre><span class="cmt">// ── Input ──</span>
+<span class="kw">if</span> (Gdx.input.<span class="method">isKeyPressed</span>(Input.Keys.LEFT)) {
+    playerX -= MOVE_SPEED * delta;
+}
+<span class="kw">if</span> (Gdx.input.<span class="method">isKeyPressed</span>(Input.Keys.RIGHT)) {
+    playerX += MOVE_SPEED * delta;
+}
+<span class="kw">if</span> (Gdx.input.<span class="method">isKeyPressed</span>(Input.Keys.SPACE) && onGround) {
+    velocityY = JUMP_VELOCITY;
+    onGround = <span class="kw">false</span>;
+}</pre>
+    <p><strong>Run it.</strong> LEFT/RIGHT should move the player. SPACE won't do anything visible yet (gravity isn't applied).</p>
+
+    <h3>4e — Add gravity and ground collision</h3>
+    <p>Add this <strong>after</strong> the input code, <strong>before</strong> drawing:</p>
+    <pre><span class="cmt">// ── Physics ──</span>
+velocityY += GRAVITY * delta;
+playerY += velocityY * delta;
+
+<span class="kw">if</span> (playerY <= GROUND_Y) {
+    playerY = GROUND_Y;
+    velocityY = <span class="num">0</span>;
+    onGround = <span class="kw">true</span>;
+}</pre>
+    <p><strong>Run it.</strong> The player should now walk, jump, fall with gravity, and land on the ground. This is your foundation — everything builds on this.</p>
+  </div>
+
+  <!-- ─────── STEP 5: COMMIT ─────── -->
+  <div class="section">
+    <h2><span class="step-num">5</span> Commit & Push (~5 min)</h2>
+    <p>Before you leave — save your progress:</p>
+    <pre>git add .
+git commit -m "Day 1 - player movement, jumping, gravity"
+git push</pre>
+    <p>Verify on github.com that your code is there. If you see your files, you're good.</p>
+  </div>
+
+  <!-- ─────── IF YOU FINISH EARLY ─────── -->
+  <div class="section">
+    <h2>Finished Early?</h2>
+    <p>If you have time left after getting movement + gravity working, get a head start on tomorrow:</p>
+    <ul>
+      <li><strong>Add the sprite sheet</strong> — swap <code>new Texture("player.png")</code> for <code>TextureRegion.split()</code> and set up your idle/run/jump animations (refer to your L07 notes)</li>
+      <li><strong>Add platforms</strong> — create an <code>ArrayList&lt;Rectangle&gt;</code> of platforms and check collision against each one (same pattern as ground collision, but check if the player is falling onto the platform from above)</li>
+      <li><strong>Find your art</strong> — browse <a href="https://kenney.nl/assets">Kenney.nl</a> or <a href="https://itch.io/game-assets/free">itch.io</a> for sprite sheets you want to use instead of the class placeholders</li>
+    </ul>
+  </div>
+
+  <!-- ─────── EXIT CHECKLIST ─────── -->
+  <div class="section">
+    <h2>End-of-Day Checklist</h2>
+    <ul class="checklist">
+      <li>Project created and opens in IntelliJ without errors</li>
+      <li><code>Main.java</code> extends <code>Game</code> and calls <code>setScreen(new GameScreen(this))</code></li>
+      <li>Player renders on screen</li>
+      <li>LEFT/RIGHT arrow keys move the player</li>
+      <li>SPACE makes the player jump</li>
+      <li>Gravity pulls the player down and ground stops the fall</li>
+      <li>Code is committed and pushed to GitHub</li>
+    </ul>
+  </div>
+
+</body>
+</html>

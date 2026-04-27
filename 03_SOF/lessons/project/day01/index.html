@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Project — 2D Platformer</title>
+  <style>
+    :root { --bg:#0f0f1a; --surface:#1a1a2e; --surface-light:#252540;
+      --accent:#4ecca3; --purple:#7b68ee; --yellow:#ffc107; --red:#e94560;
+      --blue:#5dade2; --orange:#ff8c42; --text:#e0e0e0; --text-muted:#a0a0a0; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:'Segoe UI',sans-serif;
+      line-height:1.7; padding:2rem; max-width:900px; margin:0 auto; }
+    h1 { font-size:2rem; margin-bottom:0.25rem;
+      background:linear-gradient(135deg,var(--yellow),var(--red));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .subtitle { color:var(--text-muted); font-size:0.95rem; margin-bottom:2rem; }
+    .section { background:var(--surface); border:1px solid var(--surface-light);
+      border-radius:10px; padding:1.5rem; margin-bottom:1.5rem; }
+    .section h2 { font-size:1.15rem; color:var(--yellow); margin-bottom:0.75rem;
+      padding-bottom:0.5rem; border-bottom:1px solid var(--surface-light); }
+    .section h3 { font-size:0.95rem; color:var(--accent); margin:1.25rem 0 0.5rem; }
+    .section p, .section li { font-size:0.88rem; color:var(--text-muted); line-height:1.7; }
+    .section ul, .section ol { padding-left:1.5rem; margin-bottom:0.75rem; }
+    .section li { margin-bottom:0.35rem; }
+    code { font-family:'Consolas',monospace; background:rgba(123,104,238,0.1);
+      color:var(--purple); padding:0.1rem 0.4rem; border-radius:4px; font-size:0.85rem; }
+    .callout { border-left:3px solid var(--accent); padding:0.75rem 1rem;
+      background:rgba(78,204,163,0.05); border-radius:0 6px 6px 0; margin:0.75rem 0; }
+    .callout.warn { border-left-color:var(--orange); background:rgba(255,140,66,0.05); }
+    .callout.important { border-left-color:var(--red); background:rgba(233,69,96,0.05); }
+    .callout p { font-size:0.85rem; }
+    .points-badge { display:inline-block; background:var(--yellow); color:var(--bg);
+      font-weight:700; font-size:0.75rem; padding:0.15rem 0.5rem; border-radius:4px;
+      margin-left:0.5rem; vertical-align:middle; }
+    table { width:100%; border-collapse:collapse; margin:0.75rem 0; font-size:0.85rem; }
+    th { background:var(--surface-light); color:var(--accent); text-align:left;
+      padding:0.6rem 0.75rem; font-weight:600; }
+    td { padding:0.6rem 0.75rem; border-bottom:1px solid var(--surface-light); color:var(--text-muted); }
+    .checklist { list-style:none; padding-left:0; }
+    .checklist li { padding:0.4rem 0; padding-left:1.5rem; position:relative; }
+    .checklist li::before { content:'☐'; position:absolute; left:0; color:var(--accent); font-size:1rem; }
+    .timeline { display:grid; grid-template-columns:auto 1fr; gap:0.5rem 1rem; margin:1rem 0; }
+    .day-badge { background:var(--purple); color:white; font-weight:700; font-size:0.75rem;
+      padding:0.2rem 0.6rem; border-radius:4px; text-align:center; align-self:start; margin-top:0.1rem; }
+    .day-content { font-size:0.85rem; color:var(--text-muted); }
+    .day-content strong { color:var(--text); }
+    .rubric-row { display:grid; grid-template-columns:1fr auto; gap:0.5rem;
+      padding:0.5rem 0; border-bottom:1px solid var(--surface-light); }
+    .rubric-row:last-child { border-bottom:none; }
+    .rubric-label { font-size:0.85rem; color:var(--text-muted); }
+    .rubric-pts { font-size:0.85rem; font-weight:700; color:var(--accent); text-align:right; }
+    a { color:var(--accent); }
+    @media print { body { background:white; color:#222; }
+      .section { border-color:#ccc; background:#fafafa; } }
+  </style>
+</head>
+<body>
+
+  <h1>🎮 Final Project — 2D Platformer</h1>
+  <p class="subtitle">100 pts · Apr 27 – May 13 · 7 class days · Self-Guided</p>
+
+  <div class="section">
+    <h2>Overview</h2>
+    <p>Build a complete 2D platformer using everything you've learned this semester. You've already animated a player, added physics, enemies, and coin collection in the activities — now put it all together into a polished, playable game with menus, a HUD, and game-over logic.</p>
+    <div class="callout important">
+      <p>🚨 <strong>This is self-guided work time.</strong> No new lessons or guided notes. Use your notes, activity solutions, and reference materials. Mr. Armstrong is available for questions, but the goal is independent development.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Suggested Timeline</h2>
+    <p>7 class periods, 86 minutes each. Adjust to fit your pace, but don't leave menus and HUD for the last day.</p>
+    <div class="timeline">
+      <span class="day-badge">Apr 27</span>
+      <div class="day-content"><strong>Day 1 — Foundation</strong><br>Create your project (or build on activities). <code>Main.java</code> extends <code>Game</code>. Build <code>GameScreen</code> with player rendering, movement, gravity, and ground collision. Player walks, jumps, and lands. <em>Commit to GitHub.</em></div>
+
+      <span class="day-badge">Apr 29</span>
+      <div class="day-content"><strong>Day 2 — Animation & Direction</strong><br>Add sprite sheet with idle/run/jump animations. State enum + animation switching. Horizontal flipping for direction. The player should look alive. <em>Commit.</em></div>
+
+      <span class="day-badge">May 1</span>
+      <div class="day-content"><strong>Day 3 — Enemies & Collision</strong><br>Add 2+ patrolling enemies. <code>Rectangle.overlaps()</code> for player-enemy collision. Decide the consequence: lose a life, reset position, or knockback. <em>Commit.</em></div>
+
+      <span class="day-badge">May 5</span>
+      <div class="day-content"><strong>Day 4 — Collectibles & Level Design</strong><br>Add coins/items the player collects (with Iterator removal). Build out platforms at different heights — the player should jump between them. Design a real level layout. <em>Commit.</em></div>
+
+      <span class="day-badge">May 7</span>
+      <div class="day-content"><strong>Day 5 — Menus & Game Over</strong><br>Create <code>MenuScreen</code> (title + "Press ENTER") and <code>GameOverScreen</code> (final score + "Press R to restart"). Wire up all screen transitions. <em>Commit.</em></div>
+
+      <span class="day-badge">May 11</span>
+      <div class="day-content"><strong>Day 6 — HUD & Polish</strong><br>Add HUD overlay: score, lives, and/or timer using <code>BitmapFont</code>. Add sound effects and music if time allows. Bug fix and polish. <em>Commit.</em></div>
+
+      <span class="day-badge">May 13</span>
+      <div class="day-content"><strong>Day 7 — Final Submit</strong><br>Final bug fixes, playtesting, and visual polish. Push final commit to GitHub. Submit your repository link on Canvas.</div>
+    </div>
+    <div class="callout warn">
+      <p>⚠️ <strong>Commit to GitHub every class period.</strong> This protects your work and shows progress. Lost work due to not committing is your responsibility.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Requirements <span class="points-badge">100 PTS</span></h2>
+
+    <h3>Core Gameplay (40 pts)</h3>
+    <ul class="checklist">
+      <li>Player with keyboard-controlled movement (LEFT/RIGHT + SPACE to jump)</li>
+      <li>Gravity pulls player down; ground collision prevents falling through</li>
+      <li>At least 2 patrolling enemies that move back and forth</li>
+      <li>Player-enemy collision has a consequence (lose life, reset, etc.)</li>
+      <li>At least 5 collectible items that disappear when collected</li>
+      <li>Score tracking that increases on collection</li>
+      <li>At least 3 platforms at different heights to jump between</li>
+      <li>A win condition or end-of-level trigger</li>
+    </ul>
+
+    <h3>Animation & Visuals (20 pts)</h3>
+    <ul class="checklist">
+      <li>Player has at least 3 animation states (idle, run, jump) via sprite sheets</li>
+      <li>Animations switch correctly based on player state</li>
+      <li>Player sprite flips to face direction of movement</li>
+      <li>Enemies and/or collectibles are animated</li>
+      <li>Screen clears and redraws properly (no visual artifacts)</li>
+    </ul>
+
+    <h3>Screens & UI (20 pts)</h3>
+    <ul class="checklist">
+      <li><code>MenuScreen</code> — title, start instructions, transitions to gameplay</li>
+      <li><code>GameScreen</code> — main gameplay</li>
+      <li><code>GameOverScreen</code> — final score, restart or menu option</li>
+      <li>HUD on GameScreen showing at least score and lives</li>
+      <li>All screen transitions work without crashes</li>
+    </ul>
+
+    <h3>Code Quality (10 pts)</h3>
+    <ul class="checklist">
+      <li>All textures, batches, and fonts properly <code>dispose()</code>d</li>
+      <li>Named constants instead of magic numbers (<code>GRAVITY</code>, <code>MOVE_SPEED</code>)</li>
+      <li>Code organized into logical methods, not everything in <code>render()</code></li>
+      <li>Meaningful variable and method names</li>
+      <li>Compiles and runs without errors</li>
+    </ul>
+
+    <h3>Completeness (10 pts)</h3>
+    <ul class="checklist">
+      <li>Game is playable from start to finish (menu → play → game over → restart)</li>
+      <li>All checklist items above are present and functional</li>
+    </ul>
+
+    <h3>Bonus (up to +10 pts)</h3>
+    <ul class="checklist">
+      <li>+3 — Sound effects (jump, coin, death) and/or background music</li>
+      <li>+3 — Multiple levels or level progression</li>
+      <li>+2 — Save/load high score using File I/O (Gson or plain text)</li>
+      <li>+2 — Additional enemy types with different behaviors</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Point Breakdown</h2>
+    <div class="rubric-row"><span class="rubric-label">Core Gameplay — movement, physics, enemies, collectibles, platforms</span><span class="rubric-pts">40</span></div>
+    <div class="rubric-row"><span class="rubric-label">Animation & Visuals — sprite sheets, state switching, flipping</span><span class="rubric-pts">20</span></div>
+    <div class="rubric-row"><span class="rubric-label">Screens & UI — menu, game over, HUD, transitions</span><span class="rubric-pts">20</span></div>
+    <div class="rubric-row"><span class="rubric-label">Code Quality — dispose, constants, organization, naming</span><span class="rubric-pts">10</span></div>
+    <div class="rubric-row"><span class="rubric-label">Completeness — playable start-to-finish, all items present</span><span class="rubric-pts">10</span></div>
+    <div class="rubric-row" style="border-bottom:2px solid var(--yellow);"><span class="rubric-label" style="color:var(--text);font-weight:700;">Total</span><span class="rubric-pts" style="color:var(--yellow);font-size:1rem;">100</span></div>
+    <div class="rubric-row"><span class="rubric-label">Bonus (sound, levels, save/load, extra enemies)</span><span class="rubric-pts">+10</span></div>
+  </div>
+
+  <div class="section">
+    <h2>Quick Reference — What You've Already Built</h2>
+    <table>
+      <tr><th>Feature</th><th>Where You Learned It</th></tr>
+      <tr><td>Project setup, Game class, Screen interface</td><td>L01–L05 (libGDX blocks)</td></tr>
+      <tr><td>SpriteBatch, Texture, Camera</td><td>L02 (Rendering)</td></tr>
+      <tr><td>Lambdas, functional interfaces</td><td>L03 (Functional Interfaces)</td></tr>
+      <tr><td>File I/O, JSON save/load with Gson</td><td>L06 (Apr 7) — Notes + Activity</td></tr>
+      <tr><td>Threads, ExecutorService, AssetManager</td><td>L06 (Apr 7) — Notes</td></tr>
+      <tr><td>Sprite sheets, Animation, stateTime, PlayMode</td><td>L07 (Apr 13/15) — Notes + Activity</td></tr>
+      <tr><td>Gravity, jumping, ground collision</td><td>Gameplay Activity (Apr 21)</td></tr>
+      <tr><td>Enemy patrol, Rectangle.overlaps()</td><td>Gameplay Activity (Apr 21)</td></tr>
+      <tr><td>Coin collection with Iterator removal</td><td>Gameplay Activity (Apr 21)</td></tr>
+      <tr><td>BitmapFont for text rendering</td><td><code>new BitmapFont()</code> — see tip below</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>HUD Quick Start — BitmapFont</h2>
+    <p>libGDX includes a default font. Here's the minimal code to draw text on screen:</p>
+    <pre style="background:#0a0a15; border:1px solid var(--surface-light); border-radius:8px; padding:1rem; font-family:'Consolas',monospace; font-size:0.82rem; line-height:1.7; color:var(--text-muted); overflow-x:auto;">
+<span style="color:var(--purple);">// Field</span>
+<span style="color:var(--blue);">BitmapFont</span> font;
+
+<span style="color:var(--purple);">// In show()</span>
+font = <span style="color:var(--purple);">new</span> <span style="color:var(--blue);">BitmapFont</span>();
+font.<span style="color:var(--yellow);">setColor</span>(Color.WHITE);
+
+<span style="color:var(--purple);">// In render(), inside batch.begin/end</span>
+font.<span style="color:var(--yellow);">draw</span>(batch, <span style="color:var(--accent);">"Score: "</span> + score, <span style="color:var(--orange);">10</span>, <span style="color:var(--orange);">470</span>);
+font.<span style="color:var(--yellow);">draw</span>(batch, <span style="color:var(--accent);">"Lives: "</span> + lives, <span style="color:var(--orange);">10</span>, <span style="color:var(--orange);">450</span>);
+
+<span style="color:var(--purple);">// In dispose()</span>
+font.<span style="color:var(--yellow);">dispose</span>();</pre>
+
+    <div class="callout">
+      <p>💡 <strong>Important:</strong> HUD text should use screen coordinates, not world coordinates. If your camera moves with the player, either draw the HUD with a separate fixed camera, or draw it after resetting the projection matrix.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Submission</h2>
+    <ul>
+      <li><strong>Where:</strong> Push to GitHub → submit repo link on Canvas</li>
+      <li><strong>When:</strong> End of class, May 13</li>
+      <li><strong>What:</strong> Complete libGDX project that compiles and runs</li>
+    </ul>
+    <div class="callout">
+      <p>💡 Add a <code>README.md</code> to your repo explaining controls, known bugs, and bonus features. It makes grading easier and shows professionalism.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Free Asset Resources</h2>
+    <ul>
+      <li><a href="https://kenney.nl/assets">Kenney.nl</a> — public domain game assets (highly recommended)</li>
+      <li><a href="https://itch.io/game-assets/free">itch.io Free Assets</a> — huge library of sprite sheets and tilesets</li>
+      <li><a href="https://opengameart.org">OpenGameArt.org</a> — community-created open-source art</li>
+      <li><a href="https://www.piskelapp.com/">Piskel</a> — free browser-based pixel art editor</li>
+      <li><a href="https://libgdx.com/wiki/tools/hiero">Hiero</a> — bitmap font generator for custom HUD fonts</li>
+    </ul>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+# CREDITS
+# List every external asset used in your game.
+# Format: Asset Name — Source URL — License
+
+## Sprites & Tilesets
+# Example:
+# Platformer Art Pack — https://kenney.nl/assets/platformer-art-deluxe — CC0
+
+## Sound Effects
+# Example:
+# Jump Sound — https://freesound.org/people/example/sounds/12345/ — CC-BY 3.0
+
+## Music
+# Example:
+# Background Music — https://opengameart.org/content/example — CC-BY 4.0
+
+## Fonts
+# Example:
+# Press Start 2P — https://fonts.google.com/specimen/Press+Start+2P — OFL
