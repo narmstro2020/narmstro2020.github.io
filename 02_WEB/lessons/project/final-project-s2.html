@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final Project — JS & Supabase Integration</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#222240;--border:#2e2e52;--accent:#7c6af7;--accent2:#4fc3f7;--accent3:#f9a825;--accent4:#66bb6a;--text:#e2e2f0;--muted:#8888aa;--tag:#f07178;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;min-height:100vh;}
+.top-banner{background:linear-gradient(135deg,#1a1a2e,#16213e 60%,#0f3460);border-bottom:2px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.banner-left{display:flex;align-items:center;gap:12px;}
+.banner-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent3));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.banner-title{font-size:17px;font-weight:700;}.banner-sub{font-size:12px;color:var(--muted);}
+.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Fira Code',monospace;margin-left:6px;}
+.b1{background:rgba(124,106,247,0.15);color:var(--accent);border:1px solid rgba(124,106,247,0.3);}
+.b2{background:rgba(249,168,37,0.15);color:var(--accent3);border:1px solid rgba(249,168,37,0.3);}
+.b3{background:rgba(240,113,120,0.15);color:var(--tag);border:1px solid rgba(240,113,120,0.3);}
+.page{max-width:880px;margin:0 auto;padding:36px 28px 80px;}
+.section-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--accent);margin:40px 0 18px;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.section-title .snum{background:var(--accent);color:var(--bg);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.concept{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:18px;}
+.concept-label{font-family:'Fira Code',monospace;font-size:11px;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+.concept p{font-size:15px;}.concept code{font-family:'Fira Code',monospace;font-size:13px;background:var(--surface2);padding:2px 7px;border-radius:4px;color:var(--accent2);}
+.concept ul,.concept ol{padding-left:20px;margin-top:8px;font-size:14px;}.concept li{margin-bottom:4px;}
+.code-ref{background:#111125;border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;font-family:'Fira Code',monospace;font-size:13px;line-height:1.8;overflow-x:auto;}
+.kw{color:#c792ea;}.fn{color:#82aaff;}.str{color:#c3e88d;}.num{color:#f78c6c;}.cmt{color:#546e7a;}.prp{color:#4fc3f7;}.tg{color:#f07178;}
+.req{background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);border:1px solid var(--border);border-left:4px solid var(--accent2);border-radius:10px;padding:18px 22px;margin-bottom:18px;}
+.req h3{font-size:15px;color:var(--accent2);margin-bottom:8px;}
+.req p,.req ul{font-size:14px;}.req ul{padding-left:20px;margin-top:6px;}.req li{margin-bottom:4px;}
+.req .stretch{color:var(--accent3);font-style:italic;font-size:13px;margin-top:8px;padding-left:12px;border-left:2px solid rgba(249,168,37,0.3);}
+.day-card{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:18px 22px;margin-bottom:14px;}
+.day-card h3{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.day-card h3 .day-badge{font-family:'Fira Code',monospace;font-size:11px;font-weight:700;background:rgba(124,106,247,0.18);color:var(--accent);padding:3px 12px;border-radius:14px;border:1px solid rgba(124,106,247,0.4);}
+.day-card p,.day-card ul{font-size:14px;color:var(--text);}.day-card ul{padding-left:20px;margin-top:6px;}.day-card li{margin-bottom:3px;}
+.day-card .commit{font-family:'Fira Code',monospace;font-size:12px;color:var(--accent4);margin-top:8px;}
+.rubric-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.rubric-table th{background:var(--surface2);color:var(--accent3);font-family:'Fira Code',monospace;font-size:12px;padding:10px 14px;text-align:left;border:1px solid var(--border);}
+.rubric-table td{padding:10px 14px;border:1px solid var(--border);vertical-align:top;}
+.rubric-table tr:nth-child(even) td{background:rgba(30,30,60,0.3);}
+.rubric-cat{font-weight:700;color:var(--accent2);white-space:nowrap;}
+.pts{font-family:'Fira Code',monospace;color:var(--accent3);font-weight:700;text-align:center;}
+.warn{background:rgba(240,113,120,0.08);border:2px solid rgba(240,113,120,0.4);border-radius:10px;padding:16px 20px;margin:20px 0;color:var(--tag);font-size:14px;display:flex;gap:14px;align-items:flex-start;}.warn .icon{font-size:24px;line-height:1;}
+.submit{background:rgba(124,106,247,0.06);border:1px solid var(--accent);border-radius:10px;padding:20px 24px;margin-top:40px;}.submit h3{color:var(--accent);font-size:16px;margin-bottom:8px;}.submit p{font-size:14px;}
+.idea-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.idea{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;}
+.idea h4{font-size:13px;color:var(--accent2);margin-bottom:4px;}.idea p{font-size:12px;color:var(--muted);}
+@media(max-width:680px){.idea-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="top-banner">
+  <div class="banner-left"><div class="banner-icon">🚀</div><div><div class="banner-title">Final Project — JS &amp; Supabase Integration</div><div class="banner-sub">7 Work Days · Apr 27 – May 13 · Build on your Semester 1 site</div></div></div>
+  <div><span class="badge b1">Final Project</span><span class="badge b2">100 pts</span><span class="badge b3">15% of grade</span></div>
+</div>
+<div class="page">
+
+<!-- ===== OVERVIEW ===== -->
+<div class="concept"><div class="concept-label">Project Overview</div>
+<p>Take your existing multi-page website from Semester 1 and bring it to life with <strong>JavaScript interactivity</strong> and a <strong>Supabase database backend</strong>. Your S1 HTML/CSS stays — you're adding new functionality on top.</p>
+<p style="margin-top:10px;">By the end, your site will:</p>
+<ul>
+  <li>Read data from a Supabase database and render it to the page</li>
+  <li>Let users submit data through a form that saves to Supabase</li>
+  <li>Use JavaScript for DOM manipulation, event handling, and dynamic content</li>
+  <li>Maintain all your existing Semester 1 CSS/responsive design</li>
+</ul>
+</div>
+
+<div class="concept"><div class="concept-label">Tools</div>
+<p>WebStorm · GitHub · Supabase · Browser Dev Tools</p>
+</div>
+
+<!-- ===== REQUIREMENTS ===== -->
+<div class="section-title"><span class="snum">1</span>Technical Requirements</div>
+
+<div class="req"><h3>A. JavaScript Fundamentals</h3>
+<p>Your project must demonstrate these JS concepts somewhere in your site:</p>
+<ul>
+  <li><strong>Variables &amp; Data Types</strong> — <code>const</code>, <code>let</code>, strings, numbers, booleans</li>
+  <li><strong>Conditionals</strong> — at least one <code>if/else</code> or <code>switch</code> controlling behavior</li>
+  <li><strong>Arrays and/or Objects</strong> — storing and accessing structured data</li>
+  <li><strong>Loops</strong> — <code>forEach</code>, <code>for</code>, or <code>for...of</code> to iterate and render data</li>
+  <li><strong>Functions</strong> — at least 3 named functions that organize your logic</li>
+  <li><strong>DOM Manipulation</strong> — <code>querySelector</code>, <code>getElementById</code>, <code>innerHTML</code> or <code>textContent</code></li>
+  <li><strong>Event Listeners</strong> — at least 2 different events (e.g., <code>click</code>, <code>submit</code>, <code>input</code>)</li>
+</ul>
+</div>
+
+<div class="req"><h3>B. Supabase Database Integration</h3>
+<p>Your site must connect to a Supabase database and perform at minimum:</p>
+<ul>
+  <li><strong>READ (.select)</strong> — Load data from at least one Supabase table and render it to the DOM</li>
+  <li><strong>CREATE (.insert)</strong> — A form that submits new data to your Supabase table</li>
+  <li><strong>Async/Await</strong> — All Supabase calls must use <code>async/await</code></li>
+  <li><strong>Error Handling</strong> — Check for errors on every Supabase call</li>
+  <li><strong>Loading State</strong> — Show a loading indicator while data is being fetched</li>
+</ul>
+<div class="stretch">Stretch goals (extra credit): Add <strong>UPDATE (.update)</strong> and/or <strong>DELETE (.delete)</strong> functionality — edit or remove entries from the page + database.</div>
+</div>
+
+<div class="req"><h3>C. Database Design</h3>
+<ul>
+  <li>At least <strong>one Supabase table</strong> with 3+ columns (not counting <code>id</code> and <code>created_at</code>)</li>
+  <li>Table must have a <strong>primary key</strong> (auto-increment id)</li>
+  <li>Table must have a <strong>timestamp</strong> column (<code>created_at DEFAULT NOW()</code>)</li>
+  <li>Row Level Security disabled for class practice</li>
+</ul>
+<div class="stretch">Stretch goal: Use <strong>two related tables</strong> with a foreign key, and display joined data.</div>
+</div>
+
+<div class="req"><h3>D. Code Quality &amp; Organization</h3>
+<ul>
+  <li>JavaScript in <strong>external .js file(s)</strong> — no inline <code>onclick</code> attributes (event listeners only)</li>
+  <li>Use <strong>comments</strong> to explain major sections of your JS</li>
+  <li>Meaningful <strong>variable and function names</strong> (no <code>x</code>, <code>thing</code>, <code>data2</code>)</li>
+  <li>Supabase URL and key stored in <strong>clearly labeled constants</strong> at the top of the file</li>
+  <li><strong>console.log</strong> statements removed before submission (or commented out)</li>
+</ul>
+</div>
+
+<div class="req"><h3>E. Git &amp; GitHub</h3>
+<ul>
+  <li>Work on a <code>final-project-s2</code> branch (or clearly named equivalent)</li>
+  <li>At least <strong>7 meaningful commits</strong> — one per work day minimum</li>
+  <li>Clear commit messages describing what changed (not "update" or "stuff")</li>
+  <li>Final push must leave the repository in a working state</li>
+</ul>
+</div>
+
+<!-- ===== IDEAS ===== -->
+<div class="section-title"><span class="snum">2</span>Feature Ideas</div>
+
+<div class="concept"><div class="concept-label">What could the database-powered feature be?</div>
+<p>Think about what fits your site's topic. The feature should feel like a natural addition, not a bolted-on demo.</p>
+</div>
+
+<div class="idea-grid">
+  <div class="idea"><h4>Fan Site / Media Topic</h4><p>Comments section, fan art gallery submissions, character rating system, quiz with saved high scores</p></div>
+  <div class="idea"><h4>Sports / Team Site</h4><p>Game results tracker, player stat submissions, fan poll/vote, prediction leaderboard</p></div>
+  <div class="idea"><h4>Hobby / Interest Site</h4><p>Recipe submissions, project showcase with user entries, gear review board, tip/trick submissions</p></div>
+  <div class="idea"><h4>School / Community</h4><p>Event RSVP tracker, suggestion box, resource link board, study group sign-up</p></div>
+</div>
+
+<!-- ===== SCHEDULE ===== -->
+<div class="section-title"><span class="snum">3</span>7-Day Schedule</div>
+
+<div class="day-card"><h3><span class="day-badge">DAY 1</span>Apr 27 — Planning &amp; Database Design</h3>
+<ul>
+  <li>Review your S1 site — decide where JS + Supabase features will go</li>
+  <li>Sketch your plan: what table(s), what columns, what the user flow looks like</li>
+  <li>Create your Supabase table(s) with proper columns and data types</li>
+  <li>Seed 2–3 test rows so you have data to work with</li>
+  <li>Create <code>final-project-s2</code> branch, create your <code>.js</code> file, link it in HTML</li>
+</ul>
+<div class="commit">💾 "Set up Supabase table and create JS file structure"</div></div>
+
+<div class="day-card"><h3><span class="day-badge">DAY 2</span>Apr 29 — Connect &amp; Read</h3>
+<ul>
+  <li>Add the Supabase CDN script tag to your HTML</li>
+  <li>Initialize the Supabase client with your URL + anon key</li>
+  <li>Write your <code>loadData()</code> function — <code>.select('*')</code> from your table</li>
+  <li>Render the data to the DOM using loops + innerHTML</li>
+  <li>Add error handling and a loading state</li>
+</ul>
+<div class="commit">💾 "Connect to Supabase and render data on page load"</div></div>
+
+<div class="day-card"><h3><span class="day-badge">DAY 3</span>May 1 — Create (Form → Database)</h3>
+<ul>
+  <li>Build a form in HTML (or enhance an existing one)</li>
+  <li>Add a <code>submit</code> event listener with <code>e.preventDefault()</code></li>
+  <li>Read form values, create an object, <code>.insert()</code> to Supabase</li>
+  <li>Clear the form and reload data on success</li>
+  <li>Add error handling + user feedback</li>
+</ul>
+<div class="commit">💾 "Add form submission with Supabase insert"</div></div>
+
+<div class="day-card"><h3><span class="day-badge">DAY 4</span>May 5 — JavaScript Features</h3>
+<ul>
+  <li>Add additional JS interactivity beyond Supabase:</li>
+  <li>Examples: search/filter rendered data, toggle visibility, sort buttons, dynamic counters, conditional display logic</li>
+  <li>Ensure you're hitting: conditionals, arrays/objects, loops, functions, 2+ event types</li>
+  <li>Test that all features work together</li>
+</ul>
+<div class="commit">💾 "Add JS interactivity — search, filter, and dynamic features"</div></div>
+
+<div class="day-card"><h3><span class="day-badge">DAY 5</span>May 7 — Stretch Features (Update/Delete)</h3>
+<ul>
+  <li>If your core Read + Create is solid, add Update and/or Delete:</li>
+  <li>Edit buttons that populate the form with existing data + <code>.update()</code></li>
+  <li>Delete buttons with <code>.delete().eq('id', id)</code></li>
+  <li>If you're still building core features, use this day to catch up</li>
+  <li>Start CSS refinements for new elements</li>
+</ul>
+<div class="commit">💾 "Add update/delete functionality" or "Refine core features"</div></div>
+
+<div class="day-card"><h3><span class="day-badge">DAY 6</span>May 11 — Polish &amp; Integration</h3>
+<ul>
+  <li>Style all new JS-generated content to match your S1 design system</li>
+  <li>Ensure responsive design still works with new elements</li>
+  <li>Add loading states, error messages, empty-state displays</li>
+  <li>Clean up JS: meaningful names, comments, remove console.logs</li>
+  <li>Move JS to external file(s) if not already done</li>
+</ul>
+<div class="commit">💾 "Polish UI, clean up code, ensure responsive design"</div></div>
+
+<div class="day-card"><h3><span class="day-badge">DAY 7</span>May 13 — Testing &amp; Submission</h3>
+<ul>
+  <li>Full test: does everything work from a fresh page load?</li>
+  <li>Test in at least 2 browsers or screen sizes</li>
+  <li>Check: form submits, data renders, errors handled, no console errors</li>
+  <li>Final commit, merge branch, push to GitHub</li>
+  <li>Submit GitHub link on Canvas</li>
+</ul>
+<div class="commit">💾 "Final testing and cleanup — ready for submission"</div></div>
+
+<div class="warn"><span class="icon">⚠️</span><div><strong>May 13 is the hard deadline.</strong> Your GitHub repo must be pushed and your Canvas link submitted by end of class. No late submissions — we start Phaser game dev on May 15.</div></div>
+
+<!-- ===== RUBRIC ===== -->
+<div class="section-title"><span class="snum">4</span>Grading Rubric (100 points)</div>
+
+<table class="rubric-table">
+<thead><tr><th>Category</th><th>Pts</th><th>Exemplary</th><th>Proficient</th><th>Developing</th><th>Beginning</th></tr></thead>
+<tbody>
+<tr>
+  <td class="rubric-cat">JavaScript Fundamentals</td>
+  <td class="pts">25</td>
+  <td>All 7 JS concepts used correctly and purposefully. Code is clean, well-organized with 3+ named functions. Logic is sound.</td>
+  <td>Most JS concepts present and working. Minor issues with organization or naming.</td>
+  <td>Several JS concepts missing or used incorrectly. Functions are minimal or poorly structured.</td>
+  <td>Little functional JavaScript. Major concepts missing or broken.</td>
+</tr>
+<tr>
+  <td class="rubric-cat">Supabase Read + Create</td>
+  <td class="pts">25</td>
+  <td>Data loads from Supabase on page open and renders cleanly. Form inserts new data that appears immediately. Async/await + error handling on all calls. Loading state present.</td>
+  <td>Read and Create both work. Minor issues with error handling or loading states.</td>
+  <td>Only Read or Create works, not both. Or both work but with no error handling.</td>
+  <td>Supabase is not connected or no functional database operations.</td>
+</tr>
+<tr>
+  <td class="rubric-cat">Database Design</td>
+  <td class="pts">10</td>
+  <td>Table has 3+ meaningful columns, proper data types, PK + timestamp. Data is well-structured for the feature.</td>
+  <td>Table exists and works but design could be improved (e.g., wrong data types, missing columns).</td>
+  <td>Table is minimal or poorly designed for the feature.</td>
+  <td>No functional Supabase table.</td>
+</tr>
+<tr>
+  <td class="rubric-cat">Stretch: Update &amp; Delete</td>
+  <td class="pts">10</td>
+  <td>Both Update and Delete work correctly with proper <code>.eq()</code> filtering. UI buttons/forms for both.</td>
+  <td>One of Update or Delete works. The other is missing or partially implemented.</td>
+  <td>Attempted but not functional.</td>
+  <td>Not attempted. (Minimum 5 pts if Read + Create are exemplary.)</td>
+</tr>
+<tr>
+  <td class="rubric-cat">Integration &amp; UX</td>
+  <td class="pts">15</td>
+  <td>New features feel like a natural part of the site. JS-generated content is styled consistently with S1 design. Responsive design preserved. Loading, error, and empty states handled gracefully.</td>
+  <td>Features work and mostly match the site's style. Minor visual inconsistencies.</td>
+  <td>Features feel bolted-on. Styling doesn't match. Responsive design broken in places.</td>
+  <td>New features are unstyled or break the existing site.</td>
+</tr>
+<tr>
+  <td class="rubric-cat">Code Quality</td>
+  <td class="pts">10</td>
+  <td>External JS file(s) with comments, meaningful names, no inline handlers, Supabase keys clearly labeled. No stray console.logs.</td>
+  <td>Mostly organized. Minor issues (a few inline handlers, vague names).</td>
+  <td>JS is disorganized, mixed inline/external, few comments.</td>
+  <td>JS is a mess — all inline, no structure, no comments.</td>
+</tr>
+<tr>
+  <td class="rubric-cat">Git &amp; GitHub</td>
+  <td class="pts">5</td>
+  <td>7+ meaningful commits with clear messages. Branch strategy used. Repo is clean and working.</td>
+  <td>5–6 commits, mostly clear messages.</td>
+  <td>3–4 commits or vague messages.</td>
+  <td>Few commits or "dump everything at the end."</td>
+</tr>
+</tbody>
+</table>
+
+<div class="concept"><div class="concept-label">Points Breakdown</div>
+<ul>
+  <li><strong>25</strong> — JavaScript Fundamentals</li>
+  <li><strong>25</strong> — Supabase Read + Create</li>
+  <li><strong>10</strong> — Database Design</li>
+  <li><strong>10</strong> — Stretch: Update &amp; Delete</li>
+  <li><strong>15</strong> — Integration &amp; UX</li>
+  <li><strong>10</strong> — Code Quality</li>
+  <li><strong>5</strong> — Git &amp; GitHub</li>
+  <li><strong>= 100 points total</strong></li>
+</ul>
+</div>
+
+<!-- ===== CHEAT SHEET ===== -->
+<div class="section-title"><span class="snum">5</span>Quick Reference</div>
+
+<div class="concept"><div class="concept-label">Supabase JS Cheat Sheet</div>
+<div class="code-ref" style="line-height:2;">
+<span class="cmt">// Setup (in HTML &lt;head&gt;)</span><br>
+<span class="tg">&lt;script</span> <span class="prp">src</span>=<span class="str">"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"</span><span class="tg">&gt;&lt;/script&gt;</span><br><br>
+<span class="cmt">// Initialize (top of your JS file)</span><br>
+<span class="kw">const</span> <span class="prp">SUPABASE_URL</span> = <span class="str">"https://YOUR-PROJECT.supabase.co"</span>;<br>
+<span class="kw">const</span> <span class="prp">SUPABASE_KEY</span> = <span class="str">"YOUR_ANON_KEY"</span>;<br>
+<span class="kw">const</span> <span class="prp">db</span> = <span class="fn">supabase</span>.<span class="fn">createClient</span>(<span class="prp">SUPABASE_URL</span>, <span class="prp">SUPABASE_KEY</span>);<br><br>
+<span class="cmt">// READ</span><br>
+<span class="kw">const</span> { <span class="prp">data</span>, <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span>.<span class="fn">from</span>(<span class="str">'table'</span>).<span class="fn">select</span>(<span class="str">'*'</span>);<br><br>
+<span class="cmt">// CREATE</span><br>
+<span class="kw">const</span> { <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span>.<span class="fn">from</span>(<span class="str">'table'</span>).<span class="fn">insert</span>([{ <span class="prp">col</span>: <span class="str">'val'</span> }]);<br><br>
+<span class="cmt">// UPDATE</span><br>
+<span class="kw">const</span> { <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span>.<span class="fn">from</span>(<span class="str">'table'</span>).<span class="fn">update</span>({ <span class="prp">col</span>: <span class="str">'val'</span> }).<span class="fn">eq</span>(<span class="str">'id'</span>, <span class="prp">x</span>);<br><br>
+<span class="cmt">// DELETE</span><br>
+<span class="kw">const</span> { <span class="prp">error</span> } = <span class="kw">await</span> <span class="prp">db</span>.<span class="fn">from</span>(<span class="str">'table'</span>).<span class="fn">delete</span>().<span class="fn">eq</span>(<span class="str">'id'</span>, <span class="prp">x</span>);
+</div>
+</div>
+
+<div class="submit"><h3>📤 Submission</h3>
+<p>Push your final code to GitHub. Submit your GitHub link on Canvas by <strong>end of class May 13</strong>.</p>
+<p>Your site should load data from Supabase, accept new entries via a form, and display everything styled consistently with your Semester 1 design. No presentation — just submit.</p>
+</div>
+
+</div>
+</body></html>
