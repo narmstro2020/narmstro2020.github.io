@@ -1,160 +1,100 @@
-package com.yourname.platformer;
+package io.github.armstrong;
+
+// ============================================================
+// 🎮 GAME SCREEN — Your platformer lives here
+// ============================================================
+//
+// Day 1 (Apr 27): Get the player moving, jumping, and landing
+// Day 2 (Apr 29): Add sprite sheet animations
+// Day 3 (May 1):  Add enemies and collision
+// Day 4 (May 5):  Add coins and platforms
+// Day 5 (May 7):  Add MenuScreen and GameOverScreen
+// Day 6 (May 11): Add HUD, sound, polish
+// Day 7 (May 13): Final polish and submit
+//
+// ============================================================
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class GameScreen extends ScreenAdapter {
+public class GameScreen implements Screen {
 
-    private final PlatformerGame game;
+    private final Main game;
+
+    // ── Constants ──
+    private static final float GRAVITY = -500f;
+    private static final float JUMP_VELOCITY = 300f;
+    private static final float MOVE_SPEED = 150f;
+    private static final float GROUND_Y = 50f;
+
+    // ── Rendering ──
+    private SpriteBatch batch;
     private OrthographicCamera camera;
-
-    // Player state
     private Texture playerTexture;
-    private Vector2 playerPos;
-    private Vector2 playerVelocity;
-    private Rectangle playerBounds;
 
-    // Physics constants — tweak these to get the feel right
-    private static final float GRAVITY = -800f;
-    private static final float JUMP_VELOCITY = 400f;
-    private static final float MOVE_SPEED = 200f;
-    private static final float GROUND_Y = 100f; // temporary ground
+    // ── Player ──
+    private float playerX = 100f;
+    private float playerY = GROUND_Y;
+    private float velocityY = 0f;
+    private boolean onGround = true;
 
-    // Game state
-    private int score = 0;
-    private int lives = 3;
-    private boolean isOnGround = false;
-
-    public GameScreen(PlatformerGame game) {
+    public GameScreen(Main game) {
         this.game = game;
     }
 
     @Override
     public void show() {
-        // Camera setup
+        batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, PlatformerGame.WINDOW_WIDTH, PlatformerGame.WINDOW_HEIGHT);
+        camera.setToOrtho(false, 640, 480);
 
-        // Player setup
-        // TODO: Replace with your sprite sheet / texture
-        playerTexture = new Texture(Gdx.files.internal("textures/player.png"));
-        playerPos = new Vector2(100, GROUND_Y);
-        playerVelocity = new Vector2(0, 0);
-        playerBounds = new Rectangle(playerPos.x, playerPos.y, 32, 48);
-
-        // TODO: Load your tilemap here
-        //   TmxMapLoader loader = new TmxMapLoader();
-        //   TiledMap map = loader.load("maps/level1.tmx");
-        //   OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(map);
-
-        // TODO: Load enemies, coins, and other entities
-
-        // TODO: Set up HUD
-
-        // TODO: Set up audio
+        // For Day 1, just load the full sprite sheet as a single texture.
+        // On Day 2 you'll split it into animations.
+        playerTexture = new Texture("player.png");
     }
 
     @Override
     public void render(float delta) {
-        // ── Input ──────────────────────────────
-        handleInput(delta);
 
-        // ── Physics ────────────────────────────
-        updatePhysics(delta);
+        // ── INPUT ──
+        // TODO: LEFT arrow → subtract MOVE_SPEED * delta from playerX
+        // TODO: RIGHT arrow → add MOVE_SPEED * delta to playerX
+        // TODO: SPACE (only if onGround) → set velocityY = JUMP_VELOCITY, onGround = false
 
-        // ── Collisions ─────────────────────────
-        // TODO: Check collisions with tilemap, enemies, and items
 
-        // ── Camera ─────────────────────────────
-        updateCamera();
+        // ── PHYSICS ──
+        // TODO: Add GRAVITY * delta to velocityY
+        // TODO: Add velocityY * delta to playerY
+        // TODO: If playerY <= GROUND_Y → snap to ground, stop falling, set onGround = true
 
-        // ── Draw ───────────────────────────────
-        ScreenUtils.clear(0.4f, 0.6f, 0.9f, 1f); // sky blue background
 
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        // ── DRAW ──
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.15f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // TODO: Render tilemap before entities
-        //   mapRenderer.setView(camera);
-        //   mapRenderer.render();
-
-        game.batch.begin();
-
-        // Draw player
-        game.batch.draw(playerTexture, playerPos.x, playerPos.y);
-
-        // TODO: Draw enemies
-        // TODO: Draw items/coins
-        // TODO: Draw HUD (use a separate camera or Stage for HUD)
-
-        game.batch.end();
-
-        // ── Game State ─────────────────────────
-        if (lives <= 0) {
-            game.setScreen(new GameOverScreen(game, score));
-            dispose();
-        }
-    }
-
-    private void handleInput(float delta) {
-        // Horizontal movement
-        playerVelocity.x = 0;
-
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            playerVelocity.x = -MOVE_SPEED;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            playerVelocity.x = MOVE_SPEED;
-        }
-
-        // Jumping
-        if ((Gdx.input.isKeyJustPressed(Input.Keys.SPACE)
-                || Gdx.input.isKeyJustPressed(Input.Keys.UP)
-                || Gdx.input.isKeyJustPressed(Input.Keys.W))
-                && isOnGround) {
-            playerVelocity.y = JUMP_VELOCITY;
-            isOnGround = false;
-
-            // TODO: Play jump sound effect here
-        }
-    }
-
-    private void updatePhysics(float delta) {
-        // Apply gravity
-        playerVelocity.y += GRAVITY * delta;
-
-        // Update position
-        playerPos.x += playerVelocity.x * delta;
-        playerPos.y += playerVelocity.y * delta;
-
-        // Temporary ground collision (replace with tilemap collision)
-        if (playerPos.y <= GROUND_Y) {
-            playerPos.y = GROUND_Y;
-            playerVelocity.y = 0;
-            isOnGround = true;
-        }
-
-        // Update collision bounds
-        playerBounds.setPosition(playerPos.x, playerPos.y);
-    }
-
-    private void updateCamera() {
-        // Follow player horizontally, with some look-ahead
-        camera.position.x = playerPos.x + 100;
-        camera.position.y = PlatformerGame.WINDOW_HEIGHT / 2f;
-
-        // TODO: Clamp camera to level bounds so it doesn't show outside the map
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(playerTexture, playerX, playerY, 64, 64);
+        batch.end();
     }
 
     @Override
+    public void resize(int width, int height) {
+        camera.setToOrtho(false, width, height);
+    }
+
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
+
+    @Override
     public void dispose() {
-        if (playerTexture != null) playerTexture.dispose();
-        // TODO: Dispose tilemap, enemies, coins, audio, HUD
+        batch.dispose();
+        playerTexture.dispose();
     }
 }
