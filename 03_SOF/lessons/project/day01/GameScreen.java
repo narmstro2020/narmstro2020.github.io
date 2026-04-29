@@ -1,16 +1,14 @@
 package io.github.armstrong;
 
 // ============================================================
-// 🎮 GAME SCREEN — Your platformer lives here
+// 🎮 GAME SCREEN — Day 2 Starter
 // ============================================================
 //
 // Day 1 (Apr 27): Get the player moving, jumping, and landing
-// Day 2 (Apr 29): Add sprite sheet animations
-// Day 3 (May 1):  Add enemies and collision
-// Day 4 (May 5):  Add coins and platforms
-// Day 5 (May 7):  Add MenuScreen and GameOverScreen
-// Day 6 (May 11): Add HUD, sound, polish
-// Day 7 (May 13): Final polish and submit
+// Day 2 (Apr 29): Add sprite sheet animations and flipping
+//
+// If you didn't finish Day 1 TODOs, do those FIRST.
+// Then move on to the Day 2 TODOs.
 //
 // ============================================================
 
@@ -20,7 +18,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class GameScreen implements Screen {
 
@@ -35,7 +35,13 @@ public class GameScreen implements Screen {
     // ── Rendering ──
     private SpriteBatch batch;
     private OrthographicCamera camera;
-    private Texture playerTexture;
+    private Texture playerSheet;
+
+    // DAY 2 TODO 1: Add these animation fields:
+    //   - Animation<TextureRegion> idleAnim, runAnim, jumpAnim
+    //   - float stateTime = 0f
+    //   - boolean facingRight = true
+
 
     // ── Player ──
     private float playerX = 100f;
@@ -53,24 +59,60 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 640, 480);
 
-        // For Day 1, just load the full sprite sheet as a single texture.
-        // On Day 2 you'll split it into animations.
-        playerTexture = new Texture("player.png");
+        playerSheet = new Texture("player.png");
+
+        // DAY 2 TODO 2: Split the sprite sheet and create animations:
+        //   TextureRegion[][] grid = TextureRegion.split(playerSheet, 64, 64);
+        //
+        //   idleAnim = new Animation<>(0.2f, grid[0]);   // row 0
+        //   runAnim  = new Animation<>(0.1f, grid[1]);   // row 1
+        //   jumpAnim = new Animation<>(0.15f, grid[2]);  // row 2
+        //
+        //   Set play modes:
+        //     idleAnim → LOOP
+        //     runAnim  → LOOP
+        //     jumpAnim → NORMAL
+
     }
 
     @Override
     public void render(float delta) {
 
         // ── INPUT ──
-        // TODO: LEFT arrow → subtract MOVE_SPEED * delta from playerX
-        // TODO: RIGHT arrow → add MOVE_SPEED * delta to playerX
-        // TODO: SPACE (only if onGround) → set velocityY = JUMP_VELOCITY, onGround = false
+
+        // DAY 1 TODO: LEFT arrow → subtract MOVE_SPEED * delta from playerX
+        //   DAY 2 TODO 3a: also set facingRight = false
+
+        // DAY 1 TODO: RIGHT arrow → add MOVE_SPEED * delta to playerX
+        //   DAY 2 TODO 3b: also set facingRight = true
+
+        // DAY 1 TODO: SPACE (only if onGround) → set velocityY = JUMP_VELOCITY, onGround = false
 
 
         // ── PHYSICS ──
-        // TODO: Add GRAVITY * delta to velocityY
-        // TODO: Add velocityY * delta to playerY
-        // TODO: If playerY <= GROUND_Y → snap to ground, stop falling, set onGround = true
+
+        // DAY 1 TODO: Add GRAVITY * delta to velocityY
+        // DAY 1 TODO: Add velocityY * delta to playerY
+        // DAY 1 TODO: If playerY <= GROUND_Y → snap to ground, stop falling, set onGround = true
+
+
+        // ── ANIMATION ──
+
+        // DAY 2 TODO 4: Add delta to stateTime
+
+        // DAY 2 TODO 5: Pick the right animation based on player state:
+        //   Animation<TextureRegion> currentAnim;
+        //   - If NOT onGround              → currentAnim = jumpAnim
+        //   - Else if LEFT or RIGHT pressed → currentAnim = runAnim
+        //   - Else                          → currentAnim = idleAnim
+
+        // DAY 2 TODO 6: Get the current frame:
+        //   boolean looping = onGround;
+        //   TextureRegion frame = currentAnim.getKeyFrame(stateTime, looping);
+
+        // DAY 2 TODO 7: Flip the frame to face the right direction:
+        //   if (!facingRight && !frame.isFlipX()) frame.flip(true, false);
+        //   else if (facingRight && frame.isFlipX()) frame.flip(true, false);
 
 
         // ── DRAW ──
@@ -79,7 +121,10 @@ public class GameScreen implements Screen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(playerTexture, playerX, playerY, 64, 64);
+
+        // DAY 2 TODO 8: Replace this line with: batch.draw(frame, playerX, playerY);
+        batch.draw(playerSheet, playerX, playerY, 64, 64);
+
         batch.end();
     }
 
@@ -95,6 +140,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        playerTexture.dispose();
+        playerSheet.dispose();
     }
 }
