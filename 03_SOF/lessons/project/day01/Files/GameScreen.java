@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
 
 
     // DAY 3 TODO 2: Add enemy list, coin list, player bounds, and score:
-    //   - ArrayList<float[]> enemies        (each float[] = {x, y, speed, leftBound, rightBound})
+    //   - ArrayList<float[]> enemies
     //   - ArrayList<Rectangle> coins
     //   - Rectangle playerBounds
     //   - int score = 0
