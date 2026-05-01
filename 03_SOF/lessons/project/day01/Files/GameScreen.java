@@ -222,7 +222,7 @@ public class GameScreen implements Screen {
         batch.begin();
 
         // DAY 2 TODO 8: Replace this line with: batch.draw(frame, playerX, playerY);
-        batch.draw(playerSheet, playerX, playerY, 64, 64);
+        batch.draw(frame, playerX, playerY, 64, 64);
 
         // DAY 3 TODO 11: Draw enemies:
         //   TextureRegion slimeFrame = slimeAnim.getKeyFrame(stateTime, true);
