@@ -1,0 +1,61 @@
+/* Pathway site tweaks. */
+
+/* Deck preview.
+   A deck draws a fixed 1600x900 stage and scales it to the viewport, but its
+   chrome -- the slide counter, the title tag, the help overlay -- is
+   position:fixed at hardcoded pixel sizes OUTSIDE that stage, so it does not
+   scale with it. Sizing the iframe to the content column therefore leaves
+   20px chrome sitting on top of a slide shrunk to 44%, and it overlaps.
+   Instead give the iframe a true 1600x900 viewport, which is exactly what the
+   deck expects, and scale the whole element down. Everything then scales
+   together. pathway.js sets the factor from the container width. */
+.deck-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .3rem;
+  background: var(--md-default-bg-color);
+}
+/* Material ships `.md-typeset iframe { max-width: 100% }`, which would clamp the
+   iframe's layout width to the content column and leave the scaled deck filling
+   only part of the box. Outrank it -- the 1600px width is the whole point. */
+.md-typeset .deck-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1600px;
+  max-width: none;
+  height: 900px;
+  border: 0;
+  transform-origin: top left;
+  transform: scale(0.45);  /* replaced by pathway.js on load and resize */
+}
+/* The lesson's learning target, stated in the student's own voice. */
+.md-typeset .lesson-aim {
+  border-left: 4px solid var(--md-accent-fg-color);
+  background: var(--md-code-bg-color);
+  border-radius: .1rem .2rem .2rem .1rem;
+  padding: .6rem .8rem;
+  margin: 1em 0 1.2em;
+}
+.md-typeset .lesson-aim > :first-child { margin-top: 0; }
+.md-typeset .lesson-aim > :last-child { margin-bottom: 0; }
+.md-typeset .lesson-aim em { color: var(--md-default-fg-color--light); font-size: .8em; }
+
+.canvas-module { max-width: 100%; overflow-x: auto; }
+.canvas-module img { max-width: 100%; height: auto; }
+
+/* Capstone module pages are Canvas paste fragments. Their inline styles set
+   hardcoded light backgrounds on code chips and callouts but never set a text
+   color, so in dark mode Material's near-white ink lands on a near-white box.
+   Pin the ink wherever a background is set, and make descendants follow. */
+[data-md-color-scheme="slate"] .canvas-module [style*="background"] {
+  color: #14161a;
+}
+[data-md-color-scheme="slate"] .canvas-module [style*="background"] :is(p, li, span, strong, em, code, h1, h2, h3, h4) {
+  color: inherit;
+}
+
+.md-typeset table:not([class]) { display: table; width: 100%; }

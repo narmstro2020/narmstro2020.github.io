@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web Dev U1 L3 — Colors and Links</title>
+<style>
+  :root {
+    --ink:      #14161a;
+    --muted:    #6b7280;
+    --faint:    #c9ced6;
+    --bg:       #fbfaf7;
+    --panel:    #ffffff;
+    --accent:   #2f6bff;
+    --accent-soft: #e3ecff;
+    --warn:     #d1491f;
+    --warn-soft:#fdeae3;
+    --ok:       #0f7a52;
+    --rule:     #e2e0da;
+  }
+  [data-theme="dark"] {
+    --ink:      #f2f4f8;
+    --muted:    #9aa3b2;
+    --faint:    #3a4150;
+    --bg:       #11141a;
+    --panel:    #191d26;
+    --accent:   #6d9bff;
+    --accent-soft: #1e2b47;
+    --warn:     #ff8a63;
+    --warn-soft:#3a2118;
+    --ok:       #4fd39c;
+    --rule:     #2a2f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- fixed 1600x900 stage, scaled to fit any projector ---- */
+  #stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 84px 100px 96px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ---- type ---- */
+  .eyebrow {
+    font-size: 26px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 34px;
+  }
+  h1 { font-size: 92px; line-height: 1.06; margin: 0 0 28px; letter-spacing: -.02em; font-weight: 800; }
+  h1.small { font-size: 68px; }
+  h1.big   { font-size: 112px; }
+  h2 { font-size: 54px; line-height: 1.12; margin: 0 0 24px; font-weight: 750; letter-spacing: -.01em; }
+  p  { font-size: 34px; line-height: 1.42; margin: 0 0 18px; max-width: 26em; }
+  .slide.center p { margin-left: auto; margin-right: auto; }
+  .lede { font-size: 40px; }
+  .note { font-size: 27px; color: var(--muted); font-style: italic; }
+  strong { font-weight: 800; }
+  em.hl { font-style: normal; color: var(--accent); font-weight: 800; }
+  .warnline { color: var(--warn); font-weight: 800; }
+
+  code, .mono {
+    font-family: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em;
+    background: var(--accent-soft); color: var(--ink);
+    padding: .06em .34em; border-radius: 6px; white-space: nowrap;
+  }
+
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul li {
+    font-size: 33px; line-height: 1.34; margin-bottom: 20px;
+    padding-left: 46px; position: relative;
+  }
+  ul li::before {
+    content: ""; position: absolute; left: 8px; top: .52em;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+  }
+  ol.steps { margin: 0; padding: 0; counter-reset: s; list-style: none; }
+  ol.steps li {
+    font-size: 32px; line-height: 1.3; margin-bottom: 22px;
+    padding-left: 64px; position: relative; counter-increment: s;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 25px; font-weight: 800; display: grid; place-items: center;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .cols.wide-right { grid-template-columns: 0.85fr 1.15fr; }
+  .cols.wide-left  { grid-template-columns: 1.15fr 0.85fr; }
+  .stack > * + * { margin-top: 26px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+  .card {
+    background: var(--panel); border: 3px solid var(--rule); border-radius: 18px;
+    padding: 34px 32px; text-align: left;
+  }
+  .card .term {
+    font-size: 40px; font-weight: 850; letter-spacing: .02em; color: var(--accent);
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .card .def { font-size: 27px; line-height: 1.34; color: var(--ink); }
+
+  table.tbl { border-collapse: collapse; width: 100%; font-size: 29px; }
+  table.tbl td { padding: 20px 22px; border-bottom: 2px solid var(--rule); vertical-align: top; line-height: 1.3; }
+  table.tbl tr:last-child td { border-bottom: none; }
+  table.tbl td:first-child { font-weight: 700; width: 44%; }
+  table.tbl td:last-child { color: var(--muted); }
+
+  .callout {
+    border-left: 10px solid var(--accent); background: var(--accent-soft);
+    padding: 24px 30px; border-radius: 0 14px 14px 0; font-size: 30px; line-height: 1.35;
+  }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  .bigrule { display: block; font-size: 60px; font-weight: 850; line-height: 1.14; letter-spacing: -.015em; }
+  .bigrule + .bigrule { margin-top: 12px; }
+
+  figure { margin: 0; width: 100%; }
+  figure svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 25px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* ---- svg design language ---- */
+  .s-ink   { stroke: var(--ink);   fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .s-mut   { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-dash  { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-dasharray: 10 9; stroke-linecap: round; }
+  .s-acc   { stroke: var(--accent);fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-warn  { stroke: var(--warn);  fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .f-panel { fill: var(--panel); stroke: var(--rule); stroke-width: 3; }
+  .f-acc   { fill: var(--accent); }
+  .f-accs  { fill: var(--accent-soft); }
+  .f-faint { fill: var(--faint); }
+  .t       { fill: var(--ink);   font-size: 26px; font-weight: 650;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-sm    { fill: var(--muted); font-size: 22px; font-weight: 600;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-lg    { fill: var(--ink);   font-size: 32px; font-weight: 800;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-mono  { fill: var(--ink);   font-size: 24px; font-weight: 600;
+             font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; }
+  .t-acc   { fill: var(--accent); }
+  .t-warn  { fill: var(--warn); }
+
+  /* ---- chrome ---- */
+  #bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 6px;
+    background: transparent; z-index: 40;
+  }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .18s ease; }
+  #counter {
+    position: fixed; right: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  #title-tag {
+    position: fixed; left: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--faint); letter-spacing: .06em;
+  }
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--ink); color: var(--bg);
+    padding: 22px 34px 30px; font-size: 24px; line-height: 1.4;
+    display: none; border-top: 6px solid var(--accent);
+  }
+  #notes.on { display: block; }
+  #notes b { color: #ffd479; }
+  #help {
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,12,16,.94); color: #f4f6fa;
+    display: none; place-items: center; text-align: left;
+  }
+  #help.on { display: grid; }
+  #help .box { font-size: 26px; line-height: 1.9; }
+  #help kbd {
+    display: inline-block; min-width: 2.4em; text-align: center;
+    background: #2a3040; border: 2px solid #454e63; border-bottom-width: 4px;
+    border-radius: 8px; padding: 2px 10px; margin-right: 18px;
+    font-family: Consolas, monospace; font-size: 22px;
+  }
+  #help h3 { font-size: 34px; margin: 0 0 22px; }
+  #help p { font-size: 21px; color: #9aa3b2; max-width: none; margin-top: 26px; }
+
+  /* ---- print / PDF export ---- */
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: #fff; }
+    #stage-wrap { position: static; display: block; }
+    #stage { width: 1600px; height: auto; transform: none !important; }
+    .slide {
+      position: relative; inset: auto;
+      display: flex !important; width: 1600px; height: 900px;
+      break-after: page; page-break-after: always;
+    }
+    #bar, #counter, #notes, #help, #title-tag { display: none !important; }
+  }
+
+  /* ---- code blocks ---- */
+  /* `code, .mono` above is written for INLINE chips: pill background, padding,
+     and white-space: nowrap. Those rules also match <code> inside <pre>, which
+     collapses a listing onto one unwrapped line. Undo them for blocks and give
+     the block its own frame. Colors are the deck's own tokens, so the dark
+     theme follows automatically. */
+  pre {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border: 2px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  pre code, pre .mono {
+    display: block;
+    white-space: pre;
+    tab-size: 4;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div id="stage-wrap"><div id="stage">
+
+<!-- ============================================================ 1 -->
+<section class="slide center">
+  <div class="eyebrow">Bell Work</div>
+  <h1 class="small">Your site has <em class="hl">one page</em>.<br>How does anyone get to a second one?</h1>
+  <p class="note" style="margin-top:34px">60 seconds. Then hands.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="slide">
+  <h1 class="small">One tag is the reason<br>it's called the <em class="hl">web</em>.</h1>
+  <figure>
+    <svg viewBox="0 0 1400 320" role="img" aria-label="Five separate document boxes sitting alone on the left, and on the right the same five boxes joined by lines into a connected web">
+      <text x="300" y="42" text-anchor="middle" class="t-sm">documents</text>
+      <rect x="120" y="80" width="110" height="80" rx="10" class="f-panel"/>
+      <rect x="270" y="80" width="110" height="80" rx="10" class="f-panel"/>
+      <rect x="195" y="200" width="110" height="80" rx="10" class="f-panel"/>
+      <rect x="60" y="200" width="110" height="80" rx="10" class="f-panel"/>
+      <rect x="345" y="200" width="110" height="80" rx="10" class="f-panel"/>
+      <path d="M620 180 H760" class="s-dash"/>
+      <text x="690" y="150" text-anchor="middle" class="t-mono t-acc" font-size="26">&lt;a&gt;</text>
+      <text x="1080" y="42" text-anchor="middle" class="t-sm t-acc">the web</text>
+      <path d="M955 120 L1105 120 M1105 120 L1030 240 M1030 240 L955 120 M1105 120 L1205 240 M1030 240 L1205 240" class="s-acc"/>
+      <rect x="900" y="80" width="110" height="80" rx="10" class="f-accs"/>
+      <rect x="900" y="80" width="110" height="80" rx="10" class="s-acc"/>
+      <rect x="1050" y="80" width="110" height="80" rx="10" class="f-accs"/>
+      <rect x="1050" y="80" width="110" height="80" rx="10" class="s-acc"/>
+      <rect x="975" y="200" width="110" height="80" rx="10" class="f-accs"/>
+      <rect x="975" y="200" width="110" height="80" rx="10" class="s-acc"/>
+      <rect x="1150" y="200" width="110" height="80" rx="10" class="f-accs"/>
+      <rect x="1150" y="200" width="110" height="80" rx="10" class="s-acc"/>
+    </svg>
+  </figure>
+  <p style="margin-top:22px"><strong>Today your site stops being a page and starts being a site.</strong>
+    Two pages, linked both directions, plus one link out to the rest of the internet.</p>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="slide">
+  <div class="eyebrow">Today's learning target</div>
+  <h1 class="small">I can link pages together with relative<br>and absolute URLs, and read a colour value<br>when I see one.</h1>
+  <p class="note" style="margin-top:16px">Students will demonstrate this learning target with
+    at least <strong>80% accuracy</strong> on today's checkpoint.</p>
+  <div class="callout" style="margin-top:26px"><strong>Colours today are vocabulary, not decoration.</strong>
+    You'll meet these values everywhere; actually <em>styling</em> with them is Unit 2, and it's worth the wait.</div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="slide center">
+  <div class="eyebrow">Four ways to say one colour</div>
+  <div class="cards">
+    <div class="card">
+      <div class="term">named</div>
+      <div class="def"><code>red</code> — about 140 of them. Easy, limited.</div>
+    </div>
+    <div class="card">
+      <div class="term">hex</div>
+      <div class="def"><code>#ff0000</code> — <strong>the one you'll see most.</strong></div>
+    </div>
+    <div class="card">
+      <div class="term">rgb</div>
+      <div class="def"><code>rgb(255,0,0)</code> — the same three numbers, spelled out.</div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:38px">All four render <strong>exactly the same red.</strong></p>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="slide">
+  <h1 class="small"><code>#ff0000</code> is <em class="hl">three numbers</em><br>wearing a disguise.</h1>
+  <figure>
+    <svg viewBox="0 0 1300 300" role="img" aria-label="The hex value hash ff0000 split into three pairs — ff meaning full red, 00 meaning no green, and 00 meaning no blue">
+      <text x="650" y="70" text-anchor="middle" class="t-mono" font-size="56">#<tspan class="t-warn">ff</tspan><tspan class="t-acc">00</tspan>00</text>
+      <path d="M540 95 V150" class="s-warn"/>
+      <path d="M650 95 V150" class="s-acc"/>
+      <path d="M755 95 V150" class="s-mut"/>
+      <rect x="400" y="160" width="280" height="100" rx="12" class="f-panel"/>
+      <text x="540" y="200" text-anchor="middle" class="t-sm">red</text>
+      <text x="540" y="240" text-anchor="middle" class="t-lg t-warn">all of it</text>
+      <rect x="700" y="160" width="200" height="100" rx="12" class="f-panel"/>
+      <text x="800" y="200" text-anchor="middle" class="t-sm">green</text>
+      <text x="800" y="240" text-anchor="middle" class="t-lg">none</text>
+      <rect x="920" y="160" width="200" height="100" rx="12" class="f-panel"/>
+      <text x="1020" y="200" text-anchor="middle" class="t-sm">blue</text>
+      <text x="1020" y="240" text-anchor="middle" class="t-lg">none</text>
+    </svg>
+  </figure>
+  <table class="tbl" style="margin-top:10px">
+    <tr><td><code>00</code></td><td>none of that colour</td></tr>
+    <tr><td><code>ff</code></td><td>all of it</td></tr>
+    <tr><td><code>#000000</code> / <code>#ffffff</code></td><td>none of anything (black) / all of everything (white)</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="slide center">
+  <div class="eyebrow">The whole tag</div>
+  <figure>
+    <svg viewBox="0 0 1400 260" role="img" aria-label="The anchor tag broken into parts: the href attribute holds the destination, and the text between the opening and closing tags is what the reader actually sees and clicks">
+      <text x="700" y="90" text-anchor="middle" class="t-mono" font-size="44">&lt;a href="<tspan class="t-acc">about.html</tspan>"&gt;<tspan class="t-warn">About me</tspan>&lt;/a&gt;</text>
+      <path d="M540 115 V165" class="s-acc"/>
+      <path d="M865 115 V165" class="s-warn"/>
+      <text x="540" y="200" text-anchor="middle" class="t-sm t-acc">where it goes</text>
+      <text x="540" y="234" text-anchor="middle" class="t-sm">nobody sees this</text>
+      <text x="880" y="200" text-anchor="middle" class="t-sm t-warn">what they click</text>
+      <text x="880" y="234" text-anchor="middle" class="t-sm">this is on the page</text>
+    </svg>
+  </figure>
+  <p class="lede" style="margin-top:30px"><code>href</code> is an <strong>attribute</strong> —
+    same idea as <code>lang</code> on your <code>&lt;html&gt;</code> tag.</p>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="slide">
+  <h1 class="small">Two kinds of address.</h1>
+  <div class="cols">
+    <div class="stack">
+      <div class="eyebrow">Relative</div>
+      <pre><code>&lt;a href="about.html"&gt;</code></pre>
+      <p>A file sitting <strong>next to this one</strong>, in the same folder.
+        Short, because it doesn't need to say where it starts from.</p>
+      <div class="callout">Like saying <em>"the room next door."</em> Only means anything if you already know where you're standing.</div>
+    </div>
+    <div class="stack">
+      <div class="eyebrow">Absolute</div>
+      <pre><code>&lt;a href="https://www.nps.gov"&gt;</code></pre>
+      <p>The <strong>entire address</strong>, from the protocol onward. Works from anywhere,
+        on any site, forever.</p>
+      <div class="callout">Like a full street address. Longer, and it works from anywhere on earth.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="slide center">
+  <span class="bigrule">Your own pages → <em class="hl">relative</em>.</span>
+  <span class="bigrule">Somebody else's → <em class="hl">absolute</em>.</span>
+  <p class="note" style="margin-top:40px">That's the rule. There is no third case today.</p>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="slide">
+  <div class="cols wide-left">
+    <div class="stack">
+      <h2>One more attribute.</h2>
+      <pre><code>&lt;a href="https://www.nps.gov"
+   target="_blank"&gt;the park service&lt;/a&gt;</code></pre>
+      <p><code>target="_blank"</code> opens the link in a <strong>new tab</strong>, so your visitor
+        still has your site open behind it.</p>
+    </div>
+    <div class="stack">
+      <div class="callout"><strong>External links:</strong> yes. You don't want to throw someone
+        off your own site.</div>
+      <div class="callout warn"><strong>Your own pages:</strong> no. A new tab every time someone
+        clicks "Home" is genuinely irritating.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="slide">
+  <div class="eyebrow">Today's deliverables</div>
+  <ol class="steps">
+    <li><strong>A second page</strong> — <code>about.html</code>, with its own full skeleton</li>
+    <li><strong>Linked both directions</strong> — index to about, <em>and</em> about back to index</li>
+    <li><strong>One external link</strong> to a real source about your topic, with <code>target="_blank"</code></li>
+    <li><strong>Every link clicked</strong> and confirmed working by you</li>
+    <li><strong>Committed and pushed</strong> to your <code>my-site</code> repo</li>
+  </ol>
+  <div class="callout" style="margin-top:20px">Nobody starts over. <code>about.html</code> is a
+    <em class="hl">new file in the same folder</em> as the page you already have.</div>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="slide">
+  <div class="eyebrow">Build · Step 1</div>
+  <h2>The second page.</h2>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;title&gt;About me&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h1&gt;About me&lt;/h1&gt;
+  &lt;p&gt;Who I am and why I made this site.&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  <div class="callout warn"><strong>A page is not just content.</strong> Every new file gets the
+    whole skeleton — doctype, html, head, title, body. A page missing it renders, and then behaves
+    strangely in ways you can't see yet.</div>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="slide center">
+  <div class="eyebrow">The error worth causing</div>
+  <h1 class="small">Type <code>About.html</code> with a capital A.<br>Click it.</h1>
+  <p class="lede" style="margin-top:28px">It works. On <em class="hl">this</em> computer.</p>
+  <div class="callout warn" style="margin-top:30px"><strong>Windows doesn't care about capitals. Web
+    servers do.</strong> <code>About.html</code> and <code>about.html</code> are two different files
+    to every server on the internet — so this link breaks the moment your site is real.</div>
+</section>
+
+<!-- ============================================================ 13 -->
+<section class="slide center">
+  <span class="bigrule">Filenames: <em class="hl">all lowercase</em>,</span>
+  <span class="bigrule">no spaces, forever.</span>
+  <table class="tbl" style="margin-top:36px">
+    <tr><td><code>about.html</code></td><td>Right</td></tr>
+    <tr><td><code>About.html</code></td><td>Works here, 404s on a real server</td></tr>
+    <tr><td><code>about me.html</code></td><td>Becomes <code>about%20me.html</code> in the URL</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ 14 -->
+<section class="slide">
+  <div class="eyebrow">Build · Step 3 — test it</div>
+  <h1 class="small">A link you haven't clicked<br>is a link you <em class="hl">don't know about</em>.</h1>
+  <ol class="steps" style="margin-top:26px">
+    <li>From <code>index.html</code>, click through to <code>about.html</code></li>
+    <li>From <code>about.html</code>, click back to <code>index.html</code></li>
+    <li>Click your external link — does it open in a <strong>new tab</strong>?</li>
+    <li>Now check the tab you came from is <em>still there</em></li>
+  </ol>
+  <div class="callout" style="margin-top:20px">Broken links are the most common bug on the real web,
+    and the only fix is the one you're doing right now: clicking them.</div>
+</section>
+
+<!-- ============================================================ 15 -->
+<section class="slide center">
+  <div class="eyebrow">Close · push and exit ticket</div>
+  <h1 class="small">What's the difference between a<br><em class="hl">relative</em> and an <em class="hl">absolute</em> link?</h1>
+  <p class="note" style="margin-top:26px">Two sentences on Canvas. Then commit, sync, and show me
+    the confirmation on your way out.</p>
+</section>
+
+
+</div></div>
+</div></div>
+
+<div id="title-tag">WEB DEV · U1 L3</div>
+<div id="counter"></div>
+<div id="bar"><i></i></div>
+<div id="notes"></div>
+
+<div id="help">
+  <div class="box">
+    <h3>Deck controls</h3>
+    <div><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>space</kbd> also next</div>
+    <div><kbd>←</kbd> previous slide</div>
+    <div><kbd>F</kbd> fullscreen — use this on the projector</div>
+    <div><kbd>T</kbd> light / dark — dark for a bright room</div>
+    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>?</kbd> close this</div>
+    <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage   = document.getElementById('stage');
+  var notes   = document.getElementById('notes');
+  var help    = document.getElementById('help');
+  var counter = document.getElementById('counter');
+  var barFill = document.querySelector('#bar i');
+  var i = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    barFill.style.width = ((i + 1) / slides.length * 100) + '%';
+    notes.innerHTML = '<b>Slide ' + (i + 1) + '</b> &nbsp; ' +
+      (slides[i].dataset.note || '<span style="opacity:.5">no note</span>');
+    try { location.hash = 's' + (i + 1); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === '?' || e.key === '/') { help.classList.toggle('on'); }
+    else if (e.key === 'Escape') { help.classList.remove('on'); }
+    else if (e.key === 't' || e.key === 'T') {
+      var b = document.body;
+      b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (help.classList.contains('on')) { help.classList.remove('on'); return; }
+    show(e.clientX < window.innerWidth * 0.25 ? i - 1 : i + 1);
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+
+  var start = parseInt((location.hash || '').replace('#s', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>

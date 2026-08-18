@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software Dev U1 L3 — Operators, Arithmetic, and Casting</title>
+<style>
+  :root {
+    --ink:      #14161a;
+    --muted:    #6b7280;
+    --faint:    #c9ced6;
+    --bg:       #fbfaf7;
+    --panel:    #ffffff;
+    --accent:   #2f6bff;
+    --accent-soft: #e3ecff;
+    --warn:     #d1491f;
+    --warn-soft:#fdeae3;
+    --ok:       #0f7a52;
+    --rule:     #e2e0da;
+  }
+  [data-theme="dark"] {
+    --ink:      #f2f4f8;
+    --muted:    #9aa3b2;
+    --faint:    #3a4150;
+    --bg:       #11141a;
+    --panel:    #191d26;
+    --accent:   #6d9bff;
+    --accent-soft: #1e2b47;
+    --warn:     #ff8a63;
+    --warn-soft:#3a2118;
+    --ok:       #4fd39c;
+    --rule:     #2a2f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- fixed 1600x900 stage, scaled to fit any projector ---- */
+  #stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 84px 100px 96px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ---- type ---- */
+  .eyebrow {
+    font-size: 26px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 34px;
+  }
+  h1 { font-size: 92px; line-height: 1.06; margin: 0 0 28px; letter-spacing: -.02em; font-weight: 800; }
+  h1.small { font-size: 68px; }
+  h1.big   { font-size: 112px; }
+  h2 { font-size: 54px; line-height: 1.12; margin: 0 0 24px; font-weight: 750; letter-spacing: -.01em; }
+  p  { font-size: 34px; line-height: 1.42; margin: 0 0 18px; max-width: 26em; }
+  .slide.center p { margin-left: auto; margin-right: auto; }
+  .lede { font-size: 40px; }
+  .note { font-size: 27px; color: var(--muted); font-style: italic; }
+  strong { font-weight: 800; }
+  em.hl { font-style: normal; color: var(--accent); font-weight: 800; }
+  .warnline { color: var(--warn); font-weight: 800; }
+
+  code, .mono {
+    font-family: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em;
+    background: var(--accent-soft); color: var(--ink);
+    padding: .06em .34em; border-radius: 6px; white-space: nowrap;
+  }
+
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul li {
+    font-size: 33px; line-height: 1.34; margin-bottom: 20px;
+    padding-left: 46px; position: relative;
+  }
+  ul li::before {
+    content: ""; position: absolute; left: 8px; top: .52em;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+  }
+  ol.steps { margin: 0; padding: 0; counter-reset: s; list-style: none; }
+  ol.steps li {
+    font-size: 32px; line-height: 1.3; margin-bottom: 22px;
+    padding-left: 64px; position: relative; counter-increment: s;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 25px; font-weight: 800; display: grid; place-items: center;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .cols.wide-right { grid-template-columns: 0.85fr 1.15fr; }
+  .cols.wide-left  { grid-template-columns: 1.15fr 0.85fr; }
+  .stack > * + * { margin-top: 26px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+  .card {
+    background: var(--panel); border: 3px solid var(--rule); border-radius: 18px;
+    padding: 34px 32px; text-align: left;
+  }
+  .card .term {
+    font-size: 40px; font-weight: 850; letter-spacing: .02em; color: var(--accent);
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .card .def { font-size: 27px; line-height: 1.34; color: var(--ink); }
+
+  table.tbl { border-collapse: collapse; width: 100%; font-size: 29px; }
+  table.tbl td { padding: 20px 22px; border-bottom: 2px solid var(--rule); vertical-align: top; line-height: 1.3; }
+  table.tbl tr:last-child td { border-bottom: none; }
+  table.tbl td:first-child { font-weight: 700; width: 44%; }
+  table.tbl td:last-child { color: var(--muted); }
+
+  .callout {
+    border-left: 10px solid var(--accent); background: var(--accent-soft);
+    padding: 24px 30px; border-radius: 0 14px 14px 0; font-size: 30px; line-height: 1.35;
+  }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  .bigrule { display: block; font-size: 60px; font-weight: 850; line-height: 1.14; letter-spacing: -.015em; }
+  .bigrule + .bigrule { margin-top: 12px; }
+
+  figure { margin: 0; width: 100%; }
+  figure svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 25px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* ---- svg design language ---- */
+  .s-ink   { stroke: var(--ink);   fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .s-mut   { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-dash  { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-dasharray: 10 9; stroke-linecap: round; }
+  .s-acc   { stroke: var(--accent);fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-warn  { stroke: var(--warn);  fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .f-panel { fill: var(--panel); stroke: var(--rule); stroke-width: 3; }
+  .f-acc   { fill: var(--accent); }
+  .f-accs  { fill: var(--accent-soft); }
+  .f-faint { fill: var(--faint); }
+  .t       { fill: var(--ink);   font-size: 26px; font-weight: 650;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-sm    { fill: var(--muted); font-size: 22px; font-weight: 600;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-lg    { fill: var(--ink);   font-size: 32px; font-weight: 800;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-mono  { fill: var(--ink);   font-size: 24px; font-weight: 600;
+             font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; }
+  .t-acc   { fill: var(--accent); }
+  .t-warn  { fill: var(--warn); }
+
+  /* ---- chrome ---- */
+  #bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 6px;
+    background: transparent; z-index: 40;
+  }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .18s ease; }
+  #counter {
+    position: fixed; right: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  #title-tag {
+    position: fixed; left: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--faint); letter-spacing: .06em;
+  }
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--ink); color: var(--bg);
+    padding: 22px 34px 30px; font-size: 24px; line-height: 1.4;
+    display: none; border-top: 6px solid var(--accent);
+  }
+  #notes.on { display: block; }
+  #notes b { color: #ffd479; }
+  #help {
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,12,16,.94); color: #f4f6fa;
+    display: none; place-items: center; text-align: left;
+  }
+  #help.on { display: grid; }
+  #help .box { font-size: 26px; line-height: 1.9; }
+  #help kbd {
+    display: inline-block; min-width: 2.4em; text-align: center;
+    background: #2a3040; border: 2px solid #454e63; border-bottom-width: 4px;
+    border-radius: 8px; padding: 2px 10px; margin-right: 18px;
+    font-family: Consolas, monospace; font-size: 22px;
+  }
+  #help h3 { font-size: 34px; margin: 0 0 22px; }
+  #help p { font-size: 21px; color: #9aa3b2; max-width: none; margin-top: 26px; }
+
+  /* ---- print / PDF export ---- */
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: #fff; }
+    #stage-wrap { position: static; display: block; }
+    #stage { width: 1600px; height: auto; transform: none !important; }
+    .slide {
+      position: relative; inset: auto;
+      display: flex !important; width: 1600px; height: 900px;
+      break-after: page; page-break-after: always;
+    }
+    #bar, #counter, #notes, #help, #title-tag { display: none !important; }
+  }
+
+  /* ---- code blocks ---- */
+  /* `code, .mono` above is written for INLINE chips: pill background, padding,
+     and white-space: nowrap. Those rules also match <code> inside <pre>, which
+     collapses a listing onto one unwrapped line. Undo them for blocks and give
+     the block its own frame. Colors are the deck's own tokens, so the dark
+     theme follows automatically. */
+  pre {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border: 2px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  pre code, pre .mono {
+    display: block;
+    white-space: pre;
+    tab-size: 4;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div id="stage-wrap"><div id="stage">
+
+<!-- ============================================================ 1 -->
+<section class="slide center">
+  <div class="eyebrow">Bell Work</div>
+  <h1 class="small">What does Java print?</h1>
+  <pre style="margin-top:20px"><code>int a = 7 / 2;
+System.out.println(a);</code></pre>
+  <p class="note" style="margin-top:26px">60 seconds. Write your answer down before you say it.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="slide center">
+  <h1 class="big">3</h1>
+  <p class="lede" style="margin-top:28px">Not <code>3.5</code>. Not rounded to <code>4</code>.</p>
+  <div class="callout warn" style="margin-top:32px"><strong>And no warning.</strong> The compiler is
+    completely happy. This is not an error — it is Java doing exactly what you asked.</div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="slide">
+  <h1 class="small"><code>int</code> ÷ <code>int</code> is always an <code>int</code>.</h1>
+  <figure>
+    <svg viewBox="0 0 1300 260" role="img" aria-label="Seven divided by two gives three point five, and the point five is thrown away, leaving three">
+      <text x="200" y="110" text-anchor="middle" class="t-mono" font-size="40">7 / 2</text>
+      <path d="M300 100 H430" class="s-acc"/>
+      <path d="M410 84 L432 100 L410 116" class="s-acc"/>
+      <text x="600" y="110" text-anchor="middle" class="t-mono" font-size="40">3<tspan class="t-warn">.5</tspan></text>
+      <path d="M700 100 H830" class="s-warn"/>
+      <path d="M810 84 L832 100 L810 116" class="s-warn"/>
+      <text x="990" y="110" text-anchor="middle" class="t-mono" font-size="40">3</text>
+      <text x="600" y="180" text-anchor="middle" class="t-sm t-warn">the .5 is thrown away</text>
+      <text x="600" y="216" text-anchor="middle" class="t-sm">not rounded — truncated</text>
+    </svg>
+  </figure>
+  <p style="margin-top:20px">The fraction is <em class="hl">truncated</em>, not rounded.
+    <code>9 / 10</code> is <code>0</code>. Remember that one — it's where percentages die.</p>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="slide">
+  <div class="eyebrow">Today's learning target</div>
+  <h1 class="small">I can predict what Java's arithmetic operators<br>return, and use casting to control the type<br>of a calculation.</h1>
+  <p class="note" style="margin-top:16px">Students will demonstrate this learning target with
+    at least <strong>80% accuracy</strong> on today's checkpoint.</p>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="slide">
+  <div class="eyebrow">Four lines. Read line 2 twice.</div>
+  <pre><code>int    a = 7 / 2;            <span class="note">// 3   — no surprise now</span>
+double b = 7 / 2;            <span class="warnline">// 3.0 — the damage was already done</span>
+double c = 7.0 / 2;          <span class="note">// 3.5</span>
+double d = (double) 7 / 2;   <span class="note">// 3.5</span></code></pre>
+  <div class="callout warn" style="margin-top:20px"><strong>Line 2 is the one that catches people.</strong>
+    Java did the whole calculation as <code>int</code>s, got <code>3</code>, and <em>only then</em>
+    widened it to <code>3.0</code>.</div>
+  <p class="lede" style="margin-top:22px"><em class="hl">The type on the left never reaches backwards
+    into the math on the right.</em></p>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="slide center">
+  <div class="eyebrow">Two ways to fix it</div>
+  <div class="cards">
+    <div class="card">
+      <div class="term">cast</div>
+      <div class="def"><code>(double) hits / swings</code><br>Force one side to be a decimal.</div>
+    </div>
+    <div class="card">
+      <div class="term">reorder</div>
+      <div class="def"><code>hits * 100.0 / swings</code><br>Get a decimal into the math early.</div>
+    </div>
+    <div class="card" style="border-style:dashed">
+      <div class="term" style="color:var(--muted)">both</div>
+      <div class="def">Same answer. Neither one is "more correct."</div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:38px">One side has to be a <code>double</code>
+    <em class="hl">before</em> the division happens.</p>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="slide">
+  <div class="cols">
+    <div class="stack">
+      <h2>Casting <em class="hl">truncates</em>.<br>It does not round.</h2>
+      <pre><code>(int) 3.9    <span class="note">// 3</span>
+(int) 3.999  <span class="note">// 3</span>
+(int) -3.9   <span class="note">// -3</span></code></pre>
+      <p>It chops toward zero and throws the rest away — <strong>the same behaviour as
+        integer division</strong>, which is not a coincidence.</p>
+    </div>
+    <div class="stack">
+      <div class="callout">Want actual rounding? <code>Math.round(3.9)</code> gives <code>4</code>.</div>
+      <div class="callout warn"><strong>Casting the wrong way loses data silently.</strong>
+        Going <code>double</code> → <code>int</code> always costs you something. Java makes you
+        write the cast so you can't do it by accident.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="slide">
+  <h1 class="small"><code>%</code> gives the <em class="hl">remainder</em>.</h1>
+  <figure>
+    <svg viewBox="0 0 1300 220" role="img" aria-label="Seven modulo three is one, because three goes into seven twice with one left over">
+      <text x="180" y="90" text-anchor="middle" class="t-mono" font-size="38">7 % 3</text>
+      <path d="M280 80 H400" class="s-acc"/><path d="M380 64 L402 80 L380 96" class="s-acc"/>
+      <text x="470" y="90" text-anchor="middle" class="t-mono t-acc" font-size="38">1</text>
+      <rect x="600" y="50" width="60" height="60" rx="8" class="f-accs"/>
+      <rect x="670" y="50" width="60" height="60" rx="8" class="f-accs"/>
+      <rect x="740" y="50" width="60" height="60" rx="8" class="f-accs"/>
+      <rect x="810" y="50" width="60" height="60" rx="8" class="f-accs"/>
+      <rect x="880" y="50" width="60" height="60" rx="8" class="f-accs"/>
+      <rect x="950" y="50" width="60" height="60" rx="8" class="f-accs"/>
+      <rect x="1030" y="50" width="60" height="60" rx="8" class="f-panel"/>
+      <rect x="1030" y="50" width="60" height="60" rx="8" class="s-acc"/>
+      <text x="805" y="160" text-anchor="middle" class="t-sm">two groups of three</text>
+      <text x="1060" y="160" text-anchor="middle" class="t-sm t-acc">one left over</text>
+    </svg>
+  </figure>
+  <table class="tbl" style="margin-top:8px">
+    <tr><td><code>turn % 3 == 0</code></td><td>Every third turn — the enemy enrages</td></tr>
+    <tr><td><code>index % width</code></td><td>Wrap around a grid without falling off the edge</td></tr>
+    <tr><td><code>n % 2 == 0</code></td><td>Is it even?</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="slide">
+  <div class="eyebrow">Shorthand you'll use constantly</div>
+  <table class="tbl">
+    <tr><td><code>health -= damage;</code></td><td>same as <code>health = health - damage;</code></td></tr>
+    <tr><td><code>gold += 50;</code></td><td>add and store, in one step</td></tr>
+    <tr><td><code>level++;</code></td><td>add exactly 1</td></tr>
+    <tr><td><code>lives--;</code></td><td>subtract exactly 1</td></tr>
+  </table>
+  <div class="callout warn" style="margin-top:20px"><strong><code>x++</code> and <code>++x</code>
+    behave differently inside a bigger expression.</strong> The professional answer is to
+    <em class="hl">put it on its own line</em> and never think about it again.</div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="slide">
+  <div class="eyebrow">Today's deliverables</div>
+  <ol class="steps">
+    <li><strong>Combat arithmetic</strong> — damage, potions, and a level-up on your stat block</li>
+    <li><strong>The accuracy bug</strong> — build it wrong first, watch it print <code>0%</code>, then fix it two ways</li>
+    <li><strong>An enrage timer</strong> using <code>%</code></li>
+    <li><strong>A crit multiplier</strong> in <code>double</code>, cast back to <code>int</code> — and say what got lost</li>
+    <li><strong>Committed and pushed</strong> to your <code>arena-game</code> repo</li>
+  </ol>
+  <div class="callout" style="margin-top:22px">You're editing <code>Main.java</code> from last class.
+    Nobody starts a new project.</div>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="slide">
+  <div class="eyebrow">Build · Step 1</div>
+  <h2>Combat arithmetic.</h2>
+  <pre><code>int damage = enemyPower * 2;
+health -= damage;
+System.out.println("You take " + damage + " damage. Health: " + health);
+
+int potion = 15;
+health += potion;
+level++;</code></pre>
+  <p class="note">Every one of these is a variable from your stat block, changed by arithmetic
+    instead of retyped.</p>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="slide center">
+  <div class="eyebrow">Build · Step 2 — get it wrong on purpose</div>
+  <pre style="text-align:left"><code>int hits = 3;
+int swings = 7;
+int accuracy = hits / swings * 100;
+System.out.println("Accuracy: " + accuracy + "%");</code></pre>
+  <h1 class="big" style="margin-top:24px">0%</h1>
+  <p class="lede" style="margin-top:20px">Why <em class="hl">zero</em>?</p>
+</section>
+
+<!-- ============================================================ 13 -->
+<section class="slide">
+  <h1 class="small">The <code>* 100</code> never had a chance.</h1>
+  <figure>
+    <svg viewBox="0 0 1300 240" role="img" aria-label="Three divided by seven becomes zero as integers, and then zero multiplied by one hundred is still zero — the information was already lost before the multiplication happened">
+      <text x="170" y="90" text-anchor="middle" class="t-mono" font-size="34">3 / 7</text>
+      <path d="M260 80 H380" class="s-warn"/><path d="M360 64 L382 80 L360 96" class="s-warn"/>
+      <text x="450" y="90" text-anchor="middle" class="t-mono t-warn" font-size="34">0</text>
+      <text x="450" y="140" text-anchor="middle" class="t-sm t-warn">already lost here</text>
+      <path d="M520 80 H640" class="s-mut"/><path d="M620 64 L642 80 L620 96" class="s-mut"/>
+      <text x="760" y="90" text-anchor="middle" class="t-mono" font-size="34">0 * 100</text>
+      <path d="M880 80 H1000" class="s-mut"/><path d="M980 64 L1002 80 L980 96" class="s-mut"/>
+      <text x="1080" y="90" text-anchor="middle" class="t-mono" font-size="34">0</text>
+    </svg>
+  </figure>
+  <div class="eyebrow" style="margin-top:16px">Fix it two ways, and compare</div>
+  <pre><code>double acc1 = (double) hits / swings * 100;   <span class="note">// cast one operand</span>
+double acc2 = hits * 100.0 / swings;          <span class="note">// reorder so a double is in early</span></code></pre>
+</section>
+
+<!-- ============================================================ 14 -->
+<section class="slide">
+  <div class="cols">
+    <div class="stack">
+      <div class="eyebrow">Step 3 — a rhythm</div>
+      <pre><code>int turn = 6;
+boolean enrages = (turn % 3 == 0);</code></pre>
+      <p>Every third turn, the enemy enrages. Change <code>turn</code> and watch it flip.</p>
+    </div>
+    <div class="stack">
+      <div class="eyebrow">Step 4 — the crit</div>
+      <pre><code>double critDamage = damage * 1.75;
+int applied = (int) critDamage;</code></pre>
+      <div class="callout warn"><strong>What got lost?</strong> Answer with a
+        <em class="hl">number</em>, not "the decimal."</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 15 -->
+<section class="slide center">
+  <div class="eyebrow">Close · push and exit ticket</div>
+  <h1 class="small">Why does <code>7 / 2</code> give <code>3</code>,<br>and what are <em class="hl">two ways</em>
+    to get <code>3.5</code>?</h1>
+  <p class="note" style="margin-top:26px">Two sentences on Canvas. Then commit, sync, and show me
+    the confirmation on your way out.</p>
+</section>
+
+
+</div></div>
+</div></div>
+
+<div id="title-tag">SOFT DEV · U1 L3</div>
+<div id="counter"></div>
+<div id="bar"><i></i></div>
+<div id="notes"></div>
+
+<div id="help">
+  <div class="box">
+    <h3>Deck controls</h3>
+    <div><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>space</kbd> also next</div>
+    <div><kbd>←</kbd> previous slide</div>
+    <div><kbd>F</kbd> fullscreen — use this on the projector</div>
+    <div><kbd>T</kbd> light / dark — dark for a bright room</div>
+    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>?</kbd> close this</div>
+    <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage   = document.getElementById('stage');
+  var notes   = document.getElementById('notes');
+  var help    = document.getElementById('help');
+  var counter = document.getElementById('counter');
+  var barFill = document.querySelector('#bar i');
+  var i = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    barFill.style.width = ((i + 1) / slides.length * 100) + '%';
+    notes.innerHTML = '<b>Slide ' + (i + 1) + '</b> &nbsp; ' +
+      (slides[i].dataset.note || '<span style="opacity:.5">no note</span>');
+    try { location.hash = 's' + (i + 1); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === '?' || e.key === '/') { help.classList.toggle('on'); }
+    else if (e.key === 'Escape') { help.classList.remove('on'); }
+    else if (e.key === 't' || e.key === 'T') {
+      var b = document.body;
+      b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (help.classList.contains('on')) { help.classList.remove('on'); return; }
+    show(e.clientX < window.innerWidth * 0.25 ? i - 1 : i + 1);
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+
+  var start = parseInt((location.hash || '').replace('#s', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>

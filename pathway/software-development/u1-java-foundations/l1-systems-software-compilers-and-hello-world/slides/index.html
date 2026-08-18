@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software Dev U1 L1 — Systems Software, Compilers, and Hello World</title>
+<style>
+  :root {
+    --ink:      #14161a;
+    --muted:    #6b7280;
+    --faint:    #c9ced6;
+    --bg:       #fbfaf7;
+    --panel:    #ffffff;
+    --accent:   #2f6bff;
+    --accent-soft: #e3ecff;
+    --warn:     #d1491f;
+    --warn-soft:#fdeae3;
+    --ok:       #0f7a52;
+    --rule:     #e2e0da;
+  }
+  [data-theme="dark"] {
+    --ink:      #f2f4f8;
+    --muted:    #9aa3b2;
+    --faint:    #3a4150;
+    --bg:       #11141a;
+    --panel:    #191d26;
+    --accent:   #6d9bff;
+    --accent-soft: #1e2b47;
+    --warn:     #ff8a63;
+    --warn-soft:#3a2118;
+    --ok:       #4fd39c;
+    --rule:     #2a2f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- fixed 1600x900 stage, scaled to fit any projector ---- */
+  #stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 84px 100px 96px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ---- type ---- */
+  .eyebrow {
+    font-size: 26px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 34px;
+  }
+  h1 { font-size: 92px; line-height: 1.06; margin: 0 0 28px; letter-spacing: -.02em; font-weight: 800; }
+  h1.small { font-size: 68px; }
+  h1.big   { font-size: 112px; }
+  h2 { font-size: 54px; line-height: 1.12; margin: 0 0 24px; font-weight: 750; letter-spacing: -.01em; }
+  p  { font-size: 34px; line-height: 1.42; margin: 0 0 18px; max-width: 26em; }
+  .slide.center p { margin-left: auto; margin-right: auto; }
+  .lede { font-size: 40px; }
+  .note { font-size: 27px; color: var(--muted); font-style: italic; }
+  strong { font-weight: 800; }
+  em.hl { font-style: normal; color: var(--accent); font-weight: 800; }
+  .warnline { color: var(--warn); font-weight: 800; }
+
+  code, .mono {
+    font-family: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em;
+    background: var(--accent-soft); color: var(--ink);
+    padding: .06em .34em; border-radius: 6px; white-space: nowrap;
+  }
+
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul li {
+    font-size: 33px; line-height: 1.34; margin-bottom: 20px;
+    padding-left: 46px; position: relative;
+  }
+  ul li::before {
+    content: ""; position: absolute; left: 8px; top: .52em;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+  }
+  ol.steps { margin: 0; padding: 0; counter-reset: s; list-style: none; }
+  ol.steps li {
+    font-size: 32px; line-height: 1.3; margin-bottom: 22px;
+    padding-left: 64px; position: relative; counter-increment: s;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 25px; font-weight: 800; display: grid; place-items: center;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .cols.wide-right { grid-template-columns: 0.85fr 1.15fr; }
+  .cols.wide-left  { grid-template-columns: 1.15fr 0.85fr; }
+  .stack > * + * { margin-top: 26px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+  .card {
+    background: var(--panel); border: 3px solid var(--rule); border-radius: 18px;
+    padding: 34px 32px; text-align: left;
+  }
+  .card .term {
+    font-size: 40px; font-weight: 850; letter-spacing: .02em; color: var(--accent);
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .card .def { font-size: 27px; line-height: 1.34; color: var(--ink); }
+
+  table.tbl { border-collapse: collapse; width: 100%; font-size: 29px; }
+  table.tbl td { padding: 20px 22px; border-bottom: 2px solid var(--rule); vertical-align: top; line-height: 1.3; }
+  table.tbl tr:last-child td { border-bottom: none; }
+  table.tbl td:first-child { font-weight: 700; width: 44%; }
+  table.tbl td:last-child { color: var(--muted); }
+
+  .callout {
+    border-left: 10px solid var(--accent); background: var(--accent-soft);
+    padding: 24px 30px; border-radius: 0 14px 14px 0; font-size: 30px; line-height: 1.35;
+  }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  .bigrule { display: block; font-size: 60px; font-weight: 850; line-height: 1.14; letter-spacing: -.015em; }
+  .bigrule + .bigrule { margin-top: 12px; }
+
+  figure { margin: 0; width: 100%; }
+  figure svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 25px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* ---- svg design language ---- */
+  .s-ink   { stroke: var(--ink);   fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .s-mut   { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-dash  { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-dasharray: 10 9; stroke-linecap: round; }
+  .s-acc   { stroke: var(--accent);fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-warn  { stroke: var(--warn);  fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .f-panel { fill: var(--panel); stroke: var(--rule); stroke-width: 3; }
+  .f-acc   { fill: var(--accent); }
+  .f-accs  { fill: var(--accent-soft); }
+  .f-faint { fill: var(--faint); }
+  .t       { fill: var(--ink);   font-size: 26px; font-weight: 650;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-sm    { fill: var(--muted); font-size: 22px; font-weight: 600;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-lg    { fill: var(--ink);   font-size: 32px; font-weight: 800;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-mono  { fill: var(--ink);   font-size: 24px; font-weight: 600;
+             font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; }
+  .t-acc   { fill: var(--accent); }
+  .t-warn  { fill: var(--warn); }
+
+  /* ---- chrome ---- */
+  #bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 6px;
+    background: transparent; z-index: 40;
+  }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .18s ease; }
+  #counter {
+    position: fixed; right: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  #title-tag {
+    position: fixed; left: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--faint); letter-spacing: .06em;
+  }
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--ink); color: var(--bg);
+    padding: 22px 34px 30px; font-size: 24px; line-height: 1.4;
+    display: none; border-top: 6px solid var(--accent);
+  }
+  #notes.on { display: block; }
+  #notes b { color: #ffd479; }
+  #help {
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,12,16,.94); color: #f4f6fa;
+    display: none; place-items: center; text-align: left;
+  }
+  #help.on { display: grid; }
+  #help .box { font-size: 26px; line-height: 1.9; }
+  #help kbd {
+    display: inline-block; min-width: 2.4em; text-align: center;
+    background: #2a3040; border: 2px solid #454e63; border-bottom-width: 4px;
+    border-radius: 8px; padding: 2px 10px; margin-right: 18px;
+    font-family: Consolas, monospace; font-size: 22px;
+  }
+  #help h3 { font-size: 34px; margin: 0 0 22px; }
+  #help p { font-size: 21px; color: #9aa3b2; max-width: none; margin-top: 26px; }
+
+  /* ---- print / PDF export ---- */
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: #fff; }
+    #stage-wrap { position: static; display: block; }
+    #stage { width: 1600px; height: auto; transform: none !important; }
+    .slide {
+      position: relative; inset: auto;
+      display: flex !important; width: 1600px; height: 900px;
+      break-after: page; page-break-after: always;
+    }
+    #bar, #counter, #notes, #help, #title-tag { display: none !important; }
+  }
+
+  /* ---- code blocks ---- */
+  /* `code, .mono` above is written for INLINE chips: pill background, padding,
+     and white-space: nowrap. Those rules also match <code> inside <pre>, which
+     collapses a listing onto one unwrapped line. Undo them for blocks and give
+     the block its own frame. Colors are the deck's own tokens, so the dark
+     theme follows automatically. */
+  pre {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border: 2px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  pre code, pre .mono {
+    display: block;
+    white-space: pre;
+    tab-size: 4;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div id="stage-wrap"><div id="stage">
+
+<!-- ============================================================ 1 -->
+<section class="slide center">
+  <div class="eyebrow">Bell Work</div>
+  <h1 class="small">On Friday you ran Hello World.<br><em class="hl">What actually happened?</em></h1>
+  <p class="note">Think for 60 seconds. Be specific. Then hands.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="slide">
+  <h1 class="small">Today is <em class="hl">why</em>.</h1>
+  <p class="lede">Friday you made it work. Today you find out what the machine did with what you typed
+    &mdash; and then you start your own project.</p>
+  <div class="callout" style="margin-top:24px">
+    This is the <strong>only real lecture</strong> in this unit. Twenty-two minutes. Then we build for the
+    rest of the period, every period, for the rest of the semester.
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="slide">
+  <div class="eyebrow">Standard D1.1</div>
+  <h2>Two kinds of software</h2>
+  <div class="cols" style="margin-top:10px">
+    <div>
+      <div class="card">
+        <div class="term">Systems</div>
+        <div class="def" style="font-size:26px">Windows &middot; the JVM &middot; drivers &middot;
+          <code style="font-size:.85em">javac</code><br><br>
+          <strong>Serves the machine</strong> and other programs</div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="term">Application</div>
+        <div class="def" style="font-size:26px">Your game &middot; Chrome &middot; Canvas &middot; Photoshop<br><br>
+          <strong>Serves a person</strong> with a task</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="slide center">
+  <div class="eyebrow">So which is it?</div>
+  <h1 class="big">Is VS Code<br>systems or application?</h1>
+  <p class="lede" style="margin-top:20px">Argue about it. There's a right answer and it isn't the
+    interesting part.</p>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="slide">
+  <div class="eyebrow">Standard D1.2</div>
+  <figure>
+    <svg viewBox="0 0 1400 340" role="img" aria-label="Python and GDScript go from source straight to an interpreter that runs it line by line, while Java goes from source through javac to a class file and then to the JVM which runs it">
+      <text x="60" y="46" class="t-lg">Python &middot; GDScript &middot; JS</text>
+      <rect x="60" y="70" width="180" height="66" rx="10" class="f-panel"/>
+      <text x="150" y="110" text-anchor="middle" class="t-mono" font-size="21">source</text>
+      <path d="M254 103 H322" class="s-mut"/><path d="M308 93 l14 10 -14 10" class="s-mut"/>
+      <rect x="336" y="70" width="216" height="66" rx="10" class="f-panel"/>
+      <text x="444" y="103" text-anchor="middle" class="t" font-size="23">interpreter</text>
+      <text x="444" y="128" text-anchor="middle" class="t-sm" font-size="18">line by line</text>
+      <path d="M566 103 H634" class="s-mut"/><path d="M620 93 l14 10 -14 10" class="s-mut"/>
+      <text x="650" y="112" class="t">runs</text>
+
+      <path d="M60 176 H1340" class="s-dash"/>
+
+      <text x="60" y="222" class="t-lg t-acc">Java</text>
+      <rect x="60" y="246" width="150" height="62" rx="10" class="f-panel"/>
+      <text x="135" y="284" text-anchor="middle" class="t-mono" font-size="20">source</text>
+      <path d="M224 277 H286" class="s-acc"/><path d="M272 267 l14 10 -14 10" class="s-acc"/>
+      <text x="255" y="234" text-anchor="middle" class="t-mono t-acc" font-size="18">javac</text>
+      <rect x="300" y="246" width="230" height="62" rx="10" class="f-accs"/>
+      <rect x="300" y="246" width="230" height="62" rx="10" class="s-acc"/>
+      <text x="415" y="278" text-anchor="middle" class="t-mono t-acc" font-size="20">Main.class</text>
+      <text x="415" y="300" text-anchor="middle" class="t-sm" font-size="17">bytecode</text>
+      <path d="M544 277 H606" class="s-acc"/><path d="M592 267 l14 10 -14 10" class="s-acc"/>
+      <rect x="620" y="246" width="250" height="62" rx="10" class="f-accs"/>
+      <rect x="620" y="246" width="250" height="62" rx="10" class="s-acc"/>
+      <text x="745" y="284" text-anchor="middle" class="t t-acc" font-size="23">the JVM</text>
+      <path d="M884 277 H946" class="s-acc"/><path d="M932 267 l14 10 -14 10" class="s-acc"/>
+      <text x="962" y="286" class="t">runs</text>
+    </svg>
+  </figure>
+  <p class="lede" style="text-align:center; max-width:none; margin-top:14px">
+    <strong>Errors move from runtime to compile time.</strong> That's the trade.
+  </p>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="slide">
+  <div class="cols wide-left">
+    <div>
+      <h2>Where do you want<br>to find the mistake?</h2>
+      <ul>
+        <li><strong>Interpreter:</strong> an error on line 400 surfaces when line 400 runs &mdash;
+            <em>possibly in front of a user</em></li>
+        <li><strong>Compiler:</strong> it reads <strong>all</strong> of it first and refuses to produce
+            anything until it makes sense</li>
+      </ul>
+      <div class="callout warn" style="font-size:27px">
+        This is going to annoy you for about <strong>two weeks</strong>, and then you're going to love it.
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 660 380" role="img" aria-label="A program that starts running and dies partway through, versus a program that never starts because the compiler stopped it">
+        <rect x="20" y="24" width="280" height="316" rx="14" class="f-panel"/>
+        <text x="160" y="64" text-anchor="middle" class="t-lg">interpreted</text>
+        <rect x="56" y="92" width="208" height="14" rx="7" class="f-acc"/>
+        <rect x="56" y="120" width="208" height="14" rx="7" class="f-acc"/>
+        <rect x="56" y="148" width="208" height="14" rx="7" class="f-acc"/>
+        <rect x="56" y="176" width="208" height="14" rx="7" class="f-acc"/>
+        <path d="M76 208 l168 44 M244 208 l-168 44" class="s-warn"/>
+        <text x="160" y="290" text-anchor="middle" class="t-sm t-warn">it ran, then died</text>
+        <text x="160" y="318" text-anchor="middle" class="t-sm t-warn">halfway through</text>
+
+        <rect x="360" y="24" width="280" height="316" rx="14" class="f-panel"/>
+        <text x="500" y="64" text-anchor="middle" class="t-lg t-acc">compiled</text>
+        <rect x="396" y="92" width="208" height="14" rx="7" class="f-faint"/>
+        <rect x="396" y="120" width="208" height="14" rx="7" class="f-faint"/>
+        <rect x="396" y="148" width="208" height="14" rx="7" class="f-faint"/>
+        <rect x="396" y="176" width="208" height="14" rx="7" class="f-faint"/>
+        <path d="M396 212 H604" class="s-acc"/>
+        <text x="500" y="290" text-anchor="middle" class="t-sm t-acc">it never ran at all.</text>
+        <text x="500" y="318" text-anchor="middle" class="t-sm t-acc">nothing to see.</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="slide center">
+  <div class="eyebrow">The third one · D1.2</div>
+  <h1 class="small">A <em class="hl">code generator</em> is a program<br>that writes source code for you.</h1>
+  <p class="lede" style="margin-top:22px">You've already met one. VS Code's
+    <strong>Source Action &rarr; "generate getters and setters"</strong> &mdash; you'll live in it in Unit 2.</p>
+  <p class="note" style="margin-top:16px">Compiler, interpreter, code generator. That's the whole family.</p>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="slide">
+  <div class="cols wide-right">
+    <div>
+      <span class="bigrule">Java is</span>
+      <span class="bigrule">both.</span>
+      <p style="margin-top:26px"><code>javac</code> compiles to <strong>bytecode</strong> &mdash;
+        <em>not</em> machine code. The JVM then runs that.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 760 340" role="img" aria-label="One class file feeding three JVMs on Windows, Mac and Linux, all running the same program">
+        <rect x="270" y="24" width="220" height="66" rx="12" class="f-accs"/>
+        <rect x="270" y="24" width="220" height="66" rx="12" class="s-acc"/>
+        <text x="380" y="66" text-anchor="middle" class="t-mono t-acc" font-size="22">Main.class</text>
+
+        <path d="M380 96 V130 M120 130 H640 M120 130 V170 M380 130 V170 M640 130 V170" class="s-mut"/>
+
+        <rect x="30" y="170" width="180" height="66" rx="10" class="f-panel"/>
+        <text x="120" y="212" text-anchor="middle" class="t">JVM</text>
+        <text x="120" y="266" text-anchor="middle" class="t-sm">Windows</text>
+
+        <rect x="290" y="170" width="180" height="66" rx="10" class="f-panel"/>
+        <text x="380" y="212" text-anchor="middle" class="t">JVM</text>
+        <text x="380" y="266" text-anchor="middle" class="t-sm">Mac</text>
+
+        <rect x="550" y="170" width="180" height="66" rx="10" class="f-panel"/>
+        <text x="640" y="212" text-anchor="middle" class="t">JVM</text>
+        <text x="640" y="266" text-anchor="middle" class="t-sm">Linux</text>
+
+        <text x="380" y="318" text-anchor="middle" class="t-sm">one file &mdash; <tspan class="t-acc">any machine that has a JVM</tspan></text>
+      </svg>
+    </figure>
+  </div>
+  <p class="lede" style="text-align:center; max-width:none; margin-top:10px">
+    That's what <strong>"write once, run anywhere"</strong> actually means.
+  </p>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="slide center">
+  <div class="eyebrow">Today's learning target</div>
+  <h1 class="small">I can describe how source code becomes a running program,<br>and get my own Java project to compile and run.</h1>
+  <p class="note" style="margin-top:6px; max-width:none">Students will demonstrate this learning target with
+    at least <strong>80% accuracy</strong> on today's checkpoint.</p>
+  <div class="callout" style="margin-top:26px; max-width:1120px; text-align:left">
+    Today's output is <strong>four lines of text in a console.</strong> No window, no graphics.
+    Sixty percent of professional software has no graphics at all &mdash; and this project becomes your
+    <strong>Project 1 game</strong> in a few weeks.
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="slide">
+  <div class="eyebrow">Today's deliverables</div>
+  <ol class="steps" style="font-size:.95em">
+    <li><code>ArenaGame</code> project &mdash; VS Code, <strong>no build tools</strong>, JDK 21</li>
+    <li><code>Main.java</code>, typed by hand, <strong>compiles and runs</strong></li>
+    <li>You've <strong>found <code>Main.class</code></strong> and tried to open it</li>
+    <li>Three deliberate breaks, each error <strong>read out loud</strong> before you fix it</li>
+    <li>Several lines introducing <strong>your own game's setting</strong></li>
+    <li><strong>Pushed to GitHub</strong> &mdash; a public repo called <code>arena-game</code></li>
+  </ol>
+  <div class="callout warn" style="margin-top:24px; font-size:27px">
+    <code>ArenaGame</code> is the folder name. <strong>The setting is yours</strong> &mdash; and you'll still
+    be building it when Project 1 is due.
+  </div>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="slide">
+  <div class="eyebrow">Step 1 · 15 minutes</div>
+  <div class="cols">
+    <div>
+      <h2>Start the project</h2>
+      <ol class="steps">
+        <li><strong>Ctrl+Shift+P</strong> &rarr; <code>Java: Create Java Project</code></li>
+        <li>Choose <strong>No build tools</strong>, pick your folder, name it <code>ArenaGame</code></li>
+        <li>In <code>src</code>, new file <code>Main.java</code></li>
+        <li>Type the class and <code>main</code> method <strong>by hand</strong></li>
+        <li><strong>F5</strong> to run &mdash; or click <strong>Run</strong> above <code>main</code></li>
+      </ol>
+      <div class="callout warn" style="font-size:26px">
+        Red squiggles everywhere on a brand-new project means the Java extension can't find a JDK:
+        <strong>Ctrl+Shift+P &rarr; Java: Configure Java Runtime</strong>.
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 660 400" role="img" aria-label="The VS Code explorer showing ArenaGame with a src folder containing Main dot java, and a bin folder appearing after the build">
+        <rect x="30" y="24" width="440" height="330" rx="12" class="f-panel"/>
+        <path d="M30 70 H470" class="s-mut"/>
+        <text x="54" y="56" class="t-sm">Project</text>
+        <text x="54" y="112" class="t-mono t-acc" font-size="21">ArenaGame</text>
+        <text x="86" y="156" class="t-mono" font-size="21">src</text>
+        <rect x="110" y="176" width="230" height="40" rx="8" class="f-accs"/>
+        <text x="126" y="204" class="t-mono t-acc" font-size="20">Main.java</text>
+        <text x="86" y="256" class="t-mono" font-size="21">bin</text>
+        <text x="118" y="292" class="t-sm" font-size="18">(appears after you run it)</text>
+        <text x="250" y="332" text-anchor="middle" class="t-sm">you write in <tspan class="t-acc">src</tspan></text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="slide center">
+  <div class="eyebrow">Step 2 · Go find the bytecode</div>
+  <h1 class="small"><code style="font-size:.8em">bin/Main.class</code></h1>
+  <p class="lede" style="margin-top:22px">Open it. In anything. <strong>Look at it.</strong></p>
+  <div class="callout" style="margin-top:26px; max-width:1120px; text-align:left">
+    You wrote the <strong>left side</strong> of the diagram. That file is the <strong>right side</strong>
+    &mdash; and it's the thing that could go to any computer on earth.
+  </div>
+</section>
+
+<!-- ============================================================ 13 -->
+<section class="slide">
+  <div class="eyebrow">Step 3 · Break it on purpose · 22 minutes</div>
+  <table class="tbl" style="font-size:27px">
+    <tr><td>Delete a <code>;</code></td><td><code>';' expected</code> &mdash; with the exact line</td></tr>
+    <tr><td>Rename the class to <code>Game</code>,<br>leave the file <code>Main.java</code></td>
+        <td><code>class Game is public, should be declared in a file named Game.java</code></td></tr>
+    <tr><td>Change <code>String[] args</code><br>to <code>String args</code></td>
+        <td><span class="warnline">It compiles.</span> Then <code>Error: Main method not found</code></td></tr>
+  </table>
+  <p class="lede" style="margin-top:24px"><strong>Read the error out loud &mdash; line number and all
+    &mdash; before you fix it.</strong></p>
+</section>
+
+<!-- ============================================================ 14 -->
+<section class="slide center">
+  <h1 class="big">It compiled.</h1>
+  <h1 class="small" style="color:var(--warn)">And it still didn't run.</h1>
+  <p class="lede" style="margin-top:26px">The compiler checks <strong>grammar</strong>, not
+    <strong>meaning</strong>.</p>
+  <p style="margin-top:14px; max-width:none">A sentence can be perfectly formed and still say nothing the
+    machine can use. <em class="hl">"It compiles" is not the same as "it works."</em></p>
+</section>
+
+<!-- ============================================================ 15 -->
+<section class="slide">
+  <div class="eyebrow">Step 4 · 8 minutes</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>Introduce your world</h2>
+      <ul>
+        <li>Print three or four more lines that set up <strong>your</strong> game</li>
+        <li>Where is it? Who is the player? What's about to go wrong?</li>
+        <li>Real sentences &mdash; you're going to be reading them for weeks</li>
+      </ul>
+      <div class="callout" style="font-size:27px">
+        This becomes your <strong>Project 1</strong> game. The theme you pick today is the one you ship.
+      </div>
+    </div>
+    <div>
+      <span class="bigrule" style="font-size:48px">Your arena.</span>
+      <span class="bigrule" style="font-size:48px">Your monsters.</span>
+      <span class="bigrule" style="font-size:48px">Your rules.</span>
+      <p class="note" style="margin-top:28px">It doesn't have to be an arena. It has to be yours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 16 -->
+<section class="slide">
+  <h2>If it's not working</h2>
+  <table class="tbl" style="font-size:26px">
+    <tr><td>Red squiggles everywhere, fresh project</td><td>The Java extension can't find a JDK. <code>Ctrl+Shift+P</code> &rarr; Java: Configure Java Runtime</td></tr>
+    <tr><td><code>class X is public, should be declared in a file named X.java</code></td>
+        <td>Class name doesn't match the file name</td></tr>
+    <tr><td><code>Error: Main method not found</code></td>
+        <td>The signature. It needs <code>public static void main(String[] args)</code></td></tr>
+    <tr><td><code>';' expected</code></td><td>Exactly what it says, on exactly that line</td></tr>
+    <tr><td><code>javac: command not found</code> in a terminal</td>
+        <td>JDK not on PATH. VS Code still runs it &mdash; we'll fix the terminal at lunch</td></tr>
+  </table>
+  <p class="lede" style="margin-top:24px"><strong>Bring me the exact error text.</strong> Not "it's broken."</p>
+</section>
+
+<!-- ============================================================ 17 -->
+<section class="slide center">
+  <div class="eyebrow">Working with your partner</div>
+  <span class="bigrule">Try it before you ask.</span>
+  <span class="bigrule">Bring the exact error text.</span>
+  <span class="bigrule">Help &mdash; don't take the keyboard.</span>
+  <p style="margin-top:40px"><strong>Both</strong> of your projects have to run. Every period.</p>
+</section>
+
+<!-- ============================================================ 18 -->
+<section class="slide">
+  <div class="eyebrow">Before you leave · 8 minutes</div>
+  <ol class="steps" style="font-size:1.02em">
+    <li><strong>Run it once more.</strong> Make sure it still compiles</li>
+    <li><strong>Source Control</strong> &rarr; <strong>Publish to GitHub</strong><br>
+        <span class="note" style="font-size:24px">public repo, named <code>arena-game</code></span></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">U1 L1 — Hello, Compiler</span><br>
+        <span class="note" style="font-size:24px">your repo link + one screenshot of your console output</span></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">U1 L1 — Exit Ticket</span></li>
+  </ol>
+  <div class="callout" style="margin-top:20px; font-size:31px; font-weight:800">
+    What does <code style="font-size:.9em">javac</code> produce, and what actually runs it?
+  </div>
+</section>
+
+</div></div>
+</div></div>
+
+<div id="title-tag">SOFT DEV · U1 L1</div>
+<div id="counter"></div>
+<div id="bar"><i></i></div>
+<div id="notes"></div>
+
+<div id="help">
+  <div class="box">
+    <h3>Deck controls</h3>
+    <div><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>space</kbd> also next</div>
+    <div><kbd>←</kbd> previous slide</div>
+    <div><kbd>F</kbd> fullscreen — use this on the projector</div>
+    <div><kbd>T</kbd> light / dark — dark for a bright room</div>
+    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>?</kbd> close this</div>
+    <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage   = document.getElementById('stage');
+  var notes   = document.getElementById('notes');
+  var help    = document.getElementById('help');
+  var counter = document.getElementById('counter');
+  var barFill = document.querySelector('#bar i');
+  var i = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    barFill.style.width = ((i + 1) / slides.length * 100) + '%';
+    notes.innerHTML = '<b>Slide ' + (i + 1) + '</b> &nbsp; ' +
+      (slides[i].dataset.note || '<span style="opacity:.5">no note</span>');
+    try { location.hash = 's' + (i + 1); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === '?' || e.key === '/') { help.classList.toggle('on'); }
+    else if (e.key === 'Escape') { help.classList.remove('on'); }
+    else if (e.key === 't' || e.key === 'T') {
+      var b = document.body;
+      b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (help.classList.contains('on')) { help.classList.remove('on'); return; }
+    show(e.clientX < window.innerWidth * 0.25 ? i - 1 : i + 1);
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+
+  var start = parseInt((location.hash || '').replace('#s', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,6387 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes and code for the Warren Central / Walker Career Center Software Development pathway.">
+      
+      
+        <meta name="author" content="Nicholas Armstrong">
+      
+      
+        <link rel="canonical" href="https://narmstro2020.github.io/pathway/principles/p3-tower-defense/l5-tower-placement-on-a-grid/">
+      
+      
+        <link rel="prev" href="../l4-functions-spawning-waves/">
+      
+      
+        <link rel="next" href="../l6-targeting-nearest-enemy/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Lesson 5. Tower Placement on a Grid - Walker CC Computer Science</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/pathway.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tower-placement-on-a-grid" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Walker CC Computer Science" class="md-header__button md-logo" aria-label="Walker CC Computer Science" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Walker CC Computer Science
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lesson 5. Tower Placement on a Grid
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Walker CC Computer Science" class="md-nav__button md-logo" aria-label="Walker CC Computer Science" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    Walker CC Computer Science
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    7183 Principles of Computing
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            7183 Principles of Computing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../p1-dodger/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    P1 Dodger
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            P1 Dodger
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p1-dodger/l1-scenes-nodes-and-your-first-script/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Scenes, Nodes, and Your First Script
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p1-dodger/l2-delta-and-frame-independent-movement/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Delta and Frame-Independent Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p1-dodger/l3-conditionals-and-spawning-hazards/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Conditionals and Spawning Hazards
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p1-dodger/l4-loops-waves-and-formations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Loops - Waves and Formations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p1-dodger/l5-score-game-over-restart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Score, Game Over, Restart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p1-dodger/l6-tuning-playtest-portfolio-close/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Tuning, Playtest, Portfolio Close
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../p2-top-down-shooter/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    P2 Top-Down Shooter
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            P2 Top-Down Shooter
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l1-vectors-and-8-way-movement/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Vectors and 8-Way Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l2-rotation-and-aiming/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Rotation and Aiming
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l3-firing-cooldowns-projectiles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Firing, Cooldowns, Projectiles
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l4-enemy-ai-chase-and-flee/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Enemy AI - Chase and Flee
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l5-health-damage-respawn/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Health, Damage, Respawn
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l6-dictionaries-pickups-and-inventory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Dictionaries - Pickups and Inventory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l7-hud-and-ui-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. HUD and UI Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l8-versions-backups-milestone-copies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. Versions, Backups, Milestone Copies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l9-waves-difficulty-game-feel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. Waves, Difficulty, Game Feel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l10-standalone-build-and-export/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 10. Standalone Build and Export
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l11-share-your-build-gather-feedback/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 11. Share Your Build, Gather Feedback
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p2-top-down-shooter/l12-polish-from-feedback-portfolio-close/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 12. Polish from Feedback, Portfolio Close
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    P3 Tower Defense
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            P3 Tower Defense
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l1-flowcharting-and-project-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Flowcharting and Project Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l2-waypoints-one-enemy-walks-the-path/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Waypoints - One Enemy Walks the Path
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l3-arrays-many-enemies-one-loop/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Arrays - Many Enemies, One Loop
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l4-functions-spawning-waves/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Functions - Spawning Waves
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Tower Placement on a Grid
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l6-targeting-nearest-enemy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Targeting - Nearest Enemy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l7-economy-currency-and-upgrades/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Economy - Currency and Upgrades
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l8-wave-scaling-and-win-lose/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. Wave Scaling and Win/Lose
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l9-save-and-load-with-json/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. Save and Load with JSON
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l10-playtest-telemetry-and-charts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 10. Playtest Telemetry and Charts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l11-balance-pass-portfolio-close/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 11. Balance Pass, Portfolio Close
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../p4-platformer/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    P4 Platformer
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            P4 Platformer
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p4-platformer/l1-gravity-jumping-physics-bodies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Gravity, Jumping, Physics Bodies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p4-platformer/l2-tilemaps-and-level-layout/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Tilemaps and Level Layout
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p4-platformer/l3-enemy-state-machines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Enemy State Machines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p4-platformer/l4-animation-sound-camera/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Animation, Sound, Camera
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p4-platformer/l5-multiple-levels-and-transitions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Multiple Levels and Transitions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p4-platformer/l6-collectibles-and-saved-progress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Collectibles and Saved Progress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p4-platformer/l7-polish-sprint-ethics-and-bias/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Polish Sprint - Ethics and Bias
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p4-platformer/l8-build-sprint-careers-and-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. Build Sprint - Careers and Credentials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../p4-platformer/l9-final-build-package-rehearse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. Final Build, Package, Rehearse
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../web-database/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    7185 Website and Database Development
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            7185 Website and Database Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../web-database/u1-html/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U1 HTML
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            U1 HTML
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l1-html-basics-elements-and-attributes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. HTML Basics, Elements, and Attributes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l2-formatting-quotations-comments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Formatting, Quotations, Comments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l3-colors-and-links/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Colors and Links
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l4-images-paths-page-title/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Images, Paths, Page Title
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l5-creative-commons-and-copyright/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Creative Commons and Copyright
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l6-tables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Tables
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l7-lists/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Lists
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l8-div-classes-and-id/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. Div, Classes, and Id
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l9-buttons-iframes-head/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. Buttons, Iframes, Head
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l10-layout-and-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 10. Layout and Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l11-forms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 11. Forms
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l12-input-types-and-attributes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 12. Input Types and Attributes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u1-html/l13-entities-accessibility-validate-and-deploy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 13. Entities, Accessibility, Validate and Deploy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../web-database/u2-css-core/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U2 CSS Core
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            U2 CSS Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l1-css-syntax-selectors-the-cascade/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. CSS Syntax, Selectors, the Cascade
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l2-colors-and-backgrounds/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Colors and Backgrounds
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l3-borders-margins-padding/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Borders, Margins, Padding
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l4-the-box-model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. The Box Model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l5-text-and-fonts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Text and Fonts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l6-icons-links-lists/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Icons, Links, Lists
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l7-tables-display-max-width/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Tables, Display, Max-width
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l8-position-z-index-overflow/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. Position, Z-index, Overflow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l9-float-inline-block-align/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. Float, Inline-block, Align
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l10-combinators-and-pseudo-classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 10. Combinators and Pseudo-classes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l11-navigation-bars-and-dropdowns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 11. Navigation Bars and Dropdowns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l12-image-galleries-and-sprites/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 12. Image Galleries and Sprites
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l13-forms-counters-units/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 13. Forms, Counters, Units
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l14-specificity-and-important/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 14. Specificity and !important
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u2-css-core/l15-website-layout-project-1-due/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 15. Website Layout - Project 1 Due
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../web-database/u3-css-adv-and-responsive/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U3 CSS Adv. & Responsive
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            U3 CSS Adv. & Responsive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l1-rounded-corners-borders-backgrounds/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Rounded Corners, Borders, Backgrounds
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l2-gradients-shadows-text-effects/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Gradients, Shadows, Text Effects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l3-2d-and-3d-transforms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. 2D and 3D Transforms
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l4-transitions-and-animations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Transitions and Animations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l5-image-treatments-and-masking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Image Treatments and Masking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l6-components-and-css-variables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Components and CSS Variables
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l7-flexbox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Flexbox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l8-css-grid/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. CSS Grid
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l9-wireframing-and-responsive-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. Wireframing and Responsive Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l10-responsive-media-and-testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 10. Responsive Media and Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../web-database/u3-css-adv-and-responsive/l11-responsive-rebuild-seo-project-2-due/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 11. Responsive Rebuild, SEO - Project 2 Due
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    7184 Software Development
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            7184 Software Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/u1-java-foundations/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U1 Java Foundations
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            U1 Java Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l1-systems-software-compilers-and-hello-world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Systems Software, Compilers, and Hello World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l2-variables-constants-and-data-types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Variables, Constants, and Data Types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l3-operators-arithmetic-and-casting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Operators, Arithmetic, and Casting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l4-strings-and-text-formatting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Strings and Text Formatting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l5-scanner-input-and-pseudocode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Scanner Input and Pseudocode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l6-conditionals-if-else-if-else/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Conditionals - if, else if, else
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l7-switch-ternary-and-coding-to-spec/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Switch, Ternary, and Coding to Spec
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l8-while-loops-and-the-game-loop/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. While Loops and the Game Loop
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l9-for-loops-and-nested-loops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. For Loops and Nested Loops
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l10-methods-parameters-and-return-values/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 10. Methods, Parameters, and Return Values
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l11-arrays-and-2d-game-boards/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 11. Arrays and 2D Game Boards
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l12-random-math-and-algorithm-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 12. Random, Math, and Algorithm Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u1-java-foundations/l13-debugging-and-documentation-in-vs-code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 13. Debugging and Documentation in VS Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/u2-objects-and-classes/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U2 Objects and Classes
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            U2 Objects and Classes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u2-objects-and-classes/l1-classes-objects-and-constructors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Classes, Objects, and Constructors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u2-objects-and-classes/l2-encapsulation-and-access-modifiers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Encapsulation and Access Modifiers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u2-objects-and-classes/l3-static-vs-instance-members/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Static vs Instance Members
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u2-objects-and-classes/l4-composition-and-arraylists-of-objects/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Composition and ArrayLists of Objects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u2-objects-and-classes/l5-tostring-equals-and-class-documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. toString, equals, and Class Documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u2-objects-and-classes/l6-console-game-playtest-project-1-due/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Console Game Playtest - Project 1 Due
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/u3-javafx-and-the-game-loop/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U3 JavaFX and the Game Loop
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            U3 JavaFX and the Game Loop
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l1-javafx-setup-stage-scene-first-window/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. JavaFX Setup - Stage, Scene, First Window
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l2-git-and-github-for-java-projects/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Git and GitHub for Java Projects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l3-canvas-and-graphicscontext-drawing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Canvas and GraphicsContext Drawing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l4-animationtimer-game-loop-and-delta-time/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. AnimationTimer - Game Loop and Delta Time
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l5-keyboard-input-and-player-movement/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Keyboard Input and Player Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l6-building-a-sprite-class/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Building a Sprite Class
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l7-mouse-input-and-aiming/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Mouse Input and Aiming
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l8-collision-detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. Collision Detection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l9-arraylists-of-sprites-spawn-and-remove/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. ArrayLists of Sprites - Spawn and Remove
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l10-images-and-sprite-sheets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 10. Images and Sprite Sheets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l11-sound-and-music/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 11. Sound and Music
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l12-hud-labels-buttons-layout-panes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 12. HUD - Labels, Buttons, Layout Panes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l13-menus-scene-switching-game-states/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 13. Menus, Scene Switching, Game States
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l14-score-lives-game-over-restart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 14. Score, Lives, Game Over, Restart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l15-enemy-behavior-chase-flee-patrol/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 15. Enemy Behavior - Chase, Flee, Patrol
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l16-sprite-animation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 16. Sprite Animation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l17-file-i-o-saving-the-high-score/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 17. File I/O - Saving the High Score
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l18-refactoring-extract-method-and-class/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 18. Refactoring - Extract Method and Class
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l19-use-case-testing-and-playtest/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 19. Use-Case Testing and Playtest
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l20-packaging-a-runnable-jar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 20. Packaging a Runnable JAR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u3-javafx-and-the-game-loop/l21-showcase-and-portfolio-close-project-2-due/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 21. Showcase and Portfolio Close - Project 2 Due
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/u4-python-reboot/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U4 Python Reboot
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            U4 Python Reboot
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u4-python-reboot/l1-python-reboot-interpreted-vs-compiled-vs-code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Python Reboot - Interpreted vs Compiled, VS Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u4-python-reboot/l2-the-pcep-exam-and-diagnostic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. The PCEP Exam and Diagnostic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u4-python-reboot/l3-variables-dynamic-typing-and-i-o/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Variables, Dynamic Typing, and I/O
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u4-python-reboot/l4-control-flow-and-functions-review/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Control Flow and Functions Review
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u4-python-reboot/l5-diagnostic-review-and-project-kickoff/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Diagnostic Review and Project Kickoff
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/u5-pcep-block-1/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U5 PCEP Block 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            U5 PCEP Block 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u5-pcep-block-1/l1-data-types-and-literals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Data Types and Literals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u5-pcep-block-1/l2-numeral-systems-binary-octal-hex/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Numeral Systems (Binary, Octal, Hex)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u5-pcep-block-1/l3-arithmetic-operators-and-precedence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Arithmetic Operators and Precedence
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u5-pcep-block-1/l4-assignment-operators-and-print/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Assignment Operators and print()
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u5-pcep-block-1/l5-input-and-type-conversion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. input() and Type Conversion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u5-pcep-block-1/l6-block-1-checkpoint-and-review/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Block 1 Checkpoint and Review
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/u6-pcep-block-2/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U6 PCEP Block 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            U6 PCEP Block 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l1-comparisons-and-booleans/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Comparisons and Booleans
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l2-if-elif-else/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. if / elif / else
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l3-logical-operators-and-short-circuit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Logical Operators and Short-Circuit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l4-while-loops-break-continue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. while Loops, break, continue
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l5-while-else-and-loop-guards/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. while-else and Loop Guards
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l6-for-loops-and-range/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. for Loops and range()
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l7-for-else-and-iteration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. for-else and Iteration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l8-nested-loops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. Nested Loops
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l9-bitwise-operators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. Bitwise Operators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u6-pcep-block-2/l10-block-2-checkpoint-and-review/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 10. Block 2 Checkpoint and Review
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/u7-pcep-block-3/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U7 PCEP Block 3
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            U7 PCEP Block 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u7-pcep-block-3/l1-lists-indexing-and-mutability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Lists - Indexing and Mutability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u7-pcep-block-3/l2-list-methods/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. List Methods
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u7-pcep-block-3/l3-slicing-and-aliasing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Slicing and Aliasing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u7-pcep-block-3/l4-2d-and-nested-lists/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. 2D and Nested Lists
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u7-pcep-block-3/l5-tuples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Tuples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u7-pcep-block-3/l6-dictionaries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Dictionaries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u7-pcep-block-3/l7-strings-as-sequences/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Strings as Sequences
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u7-pcep-block-3/l8-block-3-checkpoint-and-review/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. Block 3 Checkpoint and Review
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/u8-pcep-block-4/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U8 PCEP Block 4
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            U8 PCEP Block 4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u8-pcep-block-4/l1-defining-and-calling-functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. Defining and Calling Functions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u8-pcep-block-4/l2-parameters-positional-keyword-default/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Parameters - Positional, Keyword, Default
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u8-pcep-block-4/l3-return-values-and-tuples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Return Values and Tuples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u8-pcep-block-4/l4-scope-local-and-global/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Scope - Local and Global
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u8-pcep-block-4/l5-recursion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Recursion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u8-pcep-block-4/l6-functions-with-lists-and-dicts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Functions with Lists and Dicts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u8-pcep-block-4/l7-exceptions-try-except-else-finally/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Exceptions - try/except/else/finally
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u8-pcep-block-4/l8-raising-and-handling-exceptions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 8. Raising and Handling Exceptions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u8-pcep-block-4/l9-block-4-checkpoint-and-review/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 9. Block 4 Checkpoint and Review
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../software-development/u9-exam-readiness/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    U9 Exam Readiness
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            U9 Exam Readiness
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u9-exam-readiness/l1-pcep-item-formats-deep-dive/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 1. PCEP Item Formats Deep-Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u9-exam-readiness/l2-mock-exam-1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 2. Mock Exam 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u9-exam-readiness/l3-mock-1-review-and-reteach/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 3. Mock 1 Review and Reteach
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u9-exam-readiness/l4-mock-exam-2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 4. Mock Exam 2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u9-exam-readiness/l5-mock-2-review-and-final-drills/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 5. Mock 2 Review and Final Drills
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u9-exam-readiness/l6-sit-pcep-30-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 6. Sit PCEP-30-02
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../software-development/u9-exam-readiness/l7-python-project-showcase-and-portfolio-close/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lesson 7. Python Project Showcase and Portfolio Close
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../capstone/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    7253 Software Development Capstone
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            7253 Software Development Capstone
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../capstone/orient-orientation/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Orient Orientation
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Orient Orientation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/orient-orientation/m0-course-orientation-and-self-guided-model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 0. Course Orientation & Self-Guided Model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../capstone/p1-javascript-for-react/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    P1 JavaScript for React
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            P1 JavaScript for React
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m1-js-refresher-and-diagnostic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 1. JS Refresher & Diagnostic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m2-functions-deep-dive/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 2. Functions Deep-Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m3-array-methods/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 3. Array Methods
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m4-es6-syntax/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 4. ES6+ Syntax
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m5-objects-and-immutability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 5. Objects & Immutability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m6-classes-and-oop/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 6. Classes & OOP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m7-data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 7. Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m8-es-modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 8. ES Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m9-async-javascript/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 9. Async JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p1-javascript-for-react/m10-modern-syntax-and-tooling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 10. Modern Syntax & Tooling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../capstone/p2-react-js/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    P2 React.js
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            P2 React.js
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p2-react-js/m1-setup-and-jsx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 1. Setup & JSX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p2-react-js/m2-components-and-props/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 2. Components & Props
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p2-react-js/m3-state-usestate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 3. State - useState
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p2-react-js/m4-events-and-forms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 4. Events & Forms
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p2-react-js/m5-lists-and-conditional-rendering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 5. Lists & Conditional Rendering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p2-react-js/m6-useeffect-and-data-fetching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 6. useEffect & Data Fetching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p2-react-js/m7-component-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 7. Component Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p2-react-js/m8-custom-hooks-and-context/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 8. Custom Hooks & Context
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capstone/p2-react-js/m9-capstone-proposal-wireframe-and-api-locked/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module 9. Capstone — Proposal, wireframe & API locked
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="tower-placement-on-a-grid">Tower Placement on a Grid<a class="headerlink" href="#tower-placement-on-a-grid" title="Permanent link">&para;</a></h1>
+<p><em>7183 Principles of Computing &middot; P3 Tower Defense &middot; Lesson 5</em></p>
+<div class="lesson-aim">
+<p><strong>Aim</strong> &mdash; I can <em>[student-facing target — from build guide]</em></p>
+<p><em>Standard 7183.D1.7</em></p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Coming soon</p>
+<p>Notes for this lesson are not published yet.
+Scheduled for <strong>Black</strong> Wed, Nov 4, 2026 &middot; <strong>Gold</strong> Thu, Nov 5, 2026.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Warren Central High School / Walker Career Center - Software Development pathway
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/narmstro2020" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.sections", "navigation.indexes", "navigation.top", "navigation.tracking", "toc.follow", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../assets/pathway.js"></script>
+      
+    
+  </body>
+</html>

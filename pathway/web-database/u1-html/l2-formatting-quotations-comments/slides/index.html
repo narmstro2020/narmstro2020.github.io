@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web Dev U1 L2 — Formatting, Quotations, and Comments</title>
+<style>
+  :root {
+    --ink:      #14161a;
+    --muted:    #6b7280;
+    --faint:    #c9ced6;
+    --bg:       #fbfaf7;
+    --panel:    #ffffff;
+    --accent:   #2f6bff;
+    --accent-soft: #e3ecff;
+    --warn:     #d1491f;
+    --warn-soft:#fdeae3;
+    --ok:       #0f7a52;
+    --rule:     #e2e0da;
+  }
+  [data-theme="dark"] {
+    --ink:      #f2f4f8;
+    --muted:    #9aa3b2;
+    --faint:    #3a4150;
+    --bg:       #11141a;
+    --panel:    #191d26;
+    --accent:   #6d9bff;
+    --accent-soft: #1e2b47;
+    --warn:     #ff8a63;
+    --warn-soft:#3a2118;
+    --ok:       #4fd39c;
+    --rule:     #2a2f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- fixed 1600x900 stage, scaled to fit any projector ---- */
+  #stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 84px 100px 96px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ---- type ---- */
+  .eyebrow {
+    font-size: 26px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 34px;
+  }
+  h1 { font-size: 92px; line-height: 1.06; margin: 0 0 28px; letter-spacing: -.02em; font-weight: 800; }
+  h1.small { font-size: 68px; }
+  h1.big   { font-size: 112px; }
+  h2 { font-size: 54px; line-height: 1.12; margin: 0 0 24px; font-weight: 750; letter-spacing: -.01em; }
+  p  { font-size: 34px; line-height: 1.42; margin: 0 0 18px; max-width: 26em; }
+  .slide.center p { margin-left: auto; margin-right: auto; }
+  .lede { font-size: 40px; }
+  .note { font-size: 27px; color: var(--muted); font-style: italic; }
+  strong { font-weight: 800; }
+  em.hl { font-style: normal; color: var(--accent); font-weight: 800; }
+  .warnline { color: var(--warn); font-weight: 800; }
+
+  code, .mono {
+    font-family: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em;
+    background: var(--accent-soft); color: var(--ink);
+    padding: .06em .34em; border-radius: 6px; white-space: nowrap;
+  }
+
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul li {
+    font-size: 33px; line-height: 1.34; margin-bottom: 20px;
+    padding-left: 46px; position: relative;
+  }
+  ul li::before {
+    content: ""; position: absolute; left: 8px; top: .52em;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+  }
+  ol.steps { margin: 0; padding: 0; counter-reset: s; list-style: none; }
+  ol.steps li {
+    font-size: 32px; line-height: 1.3; margin-bottom: 22px;
+    padding-left: 64px; position: relative; counter-increment: s;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 25px; font-weight: 800; display: grid; place-items: center;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .cols.wide-right { grid-template-columns: 0.85fr 1.15fr; }
+  .cols.wide-left  { grid-template-columns: 1.15fr 0.85fr; }
+  .stack > * + * { margin-top: 26px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+  .card {
+    background: var(--panel); border: 3px solid var(--rule); border-radius: 18px;
+    padding: 34px 32px; text-align: left;
+  }
+  .card .term {
+    font-size: 40px; font-weight: 850; letter-spacing: .02em; color: var(--accent);
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .card .def { font-size: 27px; line-height: 1.34; color: var(--ink); }
+
+  table.tbl { border-collapse: collapse; width: 100%; font-size: 29px; }
+  table.tbl td { padding: 20px 22px; border-bottom: 2px solid var(--rule); vertical-align: top; line-height: 1.3; }
+  table.tbl tr:last-child td { border-bottom: none; }
+  table.tbl td:first-child { font-weight: 700; width: 44%; }
+  table.tbl td:last-child { color: var(--muted); }
+
+  .callout {
+    border-left: 10px solid var(--accent); background: var(--accent-soft);
+    padding: 24px 30px; border-radius: 0 14px 14px 0; font-size: 30px; line-height: 1.35;
+  }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  .bigrule { display: block; font-size: 60px; font-weight: 850; line-height: 1.14; letter-spacing: -.015em; }
+  .bigrule + .bigrule { margin-top: 12px; }
+
+  figure { margin: 0; width: 100%; }
+  figure svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 25px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* ---- svg design language ---- */
+  .s-ink   { stroke: var(--ink);   fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .s-mut   { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-dash  { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-dasharray: 10 9; stroke-linecap: round; }
+  .s-acc   { stroke: var(--accent);fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-warn  { stroke: var(--warn);  fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .f-panel { fill: var(--panel); stroke: var(--rule); stroke-width: 3; }
+  .f-acc   { fill: var(--accent); }
+  .f-accs  { fill: var(--accent-soft); }
+  .f-faint { fill: var(--faint); }
+  .t       { fill: var(--ink);   font-size: 26px; font-weight: 650;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-sm    { fill: var(--muted); font-size: 22px; font-weight: 600;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-lg    { fill: var(--ink);   font-size: 32px; font-weight: 800;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-mono  { fill: var(--ink);   font-size: 24px; font-weight: 600;
+             font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; }
+  .t-acc   { fill: var(--accent); }
+  .t-warn  { fill: var(--warn); }
+
+  /* ---- chrome ---- */
+  #bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 6px;
+    background: transparent; z-index: 40;
+  }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .18s ease; }
+  #counter {
+    position: fixed; right: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  #title-tag {
+    position: fixed; left: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--faint); letter-spacing: .06em;
+  }
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--ink); color: var(--bg);
+    padding: 22px 34px 30px; font-size: 24px; line-height: 1.4;
+    display: none; border-top: 6px solid var(--accent);
+  }
+  #notes.on { display: block; }
+  #notes b { color: #ffd479; }
+  #help {
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,12,16,.94); color: #f4f6fa;
+    display: none; place-items: center; text-align: left;
+  }
+  #help.on { display: grid; }
+  #help .box { font-size: 26px; line-height: 1.9; }
+  #help kbd {
+    display: inline-block; min-width: 2.4em; text-align: center;
+    background: #2a3040; border: 2px solid #454e63; border-bottom-width: 4px;
+    border-radius: 8px; padding: 2px 10px; margin-right: 18px;
+    font-family: Consolas, monospace; font-size: 22px;
+  }
+  #help h3 { font-size: 34px; margin: 0 0 22px; }
+  #help p { font-size: 21px; color: #9aa3b2; max-width: none; margin-top: 26px; }
+
+  /* ---- print / PDF export ---- */
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: #fff; }
+    #stage-wrap { position: static; display: block; }
+    #stage { width: 1600px; height: auto; transform: none !important; }
+    .slide {
+      position: relative; inset: auto;
+      display: flex !important; width: 1600px; height: 900px;
+      break-after: page; page-break-after: always;
+    }
+    #bar, #counter, #notes, #help, #title-tag { display: none !important; }
+  }
+
+  /* ---- code blocks ---- */
+  /* `code, .mono` above is written for INLINE chips: pill background, padding,
+     and white-space: nowrap. Those rules also match <code> inside <pre>, which
+     collapses a listing onto one unwrapped line. Undo them for blocks and give
+     the block its own frame. Colors are the deck's own tokens, so the dark
+     theme follows automatically. */
+  pre {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border: 2px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  pre code, pre .mono {
+    display: block;
+    white-space: pre;
+    tab-size: 4;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div id="stage-wrap"><div id="stage">
+
+<!-- ============================================================ 1 -->
+<section class="slide center">
+  <div class="eyebrow">Bell Work</div>
+  <h1 class="small">These two look <em class="hl">exactly</em> the same<br>in a browser.</h1>
+  <figure style="margin-top:10px">
+    <svg viewBox="0 0 1200 200" role="img" aria-label="The tags strong and b, both rendering the word important in identical bold text">
+      <text x="300" y="70" text-anchor="middle" class="t-mono" font-size="34">&lt;strong&gt;important&lt;/strong&gt;</text>
+      <text x="900" y="70" text-anchor="middle" class="t-mono" font-size="34">&lt;b&gt;important&lt;/b&gt;</text>
+      <path d="M600 30 V170" class="s-dash"/>
+      <rect x="180" y="106" width="240" height="60" rx="8" class="f-panel"/>
+      <text x="300" y="148" text-anchor="middle" class="t-lg">important</text>
+      <rect x="780" y="106" width="240" height="60" rx="8" class="f-panel"/>
+      <text x="900" y="148" text-anchor="middle" class="t-lg">important</text>
+    </svg>
+  </figure>
+  <p class="note" style="margin-top:18px">So why does HTML have both? 60 seconds. Then hands.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="slide">
+  <h1 class="small">The tag says what the content <em class="hl">means</em>,<br>not what it looks like.</h1>
+  <figure>
+    <svg viewBox="0 0 1400 300" role="img" aria-label="strong means importance and a screen reader emphasises it, while b only means bold-looking and means nothing to anything">
+      <rect x="30" y="30" width="620" height="230" rx="16" class="f-accs"/>
+      <rect x="30" y="30" width="620" height="230" rx="16" class="s-acc"/>
+      <text x="340" y="86" text-anchor="middle" class="t-mono t-acc" font-size="30">&lt;strong&gt;</text>
+      <text x="340" y="140" text-anchor="middle" class="t">"this is <tspan class="t-acc">important</tspan>"</text>
+      <text x="340" y="196" text-anchor="middle" class="t-sm">a screen reader emphasises it</text>
+      <text x="340" y="230" text-anchor="middle" class="t-sm">a search engine notices it</text>
+
+      <rect x="750" y="30" width="620" height="230" rx="16" class="f-panel"/>
+      <text x="1060" y="86" text-anchor="middle" class="t-mono" font-size="30">&lt;b&gt;</text>
+      <text x="1060" y="140" text-anchor="middle" class="t">"make this <tspan class="t-warn">look bold</tspan>"</text>
+      <text x="1060" y="196" text-anchor="middle" class="t-sm t-warn">means nothing to anything</text>
+      <text x="1060" y="230" text-anchor="middle" class="t-sm">it's a paint job</text>
+    </svg>
+  </figure>
+  <p style="margin-top:22px"><strong>Same as last class.</strong> Headings were an outline, not sizes.
+    Emphasis is meaning, not bold. <em class="hl">Every time, the visual result is identical and one version
+    carries meaning.</em></p>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="slide center">
+  <div class="eyebrow">Two pairs, one rule</div>
+  <div class="cards">
+    <div class="card">
+      <div class="term">&lt;strong&gt;</div>
+      <div class="def">This is <strong>important</strong>. Use it.</div>
+    </div>
+    <div class="card">
+      <div class="term">&lt;em&gt;</div>
+      <div class="def">Say this with <strong>stress</strong>. Use it.</div>
+    </div>
+    <div class="card" style="border-style:dashed">
+      <div class="term" style="color:var(--muted)">&lt;b&gt; &lt;i&gt;</div>
+      <div class="def">Just bold. Just italic. <strong>No meaning at all.</strong></div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:40px">When both work, <strong>pick the one that means something.</strong></p>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="slide">
+  <div class="cols wide-right">
+    <div>
+      <span class="bigrule" style="font-size:54px">If everything<br>is important,</span>
+      <span class="bigrule" style="font-size:54px; color:var(--warn)">nothing is.</span>
+      <p style="margin-top:26px">Emphasis is a <strong>budget</strong>. Spend it.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 780 340" role="img" aria-label="A page with two emphasised phrases next to a page where every phrase is bold and nothing stands out">
+        <rect x="20" y="24" width="340" height="286" rx="12" class="f-panel"/>
+        <text x="190" y="62" text-anchor="middle" class="t-lg t-acc">&#10003;</text>
+        <rect x="48" y="86" width="284" height="12" rx="6" class="f-faint"/>
+        <rect x="48" y="112" width="150" height="12" rx="6" class="f-acc"/>
+        <rect x="206" y="112" width="126" height="12" rx="6" class="f-faint"/>
+        <rect x="48" y="138" width="284" height="12" rx="6" class="f-faint"/>
+        <rect x="48" y="164" width="230" height="12" rx="6" class="f-faint"/>
+        <rect x="48" y="196" width="284" height="12" rx="6" class="f-faint"/>
+        <rect x="48" y="222" width="96" height="12" rx="6" class="f-acc"/>
+        <rect x="152" y="222" width="180" height="12" rx="6" class="f-faint"/>
+        <rect x="48" y="248" width="200" height="12" rx="6" class="f-faint"/>
+        <text x="190" y="294" text-anchor="middle" class="t-sm">your eye lands somewhere</text>
+
+        <rect x="420" y="24" width="340" height="286" rx="12" class="f-panel"/>
+        <text x="590" y="62" text-anchor="middle" class="t-lg t-warn">&#10007;</text>
+        <rect x="448" y="86" width="284" height="12" rx="6" class="f-acc"/>
+        <rect x="448" y="112" width="284" height="12" rx="6" class="f-acc"/>
+        <rect x="448" y="138" width="284" height="12" rx="6" class="f-acc"/>
+        <rect x="448" y="164" width="230" height="12" rx="6" class="f-acc"/>
+        <rect x="448" y="196" width="284" height="12" rx="6" class="f-acc"/>
+        <rect x="448" y="222" width="284" height="12" rx="6" class="f-acc"/>
+        <rect x="448" y="248" width="200" height="12" rx="6" class="f-acc"/>
+        <text x="590" y="294" text-anchor="middle" class="t-sm t-warn">it lands nowhere</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="slide center">
+  <div class="eyebrow">Today's learning target</div>
+  <h1 class="small">I can use semantic formatting to mark up meaning,<br>and comments to label and debug my page.</h1>
+  <p class="note" style="margin-top:6px; max-width:none">Students will demonstrate this learning target with
+    at least <strong>80% accuracy</strong> on today's checkpoint.</p>
+  <div class="callout warn" style="margin-top:26px; max-width:1120px; text-align:left">
+    Your page will look <strong>almost exactly the same</strong> at the end of today.
+    <strong>That is not a bug.</strong> What changed is that a machine can now tell which parts matter.
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="slide">
+  <div class="eyebrow">Today's deliverables</div>
+  <ol class="steps" style="font-size:.95em">
+    <li><strong>Real emphasis</strong> — at least two <code>&lt;strong&gt;</code> or <code>&lt;em&gt;</code>
+        that mark <em>meaning</em>, not decoration</li>
+    <li><strong>A quote</strong> — one <code>&lt;blockquote&gt;</code> with a <code>&lt;cite&gt;</code>,
+        from a real source about your topic</li>
+    <li><strong>Comments</strong> labelling each section of your page</li>
+    <li><strong>Still works</strong> — one <code>&lt;h1&gt;</code>, everything closed, renders clean</li>
+    <li><strong>Committed and pushed</strong> to your <code>my-site</code> repo</li>
+  </ol>
+  <div class="callout" style="margin-top:24px; font-size:27px">
+    Same file as last class. <strong>Nobody starts a new page.</strong> The site is one continuous build all
+    the way to December.
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="slide">
+  <div class="eyebrow">Step 1 · 22 minutes</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>Mark up real emphasis</h2>
+      <ul>
+        <li>Read your own paragraphs from last class</li>
+        <li>Find the phrases that genuinely <strong>matter</strong> — wrap those in
+            <code>&lt;strong&gt;</code></li>
+        <li>Find a phrase you'd <em>say differently out loud</em> — wrap that in <code>&lt;em&gt;</code></li>
+        <li>edit &rarr; <strong>save</strong> &rarr; <strong>refresh</strong></li>
+      </ul>
+      <div class="callout warn" style="font-size:26px">
+        <strong>Two or three per page is plenty.</strong> Not two or three per sentence.
+      </div>
+    </div>
+    <div>
+      <span class="bigrule" style="font-size:44px">You have to read<br>your own writing<br>to do this.</span>
+      <p class="note" style="margin-top:28px">That's the assignment. Nobody can tell you which of your
+        sentences is the important one.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="slide">
+  <div class="eyebrow">Step 2 · 15 minutes</div>
+  <div class="cols">
+    <div>
+      <h2>Quote a source</h2>
+      <ol class="steps">
+        <li>Find a <strong>real quote</strong> about your topic — one or two sentences</li>
+        <li>Wrap it in <code>&lt;blockquote&gt;</code></li>
+        <li>Name the source underneath in <code>&lt;cite&gt;</code></li>
+      </ol>
+      <div class="callout" style="font-size:26px">
+        <code>&lt;blockquote&gt;</code> is a <strong>block</strong> — it stands apart from your paragraphs
+        on its own. That's the browser telling you it's someone else's words.
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 400" role="img" aria-label="A page showing a normal paragraph, then an indented blockquote set apart, then the cited source underneath in italics">
+        <rect x="30" y="24" width="640" height="352" rx="12" class="f-panel"/>
+        <rect x="66" y="66" width="568" height="11" rx="5" class="f-faint"/>
+        <rect x="66" y="90" width="470" height="11" rx="5" class="f-faint"/>
+
+        <rect x="112" y="138" width="8" height="120" rx="4" class="f-acc"/>
+        <rect x="146" y="150" width="450" height="11" rx="5" class="f-faint"/>
+        <rect x="146" y="176" width="450" height="11" rx="5" class="f-faint"/>
+        <rect x="146" y="202" width="330" height="11" rx="5" class="f-faint"/>
+        <text x="620" y="164" text-anchor="end" class="t-sm t-acc">&lt;blockquote&gt;</text>
+        <text x="620" y="238" text-anchor="end" class="t-sm t-acc">set apart</text>
+
+        <text x="112" y="292" class="t-sm" font-style="italic">Indiana Department of Natural Resources</text>
+        <text x="112" y="326" class="t-sm t-acc">&lt;cite&gt; — who said it</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="slide">
+  <div class="eyebrow">Step 3 · 12 minutes</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>Comments do<br>two different jobs</h2>
+      <ul>
+        <li><strong>Notes.</strong> Label your sections so future-you can find things. Leave yourself a
+            <code>TODO</code>.</li>
+        <li><strong>A switch.</strong> Anything inside a comment <em>disappears from the page without being
+            deleted</em>.</li>
+      </ul>
+      <div class="callout" style="font-size:27px">
+        You already know this move from Python. <strong>Same idea, different symbols.</strong>
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 300" role="img" aria-label="The comment syntax with the opening and closing markers labelled">
+        <text x="350" y="90" text-anchor="middle" class="t-mono" font-size="34">&lt;!-- like this --&gt;</text>
+        <path d="M188 116 V166 H130" class="s-acc"/>
+        <text x="118" y="174" text-anchor="end" class="t-sm t-acc">opens</text>
+        <path d="M512 116 V166 H580" class="s-acc"/>
+        <text x="592" y="174" class="t-sm t-acc">closes</text>
+        <text x="350" y="240" text-anchor="middle" class="t-sm t-warn">two dashes on each side. Miss one and</text>
+        <text x="350" y="272" text-anchor="middle" class="t-sm t-warn">the comment text shows up on your page.</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="slide center">
+  <div class="eyebrow">Step 4 · Break it on purpose · 8 minutes</div>
+  <h1 class="big">Comment out<br>a whole section.</h1>
+  <p class="lede" style="margin-top:24px">Save. Refresh. <strong>Watch it disappear.</strong> Then put it back.</p>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="slide">
+  <div class="cols wide-right">
+    <div>
+      <span class="bigrule">Turn things off</span>
+      <span class="bigrule">until it works.</span>
+      <span class="bigrule">Then turn the last</span>
+      <span class="bigrule">one back on.</span>
+      <p class="note" style="margin-top:30px">That's how you find what's broken &mdash; in HTML, in Python,
+        in anything.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 400" role="img" aria-label="A broken page, then sections commented out one at a time until the page works, identifying the broken section">
+        <rect x="30" y="20" width="290" height="80" rx="10" class="f-panel"/>
+        <text x="175" y="56" text-anchor="middle" class="t">page is broken</text>
+        <text x="175" y="84" text-anchor="middle" class="t-sm t-warn">something in here</text>
+
+        <path d="M175 108 V140" class="s-acc"/>
+        <path d="M165 126 l10 14 10 -14" class="s-acc"/>
+
+        <rect x="30" y="150" width="290" height="80" rx="10" class="f-panel"/>
+        <text x="175" y="186" text-anchor="middle" class="t">comment out half</text>
+        <text x="175" y="214" text-anchor="middle" class="t-sm t-acc">works now?</text>
+
+        <path d="M175 238 V270" class="s-acc"/>
+        <path d="M165 256 l10 14 10 -14" class="s-acc"/>
+
+        <rect x="30" y="280" width="290" height="90" rx="10" class="f-accs"/>
+        <rect x="30" y="280" width="290" height="90" rx="10" class="s-acc"/>
+        <text x="175" y="318" text-anchor="middle" class="t t-acc">it's in the half</text>
+        <text x="175" y="350" text-anchor="middle" class="t t-acc">you turned off</text>
+
+        <path d="M350 200 H420" class="s-dash"/>
+        <text x="440" y="180" class="t-sm">repeat until</text>
+        <text x="440" y="212" class="t-sm">you're looking at</text>
+        <text x="440" y="244" class="t-sm">one tag</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="slide">
+  <h2>If it's not working</h2>
+  <table class="tbl" style="font-size:27px">
+    <tr><td>Your comment text is on the page</td><td>Malformed <code>&lt;!--&nbsp;--&gt;</code> — usually a missing dash</td></tr>
+    <tr><td>Half your page vanished</td><td>An unclosed comment swallowed everything after it</td></tr>
+    <tr><td>Everything is bold</td><td>You emphasised every sentence. Pick two</td></tr>
+    <tr><td>The quote isn't indented</td><td><code>&lt;blockquote&gt;</code> not closed, or you used <code>&lt;q&gt;</code></td></tr>
+    <tr><td>Your edits don't appear</td><td>Didn't <strong>save</strong>, or didn't <strong>refresh</strong></td></tr>
+  </table>
+  <p class="lede" style="margin-top:26px"><strong>An unclosed thing swallows the rest of the page.</strong>
+    Same as last class's missing <code>&lt;/h1&gt;</code>.</p>
+</section>
+
+<!-- ============================================================ 13 -->
+<section class="slide">
+  <h2>Finished early?</h2>
+  <div class="callout" style="margin-bottom:24px; font-size:28px">
+    Look up <code>&lt;strong&gt;</code> vs <code>&lt;b&gt;</code> on W3Schools or MDN. Then write
+    <strong>one sentence in a comment</strong> in your own file saying which you'll use and why.
+  </div>
+  <ul>
+    <li>Then look at <code>&lt;mark&gt;</code>, <code>&lt;sub&gt;</code>, and <code>&lt;sup&gt;</code>
+        &mdash; and decide whether your page actually needs any of them.</li>
+    <li>Most pages don't. <strong>Deciding not to use a tag is a real decision.</strong></li>
+  </ul>
+</section>
+
+<!-- ============================================================ 14 -->
+<section class="slide">
+  <div class="eyebrow">Before you leave</div>
+  <ol class="steps" style="font-size:1.02em">
+    <li><strong>Save.</strong> Refresh once more.</li>
+    <li><strong>Source Control</strong> &rarr; type a message &rarr; <strong>Commit</strong> &rarr;
+        <strong>Sync</strong><br>
+        <span class="note" style="font-size:24px">same repo as last class — you're not publishing again</span></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">U1 L2 — Formatting and Comments</span><br>
+        <span class="note" style="font-size:24px">your repo link + one screenshot of the page</span></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">U1 L2 — Exit Ticket</span></li>
+  </ol>
+  <div class="callout" style="margin-top:22px; font-size:32px; font-weight:800">
+    What's the difference between <code style="font-size:.9em">&lt;strong&gt;</code> and
+    <code style="font-size:.9em">&lt;b&gt;</code>?
+  </div>
+</section>
+
+</div></div>
+</div></div>
+
+<div id="title-tag">WEB DEV · U1 L2</div>
+<div id="counter"></div>
+<div id="bar"><i></i></div>
+<div id="notes"></div>
+
+<div id="help">
+  <div class="box">
+    <h3>Deck controls</h3>
+    <div><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>space</kbd> also next</div>
+    <div><kbd>←</kbd> previous slide</div>
+    <div><kbd>F</kbd> fullscreen — use this on the projector</div>
+    <div><kbd>T</kbd> light / dark — dark for a bright room</div>
+    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>?</kbd> close this</div>
+    <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage   = document.getElementById('stage');
+  var notes   = document.getElementById('notes');
+  var help    = document.getElementById('help');
+  var counter = document.getElementById('counter');
+  var barFill = document.querySelector('#bar i');
+  var i = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    barFill.style.width = ((i + 1) / slides.length * 100) + '%';
+    notes.innerHTML = '<b>Slide ' + (i + 1) + '</b> &nbsp; ' +
+      (slides[i].dataset.note || '<span style="opacity:.5">no note</span>');
+    try { location.hash = 's' + (i + 1); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === '?' || e.key === '/') { help.classList.toggle('on'); }
+    else if (e.key === 'Escape') { help.classList.remove('on'); }
+    else if (e.key === 't' || e.key === 'T') {
+      var b = document.body;
+      b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (help.classList.contains('on')) { help.classList.remove('on'); return; }
+    show(e.clientX < window.innerWidth * 0.25 ? i - 1 : i + 1);
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+
+  var start = parseInt((location.hash || '').replace('#s', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>

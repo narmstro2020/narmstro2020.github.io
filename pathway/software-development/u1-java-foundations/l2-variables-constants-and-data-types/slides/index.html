@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software Dev U1 L2 — Variables, Constants, and Data Types</title>
+<style>
+  :root {
+    --ink:      #14161a;
+    --muted:    #6b7280;
+    --faint:    #c9ced6;
+    --bg:       #fbfaf7;
+    --panel:    #ffffff;
+    --accent:   #2f6bff;
+    --accent-soft: #e3ecff;
+    --warn:     #d1491f;
+    --warn-soft:#fdeae3;
+    --ok:       #0f7a52;
+    --rule:     #e2e0da;
+  }
+  [data-theme="dark"] {
+    --ink:      #f2f4f8;
+    --muted:    #9aa3b2;
+    --faint:    #3a4150;
+    --bg:       #11141a;
+    --panel:    #191d26;
+    --accent:   #6d9bff;
+    --accent-soft: #1e2b47;
+    --warn:     #ff8a63;
+    --warn-soft:#3a2118;
+    --ok:       #4fd39c;
+    --rule:     #2a2f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- fixed 1600x900 stage, scaled to fit any projector ---- */
+  #stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 84px 100px 96px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ---- type ---- */
+  .eyebrow {
+    font-size: 26px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 34px;
+  }
+  h1 { font-size: 92px; line-height: 1.06; margin: 0 0 28px; letter-spacing: -.02em; font-weight: 800; }
+  h1.small { font-size: 68px; }
+  h1.big   { font-size: 112px; }
+  h2 { font-size: 54px; line-height: 1.12; margin: 0 0 24px; font-weight: 750; letter-spacing: -.01em; }
+  p  { font-size: 34px; line-height: 1.42; margin: 0 0 18px; max-width: 26em; }
+  .slide.center p { margin-left: auto; margin-right: auto; }
+  .lede { font-size: 40px; }
+  .note { font-size: 27px; color: var(--muted); font-style: italic; }
+  strong { font-weight: 800; }
+  em.hl { font-style: normal; color: var(--accent); font-weight: 800; }
+  .warnline { color: var(--warn); font-weight: 800; }
+
+  code, .mono {
+    font-family: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em;
+    background: var(--accent-soft); color: var(--ink);
+    padding: .06em .34em; border-radius: 6px; white-space: nowrap;
+  }
+
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul li {
+    font-size: 33px; line-height: 1.34; margin-bottom: 20px;
+    padding-left: 46px; position: relative;
+  }
+  ul li::before {
+    content: ""; position: absolute; left: 8px; top: .52em;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+  }
+  ol.steps { margin: 0; padding: 0; counter-reset: s; list-style: none; }
+  ol.steps li {
+    font-size: 32px; line-height: 1.3; margin-bottom: 22px;
+    padding-left: 64px; position: relative; counter-increment: s;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 25px; font-weight: 800; display: grid; place-items: center;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .cols.wide-right { grid-template-columns: 0.85fr 1.15fr; }
+  .cols.wide-left  { grid-template-columns: 1.15fr 0.85fr; }
+  .stack > * + * { margin-top: 26px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+  .card {
+    background: var(--panel); border: 3px solid var(--rule); border-radius: 18px;
+    padding: 34px 32px; text-align: left;
+  }
+  .card .term {
+    font-size: 40px; font-weight: 850; letter-spacing: .02em; color: var(--accent);
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .card .def { font-size: 27px; line-height: 1.34; color: var(--ink); }
+
+  table.tbl { border-collapse: collapse; width: 100%; font-size: 29px; }
+  table.tbl td { padding: 20px 22px; border-bottom: 2px solid var(--rule); vertical-align: top; line-height: 1.3; }
+  table.tbl tr:last-child td { border-bottom: none; }
+  table.tbl td:first-child { font-weight: 700; width: 44%; }
+  table.tbl td:last-child { color: var(--muted); }
+
+  .callout {
+    border-left: 10px solid var(--accent); background: var(--accent-soft);
+    padding: 24px 30px; border-radius: 0 14px 14px 0; font-size: 30px; line-height: 1.35;
+  }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  .bigrule { display: block; font-size: 60px; font-weight: 850; line-height: 1.14; letter-spacing: -.015em; }
+  .bigrule + .bigrule { margin-top: 12px; }
+
+  figure { margin: 0; width: 100%; }
+  figure svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 25px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* ---- svg design language ---- */
+  .s-ink   { stroke: var(--ink);   fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .s-mut   { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-dash  { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-dasharray: 10 9; stroke-linecap: round; }
+  .s-acc   { stroke: var(--accent);fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-warn  { stroke: var(--warn);  fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .f-panel { fill: var(--panel); stroke: var(--rule); stroke-width: 3; }
+  .f-acc   { fill: var(--accent); }
+  .f-accs  { fill: var(--accent-soft); }
+  .f-faint { fill: var(--faint); }
+  .t       { fill: var(--ink);   font-size: 26px; font-weight: 650;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-sm    { fill: var(--muted); font-size: 22px; font-weight: 600;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-lg    { fill: var(--ink);   font-size: 32px; font-weight: 800;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-mono  { fill: var(--ink);   font-size: 24px; font-weight: 600;
+             font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; }
+  .t-acc   { fill: var(--accent); }
+  .t-warn  { fill: var(--warn); }
+
+  /* ---- chrome ---- */
+  #bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 6px;
+    background: transparent; z-index: 40;
+  }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .18s ease; }
+  #counter {
+    position: fixed; right: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  #title-tag {
+    position: fixed; left: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--faint); letter-spacing: .06em;
+  }
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--ink); color: var(--bg);
+    padding: 22px 34px 30px; font-size: 24px; line-height: 1.4;
+    display: none; border-top: 6px solid var(--accent);
+  }
+  #notes.on { display: block; }
+  #notes b { color: #ffd479; }
+  #help {
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,12,16,.94); color: #f4f6fa;
+    display: none; place-items: center; text-align: left;
+  }
+  #help.on { display: grid; }
+  #help .box { font-size: 26px; line-height: 1.9; }
+  #help kbd {
+    display: inline-block; min-width: 2.4em; text-align: center;
+    background: #2a3040; border: 2px solid #454e63; border-bottom-width: 4px;
+    border-radius: 8px; padding: 2px 10px; margin-right: 18px;
+    font-family: Consolas, monospace; font-size: 22px;
+  }
+  #help h3 { font-size: 34px; margin: 0 0 22px; }
+  #help p { font-size: 21px; color: #9aa3b2; max-width: none; margin-top: 26px; }
+
+  /* ---- print / PDF export ---- */
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: #fff; }
+    #stage-wrap { position: static; display: block; }
+    #stage { width: 1600px; height: auto; transform: none !important; }
+    .slide {
+      position: relative; inset: auto;
+      display: flex !important; width: 1600px; height: 900px;
+      break-after: page; page-break-after: always;
+    }
+    #bar, #counter, #notes, #help, #title-tag { display: none !important; }
+  }
+
+  /* ---- code blocks ---- */
+  /* `code, .mono` above is written for INLINE chips: pill background, padding,
+     and white-space: nowrap. Those rules also match <code> inside <pre>, which
+     collapses a listing onto one unwrapped line. Undo them for blocks and give
+     the block its own frame. Colors are the deck's own tokens, so the dark
+     theme follows automatically. */
+  pre {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border: 2px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  pre code, pre .mono {
+    display: block;
+    white-space: pre;
+    tab-size: 4;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div id="stage-wrap"><div id="stage">
+
+<!-- ============================================================ 1 -->
+<section class="slide center">
+  <div class="eyebrow">Bell Work</div>
+  <h1 class="small">In Python this is legal:</h1>
+  <figure style="margin-top:4px">
+    <svg viewBox="0 0 1200 190" role="img" aria-label="Python code assigning 100 to health and then assigning the string dead to the same variable">
+      <text x="600" y="66" text-anchor="middle" class="t-mono" font-size="34">health = 100</text>
+      <text x="600" y="132" text-anchor="middle" class="t-mono" font-size="34">health = "dead"</text>
+    </svg>
+  </figure>
+  <p class="note" style="margin-top:10px">Should it be? 60 seconds. Then hands.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="slide">
+  <h1 class="small">The type is a <em class="hl">promise</em> to the compiler.<br>And it is checked.</h1>
+  <figure>
+    <svg viewBox="0 0 1400 300" role="img" aria-label="Python allows health to become the string dead and nobody stops you, while Java declares health as an int forever and refuses to build otherwise">
+      <rect x="30" y="30" width="620" height="230" rx="16" class="f-panel"/>
+      <text x="340" y="80" text-anchor="middle" class="t-lg">Python</text>
+      <text x="340" y="132" text-anchor="middle" class="t-mono" font-size="22">health = 100</text>
+      <text x="340" y="180" text-anchor="middle" class="t-sm">health can become anything, later</text>
+      <text x="340" y="216" text-anchor="middle" class="t-sm t-warn">nobody stops you</text>
+      <text x="340" y="246" text-anchor="middle" class="t-sm t-warn">you find out at 2am</text>
+
+      <rect x="750" y="30" width="620" height="230" rx="16" class="f-accs"/>
+      <rect x="750" y="30" width="620" height="230" rx="16" class="s-acc"/>
+      <text x="1060" y="80" text-anchor="middle" class="t-lg t-acc">Java</text>
+      <text x="1060" y="132" text-anchor="middle" class="t-mono t-acc" font-size="22">int health = 100;</text>
+      <text x="1060" y="180" text-anchor="middle" class="t-sm">health is an <tspan class="t-acc">int</tspan> forever</text>
+      <text x="1060" y="216" text-anchor="middle" class="t-sm">try otherwise and</text>
+      <text x="1060" y="246" text-anchor="middle" class="t-sm">it will <tspan class="t-acc">not build</tspan></text>
+    </svg>
+  </figure>
+  <p style="margin-top:22px"><strong>Last class:</strong> errors move from runtime to compile time.
+    <strong>Today:</strong> this is <em class="hl">what kind</em> of error moves &mdash; and why.</p>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="slide">
+  <div class="eyebrow">The types you'll actually use</div>
+  <table class="tbl" style="font-size:27px">
+    <tr><td><code>int</code></td><td>whole numbers &mdash; health, score, damage, counts</td></tr>
+    <tr><td><code>double</code></td><td>decimals &mdash; percentages, multipliers, timers</td></tr>
+    <tr><td><code>boolean</code></td><td><code>true</code> / <code>false</code> &mdash; isAlive, hasKey, playing</td></tr>
+    <tr><td><code>char</code></td><td>one character &mdash; grid tiles, menu keys</td></tr>
+    <tr><td style="color:var(--muted)"><code>long</code> <code>short</code> <code>byte</code> <code>float</code></td>
+        <td>they exist. Rarely, in this course</td></tr>
+  </table>
+  <div class="callout warn" style="margin-top:20px; font-size:27px">
+    <code>String</code> is <strong>not</strong> a primitive. Capital <strong>S</strong>, because it's a
+    <em>class</em> &mdash; and that difference matters in Lesson 4.
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="slide">
+  <div class="cols wide-left">
+    <div>
+      <h2><code>final</code> means<br>assign once</h2>
+      <ul>
+        <li><code>static final int MAX_HEALTH = 100;</code> above <code>main</code></li>
+        <li><strong>SCREAMING_SNAKE_CASE</strong> by convention &mdash; so you can spot a constant
+            instantly</li>
+        <li>Try to change it later and it <strong>won't build</strong></li>
+      </ul>
+    </div>
+    <div>
+      <span class="bigrule" style="font-size:40px">A constant is a decision<br>you make <em class="hl">once</em><br>and give a name,</span>
+      <p style="margin-top:24px">so that changing your game's balance later is <strong>one edit</strong>
+        and not a treasure hunt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="slide center">
+  <div class="eyebrow">Today's learning target</div>
+  <h1 class="small">I can declare typed variables and constants,<br>and explain what the type promises the compiler.</h1>
+  <p class="note" style="margin-top:6px; max-width:none">Students will demonstrate this learning target with
+    at least <strong>80% accuracy</strong> on today's checkpoint.</p>
+  <div class="callout warn" style="margin-top:26px; max-width:1120px; text-align:left">
+    Your printed stat block is going to look <strong>bad</strong> &mdash; crooked, unaligned, ugly.
+    <strong>That is not a bug.</strong> Making text look right is Lesson 4, and it's a whole period.
+    Don't fight it with spaces.
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="slide">
+  <div class="eyebrow">Today's deliverables</div>
+  <ol class="steps" style="font-size:.95em">
+    <li><strong>Two <code>static final</code> constants</strong> above <code>main</code></li>
+    <li><strong>A player stat block</strong> &mdash; at least four different types, including one
+        <code>boolean</code> and one <code>double</code></li>
+    <li><strong>An opponent</strong> &mdash; name, health, power</li>
+    <li><strong>All of it printed</strong> to the console</li>
+    <li><strong>Rethemed to your game</strong>, then committed and pushed</li>
+  </ol>
+  <div class="callout" style="margin-top:24px; font-size:27px">
+    Same file, same project, same repo as Tuesday. <strong>Nobody starts anything new.</strong>
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="slide">
+  <div class="eyebrow">Step 1 · 17 minutes</div>
+  <div class="cols">
+    <div>
+      <h2>Constants, then<br>the stat block</h2>
+      <ol class="steps">
+        <li>Two <code>static final</code> constants <strong>above</strong> <code>main</code></li>
+        <li>Inside <code>main</code>: your player's name, health, gold, level</li>
+        <li>A <code>boolean</code> &mdash; are they alive?</li>
+        <li>A <code>double</code> &mdash; a chance, a rate, a multiplier</li>
+      </ol>
+      <div class="callout" style="font-size:26px">
+        Start health <em>from</em> the constant: <code>int health = MAX_HEALTH;</code>
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 660 400" role="img" aria-label="Code layout showing constants at class level above main, and variables declared inside main">
+        <rect x="24" y="24" width="612" height="352" rx="12" class="f-panel"/>
+        <text x="52" y="66" class="t-mono" font-size="20">public class Main {</text>
+        <rect x="66" y="86" width="530" height="76" rx="8" class="f-accs"/>
+        <text x="86" y="118" class="t-mono t-acc" font-size="19">static final int MAX_HEALTH = 100;</text>
+        <text x="86" y="148" class="t-mono t-acc" font-size="19">static final int STARTING_GOLD = 20;</text>
+        <text x="52" y="200" class="t-mono" font-size="20">    public static void main(...) {</text>
+        <rect x="86" y="220" width="510" height="106" rx="8" class="f-panel"/>
+        <text x="106" y="250" class="t-mono" font-size="19">String playerName = "...";</text>
+        <text x="106" y="280" class="t-mono" font-size="19">int health = MAX_HEALTH;</text>
+        <text x="106" y="310" class="t-mono" font-size="19">boolean alive = true;</text>
+        <text x="52" y="356" class="t-mono" font-size="20">    }</text>
+      </svg>
+      <figcaption>Constants live <em>above</em> <code>main</code>. Variables live <em>inside</em> it.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="slide">
+  <div class="eyebrow">Step 2 · 12 minutes</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>An opponent,<br>then print it all</h2>
+      <ul>
+        <li>Give them a name, health, and power</li>
+        <li>Print the whole stat block with <code>System.out.println</code></li>
+        <li>Glue text and values together with <code>+</code></li>
+      </ul>
+      <div class="callout warn" style="font-size:26px">
+        It will look bad. <strong>Leave it.</strong> Lesson 4 is an entire period about making text
+        look right.
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 300" role="img" aria-label="A console showing an unaligned stat block with values printed after labels">
+        <rect x="24" y="24" width="652" height="252" rx="10" class="f-panel"/>
+        <path d="M24 66 H676" class="s-mut"/>
+        <text x="48" y="54" class="t-sm">TERMINAL</text>
+        <text x="48" y="108" class="t-mono" font-size="19">Fighter: Nameless</text>
+        <text x="48" y="142" class="t-mono" font-size="19">Health: 100 / 100</text>
+        <text x="48" y="176" class="t-mono" font-size="19">Gold: 20</text>
+        <text x="48" y="210" class="t-mono" font-size="19">Alive: true</text>
+        <text x="48" y="244" class="t-mono" font-size="19">Crit chance: 0.15</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="slide center">
+  <div class="eyebrow">Step 3 · Break it on purpose · 18 minutes</div>
+  <h1 class="big">Tell Java that<br><code style="font-size:.62em">health = "dead"</code>.</h1>
+  <p class="lede" style="margin-top:24px">Then run it. <strong>Read what it says out loud.</strong></p>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="slide">
+  <h2>Three breaks, three messages</h2>
+  <table class="tbl" style="font-size:25px">
+    <tr><td><code>health = "dead";</code></td>
+        <td><span class="warnline">incompatible types: String cannot be converted to int</span><br>
+            <em>The headline of the whole day.</em></td></tr>
+    <tr><td><code>MAX_HEALTH = 200;</code></td>
+        <td>cannot assign a value to final variable MAX_HEALTH<br>
+            <em><code>final</code> is not a suggestion.</em></td></tr>
+    <tr><td><code>int level = 2;</code><br><span class="note" style="font-size:22px">when <code>level</code> already exists</span></td>
+        <td>variable level is already defined<br>
+            <em>A name means one thing, in one place.</em></td></tr>
+  </table>
+  <p class="lede" style="margin-top:20px">Every one of these happened <strong>before the program
+    existed.</strong></p>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="slide">
+  <div class="cols wide-right">
+    <div>
+      <span class="bigrule">Python finds</span>
+      <span class="bigrule">these at 2am.</span>
+      <span class="bigrule" style="color:var(--ok)">Java found them</span>
+      <span class="bigrule" style="color:var(--ok)">before lunch.</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 720 340" role="img" aria-label="A timeline showing an untyped bug surviving all the way to a user, versus a typed bug caught at compile time before the program is built">
+        <text x="60" y="52" class="t-lg">no type promise</text>
+        <path d="M60 96 H660" class="s-mut"/>
+        <circle cx="120" cy="96" r="10" class="f-faint"/><text x="120" y="134" text-anchor="middle" class="t-sm">write</text>
+        <circle cx="300" cy="96" r="10" class="f-faint"/><text x="300" y="134" text-anchor="middle" class="t-sm">ship</text>
+        <circle cx="620" cy="96" r="13" class="f-acc"/>
+        <text x="620" y="134" text-anchor="middle" class="t-sm t-warn">crash</text>
+        <text x="620" y="162" text-anchor="middle" class="t-sm t-warn">(a user found it)</text>
+
+        <text x="60" y="238" class="t-lg t-acc">type promise</text>
+        <path d="M60 282 H660" class="s-mut"/>
+        <circle cx="120" cy="282" r="10" class="f-faint"/><text x="120" y="320" text-anchor="middle" class="t-sm">write</text>
+        <circle cx="190" cy="282" r="13" class="f-acc"/>
+        <text x="190" y="320" text-anchor="middle" class="t-sm t-acc">caught</text>
+        <path d="M240 262 l0 40" class="s-warn"/>
+        <text x="300" y="288" class="t-sm">never got past here</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="slide">
+  <div class="eyebrow">Step 4 · 10 minutes</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>Make it your game</h2>
+      <ul>
+        <li>Every <strong>name</strong> &mdash; the fighter, the opponent, the constants</li>
+        <li>Every <strong>number</strong> &mdash; how much health <em>should</em> a starting player have?</li>
+        <li>Pick types that fit: is that thing a whole number, a decimal, or a yes/no?</li>
+      </ul>
+      <div class="callout" style="font-size:26px">
+        This stat block is the skeleton of your Project 1 game. The numbers you pick today are the ones
+        you'll be balancing in six weeks.
+      </div>
+    </div>
+    <div>
+      <span class="bigrule" style="font-size:46px">Your fighter.</span>
+      <span class="bigrule" style="font-size:46px">Your monster.</span>
+      <span class="bigrule" style="font-size:46px">Your numbers.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 13 -->
+<section class="slide">
+  <h2>If it's not working</h2>
+  <table class="tbl" style="font-size:25px">
+    <tr><td><code>incompatible types: String cannot be converted to int</code></td>
+        <td>You put text in a number. <strong>Today's lesson &mdash; celebrate it</strong></td></tr>
+    <tr><td><code>cannot assign a value to final variable X</code></td><td>You tried to change a constant</td></tr>
+    <tr><td><code>variable X might not have been initialized</code></td><td>Declared, but never given a value</td></tr>
+    <tr><td><code>cannot find symbol</code></td><td>Typo, wrong case, or declared inside <code>main</code> and used outside</td></tr>
+    <tr><td><code>non-static variable X cannot be referenced from a static context</code></td>
+        <td>Your constant is missing the word <code>static</code></td></tr>
+  </table>
+  <div class="callout" style="margin-top:18px; font-size:26px">
+    <strong>Why <code>static</code>?</strong> Because <code>main</code> is static, and a static thing can only
+    reach other static things. <em>We'll explain that properly in Unit 2.</em>
+  </div>
+</section>
+
+<!-- ============================================================ 14 -->
+<section class="slide">
+  <h2>Finished early?</h2>
+  <div class="callout" style="margin-bottom:24px; font-size:28px">
+    Print <code>Integer.MAX_VALUE</code>. Then add <strong>1</strong> to it and print that.
+  </div>
+  <ul>
+    <li>It goes <strong>negative</strong>. Not an error &mdash; no warning, no crash.</li>
+    <li>So why can't an <code>int</code> hold every number? What is <code>long</code> actually for?</li>
+    <li>Write your answer as a comment in your own file.</li>
+  </ul>
+  <p class="lede" style="margin-top:22px">This is the same shape as Tuesday's third break:
+    <strong>it worked, and it was still wrong.</strong></p>
+</section>
+
+<!-- ============================================================ 15 -->
+<section class="slide">
+  <div class="eyebrow">Before you leave</div>
+  <ol class="steps" style="font-size:1.02em">
+    <li><strong>Run it once more.</strong> Make sure it still compiles</li>
+    <li><strong>Source Control</strong> &rarr; commit message &rarr; <strong>Commit</strong> &rarr;
+        <strong>Sync</strong><br>
+        <span class="note" style="font-size:24px">same <code>arena-game</code> repo &mdash; you're not
+        publishing again</span></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">U1 L2 — The Stat Block</span><br>
+        <span class="note" style="font-size:24px">repo link + one screenshot of your console output</span></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">U1 L2 — Exit Ticket</span></li>
+  </ol>
+  <div class="callout" style="margin-top:18px; font-size:29px; font-weight:800">
+    Why does Java need <code style="font-size:.9em">int score = 0;</code>
+    when Python only needed <code style="font-size:.9em">score = 0</code>?
+  </div>
+</section>
+
+</div></div>
+</div></div>
+
+<div id="title-tag">SOFT DEV · U1 L2</div>
+<div id="counter"></div>
+<div id="bar"><i></i></div>
+<div id="notes"></div>
+
+<div id="help">
+  <div class="box">
+    <h3>Deck controls</h3>
+    <div><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>space</kbd> also next</div>
+    <div><kbd>←</kbd> previous slide</div>
+    <div><kbd>F</kbd> fullscreen — use this on the projector</div>
+    <div><kbd>T</kbd> light / dark — dark for a bright room</div>
+    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>?</kbd> close this</div>
+    <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage   = document.getElementById('stage');
+  var notes   = document.getElementById('notes');
+  var help    = document.getElementById('help');
+  var counter = document.getElementById('counter');
+  var barFill = document.querySelector('#bar i');
+  var i = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    barFill.style.width = ((i + 1) / slides.length * 100) + '%';
+    notes.innerHTML = '<b>Slide ' + (i + 1) + '</b> &nbsp; ' +
+      (slides[i].dataset.note || '<span style="opacity:.5">no note</span>');
+    try { location.hash = 's' + (i + 1); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === '?' || e.key === '/') { help.classList.toggle('on'); }
+    else if (e.key === 'Escape') { help.classList.remove('on'); }
+    else if (e.key === 't' || e.key === 'T') {
+      var b = document.body;
+      b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (help.classList.contains('on')) { help.classList.remove('on'); return; }
+    show(e.clientX < window.innerWidth * 0.25 ? i - 1 : i + 1);
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+
+  var start = parseInt((location.hash || '').replace('#s', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>

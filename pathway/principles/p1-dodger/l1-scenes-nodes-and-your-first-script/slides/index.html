@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dodger Day 1 — Scenes, Nodes, and Your First Script</title>
+<style>
+  :root {
+    --ink:      #14161a;
+    --muted:    #6b7280;
+    --faint:    #c9ced6;
+    --bg:       #fbfaf7;
+    --panel:    #ffffff;
+    --accent:   #2f6bff;
+    --accent-soft: #e3ecff;
+    --warn:     #d1491f;
+    --warn-soft:#fdeae3;
+    --ok:       #0f7a52;
+    --rule:     #e2e0da;
+  }
+  [data-theme="dark"] {
+    --ink:      #f2f4f8;
+    --muted:    #9aa3b2;
+    --faint:    #3a4150;
+    --bg:       #11141a;
+    --panel:    #191d26;
+    --accent:   #6d9bff;
+    --accent-soft: #1e2b47;
+    --warn:     #ff8a63;
+    --warn-soft:#3a2118;
+    --ok:       #4fd39c;
+    --rule:     #2a2f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- fixed 1600x900 stage, scaled to fit any projector ---- */
+  #stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 84px 100px 96px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ---- type ---- */
+  .eyebrow {
+    font-size: 26px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 34px;
+  }
+  h1 { font-size: 92px; line-height: 1.06; margin: 0 0 28px; letter-spacing: -.02em; font-weight: 800; }
+  h1.small { font-size: 68px; }
+  h1.big   { font-size: 112px; }
+  h2 { font-size: 54px; line-height: 1.12; margin: 0 0 24px; font-weight: 750; letter-spacing: -.01em; }
+  p  { font-size: 34px; line-height: 1.42; margin: 0 0 18px; max-width: 26em; }
+  .slide.center p { margin-left: auto; margin-right: auto; }
+  .lede { font-size: 40px; }
+  .note { font-size: 27px; color: var(--muted); font-style: italic; }
+  strong { font-weight: 800; }
+  em.hl { font-style: normal; color: var(--accent); font-weight: 800; }
+  .warnline { color: var(--warn); font-weight: 800; }
+
+  code, .mono {
+    font-family: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em;
+    background: var(--accent-soft); color: var(--ink);
+    padding: .06em .34em; border-radius: 6px; white-space: nowrap;
+  }
+
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul li {
+    font-size: 33px; line-height: 1.34; margin-bottom: 20px;
+    padding-left: 46px; position: relative;
+  }
+  ul li::before {
+    content: ""; position: absolute; left: 8px; top: .52em;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+  }
+  ol.steps { margin: 0; padding: 0; counter-reset: s; list-style: none; }
+  ol.steps li {
+    font-size: 32px; line-height: 1.3; margin-bottom: 22px;
+    padding-left: 64px; position: relative; counter-increment: s;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 25px; font-weight: 800; display: grid; place-items: center;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .cols.wide-right { grid-template-columns: 0.85fr 1.15fr; }
+  .cols.wide-left  { grid-template-columns: 1.15fr 0.85fr; }
+  .stack > * + * { margin-top: 26px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+  .card {
+    background: var(--panel); border: 3px solid var(--rule); border-radius: 18px;
+    padding: 34px 32px; text-align: left;
+  }
+  .card .term {
+    font-size: 40px; font-weight: 850; letter-spacing: .02em; color: var(--accent);
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .card .def { font-size: 27px; line-height: 1.34; color: var(--ink); }
+
+  table.tbl { border-collapse: collapse; width: 100%; font-size: 29px; }
+  table.tbl td { padding: 20px 22px; border-bottom: 2px solid var(--rule); vertical-align: top; line-height: 1.3; }
+  table.tbl tr:last-child td { border-bottom: none; }
+  table.tbl td:first-child { font-weight: 700; width: 44%; }
+  table.tbl td:last-child { color: var(--muted); }
+
+  .callout {
+    border-left: 10px solid var(--accent); background: var(--accent-soft);
+    padding: 24px 30px; border-radius: 0 14px 14px 0; font-size: 30px; line-height: 1.35;
+  }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  .bigrule { display: block; font-size: 60px; font-weight: 850; line-height: 1.14; letter-spacing: -.015em; }
+  .bigrule + .bigrule { margin-top: 12px; }
+
+  figure { margin: 0; width: 100%; }
+  figure svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 25px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* ---- svg design language ---- */
+  .s-ink   { stroke: var(--ink);   fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .s-mut   { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-dash  { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-dasharray: 10 9; stroke-linecap: round; }
+  .s-acc   { stroke: var(--accent);fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-warn  { stroke: var(--warn);  fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .f-panel { fill: var(--panel); stroke: var(--rule); stroke-width: 3; }
+  .f-acc   { fill: var(--accent); }
+  .f-accs  { fill: var(--accent-soft); }
+  .f-faint { fill: var(--faint); }
+  .t       { fill: var(--ink);   font-size: 26px; font-weight: 650;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-sm    { fill: var(--muted); font-size: 22px; font-weight: 600;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-lg    { fill: var(--ink);   font-size: 32px; font-weight: 800;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-mono  { fill: var(--ink);   font-size: 24px; font-weight: 600;
+             font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; }
+  .t-acc   { fill: var(--accent); }
+  .t-warn  { fill: var(--warn); }
+
+  /* ---- chrome ---- */
+  #bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 6px;
+    background: transparent; z-index: 40;
+  }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .18s ease; }
+  #counter {
+    position: fixed; right: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  #title-tag {
+    position: fixed; left: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--faint); letter-spacing: .06em;
+  }
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--ink); color: var(--bg);
+    padding: 22px 34px 30px; font-size: 24px; line-height: 1.4;
+    display: none; border-top: 6px solid var(--accent);
+  }
+  #notes.on { display: block; }
+  #notes b { color: #ffd479; }
+  #help {
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,12,16,.94); color: #f4f6fa;
+    display: none; place-items: center; text-align: left;
+  }
+  #help.on { display: grid; }
+  #help .box { font-size: 26px; line-height: 1.9; }
+  #help kbd {
+    display: inline-block; min-width: 2.4em; text-align: center;
+    background: #2a3040; border: 2px solid #454e63; border-bottom-width: 4px;
+    border-radius: 8px; padding: 2px 10px; margin-right: 18px;
+    font-family: Consolas, monospace; font-size: 22px;
+  }
+  #help h3 { font-size: 34px; margin: 0 0 22px; }
+  #help p { font-size: 21px; color: #9aa3b2; max-width: none; margin-top: 26px; }
+
+  /* ---- print / PDF export ---- */
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: #fff; }
+    #stage-wrap { position: static; display: block; }
+    #stage { width: 1600px; height: auto; transform: none !important; }
+    .slide {
+      position: relative; inset: auto;
+      display: flex !important; width: 1600px; height: 900px;
+      break-after: page; page-break-after: always;
+    }
+    #bar, #counter, #notes, #help, #title-tag { display: none !important; }
+  }
+
+  /* ---- code blocks ---- */
+  /* `code, .mono` above is written for INLINE chips: pill background, padding,
+     and white-space: nowrap. Those rules also match <code> inside <pre>, which
+     collapses a listing onto one unwrapped line. Undo them for blocks and give
+     the block its own frame. Colors are the deck's own tokens, so the dark
+     theme follows automatically. */
+  pre {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border: 2px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  pre code, pre .mono {
+    display: block;
+    white-space: pre;
+    tab-size: 4;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div id="stage-wrap"><div id="stage">
+
+<!-- ============================================================ 1 -->
+<section class="slide center">
+  <div class="eyebrow">Bell Work</div>
+  <h1>What is the computer doing<br>right now, this second,<br>while nothing is happening?</h1>
+  <p class="note">Think for 60 seconds. Then hands.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="slide">
+  <h1 class="small">It is <em class="hl">executing instructions</em>.</h1>
+  <figure>
+    <svg viewBox="0 0 1400 300" role="img" aria-label="A processor pulling a tape of tiny instructions through itself, one after another">
+      <rect x="40" y="86" width="190" height="130" rx="16" class="f-accs"/>
+      <rect x="40" y="86" width="190" height="130" rx="16" class="s-acc"/>
+      <text x="135" y="142" text-anchor="middle" class="t-lg t-acc">CPU</text>
+      <text x="135" y="180" text-anchor="middle" class="t-sm">one at a time</text>
+
+      <path d="M250 151 H310" class="s-acc"/>
+      <path d="M296 141 l16 10 -16 10" class="s-acc"/>
+
+      <g class="t-mono">
+        <rect x="330" y="116" width="150" height="70" rx="10" class="f-panel"/>
+        <text x="405" y="159" text-anchor="middle" class="t-mono">add</text>
+        <rect x="500" y="116" width="150" height="70" rx="10" class="f-panel"/>
+        <text x="575" y="159" text-anchor="middle" class="t-mono">copy</text>
+        <rect x="670" y="116" width="180" height="70" rx="10" class="f-panel"/>
+        <text x="760" y="159" text-anchor="middle" class="t-mono">compare</text>
+        <rect x="870" y="116" width="150" height="70" rx="10" class="f-panel"/>
+        <text x="945" y="159" text-anchor="middle" class="t-mono">jump</text>
+        <rect x="1040" y="116" width="150" height="70" rx="10" class="f-panel"/>
+        <text x="1115" y="159" text-anchor="middle" class="t-mono">add</text>
+      </g>
+      <text x="1230" y="159" class="t-sm">. . .</text>
+
+      <path d="M330 232 H1190" class="s-dash"/>
+      <text x="760" y="272" text-anchor="middle" class="t-sm">1,000,000,000+ every second — and every one of them is small and dumb</text>
+    </svg>
+  </figure>
+  <p style="margin-top:34px"><strong>Not thinking. Not deciding. Executing.</strong></p>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="slide center">
+  <div class="eyebrow">Prove it</div>
+  <h1 class="big">Tell me how to<br>draw a square.</h1>
+  <p class="lede" style="margin-top:24px">I will do <strong>exactly</strong> what you say.</p>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="slide">
+  <div class="cols wide-left">
+    <div>
+      <span class="bigrule">The computer does</span>
+      <span class="bigrule">exactly <em class="hl">what you said</em>,</span>
+      <span class="bigrule">not what you <em class="hl">meant</em>.</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 620 420" role="img" aria-label="Left: the instruction draw a line produces a squiggle. Right: what the speaker pictured was a neat square.">
+        <rect x="10" y="20" width="280" height="330" rx="16" class="f-panel"/>
+        <text x="150" y="62" text-anchor="middle" class="t-sm">WHAT YOU SAID</text>
+        <text x="150" y="104" text-anchor="middle" class="t-mono">"draw a line"</text>
+        <path d="M60 230 c22 -46 40 34 62 -12 c22 -46 40 40 62 -6 c18 -40 34 22 56 -4" class="s-warn"/>
+        <text x="150" y="316" text-anchor="middle" class="t-sm t-warn">a two-inch squiggle</text>
+
+        <rect x="330" y="20" width="280" height="330" rx="16" class="f-panel"/>
+        <text x="470" y="62" text-anchor="middle" class="t-sm">WHAT YOU MEANT</text>
+        <text x="470" y="104" text-anchor="middle" class="t-mono">"draw a line"</text>
+        <rect x="400" y="160" width="140" height="140" class="s-ink"/>
+        <text x="470" y="336" text-anchor="middle" class="t-sm">a side of a square</text>
+      </svg>
+      <figcaption>Every bug you hit this year is a version of this.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="slide center">
+  <div class="eyebrow">Three words you need</div>
+  <div class="cards">
+    <div class="card">
+      <div class="term">Scene</div>
+      <div class="def">A reusable <strong>thing</strong> — a player, a hazard, a whole level</div>
+    </div>
+    <div class="card">
+      <div class="term">Node</div>
+      <div class="def">A <strong>part</strong> that does one job — draws, detects a hit, keeps time</div>
+    </div>
+    <div class="card">
+      <div class="term">Scene tree</div>
+      <div class="def">Nodes arranged as <strong>parents and children</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="slide">
+  <h1 class="small">A scene is a <em class="hl">LEGO minifigure</em>.</h1>
+  <figure>
+    <svg viewBox="0 0 1400 400" role="img" aria-label="A minifigure whose head, body and legs are each labelled as a node, with the whole figure labelled as one scene, and faded copies stamped out beside it">
+      <!-- bracket = the scene -->
+      <path d="M64 54 h-26 v292 h26" class="s-acc"/>
+      <text x="30" y="208" text-anchor="middle" class="t-lg t-acc" transform="rotate(-90 30 208)">SCENE</text>
+
+      <!-- figure -->
+      <rect x="182" y="44" width="34" height="18" rx="6" class="s-ink"/>
+      <rect x="140" y="62" width="118" height="86" rx="18" class="f-accs"/>
+      <rect x="140" y="62" width="118" height="86" rx="18" class="s-ink"/>
+      <circle cx="172" cy="100" r="6" class="f-acc"/><circle cx="226" cy="100" r="6" class="f-acc"/>
+      <path d="M172 124 q27 18 54 0" class="s-ink"/>
+
+      <path d="M199 148 v22" class="s-ink"/>
+      <rect x="132" y="170" width="134" height="104" rx="12" class="f-panel"/>
+      <rect x="132" y="170" width="134" height="104" rx="12" class="s-ink"/>
+      <path d="M132 186 l-42 46 M266 186 l42 46" class="s-ink"/>
+
+      <rect x="136" y="282" width="58" height="76" rx="8" class="f-panel"/>
+      <rect x="136" y="282" width="58" height="76" rx="8" class="s-ink"/>
+      <rect x="204" y="282" width="58" height="76" rx="8" class="f-panel"/>
+      <rect x="204" y="282" width="58" height="76" rx="8" class="s-ink"/>
+
+      <!-- node labels -->
+      <path d="M270 100 H352" class="s-dash"/>
+      <text x="364" y="108" class="t">NODE — the head</text>
+      <path d="M320 222 H352" class="s-dash"/>
+      <text x="364" y="230" class="t">NODE — the body</text>
+      <path d="M274 320 H352" class="s-dash"/>
+      <text x="364" y="328" class="t">NODE — the legs</text>
+
+      <!-- stamped copies -->
+      <path d="M660 200 H744" class="s-acc"/>
+      <path d="M730 189 l16 11 -16 11" class="s-acc"/>
+      <text x="702" y="176" text-anchor="middle" class="t-sm t-acc">stamp</text>
+
+      <g class="f-faint">
+        <g transform="translate(790 96) scale(0.5)">
+          <rect x="0" y="0" width="118" height="86" rx="18"/><rect x="-8" y="108" width="134" height="104" rx="12"/>
+          <rect x="-4" y="220" width="58" height="76" rx="8"/><rect x="64" y="220" width="58" height="76" rx="8"/>
+        </g>
+        <g transform="translate(940 96) scale(0.5)">
+          <rect x="0" y="0" width="118" height="86" rx="18"/><rect x="-8" y="108" width="134" height="104" rx="12"/>
+          <rect x="-4" y="220" width="58" height="76" rx="8"/><rect x="64" y="220" width="58" height="76" rx="8"/>
+        </g>
+        <g transform="translate(1090 96) scale(0.5)">
+          <rect x="0" y="0" width="118" height="86" rx="18"/><rect x="-8" y="108" width="134" height="104" rx="12"/>
+          <rect x="-4" y="220" width="58" height="76" rx="8"/><rect x="64" y="220" width="58" height="76" rx="8"/>
+        </g>
+      </g>
+      <text x="1268" y="212" class="t-lg">× 100</text>
+      <text x="1010" y="308" text-anchor="middle" class="t-sm">design one figure → stamp out a hundred</text>
+    </svg>
+  </figure>
+  <p style="margin-top:20px"><strong>The nodes are its head, body, and legs.</strong></p>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="slide">
+  <div class="cols">
+    <div class="stack">
+      <div class="eyebrow" style="margin-bottom:10px">Standard D1.4</div>
+      <h2>What kind of software<br>is Godot?</h2>
+      <p><strong>It is not a game. It is a tool.</strong></p>
+      <div class="callout">Godot is <strong>software for making software</strong> — we are using the third kind to build the first kind.</div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 660 420" role="img" aria-label="Three categories of software stacked: applications, system software, and development tools, with Godot highlighted in development tools and an arrow showing it makes applications">
+        <rect x="200" y="24" width="420" height="96" rx="14" class="f-panel"/>
+        <text x="230" y="66" class="t-lg">applications</text>
+        <text x="230" y="100" class="t-sm">games · Word · Chrome</text>
+
+        <rect x="200" y="150" width="420" height="96" rx="14" class="f-panel"/>
+        <text x="230" y="192" class="t-lg">system software</text>
+        <text x="230" y="226" class="t-sm">Windows</text>
+
+        <rect x="200" y="276" width="420" height="112" rx="14" class="f-accs"/>
+        <rect x="200" y="276" width="420" height="112" rx="14" class="s-acc"/>
+        <text x="230" y="320" class="t-lg t-acc">development tools</text>
+        <text x="230" y="356" class="t-sm">GODOT — we are here</text>
+
+        <path d="M176 332 C92 332 92 72 176 72" class="s-acc"/>
+        <path d="M162 62 l16 10 -16 10" class="s-acc"/>
+        <text x="52" y="204" text-anchor="middle" class="t-sm t-acc" transform="rotate(-90 52 204)">makes</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="slide center">
+  <div class="eyebrow">Today's learning target</div>
+  <h1 class="small">I can build a scene tree in Godot<br>and write a script that moves my player<br>with the keyboard.</h1>
+  <p class="note" style="margin-top:6px; max-width:none">Students will demonstrate this learning
+    target with at least <strong>80% accuracy</strong> on today's checkpoint.</p>
+  <div class="callout" style="margin-top:26px; max-width:1080px; text-align:left">
+    Two halves. First we <strong>build the parts</strong> — the scene tree, on screen.
+    Then we <strong>write the code</strong> that makes them do something.
+  </div>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="slide">
+  <div class="eyebrow">Today's deliverables</div>
+  <div class="cols wide-left">
+    <div>
+      <ol class="steps" style="font-size:.88em">
+        <li><code>Player.tscn</code> — saved<br>
+            <span class="note" style="font-size:24px">Area2D + ColorRect + CollisionShape2D</span></li>
+        <li><code>Main.tscn</code> — runs on <strong>F5</strong><br>
+            <span class="note" style="font-size:24px">Player inside it, set as the Main Scene</span></li>
+        <li><code>Player.gd</code> — <strong>your square moves</strong><br>
+            <span class="note" style="font-size:24px">left and right, under the arrow keys</span></li>
+        <li><strong>Drive backup</strong><br>
+            <span class="note" style="font-size:24px">the whole folder, named <code>Dodger_L1_LastnameF</code></span></li>
+        <li><strong>Exit ticket</strong> — two sentences<br>
+            <span class="note" style="font-size:24px">the second Canvas assignment</span></li>
+      </ol>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 380" role="img" aria-label="Where the files live: the Dodger project folder inside Development\Godot, copied at the end of the period to a folder named Dodger underscore L1 underscore LastnameF in Google Drive">
+        <rect x="10" y="30" width="280" height="230" rx="12" class="f-panel"/>
+        <path d="M10 74 H290" class="s-mut"/>
+        <text x="30" y="60" class="t-sm">Development\Godot</text>
+        <text x="30" y="110" class="t-mono" font-size="20">Dodger\</text>
+        <text x="54" y="142" class="t-mono" font-size="20">project.godot</text>
+        <text x="54" y="176" class="t-mono" font-size="20">Player.tscn</text>
+        <text x="250" y="178" class="t-lg t-acc">✓</text>
+        <text x="54" y="210" class="t-mono" font-size="20">Main.tscn</text>
+        <text x="250" y="212" class="t-lg t-acc">✓</text>
+        <text x="150" y="296" text-anchor="middle" class="t-sm">you <tspan class="t-acc">work</tspan> here</text>
+
+        <path d="M304 150 H386" class="s-acc"/>
+        <path d="M372 139 l16 11 -16 11" class="s-acc"/>
+
+        <rect x="400" y="30" width="280" height="230" rx="12" class="f-panel"/>
+        <path d="M400 74 H680" class="s-mut"/>
+        <text x="420" y="60" class="t-sm">Google Drive</text>
+        <text x="420" y="118" class="t-mono" font-size="20">Dodger_L1_</text>
+        <text x="420" y="148" class="t-mono" font-size="20">LastnameF\</text>
+        <text x="640" y="136" class="t-lg t-acc">✓</text>
+        <text x="540" y="296" text-anchor="middle" class="t-sm">you <tspan class="t-acc">back up</tspan> here</text>
+
+        <text x="350" y="352" text-anchor="middle" class="t-sm">last five minutes — copy the whole folder across</text>
+      </svg>
+    </figure>
+  </div>
+  <div class="callout" style="margin-top:20px; font-size:26px">
+    <strong>Two Canvas submissions, both due tonight.</strong> Nothing is on paper —
+    if you didn't tap submit, you didn't turn it in.
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="slide">
+  <div class="eyebrow">Step 1 · 15 minutes</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>Make the project</h2>
+      <ol class="steps">
+        <li>Godot → <strong>Create</strong></li>
+        <li>Name it <code>Dodger</code></li>
+        <li>Save it in <code>Development\Godot</code> — <span class="warnline">not Google Drive</span></li>
+        <li>Renderer: <strong>Compatibility</strong></li>
+        <li><strong>Create &amp; Edit</strong></li>
+      </ol>
+      <div class="callout warn" style="margin-top:12px; font-size:26px">
+        Drive corrupts an open project. <strong>Drive is for backups only.</strong>
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 430" role="img" aria-label="The game window sized 1152 by 648 with its width and height labelled">
+        <text x="290" y="34" text-anchor="middle" class="t-sm">Project → Project Settings → Display → Window</text>
+        <rect x="58" y="86" width="464" height="261" rx="8" class="f-panel"/>
+        <path d="M58 116 H522" class="s-mut"/>
+        <circle cx="80" cy="101" r="6" class="f-faint"/>
+        <circle cx="100" cy="101" r="6" class="f-faint"/>
+        <circle cx="120" cy="101" r="6" class="f-faint"/>
+
+        <path d="M58 384 H522" class="s-acc"/>
+        <path d="M72 374 l-14 10 14 10 M508 374 l14 10 -14 10" class="s-acc"/>
+        <text x="290" y="368" text-anchor="middle" class="t-mono t-acc">1152</text>
+
+        <path d="M556 86 V347" class="s-acc"/>
+        <path d="M546 100 l10 -14 10 14 M546 333 l10 14 10 -14" class="s-acc"/>
+        <text x="578" y="226" class="t-mono t-acc">648</text>
+
+        <text x="290" y="240" text-anchor="middle" class="t-sm">Stretch Mode</text>
+        <text x="290" y="276" text-anchor="middle" class="t-mono">canvas_items</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="slide">
+  <div class="eyebrow">Step 2 · with Step 1</div>
+  <div class="cols">
+    <div>
+      <h2>The Player scene</h2>
+      <ol class="steps">
+        <li><strong>Scene → New Scene → Other Node</strong> → search <code>Area2D</code></li>
+        <li>Double-click the root, rename it <code>Player</code></li>
+        <li><code>Player</code> → <strong>+</strong> → <strong>ColorRect</strong><br>
+            <span class="mono" style="font-size:26px; background:none; padding:0; color:var(--muted)">Size 64 × 64 · Position −32, −32 · any colour</span></li>
+        <li><code>Player</code> → <strong>+</strong> → <strong>CollisionShape2D</strong><br>
+            <span class="mono" style="font-size:26px; background:none; padding:0; color:var(--muted)">Shape → New RectangleShape2D → Size 64 × 64</span></li>
+        <li><strong>Ctrl+S</strong> → save as <code>Player.tscn</code></li>
+      </ol>
+      <p class="note" style="margin-top:14px">Add both children first. The <strong>numbers</strong>
+        are the next three slides.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 680 430" role="img" aria-label="The Scene dock with the Player root selected and the add-node plus button highlighted">
+        <rect x="40" y="30" width="420" height="330" rx="12" class="f-panel"/>
+        <path d="M40 84 H460" class="s-mut"/>
+        <text x="64" y="68" class="t">Scene</text>
+
+        <circle cx="424" cy="57" r="21" class="f-accs"/>
+        <circle cx="424" cy="57" r="21" class="s-acc"/>
+        <path d="M424 46 v22 M413 57 h22" class="s-acc"/>
+
+        <rect x="52" y="100" width="396" height="46" rx="8" class="f-accs"/>
+        <text x="76" y="131" class="t t-acc">Player</text>
+        <text x="200" y="131" class="t-sm">Area2D</text>
+
+        <path d="M92 146 v46 h30 M92 192 v56 h30" class="s-mut"/>
+        <text x="132" y="200" class="t">ColorRect</text>
+        <text x="132" y="256" class="t">CollisionShape2D</text>
+
+        <path d="M448 70 L516 122" class="s-dash"/>
+        <text x="528" y="118" class="t-sm t-acc">select Player</text>
+        <text x="528" y="146" class="t-sm t-acc">first</text>
+      </svg>
+      <figcaption>If the node you want isn’t in the list — you have a <em>child</em> selected.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 10a -->
+<section class="slide">
+  <div class="eyebrow">Step 2a · where every number lives</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>The Inspector</h2>
+      <p>Click a node in the <strong>Scene</strong> dock and the <strong>Inspector</strong> on the
+         right fills with <em>that node's</em> properties. Different node, different list.</p>
+      <ol class="steps">
+        <li><strong>Select the node first.</strong><br>
+            <span class="note" style="font-size:25px">Empty Inspector = nothing is selected</span></li>
+        <li>Type in the <strong>filter box</strong> at the top — <code>size</code>, <code>position</code>,
+            <code>color</code></li>
+        <li>Click the box, type the number, press <strong>Enter</strong><br>
+            <span class="note" style="font-size:25px">X and Y are two separate boxes</span></li>
+      </ol>
+      <div class="callout" style="font-size:27px">
+        Can't find a property? <strong>Filter for it.</strong> That's the whole trick.
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 470" role="img" aria-label="Selecting the ColorRect node in the Scene dock fills the Inspector on the right, where a filter box at the top narrows the property list down to Position and Size">
+        <rect x="20" y="70" width="272" height="228" rx="12" class="f-panel"/>
+        <path d="M20 118 H292" class="s-mut"/>
+        <text x="42" y="104" class="t-sm">Scene</text>
+        <text x="44" y="158" class="t">Player</text>
+        <path d="M44 170 v30 h14 M44 200 v62 h14" class="s-mut"/>
+        <rect x="60" y="178" width="216" height="44" rx="8" class="f-accs"/>
+        <text x="86" y="208" class="t t-acc">ColorRect</text>
+        <text x="86" y="270" class="t-sm">CollisionShape2D</text>
+
+        <path d="M292 200 H360" class="s-acc"/>
+        <path d="M348 190 l14 10 -14 10" class="s-acc"/>
+        <text x="326" y="176" text-anchor="middle" class="t-sm t-acc">selected</text>
+
+        <rect x="376" y="20" width="304" height="430" rx="12" class="f-panel"/>
+        <path d="M376 72 H680" class="s-mut"/>
+        <text x="398" y="56" class="t-sm">Inspector</text>
+
+        <rect x="394" y="88" width="268" height="44" rx="8" class="f-accs"/>
+        <rect x="394" y="88" width="268" height="44" rx="8" class="s-acc"/>
+        <circle cx="420" cy="107" r="9" class="s-acc"/>
+        <path d="M427 114 l9 9" class="s-acc"/>
+        <text x="446" y="119" class="t-mono t-acc">size</text>
+
+        <text x="398" y="176" class="t-sm">Layout</text>
+        <text x="418" y="216" class="t-sm">Transform</text>
+
+        <text x="398" y="270" class="t-sm">Position</text>
+        <rect x="520" y="244" width="142" height="38" rx="6" class="f-panel"/>
+        <rect x="520" y="244" width="142" height="38" rx="6" class="s-acc"/>
+        <text x="591" y="271" text-anchor="middle" class="t-mono">−32, −32</text>
+
+        <text x="398" y="330" class="t-sm">Size</text>
+        <rect x="520" y="304" width="142" height="38" rx="6" class="f-panel"/>
+        <rect x="520" y="304" width="142" height="38" rx="6" class="s-acc"/>
+        <text x="591" y="331" text-anchor="middle" class="t-mono">64, 64</text>
+
+        <rect x="398" y="378" width="150" height="12" rx="6" class="f-faint"/>
+        <rect x="398" y="410" width="196" height="12" rx="6" class="f-faint"/>
+      </svg>
+      <figcaption>The filter hides everything you don't need right now.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 10b -->
+<section class="slide">
+  <div class="eyebrow">Step 2b · the part that draws</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>Set up the <code style="font-size:.8em">ColorRect</code></h2>
+      <ol class="steps">
+        <li>Select <code>ColorRect</code> in the Scene dock</li>
+        <li>Filter <code>size</code> → <strong>Layout → Transform → Size</strong><br>
+            <span class="mono" style="font-size:27px; background:none; padding:0">64 <span style="color:var(--muted)">×</span> 64</span></li>
+        <li>Filter <code>position</code> → <strong>Position</strong><br>
+            <span class="mono" style="font-size:27px; background:none; padding:0">−32 <span style="color:var(--muted)">,</span> −32</span></li>
+        <li>Filter <code>color</code> → click the swatch → any colour you like</li>
+      </ol>
+      <div class="callout warn" style="font-size:26px">
+        A <code>ColorRect</code> keeps its numbers under <strong>Layout</strong>. Most other nodes
+        don't. <strong>Filter — don't hunt.</strong>
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 470" role="img" aria-label="The Inspector for a ColorRect showing Layout, Transform, Position minus thirty-two by minus thirty-two, Size sixty-four by sixty-four, and the Color swatch">
+        <rect x="30" y="20" width="640" height="430" rx="12" class="f-panel"/>
+        <path d="M30 76 H670" class="s-mut"/>
+        <text x="54" y="60" class="t">Inspector <tspan class="t-sm">— ColorRect</tspan></text>
+
+        <path d="M62 158 l14 9 -14 9" class="s-mut"/>
+        <text x="92" y="176" class="t">Layout</text>
+        <path d="M96 200 l14 9 -14 9" class="s-mut"/>
+        <text x="126" y="218" class="t">Transform</text>
+
+        <text x="338" y="248" class="t-sm t-acc">x</text>
+        <text x="508" y="248" class="t-sm t-acc">y</text>
+
+        <text x="146" y="284" class="t-sm">Position</text>
+        <rect x="330" y="256" width="150" height="42" rx="6" class="f-panel"/>
+        <rect x="330" y="256" width="150" height="42" rx="6" class="s-acc"/>
+        <text x="405" y="285" text-anchor="middle" class="t-mono">−32</text>
+        <rect x="500" y="256" width="150" height="42" rx="6" class="f-panel"/>
+        <rect x="500" y="256" width="150" height="42" rx="6" class="s-acc"/>
+        <text x="575" y="285" text-anchor="middle" class="t-mono">−32</text>
+
+        <text x="146" y="348" class="t-sm">Size</text>
+        <rect x="330" y="320" width="150" height="42" rx="6" class="f-panel"/>
+        <rect x="330" y="320" width="150" height="42" rx="6" class="s-acc"/>
+        <text x="405" y="349" text-anchor="middle" class="t-mono">64</text>
+        <rect x="500" y="320" width="150" height="42" rx="6" class="f-panel"/>
+        <rect x="500" y="320" width="150" height="42" rx="6" class="s-acc"/>
+        <text x="575" y="349" text-anchor="middle" class="t-mono">64</text>
+
+        <text x="92" y="412" class="t-sm">Color</text>
+        <rect x="330" y="384" width="320" height="42" rx="6" class="f-acc"/>
+        <text x="490" y="412" text-anchor="middle" class="t-sm" style="fill:#ffffff">click the swatch</text>
+      </svg>
+      <figcaption>Size <code>0 × 0</code> draws nothing at all — and nothing complains.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 10c -->
+<section class="slide">
+  <div class="eyebrow">Step 2c · the part that detects</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>Set up the <code style="font-size:.72em">CollisionShape2D</code></h2>
+      <ol class="steps">
+        <li>Select <code>CollisionShape2D</code></li>
+        <li><strong>Shape</strong> → click <code>&lt;empty&gt;</code> → <strong>New RectangleShape2D</strong></li>
+        <li><strong>Click the shape that appears</strong> to open it → <strong>Size</strong><br>
+            <span class="mono" style="font-size:27px; background:none; padding:0">64 <span style="color:var(--muted)">×</span> 64</span>
+            <span class="note" style="font-size:25px">— it starts at 20 × 20</span></li>
+        <li>Leave its <strong>Position</strong> at <code>0, 0</code></li>
+      </ol>
+      <div class="callout warn" style="font-size:26px">
+        <strong>Type the size. Don't drag the orange dots.</strong> Dragging gets you 63.4 × 61.8
+        and you won't find out until Lesson 6.
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 470" role="img" aria-label="The Inspector for a CollisionShape2D: the empty Shape slot, the New RectangleShape2D option, and the shape's Size set to sixty-four by sixty-four">
+        <rect x="30" y="20" width="640" height="430" rx="12" class="f-panel"/>
+        <path d="M30 76 H670" class="s-mut"/>
+        <text x="54" y="60" class="t">Inspector <tspan class="t-sm">— CollisionShape2D</tspan></text>
+
+        <text x="60" y="128" class="t-sm">Shape</text>
+        <rect x="230" y="100" width="420" height="44" rx="6" class="f-panel"/>
+        <rect x="230" y="100" width="420" height="44" rx="6" class="s-warn"/>
+        <text x="252" y="129" class="t-mono t-warn">&lt;empty&gt;</text>
+        <path d="M614 118 l14 10 14 -10" class="s-mut"/>
+
+        <rect x="230" y="156" width="420" height="52" rx="8" class="f-accs"/>
+        <rect x="230" y="156" width="420" height="52" rx="8" class="s-acc"/>
+        <text x="252" y="190" class="t-mono t-acc">New RectangleShape2D</text>
+
+        <path d="M440 214 V250" class="s-acc"/>
+        <path d="M430 238 l10 14 10 -14" class="s-acc"/>
+
+        <path d="M62 268 l14 9 -14 9" class="s-mut"/>
+        <text x="92" y="286" class="t">RectangleShape2D</text>
+        <text x="404" y="286" class="t-sm">click it to open</text>
+
+        <text x="146" y="348" class="t-sm">Size</text>
+        <rect x="330" y="320" width="150" height="42" rx="6" class="f-panel"/>
+        <rect x="330" y="320" width="150" height="42" rx="6" class="s-acc"/>
+        <text x="405" y="349" text-anchor="middle" class="t-mono">64</text>
+        <rect x="500" y="320" width="150" height="42" rx="6" class="f-panel"/>
+        <rect x="500" y="320" width="150" height="42" rx="6" class="s-acc"/>
+        <text x="575" y="349" text-anchor="middle" class="t-mono">64</text>
+        <text x="146" y="382" class="t-sm">was <tspan class="t-warn">20 × 20</tspan></text>
+
+        <path d="M60 404 H650" class="s-dash"/>
+        <text x="60" y="440" class="t-sm">Transform → Position</text>
+        <text x="404" y="440" class="t-mono">0, 0</text>
+        <text x="500" y="440" class="t-sm t-acc">leave it</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="slide">
+  <div class="eyebrow">Why Position −32, −32?</div>
+  <figure>
+    <svg viewBox="0 0 1400 430" role="img" aria-label="Left: with position zero the box hangs down and right of the node origin. Right: with position minus thirty-two the box is centred on the origin.">
+      <!-- LEFT -->
+      <text x="330" y="36" text-anchor="middle" class="t-lg t-warn">Position 0, 0</text>
+      <path d="M120 200 H600 M330 40 V380" class="s-dash"/>
+      <rect x="330" y="200" width="160" height="160" class="f-accs"/>
+      <rect x="330" y="200" width="160" height="160" class="s-warn"/>
+      <circle cx="330" cy="200" r="11" class="f-acc"/>
+      <text x="330" y="404" text-anchor="middle" class="t-sm">the node is at the <tspan class="t-warn">corner</tspan> — the box hangs off it</text>
+
+      <!-- divider -->
+      <path d="M700 60 V370" class="s-dash"/>
+
+      <!-- RIGHT -->
+      <text x="1070" y="36" text-anchor="middle" class="t-lg t-acc">Position −32, −32</text>
+      <path d="M830 240 H1310 M1070 60 V372" class="s-dash"/>
+      <rect x="990" y="160" width="160" height="160" class="f-accs"/>
+      <rect x="990" y="160" width="160" height="160" class="s-acc"/>
+      <circle cx="1070" cy="240" r="11" class="f-acc"/>
+
+      <path d="M990 128 H1070" class="s-acc"/>
+      <path d="M1002 118 l-12 10 12 10 M1058 118 l12 10 -12 10" class="s-acc"/>
+      <text x="1030" y="106" text-anchor="middle" class="t-mono t-acc">−32</text>
+
+      <path d="M958 160 V240" class="s-acc"/>
+      <path d="M948 172 l10 -12 10 12 M948 228 l10 12 10 -12" class="s-acc"/>
+      <text x="922" y="208" text-anchor="middle" class="t-mono t-acc">−32</text>
+
+      <text x="1070" y="404" text-anchor="middle" class="t-sm">the node is in the <tspan class="t-acc">middle</tspan> — the box is centred on it</text>
+    </svg>
+  </figure>
+  <p class="center" style="margin:26px auto 0; max-width:none; text-align:center">
+    It slides the box back by <strong>half its width and half its height</strong>.
+    <span class="warnline">Skip it and every collision feels wrong three lessons from now.</span>
+  </p>
+  <p class="note" style="margin:12px auto 0; max-width:none; text-align:center">
+    <code style="font-size:.82em">ColorRect</code> → Inspector → Layout → Transform → Position
+  </p>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="slide">
+  <div class="cols wide-right">
+    <div>
+      <span class="bigrule">One scene.</span>
+      <span class="bigrule">Three nodes.</span>
+      <span class="bigrule">A tree.</span>
+      <p class="note" style="margin-top:30px">Look at your Scene dock.<br>That sentence is today's target.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 760 400" role="img" aria-label="Scene tree: the Player Area2D root with two children, ColorRect which draws and CollisionShape2D which detects">
+        <rect x="230" y="24" width="300" height="76" rx="12" class="f-accs"/>
+        <rect x="230" y="24" width="300" height="76" rx="12" class="s-acc"/>
+        <text x="380" y="58" text-anchor="middle" class="t-lg t-acc">Player</text>
+        <text x="380" y="86" text-anchor="middle" class="t-sm">Area2D — the scene root</text>
+
+        <path d="M380 100 V150 M150 150 H610 M150 150 V196 M610 150 V196" class="s-mut"/>
+
+        <rect x="20" y="196" width="260" height="86" rx="12" class="f-panel"/>
+        <text x="150" y="234" text-anchor="middle" class="t">ColorRect</text>
+        <text x="150" y="264" text-anchor="middle" class="t-sm">one job: <tspan class="t-acc">draws</tspan></text>
+
+        <rect x="480" y="196" width="260" height="86" rx="12" class="f-panel"/>
+        <text x="610" y="234" text-anchor="middle" class="t">CollisionShape2D</text>
+        <text x="610" y="264" text-anchor="middle" class="t-sm">one job: <tspan class="t-acc">detects</tspan></text>
+
+        <text x="380" y="348" text-anchor="middle" class="t-sm">a NODE is a part with one job — the SCENE is all of it together</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 13 -->
+<section class="slide">
+  <div class="eyebrow">Step 3 · 9 minutes</div>
+  <div class="cols">
+    <div>
+      <h2>The Main scene</h2>
+      <ol class="steps">
+        <li><strong>Scene → New Scene → Other Node</strong> → <code>Node2D</code></li>
+        <li>Rename it <code>Main</code> → save as <code>Main.tscn</code></li>
+        <li>Drag <code>Player.tscn</code> from the FileSystem dock <strong>onto the Main node</strong></li>
+        <li>Select the <code>Player</code> instance → Inspector → <strong>Transform → Position</strong><br>
+            <span class="mono" style="font-size:26px; background:none; padding:0; color:var(--muted)">576, 560 — bottom centre of a 1152 × 648 window</span></li>
+        <li><strong>Project Settings → Application → Run</strong> → Main Scene = <code>Main.tscn</code></li>
+      </ol>
+      <p style="font-size:44px; font-weight:850; margin-top:10px">Press <em class="hl">F5</em>.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 430" role="img" aria-label="Dragging Player.tscn from the FileSystem dock onto the Main node in the Scene dock, then the running game window with the square near the bottom centre">
+        <rect x="16" y="120" width="228" height="160" rx="12" class="f-panel"/>
+        <path d="M16 164 H244" class="s-mut"/>
+        <text x="36" y="150" class="t-sm">FileSystem</text>
+        <text x="40" y="198" class="t-mono">Main.tscn</text>
+        <rect x="30" y="214" width="180" height="40" rx="8" class="f-accs"/>
+        <text x="40" y="242" class="t-mono t-acc">Player.tscn</text>
+
+        <path d="M224 234 C316 234 322 106 412 106" class="s-acc"/>
+        <path d="M398 96 l16 10 -16 10" class="s-acc"/>
+        <text x="316" y="322" text-anchor="middle" class="t-sm t-acc">drag it</text>
+        <text x="316" y="350" text-anchor="middle" class="t-sm t-acc">onto Main</text>
+
+        <rect x="428" y="34" width="256" height="152" rx="12" class="f-panel"/>
+        <path d="M428 78 H684" class="s-mut"/>
+        <text x="448" y="64" class="t-sm">Scene</text>
+        <text x="450" y="114" class="t t-acc">Main</text>
+        <path d="M466 126 v28 h22" class="s-mut"/>
+        <text x="496" y="162" class="t">Player</text>
+
+        <text x="556" y="234" text-anchor="middle" class="t-sm">F5</text>
+        <rect x="428" y="250" width="256" height="150" rx="8" class="f-panel"/>
+        <rect x="532" y="336" width="48" height="48" class="f-acc"/>
+      </svg>
+    </figure>
+  </div>
+</section>
+<!-- ============================================================ scene tree -->
+<section class="slide" data-scene-tree>
+  <div class="cols wide-right">
+    <div>
+      <span class="bigrule">Main.</span>
+      <span class="bigrule">One child.</span>
+      <span class="bigrule">So far.</span>
+      <p class="note" style="margin-top:30px">Look at your Scene dock.<br>Main is the world. Player is a thing in it.</p>
+    </div>
+    <figure>
+        <svg viewBox="0 0 760 180" role="img" aria-label="Scene tree: Main is a Node2D, Player is a Player.tscn instance">
+        <rect x="0" y="0" width="760" height="180" rx="14" class="f-panel"/>
+        <text x="28" y="52" class="t-mono"><tspan class="t-acc">Main</tspan></text>
+        <text x="732" y="52" text-anchor="end" class="t-sm">Node2D</text>
+        <text x="28" y="106" class="t-mono">└── <tspan class="t-acc">Player</tspan></text>
+        <text x="732" y="106" text-anchor="end" class="t-sm">Player.tscn instance</text>
+        </svg>
+    </figure>
+  </div>
+</section>
+
+
+<!-- ============================================================ 14 -->
+<section class="slide">
+  <div class="cols wide-left">
+    <div>
+      <h1 class="small">A square.<br>It doesn't move.</h1>
+      <span class="bigrule" style="font-size:52px; color:var(--ok)">That's correct — for now.</span>
+      <p style="margin-top:26px">The <strong>tree</strong> exists before the <strong>behaviour</strong> does.<br>
+        You just built the tree. <em class="hl">Now we write the behaviour.</em></p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 620 400" role="img" aria-label="The game window showing a static square at the bottom centre, with today's tree and next class's behaviour shown as two steps">
+        <rect x="30" y="30" width="440" height="248" rx="8" class="f-panel"/>
+        <path d="M30 62 H470" class="s-mut"/>
+        <text x="250" y="54" text-anchor="middle" class="t-sm">Dodger</text>
+        <rect x="226" y="204" width="48" height="48" class="f-acc"/>
+
+        <path d="M292 228 H386" class="s-dash"/>
+        <path d="M372 218 l14 10 -14 10" class="s-dash"/>
+        <path d="M318 204 l38 48 M356 204 l-38 48" class="s-warn"/>
+        <text x="404" y="236" class="t-sm t-warn">not yet</text>
+
+        <circle cx="80" cy="336" r="13" class="f-acc"/>
+        <text x="106" y="344" class="t">TODAY — the tree</text>
+        <circle cx="80" cy="380" r="13" class="f-faint"/>
+        <text x="106" y="388" class="t-sm">NEXT CLASS — the behaviour</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 15 -->
+<section class="slide center">
+  <div class="eyebrow">Before we write code</div>
+  <h1 class="big">Which one<br>is wrong?</h1>
+  <figure style="margin-top:14px">
+    <svg viewBox="0 0 1400 330" role="img" aria-label="A normal maths coordinate plane with Y pointing up beside a screen coordinate plane with the origin at the top left and Y pointing down">
+      <text x="300" y="34" text-anchor="middle" class="t-lg">MATH PLANE</text>
+      <path d="M120 180 H480" class="s-mut"/>
+      <path d="M300 300 V64" class="s-mut"/>
+      <path d="M290 78 l10 -14 10 14" class="s-mut"/>
+      <path d="M466 170 l14 10 -14 10" class="s-mut"/>
+      <text x="326" y="86" class="t-sm">Y+</text>
+      <text x="470" y="212" class="t-sm">X+</text>
+      <circle cx="300" cy="180" r="9" class="f-faint"/>
+      <text x="300" y="322" text-anchor="middle" class="t-sm">origin in the middle · Y goes up</text>
+
+      <path d="M700 60 V290" class="s-dash"/>
+
+      <text x="1060" y="34" text-anchor="middle" class="t-lg t-acc">SCREEN PLANE</text>
+      <rect x="900" y="64" width="330" height="200" rx="6" class="f-panel"/>
+      <circle cx="900" cy="64" r="10" class="f-acc"/>
+      <text x="882" y="46" text-anchor="end" class="t-mono t-acc">0,0</text>
+      <path d="M900 64 H1252" class="s-acc"/>
+      <path d="M1238 54 l14 10 -14 10" class="s-acc"/>
+      <text x="1264" y="72" class="t-sm t-acc">X+</text>
+      <path d="M900 64 V296" class="s-acc"/>
+      <path d="M890 282 l10 14 10 -14" class="s-acc"/>
+      <text x="874" y="322" class="t-sm t-acc">Y+</text>
+      <text x="1065" y="176" text-anchor="middle" class="t-mono">1152 × 648</text>
+      <text x="1060" y="322" text-anchor="middle" class="t-sm">origin top-left · Y goes <tspan class="t-acc">DOWN</tspan></text>
+    </svg>
+  </figure>
+</section>
+
+<!-- ============================================================ 16 -->
+<section class="slide">
+  <div class="cols wide-left">
+    <div>
+      <h2>Neither. Y points down<br>on every screen.</h2>
+      <p>Screens were drawn by an <strong>electron beam</strong> that swept left to right,
+         top to bottom. The hardware is gone.</p>
+      <span class="bigrule" style="font-size:44px">The coordinate system<br>is a <em class="hl">fossil</em>.</span>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><td>Top-left</td><td><code>0, 0</code></td></tr>
+        <tr><td>Bottom-right</td><td><code>1152, 648</code></td></tr>
+        <tr><td>Dead centre</td><td><code>576, 324</code></td></tr>
+        <tr><td>Just <em>below</em> centre</td><td><code>y = 400</code></td></tr>
+      </table>
+      <div class="callout warn" style="margin-top:20px; font-size:27px">
+        "Down" is a <strong>bigger</strong> number. That one catches everybody.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 17 -->
+<section class="slide center">
+  <div class="eyebrow">Three more words you need</div>
+  <div class="cards">
+    <div class="card">
+      <div class="term">Script</div>
+      <div class="def">Instructions <strong>attached to a node</strong></div>
+    </div>
+    <div class="card">
+      <div class="term">Function</div>
+      <div class="def">A named block that runs <strong>when something happens</strong></div>
+    </div>
+    <div class="card">
+      <div class="term">_process()</div>
+      <div class="def">A function Godot calls <strong>every frame</strong> — about 60 times a second</div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:44px"><strong>Every frame.</strong> Remember that one.</p>
+</section>
+
+<!-- ============================================================ 18 -->
+<section class="slide">
+  <div class="eyebrow">Step 4 · Attach the script</div>
+  <div class="cols">
+    <div>
+      <h2>Give the Player<br>a script</h2>
+      <ol class="steps">
+        <li>Open <code>Player.tscn</code>, select the <code>Player</code> node</li>
+        <li>Click the <strong>Attach Script</strong> icon — the scroll, top of the Scene dock</li>
+        <li>Path <code>Player.gd</code> → <strong>Create</strong></li>
+        <li>Delete <strong>everything</strong> except the first line</li>
+      </ol>
+      <div class="callout" style="font-size:27px">
+        Godot wrote you a guess. <strong>We don't need its guess.</strong>
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 680 420" role="img" aria-label="The Scene dock with the Player node selected and the attach-script scroll icon highlighted at the top">
+        <rect x="40" y="40" width="420" height="300" rx="12" class="f-panel"/>
+        <path d="M40 94 H460" class="s-mut"/>
+        <text x="64" y="78" class="t">Scene</text>
+
+        <circle cx="418" cy="67" r="22" class="f-accs"/>
+        <circle cx="418" cy="67" r="22" class="s-acc"/>
+        <path d="M408 58 h20 M408 67 h20 M408 76 h14" class="s-acc"/>
+
+        <rect x="52" y="110" width="396" height="46" rx="8" class="f-accs"/>
+        <text x="76" y="141" class="t t-acc">Player</text>
+        <text x="200" y="141" class="t-sm">Area2D</text>
+
+        <path d="M92 156 v46 h30 M92 202 v56 h30" class="s-mut"/>
+        <text x="132" y="210" class="t-sm">ColorRect</text>
+        <text x="132" y="266" class="t-sm">CollisionShape2D</text>
+
+        <path d="M444 82 L520 132" class="s-dash"/>
+        <text x="532" y="128" class="t-sm t-acc">attach it to</text>
+        <text x="532" y="156" class="t-sm t-acc">PLAYER</text>
+        <text x="532" y="196" class="t-sm t-warn">not Main</text>
+      </svg>
+      <figcaption>Attach it to the wrong node and nothing happens — <em>and nothing complains.</em></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 19 -->
+<section class="slide center">
+  <div class="eyebrow">Step 5 · 14 minutes</div>
+  <h1 class="small">Now we type it.<br><em class="hl">Together.</em></h1>
+  <p class="lede" style="margin-top:20px">Six lines. I say every symbol out loud, you type it with me.</p>
+  <div class="callout warn" style="margin-top:30px; max-width:1180px; text-align:left">
+    <strong>I will make mistakes on purpose and by accident.</strong> Both are the lesson.
+    Watching an error appear and get fixed is how you learn to fix your own.
+  </div>
+</section>
+
+<!-- ============================================================ 20 -->
+<section class="slide">
+  <h2>Four things, while we type</h2>
+  <ul style="margin-top:10px">
+    <li><strong>Indentation is not decoration.</strong> An indented line is <em>inside</em> the
+        line above it. A wrong indent is a real error, not a style opinion.</li>
+    <li><code>ui_right</code> and <code>ui_left</code> are names Godot <strong>already has</strong>,
+        already wired to the arrow keys. We'll make our own in Project 2.</li>
+    <li>The underscore in <code>_delta</code> means <strong>"this exists, I'm not using it yet."</strong>
+        Godot hands it to us every single frame. <em>Next class we find out what it's for.</em></li>
+    <li><code>+=</code> means <strong>"add to what's already there."</strong> Every frame, five more pixels.</li>
+  </ul>
+  <p class="lede" style="margin-top:24px"><strong>Run it. The square moves.</strong></p>
+</section>
+
+<!-- ============================================================ 21 -->
+<section class="slide">
+  <div class="eyebrow">Step 6 · 8 minutes</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>Experiment</h2>
+      <ul>
+        <li>Change the <code>5</code> to <code>20</code>. Too fast?</li>
+        <li>Change it to <code>1</code>. Too slow?</li>
+        <li>Add <strong>up and down</strong> — <code>ui_up</code>, <code>ui_down</code>, and
+            <code>position.y</code></li>
+        <li>Swap a <code>+=</code> for a <code>-=</code> and watch the controls invert</li>
+      </ul>
+    </div>
+    <div>
+      <span class="bigrule" style="font-size:50px">One change.</span>
+      <span class="bigrule" style="font-size:50px">Then play it.</span>
+      <span class="bigrule" style="font-size:50px">Then the next one.</span>
+      <p class="note" style="margin-top:28px">Change three things at once and you won't know
+        which one did it. This rule runs all year.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 22 -->
+<section class="slide center">
+  <div class="eyebrow">Step 7 · Break it on purpose</div>
+  <h1 class="big">Everybody delete<br>one colon.</h1>
+  <p class="lede" style="margin-top:24px">Yes. On purpose. Then run it.</p>
+</section>
+
+<!-- ============================================================ 23 -->
+<section class="slide">
+  <div class="cols wide-right">
+    <div>
+      <span class="bigrule">Read the message.</span>
+      <span class="bigrule">Find the line.</span>
+      <span class="bigrule">Look at that line.</span>
+      <p class="note" style="margin-top:30px">Different mistakes make <em>different</em> messages.
+        The message tells you which one you made.</p>
+    </div>
+    <table class="tbl" style="font-size:26px">
+      <tr><td>Missing colon</td><td>"You started something and didn't finish it"</td></tr>
+      <tr><td>Bad indent</td><td>"This line doesn't line up with anything"</td></tr>
+      <tr><td>Spaces instead of tabs</td><td>"Pick one. We use tabs"</td></tr>
+      <tr><td><code>_process</code> misspelled</td><td><span class="warnline">No error at all.</span> Nothing happens and nothing complains</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================ 16 -->
+<section class="slide">
+  <h2>If it's not working</h2>
+  <table class="tbl" style="font-size:26px">
+    <tr><td>The square isn't where you clicked</td><td>ColorRect Position is not <code>−32, −32</code> — Layout → Transform</td></tr>
+    <tr><td>"No main scene has ever been defined"</td><td>Project Settings → Application → Run</td></tr>
+    <tr><td>The node you want isn't in the list</td><td>You have a <em>child</em> selected, not <code>Player</code></td></tr>
+    <tr><td>Nothing renders at all</td><td>ColorRect Size is <code>0 × 0</code>, or the Inspector was empty — select the node first</td></tr>
+    <tr><td>Nothing <em>moves</em>, and there's no error</td><td>Script is on the wrong node, or <code>_process</code> is misspelled</td></tr>
+    <tr><td>Still nothing moves, script looks right</td><td>You're running <code>Player.tscn</code> alone — set <code>Main.tscn</code> as the Main Scene</td></tr>
+    <tr><td>Square flies off screen and is gone</td><td>Working as designed. No walls until Lesson 3</td></tr>
+    <tr><td>Your project won't open</td><td>It's in Google Drive. Move it to <code>Development\Godot</code></td></tr>
+  </table>
+  <p class="lede" style="margin-top:24px"><strong>Read the error before you raise your hand.</strong> Then tell me what it said.</p>
+</section>
+
+<!-- ============================================================ 17 -->
+<section class="slide center">
+  <div class="eyebrow">Working with your partner</div>
+  <span class="bigrule">Talk it through before either of you types.</span>
+  <span class="bigrule">Both projects have to run.</span>
+  <span class="bigrule">Never touch your partner's keyboard.</span>
+  <p style="margin-top:40px"><strong>Help is explaining, not doing.</strong> Point at the screen.</p>
+</section>
+
+<!-- ============================================================ 18 -->
+<section class="slide">
+  <h2>Finished early? Pick one.</h2>
+  <div class="callout" style="margin-bottom:22px; font-size:28px">
+    <strong>Best one:</strong> make the square change colour <em>while it's moving</em>. Start with
+    <code>$ColorRect</code> and see how far you get before you ask me.
+  </div>
+  <figure>
+    <svg viewBox="0 0 1300 330" role="img" aria-label="Three player shapes: the ColorRect square you built, a Polygon2D triangle, and an imported sprite image">
+      <rect x="110" y="60" width="150" height="150" class="f-accs"/>
+      <rect x="110" y="60" width="150" height="150" class="s-mut"/>
+      <text x="185" y="256" text-anchor="middle" class="t">ColorRect</text>
+      <text x="185" y="290" text-anchor="middle" class="t-sm">what you built</text>
+
+      <path d="M560 60 L640 210 L480 210 Z" class="f-accs"/>
+      <path d="M560 60 L640 210 L480 210 Z" class="s-acc"/>
+      <text x="560" y="256" text-anchor="middle" class="t t-acc">Polygon2D</text>
+      <text x="560" y="290" text-anchor="middle" class="t-sm">give it a triangle</text>
+
+      <rect x="860" y="60" width="190" height="150" rx="10" class="f-accs"/>
+      <rect x="860" y="60" width="190" height="150" rx="10" class="s-acc"/>
+      <circle cx="912" cy="106" r="17" class="f-acc"/>
+      <path d="M872 190 l52 -58 40 42 30 -30 46 46 z" class="f-acc"/>
+      <text x="955" y="256" text-anchor="middle" class="t t-acc">Sprite2D</text>
+      <text x="955" y="290" text-anchor="middle" class="t-sm">import a picture</text>
+    </svg>
+  </figure>
+  <p class="lede" style="text-align:center; margin:20px auto 0"><strong>Your game, your player.</strong></p>
+</section>
+
+<!-- ============================================================ 19 -->
+<section class="slide">
+  <div class="eyebrow">Before you leave</div>
+  <ol class="steps" style="font-size:1.06em">
+    <li><strong>Save.</strong> <span class="mono" style="background:none;padding:0">Ctrl+S</span></li>
+    <li>Copy the whole <code>Dodger</code> folder to Drive as
+        <strong class="mono" style="background:none;padding:0">Dodger_L1_LastnameF</strong></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">P1 L1 — Dodger: Player on Screen</span><br>
+        <span class="note" style="font-size:25px">the Drive link + one screenshot of it running</span></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">P1 L1 — Exit Ticket</span><br>
+        <span class="note" style="font-size:25px">two sentences</span></li>
+  </ol>
+  <div class="callout" style="margin-top:22px; font-size:31px; font-weight:800">
+    1 · What is the difference between a scene and a node?<br>
+    2 · What does <code style="font-size:.9em">_process()</code> do, and how often?
+  </div>
+</section>
+
+</div></div>
+
+<div id="title-tag">DODGER · DAY 1</div>
+<div id="counter"></div>
+<div id="bar"><i></i></div>
+<div id="notes"></div>
+
+<div id="help">
+  <div class="box">
+    <h3>Deck controls</h3>
+    <div><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>space</kbd> also next</div>
+    <div><kbd>←</kbd> previous slide</div>
+    <div><kbd>F</kbd> fullscreen — use this on the projector</div>
+    <div><kbd>T</kbd> light / dark — dark for a bright room</div>
+    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>?</kbd> close this</div>
+    <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage   = document.getElementById('stage');
+  var notes   = document.getElementById('notes');
+  var help    = document.getElementById('help');
+  var counter = document.getElementById('counter');
+  var barFill = document.querySelector('#bar i');
+  var i = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    barFill.style.width = ((i + 1) / slides.length * 100) + '%';
+    notes.innerHTML = '<b>Slide ' + (i + 1) + '</b> &nbsp; ' +
+      (slides[i].dataset.note || '<span style="opacity:.5">no note</span>');
+    try { location.hash = 's' + (i + 1); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === '?' || e.key === '/') { help.classList.toggle('on'); }
+    else if (e.key === 'Escape') { help.classList.remove('on'); }
+    else if (e.key === 't' || e.key === 'T') {
+      var b = document.body;
+      b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (help.classList.contains('on')) { help.classList.remove('on'); return; }
+    show(e.clientX < window.innerWidth * 0.25 ? i - 1 : i + 1);
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+
+  var start = parseInt((location.hash || '').replace('#s', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>

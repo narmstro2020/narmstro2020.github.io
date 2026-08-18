@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software Dev U1 L5 — Scanner Input and Pseudocode</title>
+<style>
+  :root {
+    --ink:      #14161a;
+    --muted:    #6b7280;
+    --faint:    #c9ced6;
+    --bg:       #fbfaf7;
+    --panel:    #ffffff;
+    --accent:   #2f6bff;
+    --accent-soft: #e3ecff;
+    --warn:     #d1491f;
+    --warn-soft:#fdeae3;
+    --ok:       #0f7a52;
+    --rule:     #e2e0da;
+  }
+  [data-theme="dark"] {
+    --ink:      #f2f4f8;
+    --muted:    #9aa3b2;
+    --faint:    #3a4150;
+    --bg:       #11141a;
+    --panel:    #191d26;
+    --accent:   #6d9bff;
+    --accent-soft: #1e2b47;
+    --warn:     #ff8a63;
+    --warn-soft:#3a2118;
+    --ok:       #4fd39c;
+    --rule:     #2a2f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- fixed 1600x900 stage, scaled to fit any projector ---- */
+  #stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 84px 100px 96px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ---- type ---- */
+  .eyebrow {
+    font-size: 26px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 34px;
+  }
+  h1 { font-size: 92px; line-height: 1.06; margin: 0 0 28px; letter-spacing: -.02em; font-weight: 800; }
+  h1.small { font-size: 68px; }
+  h1.big   { font-size: 112px; }
+  h2 { font-size: 54px; line-height: 1.12; margin: 0 0 24px; font-weight: 750; letter-spacing: -.01em; }
+  p  { font-size: 34px; line-height: 1.42; margin: 0 0 18px; max-width: 26em; }
+  .slide.center p { margin-left: auto; margin-right: auto; }
+  .lede { font-size: 40px; }
+  .note { font-size: 27px; color: var(--muted); font-style: italic; }
+  strong { font-weight: 800; }
+  em.hl { font-style: normal; color: var(--accent); font-weight: 800; }
+  .warnline { color: var(--warn); font-weight: 800; }
+
+  code, .mono {
+    font-family: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em;
+    background: var(--accent-soft); color: var(--ink);
+    padding: .06em .34em; border-radius: 6px; white-space: nowrap;
+  }
+
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul li {
+    font-size: 33px; line-height: 1.34; margin-bottom: 20px;
+    padding-left: 46px; position: relative;
+  }
+  ul li::before {
+    content: ""; position: absolute; left: 8px; top: .52em;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+  }
+  ol.steps { margin: 0; padding: 0; counter-reset: s; list-style: none; }
+  ol.steps li {
+    font-size: 32px; line-height: 1.3; margin-bottom: 22px;
+    padding-left: 64px; position: relative; counter-increment: s;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 25px; font-weight: 800; display: grid; place-items: center;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .cols.wide-right { grid-template-columns: 0.85fr 1.15fr; }
+  .cols.wide-left  { grid-template-columns: 1.15fr 0.85fr; }
+  .stack > * + * { margin-top: 26px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+  .card {
+    background: var(--panel); border: 3px solid var(--rule); border-radius: 18px;
+    padding: 34px 32px; text-align: left;
+  }
+  .card .term {
+    font-size: 40px; font-weight: 850; letter-spacing: .02em; color: var(--accent);
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .card .def { font-size: 27px; line-height: 1.34; color: var(--ink); }
+
+  table.tbl { border-collapse: collapse; width: 100%; font-size: 29px; }
+  table.tbl td { padding: 20px 22px; border-bottom: 2px solid var(--rule); vertical-align: top; line-height: 1.3; }
+  table.tbl tr:last-child td { border-bottom: none; }
+  table.tbl td:first-child { font-weight: 700; width: 44%; }
+  table.tbl td:last-child { color: var(--muted); }
+
+  .callout {
+    border-left: 10px solid var(--accent); background: var(--accent-soft);
+    padding: 24px 30px; border-radius: 0 14px 14px 0; font-size: 30px; line-height: 1.35;
+  }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  .bigrule { display: block; font-size: 60px; font-weight: 850; line-height: 1.14; letter-spacing: -.015em; }
+  .bigrule + .bigrule { margin-top: 12px; }
+
+  figure { margin: 0; width: 100%; }
+  figure svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 25px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* ---- svg design language ---- */
+  .s-ink   { stroke: var(--ink);   fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .s-mut   { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-dash  { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-dasharray: 10 9; stroke-linecap: round; }
+  .s-acc   { stroke: var(--accent);fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-warn  { stroke: var(--warn);  fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .f-panel { fill: var(--panel); stroke: var(--rule); stroke-width: 3; }
+  .f-acc   { fill: var(--accent); }
+  .f-accs  { fill: var(--accent-soft); }
+  .f-faint { fill: var(--faint); }
+  .t       { fill: var(--ink);   font-size: 26px; font-weight: 650;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-sm    { fill: var(--muted); font-size: 22px; font-weight: 600;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-lg    { fill: var(--ink);   font-size: 32px; font-weight: 800;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-mono  { fill: var(--ink);   font-size: 24px; font-weight: 600;
+             font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; }
+  .t-acc   { fill: var(--accent); }
+  .t-warn  { fill: var(--warn); }
+
+  /* ---- chrome ---- */
+  #bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 6px;
+    background: transparent; z-index: 40;
+  }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .18s ease; }
+  #counter {
+    position: fixed; right: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  #title-tag {
+    position: fixed; left: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--faint); letter-spacing: .06em;
+  }
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--ink); color: var(--bg);
+    padding: 22px 34px 30px; font-size: 24px; line-height: 1.4;
+    display: none; border-top: 6px solid var(--accent);
+  }
+  #notes.on { display: block; }
+  #notes b { color: #ffd479; }
+  #help {
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,12,16,.94); color: #f4f6fa;
+    display: none; place-items: center; text-align: left;
+  }
+  #help.on { display: grid; }
+  #help .box { font-size: 26px; line-height: 1.9; }
+  #help kbd {
+    display: inline-block; min-width: 2.4em; text-align: center;
+    background: #2a3040; border: 2px solid #454e63; border-bottom-width: 4px;
+    border-radius: 8px; padding: 2px 10px; margin-right: 18px;
+    font-family: Consolas, monospace; font-size: 22px;
+  }
+  #help h3 { font-size: 34px; margin: 0 0 22px; }
+  #help p { font-size: 21px; color: #9aa3b2; max-width: none; margin-top: 26px; }
+
+  /* ---- print / PDF export ---- */
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: #fff; }
+    #stage-wrap { position: static; display: block; }
+    #stage { width: 1600px; height: auto; transform: none !important; }
+    .slide {
+      position: relative; inset: auto;
+      display: flex !important; width: 1600px; height: 900px;
+      break-after: page; page-break-after: always;
+    }
+    #bar, #counter, #notes, #help, #title-tag { display: none !important; }
+  }
+
+  /* ---- code blocks ---- */
+  /* `code, .mono` above is written for INLINE chips: pill background, padding,
+     and white-space: nowrap. Those rules also match <code> inside <pre>, which
+     collapses a listing onto one unwrapped line. Undo them for blocks and give
+     the block its own frame. Colors are the deck's own tokens, so the dark
+     theme follows automatically. */
+  pre {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border: 2px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  pre code, pre .mono {
+    display: block;
+    white-space: pre;
+    tab-size: 4;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div id="stage-wrap"><div id="stage">
+
+<!-- ============================================================ 1 -->
+<section class="slide center">
+  <div class="eyebrow">Bell Work</div>
+  <h1 class="small">Every number in your game<br>was typed by <em class="hl">you</em>.</h1>
+  <p class="lede" style="margin-top:28px">How does a program ask the <strong>player</strong> instead?</p>
+  <p class="note" style="margin-top:24px">60 seconds. Then hands.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="slide">
+  <div class="eyebrow">Today's learning target</div>
+  <h1 class="small">I can design a program in pseudocode<br>and read user input with <code>Scanner</code>.</h1>
+  <p class="note" style="margin-top:16px">Students will demonstrate this learning target with
+    at least <strong>80% accuracy</strong> on today's checkpoint.</p>
+  <div class="callout" style="margin-top:26px">Today your game stops being a <strong>script that
+    runs</strong> and becomes a <strong>program that responds</strong>. Two different people can
+    run it and get different games.</div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="slide center">
+  <div class="eyebrow">Before any code</div>
+  <h1 class="small">Pseudocode is <em class="hl">design</em>,<br>not decoration.</h1>
+  <p class="lede" style="margin-top:30px">Plain English, with structure.</p>
+  <div class="callout warn" style="margin-top:30px"><strong>Translating a design into Java is the
+    easy part.</strong> <em class="hl">Deciding what it should do is the part people skip — and then
+    regret.</em></div>
+  <p class="note" style="margin-top:20px">The Project 1 rubric requires pseudocode for your core
+    loop. This is a graded skill.</p>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="slide">
+  <div class="eyebrow">Today's build, designed first</div>
+  <pre><code>ASK for the player's name
+IF the name is blank
+    USE "Challenger" instead
+ASK for difficulty 1-3
+REPEAT UNTIL the answer is 1, 2, or 3
+SET enemy health based on difficulty
+SHOW a summary and wait for Enter</code></pre>
+  <p class="lede" style="margin-top:24px">You just <em class="hl">designed a program.</em></p>
+  <p class="note" style="margin-top:14px">The capitals aren't decoration — <code>ASK</code>,
+    <code>IF</code>, <code>REPEAT UNTIL</code>, <code>SET</code>, <code>SHOW</code> are the structure.</p>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="slide">
+  <div class="eyebrow">Reading input — three pieces</div>
+  <pre><code>import java.util.Scanner;      <span class="warnline">// ABOVE the class declaration</span>
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);</code></pre>
+  <table class="tbl" style="margin-top:20px">
+    <tr><td><code>import</code></td><td>"I want to use this tool." Goes at the very top of the file</td></tr>
+    <tr><td><code>new Scanner(System.in)</code></td><td>Build one, pointed at the keyboard</td></tr>
+    <tr><td><code>in.nextLine()</code></td><td>Wait for the user, hand back what they typed</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="slide">
+  <h1 class="small">The trap every Java programmer<br>meets <em class="hl">exactly once</em>.</h1>
+  <pre><code>int diff = in.nextInt();       <span class="warnline">// reads 2, LEAVES the Enter key behind</span>
+String name = in.nextLine();   <span class="warnline">// instantly returns "" — it ate the leftover</span></code></pre>
+  <figure style="margin-top:8px">
+    <svg viewBox="0 0 1300 200" role="img" aria-label="The user types 2 and presses Enter; nextInt takes the 2 and leaves the newline character sitting in the buffer, so the following nextLine immediately consumes that leftover newline and returns an empty string">
+      <text x="120" y="58" class="t-sm">you type</text>
+      <rect x="240" y="30" width="70" height="46" rx="8" class="f-panel"/>
+      <text x="275" y="62" text-anchor="middle" class="t-mono">2</text>
+      <rect x="325" y="30" width="120" height="46" rx="8" class="f-accs"/>
+      <text x="385" y="62" text-anchor="middle" class="t-mono t-acc" font-size="20">⏎</text>
+      <path d="M275 96 V140" class="s-mut"/>
+      <text x="275" y="168" text-anchor="middle" class="t-sm">nextInt() takes this</text>
+      <path d="M385 96 V140" class="s-warn"/>
+      <text x="420" y="168" text-anchor="middle" class="t-sm t-warn">…and leaves this</text>
+      <path d="M700 60 H840" class="s-warn"/><path d="M820 44 L842 60 L820 76" class="s-warn"/>
+      <text x="1060" y="52" text-anchor="middle" class="t-sm">next nextLine() finds the leftover</text>
+      <text x="1060" y="92" text-anchor="middle" class="t-sm t-warn">returns "" without ever pausing</text>
+    </svg>
+  </figure>
+  <div class="callout" style="margin-top:6px">The fix: a bare <code>in.nextLine();</code> after any
+    <code>nextInt()</code>. <em class="hl">Today is your once.</em></div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="slide">
+  <div class="eyebrow">Today's deliverables</div>
+  <ol class="steps">
+    <li><strong>Scanner set up</strong> — import at the top, constructed in <code>main</code></li>
+    <li><strong>The design implemented</strong> — name, difficulty, scaled enemy, wait for Enter</li>
+    <li><strong>Break it on purpose</strong> — comment out the fix, watch the prompt fly past</li>
+    <li><strong>A <code>// TODO validate</code></strong> where letters crash it</li>
+    <li><strong>Your own pseudocode</strong> for one feature of your game — <em>graded in Project 1</em></li>
+  </ol>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="slide">
+  <div class="eyebrow">Build · the design, translated</div>
+  <pre><code>Scanner in = new Scanner(System.in);
+
+System.out.print("What is your name, challenger? ");
+String playerName = in.nextLine().trim();
+if (playerName.isEmpty()) {
+    playerName = "Challenger";
+}
+
+System.out.print("Difficulty (1 = easy, 2 = normal, 3 = brutal): ");
+int difficulty = in.nextInt();
+in.nextLine();                       <span class="warnline">// consume the leftover newline</span>
+
+int enemyHealth = 30 + difficulty * 15;
+int enemyPower  = 4 + difficulty * 3;</code></pre>
+  <p class="note">Line for line against the board. <code>ASK</code> → print + read.
+    <code>IF blank</code> → <code>isEmpty()</code>. <code>SET</code> → the arithmetic.</p>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="slide center">
+  <div class="eyebrow">Build · break it on purpose</div>
+  <h1 class="small">Comment out <code>in.nextLine();</code><br>and run it.</h1>
+  <p class="lede" style="margin-top:28px">"Press Enter to begin…" <em class="hl">flies straight past.</em></p>
+  <div class="callout warn" style="margin-top:28px">The program never waited, because the Enter you
+    pressed at the difficulty prompt <strong>was still sitting there</strong>. Now uncomment it.
+    <em class="hl">That's why the line exists.</em></div>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="slide">
+  <h1 class="small">Now type <code>banana</code><br>at the difficulty prompt.</h1>
+  <pre><code>Exception in thread "main" java.util.InputMismatchException</code></pre>
+  <p style="margin-top:20px">The program doesn't ask again. It <strong>dies.</strong>
+    <code>nextInt()</code> wanted a number and got letters.</p>
+  <div class="callout warn" style="margin-top:20px"><strong>Don't fix it today.</strong> Proper
+    validation needs <code>hasNextInt()</code> and a loop — that's Lesson 8. Leave the note:</div>
+  <pre style="margin-top:14px"><code>// TODO validate difficulty input — reject anything that isn't 1-3</code></pre>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="slide center">
+  <div class="eyebrow">Build · design something of your own</div>
+  <h1 class="small">Write pseudocode for <em class="hl">one feature</em><br>of your game.</h1>
+  <p class="lede" style="margin-top:26px">In a comment block at the top of <code>main</code>.</p>
+  <p style="margin-top:22px">A shop. A second enemy. A run-away option. Anything you actually want —
+    <strong>design it in English before you can build it.</strong></p>
+  <div class="callout" style="margin-top:22px">This goes into your <strong>Project 1 submission</strong>.
+    It's real work, not a closing exercise.</div>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="slide">
+  <div class="eyebrow">Close · push and exit ticket</div>
+  <h1 class="small">Why do you need a bare <code>in.nextLine();</code><br>after <code>in.nextInt();</code>?</h1>
+  <p class="note" style="margin-top:26px">Two sentences on Canvas. You watched it happen — describe
+    what you saw.</p>
+  <p class="note" style="margin-top:14px">Then commit, sync, and show me the confirmation on your
+    way out.</p>
+</section>
+
+
+</div></div>
+</div></div>
+
+<div id="title-tag">SOFT DEV · U1 L5</div>
+<div id="counter"></div>
+<div id="bar"><i></i></div>
+<div id="notes"></div>
+
+<div id="help">
+  <div class="box">
+    <h3>Deck controls</h3>
+    <div><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>space</kbd> also next</div>
+    <div><kbd>←</kbd> previous slide</div>
+    <div><kbd>F</kbd> fullscreen — use this on the projector</div>
+    <div><kbd>T</kbd> light / dark — dark for a bright room</div>
+    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>?</kbd> close this</div>
+    <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage   = document.getElementById('stage');
+  var notes   = document.getElementById('notes');
+  var help    = document.getElementById('help');
+  var counter = document.getElementById('counter');
+  var barFill = document.querySelector('#bar i');
+  var i = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    barFill.style.width = ((i + 1) / slides.length * 100) + '%';
+    notes.innerHTML = '<b>Slide ' + (i + 1) + '</b> &nbsp; ' +
+      (slides[i].dataset.note || '<span style="opacity:.5">no note</span>');
+    try { location.hash = 's' + (i + 1); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === '?' || e.key === '/') { help.classList.toggle('on'); }
+    else if (e.key === 'Escape') { help.classList.remove('on'); }
+    else if (e.key === 't' || e.key === 'T') {
+      var b = document.body;
+      b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (help.classList.contains('on')) { help.classList.remove('on'); return; }
+    show(e.clientX < window.innerWidth * 0.25 ? i - 1 : i + 1);
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+
+  var start = parseInt((location.hash || '').replace('#s', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>

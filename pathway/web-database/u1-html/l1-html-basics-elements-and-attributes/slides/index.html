@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web Dev U1 L1 — HTML Basics, Elements, and Attributes</title>
+<style>
+  :root {
+    --ink:      #14161a;
+    --muted:    #6b7280;
+    --faint:    #c9ced6;
+    --bg:       #fbfaf7;
+    --panel:    #ffffff;
+    --accent:   #2f6bff;
+    --accent-soft: #e3ecff;
+    --warn:     #d1491f;
+    --warn-soft:#fdeae3;
+    --ok:       #0f7a52;
+    --rule:     #e2e0da;
+  }
+  [data-theme="dark"] {
+    --ink:      #f2f4f8;
+    --muted:    #9aa3b2;
+    --faint:    #3a4150;
+    --bg:       #11141a;
+    --panel:    #191d26;
+    --accent:   #6d9bff;
+    --accent-soft: #1e2b47;
+    --warn:     #ff8a63;
+    --warn-soft:#3a2118;
+    --ok:       #4fd39c;
+    --rule:     #2a2f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- fixed 1600x900 stage, scaled to fit any projector ---- */
+  #stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 84px 100px 96px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ---- type ---- */
+  .eyebrow {
+    font-size: 26px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 34px;
+  }
+  h1 { font-size: 92px; line-height: 1.06; margin: 0 0 28px; letter-spacing: -.02em; font-weight: 800; }
+  h1.small { font-size: 68px; }
+  h1.big   { font-size: 112px; }
+  h2 { font-size: 54px; line-height: 1.12; margin: 0 0 24px; font-weight: 750; letter-spacing: -.01em; }
+  p  { font-size: 34px; line-height: 1.42; margin: 0 0 18px; max-width: 26em; }
+  .slide.center p { margin-left: auto; margin-right: auto; }
+  .lede { font-size: 40px; }
+  .note { font-size: 27px; color: var(--muted); font-style: italic; }
+  strong { font-weight: 800; }
+  em.hl { font-style: normal; color: var(--accent); font-weight: 800; }
+  .warnline { color: var(--warn); font-weight: 800; }
+
+  code, .mono {
+    font-family: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em;
+    background: var(--accent-soft); color: var(--ink);
+    padding: .06em .34em; border-radius: 6px; white-space: nowrap;
+  }
+
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul li {
+    font-size: 33px; line-height: 1.34; margin-bottom: 20px;
+    padding-left: 46px; position: relative;
+  }
+  ul li::before {
+    content: ""; position: absolute; left: 8px; top: .52em;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+  }
+  ol.steps { margin: 0; padding: 0; counter-reset: s; list-style: none; }
+  ol.steps li {
+    font-size: 32px; line-height: 1.3; margin-bottom: 22px;
+    padding-left: 64px; position: relative; counter-increment: s;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 25px; font-weight: 800; display: grid; place-items: center;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .cols.wide-right { grid-template-columns: 0.85fr 1.15fr; }
+  .cols.wide-left  { grid-template-columns: 1.15fr 0.85fr; }
+  .stack > * + * { margin-top: 26px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+  .card {
+    background: var(--panel); border: 3px solid var(--rule); border-radius: 18px;
+    padding: 34px 32px; text-align: left;
+  }
+  .card .term {
+    font-size: 40px; font-weight: 850; letter-spacing: .02em; color: var(--accent);
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .card .def { font-size: 27px; line-height: 1.34; color: var(--ink); }
+
+  table.tbl { border-collapse: collapse; width: 100%; font-size: 29px; }
+  table.tbl td { padding: 20px 22px; border-bottom: 2px solid var(--rule); vertical-align: top; line-height: 1.3; }
+  table.tbl tr:last-child td { border-bottom: none; }
+  table.tbl td:first-child { font-weight: 700; width: 44%; }
+  table.tbl td:last-child { color: var(--muted); }
+
+  .callout {
+    border-left: 10px solid var(--accent); background: var(--accent-soft);
+    padding: 24px 30px; border-radius: 0 14px 14px 0; font-size: 30px; line-height: 1.35;
+  }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  .bigrule { display: block; font-size: 60px; font-weight: 850; line-height: 1.14; letter-spacing: -.015em; }
+  .bigrule + .bigrule { margin-top: 12px; }
+
+  figure { margin: 0; width: 100%; }
+  figure svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 25px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* ---- svg design language ---- */
+  .s-ink   { stroke: var(--ink);   fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .s-mut   { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-dash  { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-dasharray: 10 9; stroke-linecap: round; }
+  .s-acc   { stroke: var(--accent);fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-warn  { stroke: var(--warn);  fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .f-panel { fill: var(--panel); stroke: var(--rule); stroke-width: 3; }
+  .f-acc   { fill: var(--accent); }
+  .f-accs  { fill: var(--accent-soft); }
+  .f-faint { fill: var(--faint); }
+  .t       { fill: var(--ink);   font-size: 26px; font-weight: 650;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-sm    { fill: var(--muted); font-size: 22px; font-weight: 600;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-lg    { fill: var(--ink);   font-size: 32px; font-weight: 800;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-mono  { fill: var(--ink);   font-size: 24px; font-weight: 600;
+             font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; }
+  .t-acc   { fill: var(--accent); }
+  .t-warn  { fill: var(--warn); }
+
+  /* ---- chrome ---- */
+  #bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 6px;
+    background: transparent; z-index: 40;
+  }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .18s ease; }
+  #counter {
+    position: fixed; right: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  #title-tag {
+    position: fixed; left: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--faint); letter-spacing: .06em;
+  }
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--ink); color: var(--bg);
+    padding: 22px 34px 30px; font-size: 24px; line-height: 1.4;
+    display: none; border-top: 6px solid var(--accent);
+  }
+  #notes.on { display: block; }
+  #notes b { color: #ffd479; }
+  #help {
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,12,16,.94); color: #f4f6fa;
+    display: none; place-items: center; text-align: left;
+  }
+  #help.on { display: grid; }
+  #help .box { font-size: 26px; line-height: 1.9; }
+  #help kbd {
+    display: inline-block; min-width: 2.4em; text-align: center;
+    background: #2a3040; border: 2px solid #454e63; border-bottom-width: 4px;
+    border-radius: 8px; padding: 2px 10px; margin-right: 18px;
+    font-family: Consolas, monospace; font-size: 22px;
+  }
+  #help h3 { font-size: 34px; margin: 0 0 22px; }
+  #help p { font-size: 21px; color: #9aa3b2; max-width: none; margin-top: 26px; }
+
+  /* ---- print / PDF export ---- */
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: #fff; }
+    #stage-wrap { position: static; display: block; }
+    #stage { width: 1600px; height: auto; transform: none !important; }
+    .slide {
+      position: relative; inset: auto;
+      display: flex !important; width: 1600px; height: 900px;
+      break-after: page; page-break-after: always;
+    }
+    #bar, #counter, #notes, #help, #title-tag { display: none !important; }
+  }
+
+  /* ---- code blocks ---- */
+  /* `code, .mono` above is written for INLINE chips: pill background, padding,
+     and white-space: nowrap. Those rules also match <code> inside <pre>, which
+     collapses a listing onto one unwrapped line. Undo them for blocks and give
+     the block its own frame. Colors are the deck's own tokens, so the dark
+     theme follows automatically. */
+  pre {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border: 2px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  pre code, pre .mono {
+    display: block;
+    white-space: pre;
+    tab-size: 4;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div id="stage-wrap"><div id="stage">
+
+<!-- ============================================================ 1 -->
+<section class="slide center">
+  <div class="eyebrow">Bell Work</div>
+  <h1>Is HTML<br>a programming language?</h1>
+  <p class="note">Think for 60 seconds. Then hands. Be ready to say why.</p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="slide">
+  <h1 class="small">No. HTML is <em class="hl">markup</em>.</h1>
+  <figure>
+    <svg viewBox="0 0 1400 320" role="img" aria-label="A comparison: a programming language decides and repeats and stores, while markup only labels what each piece of content is">
+      <rect x="30" y="40" width="620" height="230" rx="16" class="f-panel"/>
+      <text x="340" y="90" text-anchor="middle" class="t-lg">A PROGRAMMING LANGUAGE</text>
+      <text x="340" y="146" text-anchor="middle" class="t">decides &nbsp;·&nbsp; repeats &nbsp;·&nbsp; stores</text>
+      <text x="340" y="196" text-anchor="middle" class="t-mono t-warn">if · while · var</text>
+      <text x="340" y="242" text-anchor="middle" class="t-sm">it can do something different every time</text>
+
+      <rect x="750" y="40" width="620" height="230" rx="16" class="f-accs"/>
+      <rect x="750" y="40" width="620" height="230" rx="16" class="s-acc"/>
+      <text x="1060" y="90" text-anchor="middle" class="t-lg t-acc">MARKUP</text>
+      <text x="1060" y="146" text-anchor="middle" class="t">labels what each piece <tspan class="t-acc">is</tspan></text>
+      <text x="1060" y="196" text-anchor="middle" class="t-mono">&lt;h1&gt; · &lt;p&gt; · &lt;body&gt;</text>
+      <text x="1060" y="242" text-anchor="middle" class="t-sm">it says the same thing every time</text>
+    </svg>
+  </figure>
+  <p style="margin-top:26px"><strong>No logic. No variables. No loops.</strong> You are labelling content,
+    not instructing a machine.</p>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="slide">
+  <div class="eyebrow">Standard D1.1 · where markup came from</div>
+  <figure>
+    <svg viewBox="0 0 1420 320" role="img" aria-label="A timeline of markup languages from SGML in the 1980s through HTML in 1991, CSS in 1996, XHTML in 2000, and HTML5 in 2014">
+      <path d="M60 190 H1360" class="s-mut"/>
+      <path d="M1346 180 l14 10 -14 10" class="s-mut"/>
+
+      <circle cx="130" cy="190" r="12" class="f-faint"/>
+      <text x="130" y="150" text-anchor="middle" class="t-mono">1980s</text>
+      <text x="130" y="234" text-anchor="middle" class="t">SGML</text>
+      <text x="130" y="264" text-anchor="middle" class="t-sm">tag your text</text>
+
+      <circle cx="420" cy="190" r="14" class="f-acc"/>
+      <text x="420" y="150" text-anchor="middle" class="t-mono t-acc">1991</text>
+      <text x="420" y="234" text-anchor="middle" class="t t-acc">HTML</text>
+      <text x="420" y="264" text-anchor="middle" class="t-sm">share physics papers</text>
+
+      <circle cx="710" cy="190" r="12" class="f-faint"/>
+      <text x="710" y="150" text-anchor="middle" class="t-mono">1996</text>
+      <text x="710" y="234" text-anchor="middle" class="t">CSS</text>
+      <text x="710" y="264" text-anchor="middle" class="t-sm">style moves out</text>
+
+      <circle cx="990" cy="190" r="12" class="f-faint"/>
+      <text x="990" y="150" text-anchor="middle" class="t-mono">2000</text>
+      <text x="990" y="234" text-anchor="middle" class="t">XHTML</text>
+      <text x="990" y="264" text-anchor="middle" class="t-sm">be strict (it failed)</text>
+
+      <circle cx="1270" cy="190" r="14" class="f-acc"/>
+      <text x="1270" y="150" text-anchor="middle" class="t-mono t-acc">2014</text>
+      <text x="1270" y="234" text-anchor="middle" class="t t-acc">HTML5</text>
+      <text x="1270" y="264" text-anchor="middle" class="t-sm">what you'll type today</text>
+    </svg>
+  </figure>
+  <div class="callout" style="margin-top:24px">
+    HTML was invented so physicists could <strong>share documents</strong> — not to build apps.
+    Every weird thing about it makes sense once you know that.
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="slide">
+  <div class="eyebrow">The anatomy of an element</div>
+  <figure>
+    <svg viewBox="0 0 1300 330" role="img" aria-label="The element p This is a paragraph slash p, with the opening tag, content, and closing tag each labelled">
+      <text x="650" y="96" text-anchor="middle" class="t-mono" font-size="52">&lt;p&gt;This is a paragraph.&lt;/p&gt;</text>
+
+      <path d="M300 128 V186 H180" class="s-acc"/>
+      <text x="168" y="194" text-anchor="end" class="t t-acc">opening tag</text>
+
+      <path d="M640 128 V240 H480" class="s-mut"/>
+      <text x="468" y="248" text-anchor="end" class="t">the content</text>
+
+      <path d="M1000 128 V186 H1130" class="s-warn"/>
+      <text x="1142" y="194" class="t t-warn">closing tag</text>
+      <text x="1142" y="228" class="t-sm t-warn">note the slash</text>
+    </svg>
+  </figure>
+  <p class="lede" style="text-align:center; max-width:none; margin-top:10px">
+    Open it. Fill it. <strong>Close it.</strong>
+  </p>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="slide">
+  <div class="cols wide-left">
+    <div>
+      <h2>Elements nest<br>like boxes in boxes</h2>
+      <ul>
+        <li><code>&lt;html&gt;</code> — the whole document</li>
+        <li><code>&lt;head&gt;</code> — information <em>about</em> the page. The browser reads it;
+            nobody sees it</li>
+        <li><code>&lt;body&gt;</code> — the page itself. Everything anyone actually sees</li>
+      </ul>
+      <div class="callout" style="font-size:27px">
+        Your <code>&lt;title&gt;</code> goes in the <strong>head</strong>. It shows up on the
+        browser tab, not on the page.
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 640 470" role="img" aria-label="Nested boxes: html contains head which contains title, and body which contains h1 and p">
+        <rect x="20" y="20" width="600" height="430" rx="14" class="f-panel"/>
+        <text x="44" y="58" class="t-mono t-acc">&lt;html&gt;</text>
+
+        <rect x="60" y="76" width="530" height="118" rx="12" class="f-accs"/>
+        <text x="84" y="112" class="t-mono">&lt;head&gt;</text>
+        <rect x="106" y="126" width="330" height="50" rx="8" class="f-panel"/>
+        <text x="126" y="159" class="t-mono" font-size="22">&lt;title&gt;</text>
+        <text x="452" y="159" class="t-sm">the browser tab</text>
+
+        <rect x="60" y="214" width="530" height="212" rx="12" class="f-accs"/>
+        <text x="84" y="250" class="t-mono">&lt;body&gt;</text>
+        <rect x="106" y="264" width="330" height="50" rx="8" class="f-panel"/>
+        <text x="126" y="297" class="t-mono" font-size="22">&lt;h1&gt;</text>
+        <rect x="106" y="326" width="330" height="50" rx="8" class="f-panel"/>
+        <text x="126" y="359" class="t-mono" font-size="22">&lt;p&gt;</text>
+        <text x="452" y="330" class="t-sm">what people</text>
+        <text x="452" y="358" class="t-sm">actually see</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="slide center">
+  <div class="eyebrow">Today's learning target</div>
+  <h1 class="small">I can build an HTML page by hand with a correct<br>heading outline, and get my own content into a browser.</h1>
+  <p class="note" style="margin-top:6px; max-width:none">Students will demonstrate this learning
+    target with at least <strong>80% accuracy</strong> on today's checkpoint.</p>
+  <div class="callout warn" style="margin-top:26px; max-width:1120px; text-align:left">
+    Your page will have <strong>no colours, no fonts, no layout.</strong> It will look like it's
+    from 1994. <strong>That is not a bug.</strong> Structure first — styling is all of Unit 2.
+  </div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="slide">
+  <div class="eyebrow">Today's deliverables</div>
+  <div class="cols wide-left">
+    <div>
+      <ol class="steps" style="font-size:.85em">
+        <li><code>index.html</code> — saved in <code>01_Site</code><br>
+            <span class="note" style="font-size:23px">not <code>.txt</code>, not <code>.html.txt</code></span></li>
+        <li><strong>It opens in a browser</strong><br>
+            <span class="note" style="font-size:23px">and the tab shows <em>your</em> title</span></li>
+        <li><strong>A real heading outline</strong><br>
+            <span class="note" style="font-size:23px">one <code>&lt;h1&gt;</code>, then <code>&lt;h2&gt;</code> sections</span></li>
+        <li><strong>Real content about your topic</strong><br>
+            <span class="note" style="font-size:23px">paragraphs a stranger could actually read</span></li>
+        <li><strong>Pushed to GitHub</strong><br>
+            <span class="note" style="font-size:23px">a public repo called <code>my-site</code></span></li>
+        <li><strong>Exit ticket</strong> — two sentences</li>
+      </ol>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 400" role="img" aria-label="The 01_Site folder on the machine, pushed to a GitHub repo named my-site, whose URL is what gets pasted into Canvas">
+        <rect x="20" y="24" width="300" height="180" rx="12" class="f-panel"/>
+        <path d="M20 66 H320" class="s-mut"/>
+        <text x="42" y="53" class="t-sm">on your machine</text>
+        <rect x="52" y="86" width="230" height="42" rx="8" class="f-accs"/>
+        <text x="70" y="115" class="t-mono t-acc" font-size="21">01_Site\</text>
+        <text x="94" y="160" class="t-mono" font-size="21">index.html</text>
+
+        <path d="M336 114 H420" class="s-acc"/>
+        <path d="M406 104 l14 10 -14 10" class="s-acc"/>
+        <text x="378" y="94" text-anchor="middle" class="t-sm t-acc">push</text>
+
+        <rect x="436" y="24" width="244" height="180" rx="12" class="f-accs"/>
+        <rect x="436" y="24" width="244" height="180" rx="12" class="s-acc"/>
+        <path d="M436 66 H680" class="s-acc"/>
+        <text x="458" y="53" class="t-sm t-acc">GitHub</text>
+        <text x="458" y="104" class="t-mono t-acc" font-size="21">my-site</text>
+        <text x="458" y="146" class="t-sm">public repo</text>
+        <text x="458" y="178" class="t-sm">on your account</text>
+
+        <path d="M60 246 H660" class="s-dash"/>
+        <text x="42" y="296" class="t-sm">the <tspan class="t-acc">repo URL</tspan> is what you paste into Canvas:</text>
+        <text x="42" y="342" class="t-mono" font-size="20">https://github.com/</text>
+        <text x="252" y="342" class="t-mono t-acc" font-size="20">yourname</text>
+        <text x="372" y="342" class="t-mono" font-size="20">/my-site</text>
+        <text x="42" y="384" class="t-sm">the site itself still lives in <tspan class="t-acc">01_Site</tspan> all year</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="slide">
+  <div class="eyebrow">Step 1 · 21 minutes</div>
+  <div class="cols">
+    <div>
+      <h2>Type the skeleton</h2>
+      <ol class="steps">
+        <li>VS Code &rarr; <strong>New File</strong></li>
+        <li><strong>Save As</strong> &rarr; <code>index.html</code>, inside your
+            <code>01_Site</code> folder</li>
+        <li>Type the skeleton <strong>by hand</strong> — doctype, html, head, title, body</li>
+        <li>Put <em>your</em> topic in the <code>&lt;title&gt;</code> and the <code>&lt;h1&gt;</code></li>
+        <li>Open it in the browser</li>
+      </ol>
+      <div class="callout warn" style="font-size:26px">
+        <strong>Every character by hand.</strong> No copy-paste, no Emmet, no AI. You can't debug
+        what you didn't type.
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 430" role="img" aria-label="The VS Code save dialog with the filename index dot html and a warning that dot txt is wrong">
+        <rect x="40" y="40" width="470" height="150" rx="12" class="f-panel"/>
+        <path d="M40 88 H510" class="s-mut"/>
+        <text x="64" y="74" class="t-sm">Save As</text>
+        <rect x="66" y="112" width="330" height="48" rx="8" class="f-accs"/>
+        <rect x="66" y="112" width="330" height="48" rx="8" class="s-acc"/>
+        <text x="86" y="144" class="t-mono t-acc">index.html</text>
+        <text x="418" y="144" class="t-lg t-acc">&#10003;</text>
+
+        <text x="66" y="248" class="t-mono t-warn">index.txt</text>
+        <text x="240" y="248" class="t-sm t-warn">downloads instead of showing</text>
+        <text x="66" y="296" class="t-mono t-warn">index.html.txt</text>
+        <text x="240" y="296" class="t-sm t-warn">same problem, harder to see</text>
+
+        <path d="M60 340 H600" class="s-dash"/>
+        <text x="66" y="388" class="t-sm"><tspan class="t-acc">index.html</tspan> is special — it's the default</text>
+        <text x="66" y="416" class="t-sm">page a server hands out. Every site has one.</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="slide center">
+  <div class="eyebrow">The loop</div>
+  <figure>
+    <svg viewBox="0 0 1200 300" role="img" aria-label="A three step cycle: edit the file, save it, refresh the browser, and back to edit">
+      <rect x="60" y="90" width="260" height="110" rx="16" class="f-panel"/>
+      <text x="190" y="158" text-anchor="middle" class="t-lg">edit</text>
+
+      <path d="M340 145 H430" class="s-acc"/>
+      <path d="M416 134 l16 11 -16 11" class="s-acc"/>
+
+      <rect x="450" y="90" width="260" height="110" rx="16" class="f-accs"/>
+      <rect x="450" y="90" width="260" height="110" rx="16" class="s-acc"/>
+      <text x="580" y="158" text-anchor="middle" class="t-lg t-acc">SAVE</text>
+
+      <path d="M730 145 H820" class="s-acc"/>
+      <path d="M806 134 l16 11 -16 11" class="s-acc"/>
+
+      <rect x="840" y="90" width="300" height="110" rx="16" class="f-accs"/>
+      <rect x="840" y="90" width="300" height="110" rx="16" class="s-acc"/>
+      <text x="990" y="158" text-anchor="middle" class="t-lg t-acc">REFRESH</text>
+
+      <path d="M990 210 V250 H190 V210" class="s-dash"/>
+      <text x="590" y="282" text-anchor="middle" class="t-sm">and again, and again, all year</text>
+    </svg>
+  </figure>
+  <p class="lede" style="margin-top:22px"><strong>"My change isn't showing up"</strong> is always
+    one of these two steps.</p>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="slide">
+  <div class="eyebrow">New idea · attributes</div>
+  <figure>
+    <svg viewBox="0 0 1300 300" role="img" aria-label="The tag html lang equals quote en quote, with lang labelled as the attribute name and en as its value, both inside the opening tag">
+      <text x="650" y="106" text-anchor="middle" class="t-mono" font-size="50">&lt;html lang="en"&gt;</text>
+
+      <path d="M524 136 V196 H420" class="s-acc"/>
+      <text x="408" y="204" text-anchor="end" class="t t-acc">name</text>
+
+      <path d="M660 136 V244 H520" class="s-mut"/>
+      <text x="508" y="252" text-anchor="end" class="t">value — always in quotes</text>
+
+      <path d="M760 136 V196 H890" class="s-warn"/>
+      <text x="902" y="204" class="t t-warn">inside the <tspan class="t-mono" font-size="24">opening</tspan> tag</text>
+      <text x="902" y="238" class="t-sm t-warn">never the closing one</text>
+    </svg>
+  </figure>
+  <p class="lede" style="text-align:center; max-width:none; margin-top:6px">
+    Extra information <em class="hl">inside</em> a tag. Always <code>name="value"</code>.
+  </p>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="slide">
+  <div class="cols wide-left">
+    <div>
+      <h2>Headings are an <em class="hl">outline</em>,<br>not font sizes</h2>
+      <ul>
+        <li><code>&lt;h1&gt;</code> — the page's <strong>one</strong> main title. One per page, ever.</li>
+        <li><code>&lt;h2&gt;</code> — a section of that page</li>
+        <li>Screen readers build their navigation from this. So do search engines.</li>
+      </ul>
+      <div class="callout warn" style="font-size:26px">
+        Use <code>&lt;h1&gt;</code> four times because it "looks bigger" and your page still
+        <em>looks</em> fine. <strong>It's still wrong, and nothing will tell you.</strong>
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 640 400" role="img" aria-label="An outline: one h1 at the top with three h2 sections indented beneath it, next to a rejected version with four h1 tags">
+        <rect x="20" y="24" width="290" height="352" rx="14" class="f-panel"/>
+        <text x="165" y="62" text-anchor="middle" class="t-lg t-acc">&#10003; an outline</text>
+        <rect x="44" y="88" width="242" height="46" rx="8" class="f-accs"/>
+        <text x="62" y="118" class="t-mono t-acc" font-size="21">h1</text>
+        <text x="120" y="118" class="t-sm">the page</text>
+        <rect x="80" y="152" width="206" height="42" rx="8" class="f-panel"/>
+        <text x="98" y="180" class="t-mono" font-size="20">h2</text>
+        <text x="150" y="180" class="t-sm">a section</text>
+        <rect x="80" y="208" width="206" height="42" rx="8" class="f-panel"/>
+        <text x="98" y="236" class="t-mono" font-size="20">h2</text>
+        <text x="150" y="236" class="t-sm">a section</text>
+        <rect x="80" y="264" width="206" height="42" rx="8" class="f-panel"/>
+        <text x="98" y="292" class="t-mono" font-size="20">h2</text>
+        <text x="150" y="292" class="t-sm">a section</text>
+        <text x="165" y="350" text-anchor="middle" class="t-sm">a screen reader can navigate this</text>
+
+        <rect x="340" y="24" width="280" height="352" rx="14" class="f-panel"/>
+        <text x="480" y="62" text-anchor="middle" class="t-lg t-warn">&#10007; four titles</text>
+        <rect x="364" y="88" width="232" height="42" rx="8" class="f-panel"/>
+        <text x="382" y="116" class="t-mono t-warn" font-size="20">h1</text>
+        <rect x="364" y="144" width="232" height="42" rx="8" class="f-panel"/>
+        <text x="382" y="172" class="t-mono t-warn" font-size="20">h1</text>
+        <rect x="364" y="200" width="232" height="42" rx="8" class="f-panel"/>
+        <text x="382" y="228" class="t-mono t-warn" font-size="20">h1</text>
+        <rect x="364" y="256" width="232" height="42" rx="8" class="f-panel"/>
+        <text x="382" y="284" class="t-mono t-warn" font-size="20">h1</text>
+        <text x="480" y="336" text-anchor="middle" class="t-sm t-warn">looks fine.</text>
+        <text x="480" y="364" text-anchor="middle" class="t-sm t-warn">has no structure at all.</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="slide">
+  <div class="cols wide-right">
+    <div>
+      <span class="bigrule" style="font-size:50px">Whitespace<br>collapses.</span>
+      <p style="margin-top:26px">Ten spaces, one space, five blank lines — the browser renders all
+        of them the same way. <strong>One space.</strong></p>
+      <div class="callout" style="font-size:27px">
+        Spacing is <strong>CSS's job</strong>, not the spacebar's. That's Unit 2.
+      </div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 780 340" role="img" aria-label="Code with many spaces and blank lines next to the browser output showing it all collapsed to single spaces">
+        <rect x="20" y="24" width="330" height="252" rx="12" class="f-panel"/>
+        <path d="M20 66 H350" class="s-mut"/>
+        <text x="42" y="53" class="t-sm">what you typed</text>
+        <text x="42" y="104" class="t-mono" font-size="19">&lt;p&gt;Hello</text>
+        <text x="42" y="142" class="t-mono" font-size="19">&nbsp;</text>
+        <text x="42" y="180" class="t-mono" font-size="19">&nbsp;</text>
+        <text x="42" y="218" class="t-mono" font-size="19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;there.&lt;/p&gt;</text>
+
+        <path d="M366 150 H452" class="s-acc"/>
+        <path d="M438 140 l14 10 -14 10" class="s-acc"/>
+
+        <rect x="468" y="24" width="292" height="252" rx="12" class="f-panel"/>
+        <path d="M468 66 H760" class="s-mut"/>
+        <text x="490" y="53" class="t-sm">what the browser shows</text>
+        <text x="490" y="150" class="t">Hello there.</text>
+
+        <text x="390" y="320" text-anchor="middle" class="t-sm">every run of whitespace becomes <tspan class="t-acc">one space</tspan></text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 13 -->
+<section class="slide">
+  <div class="eyebrow">Step 2 · 19 minutes</div>
+  <div class="cols wide-left">
+    <div>
+      <h2>Make it yours</h2>
+      <ol class="steps" style="font-size:.9em">
+        <li>Add <code>lang="en"</code> to your <code>&lt;html&gt;</code> tag</li>
+        <li>Real <code>&lt;title&gt;</code> — your topic, on the tab</li>
+        <li><strong>One</strong> <code>&lt;h1&gt;</code>, then an <code>&lt;h2&gt;</code> for each section</li>
+        <li><strong>Real paragraphs</strong> under each heading</li>
+      </ol>
+      <div class="callout warn" style="font-size:26px">
+        <strong>Real sentences.</strong> Not <code>aaa</code>, not <em>lorem ipsum</em>. A stranger
+        should be able to read your page and know what it's about.
+      </div>
+    </div>
+    <div>
+      <span class="bigrule" style="font-size:46px">It's your site.</span>
+      <span class="bigrule" style="font-size:46px">Your topic.</span>
+      <span class="bigrule" style="font-size:46px">All year.</span>
+      <p class="note" style="margin-top:28px">Every lesson from here adds to this same file.
+        In thirteen weeks it's a real website with your name on it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="slide center">
+  <div class="eyebrow">Step 3 · Break it on purpose · 8 minutes</div>
+  <h1 class="big">Delete <code style="font-size:.8em">&lt;/body&gt;</code>.</h1>
+  <p class="lede" style="margin-top:24px">Save. Refresh. <strong>What happened?</strong></p>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="slide">
+  <div class="cols wide-right">
+    <div>
+      <span class="bigrule">It still worked.</span>
+      <span class="bigrule" style="color:var(--warn)">That's the problem.</span>
+      <p style="margin-top:26px">The browser <strong>guessed</strong> what you meant and moved on.
+        It will not always guess the way you want.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 760 380" role="img" aria-label="Python crashes with a loud error while HTML renders anyway and says nothing">
+        <rect x="20" y="30" width="330" height="290" rx="14" class="f-panel"/>
+        <text x="185" y="76" text-anchor="middle" class="t-lg">Python · GDScript</text>
+        <rect x="52" y="110" width="266" height="120" rx="10" class="f-accs"/>
+        <text x="185" y="164" text-anchor="middle" class="t-mono t-warn" font-size="22">SyntaxError</text>
+        <text x="185" y="200" text-anchor="middle" class="t-sm">line 14</text>
+        <text x="185" y="278" text-anchor="middle" class="t">it <tspan class="t-warn">stops</tspan> and tells you</text>
+
+        <rect x="410" y="30" width="330" height="290" rx="14" class="f-panel"/>
+        <text x="575" y="76" text-anchor="middle" class="t-lg">HTML</text>
+        <rect x="442" y="110" width="266" height="120" rx="10" class="f-panel"/>
+        <text x="575" y="152" text-anchor="middle" class="t-sm">(the page, rendered)</text>
+        <text x="575" y="196" text-anchor="middle" class="t-sm">(no message at all)</text>
+        <text x="575" y="278" text-anchor="middle" class="t">it <tspan class="t-acc">guesses</tspan> and says nothing</text>
+      </svg>
+    </figure>
+  </div>
+  <p class="lede" style="text-align:center; max-width:none; margin-top:16px">
+    <strong>HTML doesn't crash. It renders weird.</strong> Reading "weird" is the whole skill.
+  </p>
+</section>
+
+<!-- ============================================================ 13 -->
+<section class="slide">
+  <h2>If it's not working</h2>
+  <table class="tbl" style="font-size:27px">
+    <tr><td>The file downloads instead of showing</td><td>You saved it as <code>.txt</code> — Save As, and fix the name</td></tr>
+    <tr><td>Tab says "index.html", not your title</td><td><code>&lt;title&gt;</code> is empty, or it's not inside <code>&lt;head&gt;</code></td></tr>
+    <tr><td>The whole page is one giant heading</td><td>Missing <code>&lt;/h1&gt;</code></td></tr>
+    <tr><td>Your spacing in the code does nothing</td><td>Correct. Whitespace collapses &mdash; spacing is CSS's job</td></tr>
+    <tr><td>Your attribute is ignored</td><td>Missing quotes, or a typo in the attribute name</td></tr>
+    <tr><td>Your edits don't appear</td><td>You didn't <strong>save</strong>, or you didn't <strong>refresh</strong></td></tr>
+    <tr><td>Your tags show up as text on the page</td><td>A missing <code>&lt;</code> or <code>&gt;</code> somewhere above</td></tr>
+  </table>
+  <p class="lede" style="margin-top:26px"><strong>Look at the page, then find the tag that caused it.</strong>
+    Nothing is going to tell you where to look.</p>
+</section>
+
+<!-- ============================================================ 14 -->
+<section class="slide center">
+  <div class="eyebrow">Working with your partner</div>
+  <span class="bigrule">Talk it through before either of you types.</span>
+  <span class="bigrule">Both pages have to load.</span>
+  <span class="bigrule">Never touch your partner's keyboard.</span>
+  <p style="margin-top:40px"><strong>Help is explaining, not doing.</strong> Point at the screen.</p>
+</section>
+
+<!-- ============================================================ 15 -->
+<section class="slide">
+  <h2>Finished early?</h2>
+  <div class="callout" style="margin-bottom:24px; font-size:28px">
+    In VS Code, type <code>!</code> and press <strong>Tab</strong>. Watch the whole skeleton appear.
+  </div>
+  <ul>
+    <li>That's <strong>Emmet</strong>, and every professional uses it every day.</li>
+    <li>So why did we spend twenty-five minutes typing it by hand?</li>
+    <li><strong>Because you can't debug what you don't understand.</strong> Now that you've typed it,
+        the shortcut is a shortcut. Before that, it was magic.</li>
+  </ul>
+  <p class="lede" style="margin-top:20px">Or add a <code>title</code> attribute to a paragraph and hover over it. <strong>Attributes change behaviour</strong>, not just information.</p>
+</section>
+
+<!-- ============================================================ 16 -->
+<section class="slide">
+  <div class="eyebrow">Before you leave · 8 minutes</div>
+  <ol class="steps" style="font-size:.92em">
+    <li><strong>Save.</strong> <span class="mono" style="background:none;padding:0">Ctrl+S</span> — then refresh once more</li>
+    <li><strong>VS Code → Source Control → Publish to GitHub</strong><br>
+        <span class="note" style="font-size:24px">public repo, named <code>my-site</code></span></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">U1 L1 — Your First Page</span><br>
+        <span class="note" style="font-size:24px">paste your repo link + one screenshot of the page in the browser</span></li>
+    <li><strong>Canvas —</strong> <span class="mono" style="background:none;padding:0">U1 L1 — Exit Ticket</span><br>
+        <span class="note" style="font-size:24px">two sentences</span></li>
+  </ol>
+  <div class="callout" style="margin-top:18px; font-size:29px; font-weight:800">
+    1 · What does it mean that HTML is <em>markup</em>, not a programming language?<br>
+    2 · Why are heading levels about <em>structure</em>, not size?
+  </div>
+</section>
+
+</div></div>
+</div></div>
+
+<div id="title-tag">WEB DEV · U1 L1</div>
+<div id="counter"></div>
+<div id="bar"><i></i></div>
+<div id="notes"></div>
+
+<div id="help">
+  <div class="box">
+    <h3>Deck controls</h3>
+    <div><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>space</kbd> also next</div>
+    <div><kbd>←</kbd> previous slide</div>
+    <div><kbd>F</kbd> fullscreen — use this on the projector</div>
+    <div><kbd>T</kbd> light / dark — dark for a bright room</div>
+    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>?</kbd> close this</div>
+    <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage   = document.getElementById('stage');
+  var notes   = document.getElementById('notes');
+  var help    = document.getElementById('help');
+  var counter = document.getElementById('counter');
+  var barFill = document.querySelector('#bar i');
+  var i = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    barFill.style.width = ((i + 1) / slides.length * 100) + '%';
+    notes.innerHTML = '<b>Slide ' + (i + 1) + '</b> &nbsp; ' +
+      (slides[i].dataset.note || '<span style="opacity:.5">no note</span>');
+    try { location.hash = 's' + (i + 1); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === '?' || e.key === '/') { help.classList.toggle('on'); }
+    else if (e.key === 'Escape') { help.classList.remove('on'); }
+    else if (e.key === 't' || e.key === 'T') {
+      var b = document.body;
+      b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (help.classList.contains('on')) { help.classList.remove('on'); return; }
+    show(e.clientX < window.innerWidth * 0.25 ? i - 1 : i + 1);
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+
+  var start = parseInt((location.hash || '').replace('#s', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>
