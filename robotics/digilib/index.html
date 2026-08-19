@@ -18,7 +18,7 @@
         <link rel="prev" href="../java/">
       
       
-        <link rel="next" href="../reference/">
+        <link rel="next" href="subsystems/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -401,6 +401,12 @@
           
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -428,6 +434,11 @@
 
             </a>
             
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
           </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
@@ -437,6 +448,69 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="subsystems/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Subsystems
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="swerve/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Swerve
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
           </ul>
@@ -531,18 +605,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-2026-line" class="md-nav__link">
+  <a href="#the-one-pattern-to-learn-first" class="md-nav__link">
     <span class="md-ellipsis">
-      The 2026 line
+      The one pattern to learn first
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-2027-line" class="md-nav__link">
+  <a href="#what-is-in-the-2026-line" class="md-nav__link">
     <span class="md-ellipsis">
-      The 2027 line
+      What is in the 2026 line
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-coming-in-2027" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is coming in 2027
     </span>
   </a>
   
@@ -579,116 +662,113 @@ rewriting a swerve drive.</p>
 <div class="admonition info">
 <p class="admonition-title">There are two DigiLibs right now</p>
 <p>A <strong>2026</strong> line that runs on the roboRIO, and a <strong>2027</strong> line being built
-against the new control system. We work in 2026 this fall, and in December we
-start moving to 2027.</p>
+against the new control system. Everything in this section is the <strong>2026</strong>
+line, because that is what we use this fall. The 2027 move happens in December.</p>
 </div>
-<h2 id="the-2026-line">The 2026 line<a class="headerlink" href="#the-2026-line" title="Permanent link">&para;</a></h2>
-<p>This is what we use now, and what runs on the hardware we can put on a desk. It
-is also what we will keep using for side projects on older roboRIOs even after
-the team moves on.</p>
-<p>Roughly 23 classes, organised as:</p>
+<h2 id="the-one-pattern-to-learn-first">The one pattern to learn first<a class="headerlink" href="#the-one-pattern-to-learn-first" title="Permanent link">&para;</a></h2>
+<p>Almost everything in our robot code follows the same three-file shape per
+mechanism. Learn this and the rest of the codebase stops being mysterious.</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Package</th>
-<th style="text-align: left;">What lives there</th>
+<th style="text-align: left;">File</th>
+<th style="text-align: left;">Job</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>digilib.subsystem</code></td>
-<td style="text-align: left;">The base a DigiLib subsystem extends</td>
+<td style="text-align: left;"><code>XConstants.java</code></td>
+<td style="text-align: left;">Build the hardware. Construct the DigiLib subsystem. Set its default command.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>digilib.swerve</code></td>
-<td style="text-align: left;">The drivetrain &mdash; the largest piece by far</td>
+<td style="text-align: left;"><code>XCommands.java</code></td>
+<td style="text-align: left;">Compose <code>Command</code>s from what the subsystem exposes.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>digilib.swerve.sim</code></td>
-<td style="text-align: left;">Simulation for it</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>digilib.swerve.vision</code></td>
-<td style="text-align: left;">Pose estimation from vision</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>digilib.swerve.vision.limelight</code></td>
-<td style="text-align: left;">Limelight-specific implementation</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>digilib.commontalon</code></td>
-<td style="text-align: left;">Shared Talon motor handling</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>digilib.cylinder</code>, <code>digilib.pneumatics</code></td>
-<td style="text-align: left;">Solenoids and the pneumatic hub</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>digilib.power</code></td>
-<td style="text-align: left;">Power distribution</td>
+<td style="text-align: left;"><code>XState.java</code></td>
+<td style="text-align: left;">Expose <code>Trigger</code>s for "is it there yet?" conditions.</td>
 </tr>
 </tbody>
 </table>
-<p>The shape to notice: <strong>swerve and its vision stack are most of the library</strong>, and
-everything vision is split so the Limelight-specific parts sit at the edge. That
-split is deliberate, and it is the same idea the 2027 line takes much further.</p>
-<h2 id="the-2027-line">The 2027 line<a class="headerlink" href="#the-2027-line" title="Permanent link">&para;</a></h2>
-<p>Being built now against WPILib 2027 and SystemCore. It is a bigger rethink than a
-port &mdash; the design separates <em>what a mechanism is</em> from <em>what hardware it runs
-on</em>:</p>
+<p>The subsystem itself is a <code>public static final</code> field on the Constants class, so
+the rest of the code refers to one shared instance. Configuration is done once, in
+a static block, at class load.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">FeederConstants</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Feeder"</span><span class="p">;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">TalonFXConfiguration</span><span class="w"> </span><span class="n">TALON_FX_CONFIGURATION</span><span class="w"> </span><span class="o">=</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">TalonFXConfiguration</span><span class="p">()</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">            </span><span class="p">.</span><span class="na">withMotorOutput</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">MotorOutputConfigs</span><span class="p">()</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">                </span><span class="p">.</span><span class="na">withNeutralMode</span><span class="p">(</span><span class="n">NeutralModeValue</span><span class="p">.</span><span class="na">Coast</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">                </span><span class="p">.</span><span class="na">withInverted</span><span class="p">(</span><span class="n">InvertedValue</span><span class="p">.</span><span class="na">CounterClockwise_Positive</span><span class="p">))</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">            </span><span class="p">.</span><span class="na">withCurrentLimits</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">CurrentLimitsConfigs</span><span class="p">()</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">                </span><span class="p">.</span><span class="na">withStatorCurrentLimit</span><span class="p">(</span><span class="n">Amps</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="mi">80</span><span class="p">))</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">                </span><span class="p">.</span><span class="na">withStatorCurrentLimitEnable</span><span class="p">(</span><span class="kc">true</span><span class="p">));</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">TalonFX</span><span class="w"> </span><span class="n">LEADER_MOTOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TalonFX</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="n">RIO</span><span class="p">);</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">        </span><span class="n">LEADER_MOTOR</span><span class="p">.</span><span class="na">getConfigurator</span><span class="p">().</span><span class="na">apply</span><span class="p">(</span><span class="n">TALON_FX_CONFIGURATION</span><span class="p">);</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">CommonTalonSubsystem</span><span class="w"> </span><span class="n">subsystem</span><span class="w"> </span><span class="o">=</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">CommonTalonSubsystem</span><span class="p">(</span><span class="n">NAME</span><span class="p">,</span><span class="w"> </span><span class="n">LEADER_MOTOR</span><span class="p">);</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">        </span><span class="n">subsystem</span><span class="p">.</span><span class="na">setDefaultCommand</span><span class="p">(</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">            </span><span class="n">subsystem</span><span class="p">.</span><span class="na">applyControl</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">NeutralOut</span><span class="p">()).</span><span class="na">withName</span><span class="p">(</span><span class="s">"Feeder-Neutral"</span><span class="p">));</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="nf">FeederConstants</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="p">}</span>
+</code></pre></div>
+<p>Three things worth noticing, because they are deliberate:</p>
+<ul>
+<li><strong>Everything is a constant.</strong> Private constructor, <code>static final</code> fields. There
+  is exactly one Feeder and nothing can make a second one.</li>
+<li><strong>The default command is set immediately.</strong> A subsystem with no default command
+  is a subsystem that keeps doing whatever it was last told to do. Here it goes to
+  <code>NeutralOut</code> the moment nothing else wants it.</li>
+<li><strong>Commands get names.</strong> <code>.withName("Feeder-Neutral")</code> is what you will see on the
+  dashboard when you are trying to work out why the robot is doing something.</li>
+</ul>
+<h2 id="what-is-in-the-2026-line">What is in the 2026 line<a class="headerlink" href="#what-is-in-the-2026-line" title="Permanent link">&para;</a></h2>
+<p>23 classes. Swerve and its vision stack are most of it.</p>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Package</th>
-<th style="text-align: left;">What lives there</th>
+<th style="text-align: left;">Pages</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>digilib.mechanism.motor</code></td>
-<td style="text-align: left;">The motor mechanism itself, hardware-agnostic</td>
+<td style="text-align: left;"><code>digilib.subsystem</code>, <code>digilib.commontalon</code>, <code>digilib.cylinder</code>, <code>digilib.pneumatics</code>, <code>digilib.power</code></td>
+<td style="text-align: left;"><a href="subsystems/">Subsystems</a></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>digilib.mechanism.motor.ctre</code></td>
-<td style="text-align: left;">CTRE / TalonFX implementation</td>
+<td style="text-align: left;"><code>digilib.swerve</code> and <code>digilib.swerve.sim</code></td>
+<td style="text-align: left;"><a href="swerve/">Swerve</a></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>digilib.mechanism.motor.rev</code></td>
-<td style="text-align: left;">REV / Spark implementation</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>digilib.mechanism.swerve</code></td>
-<td style="text-align: left;">Swerve, hardware-agnostic</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>digilib.mechanism.swerve.ctre</code></td>
-<td style="text-align: left;">CTRE swerve implementation</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>digilib.mechanism.swerve.generic</code></td>
-<td style="text-align: left;">A vendor-neutral implementation</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>digilib.plants</code>, <code>digilib.sims</code></td>
-<td style="text-align: left;">Physics models and simulation</td>
+<td style="text-align: left;"><code>digilib.swerve.vision</code> and below</td>
+<td style="text-align: left;"><a href="vision/">Vision</a></td>
 </tr>
 </tbody>
 </table>
-<p>The recurring pattern is an <strong>IO interface plus a state object plus a per-vendor
-implementation</strong> &mdash; <code>MotorIO</code> with <code>TalonFXIO</code> and <code>SparkIO</code> behind it. That is
-what makes the same mechanism code run on a CTRE robot, a REV robot, or in
-simulation without changing the mechanism.</p>
-<p>If you want to understand DigiLib, understand that pattern first. Everything else
-is detail.</p>
+<h2 id="what-is-coming-in-2027">What is coming in 2027<a class="headerlink" href="#what-is-coming-in-2027" title="Permanent link">&para;</a></h2>
+<p>The 2027 line is a rethink rather than a port. It separates <em>what a mechanism is</em>
+from <em>what hardware it runs on</em>: a <code>MotorIO</code> interface with <code>TalonFXIO</code> and
+<code>SparkIO</code> behind it, the same for swerve, plus <code>plants</code> and <code>sims</code> packages for
+physics models.</p>
+<p>That means the same mechanism code runs on a CTRE robot, a REV robot, or in
+simulation without changing the mechanism. The 2026 line already leans that way
+&mdash; notice how everything Limelight-specific sits at the edge of the vision
+package &mdash; and 2027 takes it the whole distance.</p>
 <h2 id="getting-the-code">Getting the code<a class="headerlink" href="#getting-the-code" title="Permanent link">&para;</a></h2>
-<p>Both DigiLib lines live in the team's private repositories. Ask for access &mdash;
-you will be added. Nothing here links directly to them, because the links would
-just 404 for anyone not on the team.</p>
-<div class="admonition note">
-<p class="admonition-title">This section grows with the library</p>
-<p>DigiLib is under active development. As pieces stabilise, the how-to-use-it
-pages land here.</p>
-</div>
+<p>Both DigiLib lines live in the team's private repositories. Ask to be added.
+Nothing here links to them directly, because the links would 404 for anyone not
+on the team.</p>
 
 
 
