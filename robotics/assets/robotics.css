@@ -1,0 +1,8 @@
+/* FRC 829 site tweaks. */
+.md-typeset table:not([class]) { display: table; width: 100%; }
+
+/* Tables here are mostly link lists; keep the first column from wrapping oddly. */
+.md-typeset table:not([class]) td:first-child { white-space: nowrap; }
+@media screen and (max-width: 45em) {
+  .md-typeset table:not([class]) td:first-child { white-space: normal; }
+}
