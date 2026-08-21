@@ -6298,10 +6298,159 @@
 
 <h1 id="async-javascript">Async JavaScript<a class="headerlink" href="#async-javascript" title="Permanent link">&para;</a></h1>
 <p><em>7253 Software Development Capstone &middot; P1 JavaScript for React &middot; Module 9</em></p>
-<div class="admonition info">
-<p class="admonition-title">Coming soon</p>
-<p>Notes for this module are not published yet.
-Scheduled for <strong>Black</strong> Fri, Aug 28, 2026 &middot; <strong>Gold</strong> Mon, Aug 31, 2026.</p>
+<p>Scheduled <strong>Black</strong> Fri, Aug 28, 2026 &middot; <strong>Gold</strong> Mon, Aug 31, 2026</p>
+<div class="canvas-module">
+<h1>Part 1 · Module 9 — Async JavaScript</h1>
+<p style="margin:0 0 .9em;line-height:1.55"><em>7253 Software Development Capstone · self-guided · work at your own pace</em></p>
+<hr style="border:0;border-top:1px solid #d7dae0;margin:2em 0">
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🎯 Objective</h2>
+<p style="margin:0 0 .9em;line-height:1.55">By the end of this module you can:</p>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Explain why JavaScript does not simply wait</li>
+<li style="margin-bottom:.35em;line-height:1.5">Read and write a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Promise</code> chain with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.then()</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Rewrite the same thing with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code></li>
+<li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">fetch</code> real data from a real API</li>
+<li style="margin-bottom:.35em;line-height:1.5">Handle a failure — a bad URL, a 404, and no network — without your program dying</li>
+</ul>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🔑 Why it matters</h2>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>This is the module the P1 Data App is built on.</strong> Everything before this was practice; this is the thing your project actually does.</p>
+<p style="margin:0 0 .9em;line-height:1.55">It is also where code stops running top to bottom, which is the single biggest conceptual jump in Part 1. Take the extra day if you need it.</p>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead><tr><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Idea</th><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Where you meet it again</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Promises</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Every API call, every file read, every timer</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code></td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">How you will write all of it — <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.then()</code> is mostly for reading other people's code</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">fetch</code></td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">The Data App. Then <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">useEffect</code> in Part 2, which is this plus React</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Error handling (D1.7)</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">The difference between an app and a demo. Networks fail; yours has to survive it</td></tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>Loading and error states are not polish.</strong> A page that shows nothing while it waits and a blank screen when it fails is a broken page, and the project rubric asks for both.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">📖 Learn</h2>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead><tr><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Topic</th><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Go-to resource</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Callbacks, then promises</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/callbacks">javascript.info: Introduction to callbacks</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Promises</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/promise-basics">javascript.info: Promise</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code></td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/async-await">javascript.info: Async/await</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">fetch</code></td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch">MDN: Using the Fetch API</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">A free API to practise on</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://pokeapi.co/">PokeAPI</a> · <a href="https://jsonplaceholder.typicode.com/">JSONPlaceholder</a></td></tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>Read the callbacks page even though you will not write callbacks.</strong> It is four minutes and it explains what promises were invented to fix, which makes the rest of the module make sense instead of being syntax you memorise.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">The one idea underneath all of it</h2>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>A promise is a receipt, not the thing.</strong></p>
+<p style="margin:0 0 .9em;line-height:1.55">You ask for data and get a receipt immediately. The data arrives later. <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code> means "stop here until the receipt is honoured" — and everything confusing about async code comes from forgetting that the receipt and the data are not the same object.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">⌨️ Build — <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async.js</code></h2>
+<p style="margin:0 0 .9em;line-height:1.55">In your <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">capstone</code> folder, make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async.js</code>. Run it as you go with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node async.js</code>. You need <strong>internet</strong> for parts 4 and 5.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">1 · Prove it does not wait</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">console.log("first");
+setTimeout(() => console.log("second"), 0);
+console.log("third");</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Predict the order out loud <strong>before</strong> you run it</li>
+<li style="margin-bottom:.35em;line-height:1.5">Run it</li>
+<li style="margin-bottom:.35em;line-height:1.5">Write one sentence in your log about why <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">second</code> lost to <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">third</code> despite a delay of zero</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You predicted wrong, or you predicted right for the right reason. <strong>Zero milliseconds does not mean now</strong> — it means "as soon as the current work is finished," and that is the whole model.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>If this part feels trivial, you have missed it.</strong> Every async bug you will ever write comes from expecting line 2 to finish before line 3.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">2 · A promise, by hand</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">function wait(ms, value) {
+  return new Promise((resolve) => setTimeout(() => resolve(value), ms));
+}
+
+wait(500, "done")
+  .then((v) => console.log(v))
+  .then(() => console.log("and then this"));</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Run it and watch the order</li>
+<li style="margin-bottom:.35em;line-height:1.5">Print the promise itself: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">console.log(wait(500, "x"))</code> — look at what you get <em>immediately</em></li>
+<li style="margin-bottom:.35em;line-height:1.5">Chain a third <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.then()</code> that returns a value, and a fourth that prints it</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> Item 2 showed you <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Promise { &lt;pending&gt; }</code>. <strong>That is the receipt.</strong> The value is not there yet and the program carried on anyway.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>Each <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.then()</code> hands its return value to the next one.</strong> That is what makes chains work, and it is why forgetting a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">return</code> inside a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.then()</code> breaks things two links down the chain.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">3 · The same thing, readable</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">async function run() {
+  const v = await wait(500, "done");
+  console.log(v);
+  console.log("and then this");
+}
+run();</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Write it and confirm it behaves identically to part 2</li>
+<li style="margin-bottom:.35em;line-height:1.5">Remove the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code> and run it — look at what prints</li>
+<li style="margin-bottom:.35em;line-height:1.5">Put it back. Then try <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code> outside an <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async</code> function and read the error</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can convert a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.then()</code> chain to <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code> and back. Item 2 printed the receipt instead of the value, which is the single most common async mistake there is.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Write <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code>; read <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.then()</code>.</strong> You need both because half the examples online are chains, but everything you author from here should use <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code>.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">4 · <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">fetch</code> — real data</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">async function getPokemon(name) {
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+  const data = await res.json();
+  return data;
+}
+
+const p = await getPokemon("ditto");
+console.log(p.name, p.weight);</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Get it printing a name and a weight</li>
+<li style="margin-bottom:.35em;line-height:1.5">Notice there are <strong>two</strong> awaits and work out what each one is waiting for</li>
+<li style="margin-bottom:.35em;line-height:1.5">Print the whole <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">res</code> object before <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.json()</code> and find <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">status</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">ok</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Pull out three fields you care about and print them tidily</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can say what each <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code> is for: the first waits for the <strong>response to arrive</strong>, the second waits for the <strong>body to be parsed</strong>. Two separate waits, and skipping the second is why people end up printing a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Promise</code>.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>Top-level <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code> only works in a module.</strong> You set <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">"type": "module"</code> in Module 8 — this is the first place it pays off.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">5 · Make it fail — three ways</h3>
+<p style="margin:0 0 .9em;line-height:1.55">An app that only works when everything works is a demo. Break it deliberately:</p>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">async function getPokemon(name) {
+  try {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    if (!res.ok) throw new Error(`Not found: ${name} (${res.status})`);
+    return await res.json();
+  } catch (err) {
+    console.error("Could not load:", err.message);
+    return null;
+  }
+}</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Ask for a pokemon that does not exist and confirm you get your message, not a crash</li>
+<li style="margin-bottom:.35em;line-height:1.5">Break the URL itself (<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">https://pokeapi.invalid/</code>) and see a <em>different</em> kind of failure</li>
+<li style="margin-bottom:.35em;line-height:1.5">Turn your wifi off and run it again</li>
+<li style="margin-bottom:.35em;line-height:1.5">Make the caller handle <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">null</code> without exploding</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> All three failures print something a human could act on, and the program keeps running. <strong>Note that a 404 does not throw on its own</strong> — <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">fetch</code> only rejects when the request itself fails, which is why the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">res.ok</code> check has to be there.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>This is standard D1.7 and the project rubric asks for it.</strong> "It worked on my machine with wifi" is not a finished feature.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">Stretch · Two at once</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">const [a, b] = await Promise.all([
+  getPokemon("ditto"),
+  getPokemon("pikachu"),
+]);</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Time two sequential <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code>s with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">console.time</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Time the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Promise.all</code> version</li>
+<li style="margin-bottom:.35em;line-height:1.5">Write down both numbers and the reason for the difference</li>
+<li style="margin-bottom:.35em;line-height:1.5">Now read about <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Promise.allSettled</code> and say when you would want it instead</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> The parallel version takes roughly as long as the <em>slower</em> of the two rather than the sum. You can also say why <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">allSettled</code> exists: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Promise.all</code> gives up entirely if <strong>any one</strong> of them fails.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">✅ Check Yourself</h2>
+<p style="margin:0 0 .9em;line-height:1.55">Can you, <strong>without looking anything up</strong>:</p>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Explain why <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">setTimeout(fn, 0)</code> does not run immediately?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say what a promise actually <em>is</em>, in one sentence?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Convert a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.then()</code> chain into <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code>?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say what each of the two <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code>s in a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">fetch</code> is waiting for?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Explain why a 404 does not throw, and what you have to write instead?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say what <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Promise.all</code> buys you, and what it costs?</li>
+</ul>
+<p style="margin:0 0 .9em;line-height:1.55">If any box is unchecked, spend twenty minutes on that row's resource. Then check it.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🏁 Done When</h2>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async.js</code> runs and covers all five parts</li>
+<li style="margin-bottom:.35em;line-height:1.5">Your fetch survives <strong>all three</strong> failure modes: bad name, bad host, no network</li>
+<li style="margin-bottom:.35em;line-height:1.5">You have the two timing numbers from the stretch</li>
+<li style="margin-bottom:.35em;line-height:1.5">Your log entry is written — what you built, what confused you and how you resolved it, any AI use, and the URL of anything you looked up</li>
+<li style="margin-bottom:.35em;line-height:1.5"><strong>Conference:</strong> turn your wifi off, run it, and show me it failing gracefully. Five minutes.</li>
+</ul>
+<p style="margin:0 0 .9em;line-height:1.55"><em>Next: <strong>Module 10 — Modern Syntax &amp; Tooling</strong> — optional chaining, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">??</code>, npm, and your first Vite project. Then the <strong>P1 Data App</strong>, which is this module with a user interface bolted on.</em></p>
 </div>
 
 

@@ -6298,10 +6298,140 @@
 
 <h1 id="modern-syntax-tooling">Modern Syntax &amp; Tooling<a class="headerlink" href="#modern-syntax-tooling" title="Permanent link">&para;</a></h1>
 <p><em>7253 Software Development Capstone &middot; P1 JavaScript for React &middot; Module 10</em></p>
-<div class="admonition info">
-<p class="admonition-title">Coming soon</p>
-<p>Notes for this module are not published yet.
-Scheduled for <strong>Black</strong> Tue, Sep 1, 2026 &middot; <strong>Gold</strong> Wed, Sep 2, 2026.</p>
+<p>Scheduled <strong>Black</strong> Tue, Sep 1, 2026 &middot; <strong>Gold</strong> Wed, Sep 2, 2026</p>
+<div class="canvas-module">
+<h1>Part 1 · Module 10 — Modern Syntax & Tooling</h1>
+<p style="margin:0 0 .9em;line-height:1.55"><em>7253 Software Development Capstone · self-guided · work at your own pace</em></p>
+<hr style="border:0;border-top:1px solid #d7dae0;margin:2em 0">
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🎯 Objective</h2>
+<p style="margin:0 0 .9em;line-height:1.55">By the end of this module you can:</p>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Reach into nested data safely with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">?.</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Supply a fallback with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">??</code>, and say how it differs from <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">||</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Say what <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">npm install</code> actually did to your folder</li>
+<li style="margin-bottom:.35em;line-height:1.5">Scaffold and run a <strong>Vite</strong> project</li>
+<li style="margin-bottom:.35em;line-height:1.5">Have the shell of your P1 Data App running locally</li>
+</ul>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🔑 Why it matters</h2>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>This is the last module before the project.</strong> Two small pieces of syntax that will save you from a specific crash, and the tool every React project in the world is built with.</p>
+<p style="margin:0 0 .9em;line-height:1.55">By the end of this module you should have a Vite dev server running and your Data App's folder in existence. The build block opens next.</p>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead><tr><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Idea</th><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Where you meet it again</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">?.</code></td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Reading API data, where a field you expected is sometimes just not there</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">??</code></td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Defaults that survive <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">0</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">""</code> — a real bug source</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">npm</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Every dependency you will ever add, and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node_modules</code> finally making sense</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Vite</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Part 2. Every React project starts with the command you are about to run</td></tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>Optional chaining is not a style preference.</strong> It is what stops <em>"Cannot read properties of undefined"</em> — the single most common runtime error in JavaScript, and the one most likely to break your Data App in front of somebody.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">📖 Learn</h2>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead><tr><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Topic</th><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Go-to resource</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Optional chaining</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/optional-chaining">javascript.info: Optional chaining</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Nullish coalescing</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/nullish-coalescing-operator">javascript.info: Nullish coalescing</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">What npm is</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://docs.npmjs.com/about-npm">npm docs: About npm</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Vite, start here</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://vitejs.dev/guide/">Vite: Getting Started</a> · <a href="https://vitejs.dev/guide/why.html">Why Vite</a></td></tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>Read "Why Vite" even if you skipped it in Module 8.</strong> Running a command you do not understand is how tooling becomes superstition, and you will be running this one for the rest of the year.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">The one idea underneath all of it</h2>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>Real data has holes in it.</strong></p>
+<p style="margin:0 0 .9em;line-height:1.55">Your own objects are always complete because you wrote them. Data from an API is missing fields, has nulls where you expected numbers, and changes shape between records. The two operators in this module exist entirely because of that, and everything about the Data App gets easier once you stop assuming the data is tidy.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">⌨️ Build — <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">data-app/</code></h2>
+<p style="margin:0 0 .9em;line-height:1.55">Two parts today. First <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">modern.js</code> for the syntax, then a real Vite project that becomes your Data App.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">1 · <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">?.</code> — reading data that has holes in it</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">const user = { name: "Ada", address: { city: "London" } };
+const other = { name: "Grace" };                 // no address at all
+
+console.log(user.address.city);      // "London"
+console.log(other.address.city);     // TypeError — the classic crash</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Run it and read the error properly: <em>Cannot read properties of undefined (reading 'city')</em></li>
+<li style="margin-bottom:.35em;line-height:1.5">Fix it with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">other.address?.city</code> and see <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">undefined</code> instead of a crash</li>
+<li style="margin-bottom:.35em;line-height:1.5">Chain deeper: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">other?.address?.city?.length</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Try it on a function that might not exist: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">obj.method?.()</code></li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can explain <em>which</em> thing was undefined in the original error — it was <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">address</code>, not <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">city</code>, and reading that correctly is half of debugging.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>This is the error you will hit most often for the rest of your life.</strong> Learn to read it: the thing in the parentheses is what you were <em>trying to read</em>; the thing that was undefined is what came before the dot.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">2 · <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">??</code> versus <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">||</code></h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">const score = 0;
+console.log(score || 100);    // 100  — wrong! 0 is a real score
+console.log(score ?? 100);    // 0    — right</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Run it and make sure the difference is genuinely clear</li>
+<li style="margin-bottom:.35em;line-height:1.5">Do the same with an empty string <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">""</code> as a username</li>
+<li style="margin-bottom:.35em;line-height:1.5">Write down the rule: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">||</code> triggers on <strong>falsy</strong>, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">??</code> triggers only on <strong><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">null</code> or <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">undefined</code></strong></li>
+<li style="margin-bottom:.35em;line-height:1.5">Combine them: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">const city = user?.address?.city ?? "Unknown";</code></li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can name two values where <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">||</code> gives the wrong answer. <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">0</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">""</code> are the two that cause real bugs — a score of zero and a blank-but-valid name.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>Item 4 is the line you will write a hundred times in Part 2.</strong> Reach in safely, fall back sensibly. It is the whole pattern for rendering API data.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">3 · What npm actually does</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">npm init -y
+npm install dayjs</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Run both in a scratch folder and then <strong>look at what changed</strong></li>
+<li style="margin-bottom:.35em;line-height:1.5">Open <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package.json</code> and find <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">dayjs</code> in <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">dependencies</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Look at <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node_modules/</code> — count the folders, and notice it is far more than one</li>
+<li style="margin-bottom:.35em;line-height:1.5">Find <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package-lock.json</code> and read the first twenty lines</li>
+<li style="margin-bottom:.35em;line-height:1.5">Use it: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import dayjs from "dayjs"; console.log(dayjs().format("YYYY-MM-DD"));</code></li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can say what each of the three artefacts is for: <strong><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package.json</code></strong> is what you asked for, <strong><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package-lock.json</code></strong> is exactly what you got, and <strong><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node_modules</code></strong> is the actual code. And you know why <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node_modules</code> is never committed.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>One <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">install</code> pulled in dozens of folders.</strong> Those are your dependency's dependencies. This is worth ten seconds of thought before you add a package for something you could write in five lines.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">4 · Your first Vite project</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">npm create vite@latest data-app -- --template vanilla
+cd data-app
+npm install
+npm run dev</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Run it and open the URL it prints</li>
+<li style="margin-bottom:.35em;line-height:1.5">Edit <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">main.js</code>, <strong>save</strong>, and watch the browser update without a refresh</li>
+<li style="margin-bottom:.35em;line-height:1.5">Read <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">index.html</code> and find the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">&lt;script type="module"&gt;</code> line — that is Module 8's work showing up</li>
+<li style="margin-bottom:.35em;line-height:1.5">Stop the server, run <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">npm run build</code>, and look inside <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">dist/</code></li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> The dev server hot-reloads, and you have looked inside <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">dist/</code> and seen that your readable source has become something else entirely. <strong>That is the build step</strong> the Module 8 stretch was about.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>We use the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">vanilla</code> template deliberately.</strong> No React yet — this is your Data App, and Part 2 starts a separate React project. Doing plain JS first means you will know which parts of Part 2 are React and which parts were always just JavaScript.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">5 · The shell of your Data App</h3>
+<p style="margin:0 0 .9em;line-height:1.55">You have a Vite project. Make it the beginning of the real thing.</p>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Pick your API and write its URL in your log. It must return a <strong>list</strong> of something</li>
+<li style="margin-bottom:.35em;line-height:1.5">Move your Module 9 <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">fetch</code> function into <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">data-app/src/api.js</code> as a named export</li>
+<li style="margin-bottom:.35em;line-height:1.5">Import it in <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">main.js</code>, call it, and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">console.log</code> the result</li>
+<li style="margin-bottom:.35em;line-height:1.5">Put <strong>one</strong> field from the first record onto the page with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">document.querySelector</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Confirm your error handling from M9 came along with it</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> Real data from a real API is visible in a browser you are running. It is one field and it is ugly. <strong>It is also the project working end to end</strong>, which is the hardest part and it is now behind you.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Choose an API that needs no key and allows browser requests.</strong> PokeAPI and JSONPlaceholder both work. If yours needs a key or blocks CORS, change it <em>now</em> rather than during the build block.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">Stretch · Look at what you shipped</h3>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Run <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">npm run build</code> and note the file sizes Vite reports</li>
+<li style="margin-bottom:.35em;line-height:1.5">Open the built JS in <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">dist/assets/</code> and try to read it</li>
+<li style="margin-bottom:.35em;line-height:1.5">Add <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">dayjs</code> to the project, use it once, rebuild, and compare sizes</li>
+<li style="margin-bottom:.35em;line-height:1.5">Write two sentences: what did one small dependency cost you?</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You have a number for what a dependency costs. That number is why "just npm install it" is a decision rather than a reflex.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">✅ Check Yourself</h2>
+<p style="margin:0 0 .9em;line-height:1.55">Can you, <strong>without looking anything up</strong>:</p>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Say what <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">?.</code> does when the thing before it is <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">undefined</code>?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Name two values where <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">||</code> gives the wrong default and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">??</code> does not?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Explain the difference between <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package.json</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package-lock.json</code>?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say why <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node_modules</code> is not committed to git?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say what <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">npm run build</code> produced and why a browser wants it?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Name your Data App's API and what it returns?</li>
+</ul>
+<p style="margin:0 0 .9em;line-height:1.55">If any box is unchecked, spend twenty minutes on that row's resource. Then check it.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🏁 Done When</h2>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">modern.js</code> demonstrates <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">?.</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">??</code>, including a case where <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">||</code> is wrong</li>
+<li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">npm run dev</code> serves your <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">data-app</code> and hot-reloads on save</li>
+<li style="margin-bottom:.35em;line-height:1.5"><strong>Real data from your chosen API is on the page</strong> — one field is enough</li>
+<li style="margin-bottom:.35em;line-height:1.5">Your M9 error handling survived the move</li>
+<li style="margin-bottom:.35em;line-height:1.5">Your log entry is written, including your API's URL and what it returns</li>
+<li style="margin-bottom:.35em;line-height:1.5"><strong>Conference:</strong> show me the dev server, the data on the page, and tell me what happens when the API is down. Five minutes.</li>
+</ul>
+<p style="margin:0 0 .9em;line-height:1.55"><em>Next: the <strong>P1 Data App build block</strong>, opening Sep 3/4 — choose your API and prove the fetch, then render, then loading and error states, then filter and sort, then deploy. Everything from Modules 1 to 10 becomes one thing you can send someone a link to.</em></p>
 </div>
 
 

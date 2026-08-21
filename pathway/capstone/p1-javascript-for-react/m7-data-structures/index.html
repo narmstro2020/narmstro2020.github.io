@@ -6298,10 +6298,166 @@
 
 <h1 id="data-structures">Data Structures<a class="headerlink" href="#data-structures" title="Permanent link">&para;</a></h1>
 <p><em>7253 Software Development Capstone &middot; P1 JavaScript for React &middot; Module 7</em></p>
-<div class="admonition info">
-<p class="admonition-title">Coming soon</p>
-<p>Notes for this module are not published yet.
-Scheduled for <strong>Black</strong> Mon, Aug 24, 2026 &middot; <strong>Gold</strong> Tue, Aug 25, 2026.</p>
+<p>Scheduled <strong>Black</strong> Mon, Aug 24, 2026 &middot; <strong>Gold</strong> Tue, Aug 25, 2026</p>
+<div class="canvas-module">
+<h1>Part 1 · Module 7 — Data Structures</h1>
+<p style="margin:0 0 .9em;line-height:1.55"><em>7253 Software Development Capstone · self-guided · work at your own pace</em></p>
+<hr style="border:0;border-top:1px solid #d7dae0;margin:2em 0">
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🎯 Objective</h2>
+<p style="margin:0 0 .9em;line-height:1.55">By the end of this module you can:</p>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Build a <strong>stack</strong> and say what LIFO means</li>
+<li style="margin-bottom:.35em;line-height:1.5">Build a <strong>queue</strong> and say why <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shift()</code> is the wrong tool at scale</li>
+<li style="margin-bottom:.35em;line-height:1.5">Build a <strong>linked list</strong> and explain what a node is</li>
+<li style="margin-bottom:.35em;line-height:1.5">Choose between an array, a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code>, and a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Set</code> for a given job</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say what Big-O notation is actually trying to tell you</li>
+</ul>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🔑 Why it matters</h2>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>You will not hand-write a linked list in React.</strong> You will choose between an array and a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> almost every day.</p>
+<p style="margin:0 0 .9em;line-height:1.55">Both halves of this module are here on purpose. The classic structures are standards D1.8&ndash;D1.10 and they are how you learn what "fast" means. <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Set</code> are the ones you will reach for on Thursday.</p>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead><tr><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Idea</th><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Where you meet it again</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Stack</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Undo. Browser back. The call stack your errors are printed from.</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Queue</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Job queues, print spoolers, React's own render queue — anything first-come-first-served</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Linked list</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">React's fiber tree is one. So is every structure where you insert in the middle a lot.</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> / <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Set</code></td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Every day. Lookup by key, and "have I already seen this one?"</td></tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>The stretch section is where this module earns its place.</strong> You will make a queue slow, measure it, then make it fast — and Big-O will stop being a definition you memorised.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">📖 Learn</h2>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead><tr><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Topic</th><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Go-to resource</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Set</code></td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/map-set">javascript.info: Map and Set</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Arrays as stacks and queues</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/array">javascript.info: Arrays</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Recursion and the call stack</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/recursion">javascript.info: Recursion and stack</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Reference for both</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">MDN: Map</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set">MDN: Set</a></td></tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>If you are taking Software Development as well, you will build these again in Java.</strong> Same structures, different syntax, and the Java version makes you say the types out loud. Naming the connection at the conference is worth marks in both courses.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">The one idea underneath all of it</h2>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>A data structure is a promise about what is fast.</strong></p>
+<p style="margin:0 0 .9em;line-height:1.55">Picking one is picking which operation you want to be cheap — and accepting that something else will be expensive. There is no structure that is best at everything, which is exactly why there is more than one.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">⌨️ Build — <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">structures.js</code></h2>
+<p style="margin:0 0 .9em;line-height:1.55">In your <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">capstone</code> folder, make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">structures.js</code>. Run it as you go with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node structures.js</code>.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">1 · A stack — last in, first out</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">const stack = [];
+stack.push("a");
+stack.push("b");
+console.log(stack.pop());   // "b" — the last one in</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Push three things, pop two, print what is left</li>
+<li style="margin-bottom:.35em;line-height:1.5">Now wrap it: write a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Stack</code> class with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">push</code>, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">pop</code>, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">peek</code>, and a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">size</code> getter</li>
+<li style="margin-bottom:.35em;line-height:1.5">Make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">pop</code> on an empty stack return <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">undefined</code> rather than crashing — decide that <em>deliberately</em></li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can say what LIFO means without expanding the letters, and your <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Stack</code> hides the array completely. Nobody outside the class should be able to reach in and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">splice</code> it.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>You have been using a stack all along.</strong> Print a stack trace from a thrown error and read it bottom to top — that is the call stack, and it is this exact structure.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">2 · A queue — first in, first out</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">const queue = [];
+queue.push("a");
+queue.push("b");
+console.log(queue.shift());   // "a" — the first one in</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Write a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Queue</code> class with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">enqueue</code>, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">dequeue</code>, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">peek</code>, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">size</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Enqueue five, dequeue two, print what remains</li>
+<li style="margin-bottom:.35em;line-height:1.5">Read the docs for <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shift()</code> and find the sentence about it being slower than <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">pop()</code></li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> Your queue works, <em>and</em> you can say why <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shift()</code> is not free: it re-indexes every remaining element. On five items that is nothing. Part 5 is where it stops being nothing.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">3 · A linked list — the one you build by hand</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;      // the whole idea, right here
+  }
+}</code></pre>
+<p style="margin:0 0 .9em;line-height:1.55">A linked list is a chain of nodes. Each one knows its value and the next node. There is no array underneath — that is the point.</p>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Write a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">LinkedList</code> with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">head</code>, a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">push(value)</code> that walks to the end and links on, and a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">toArray()</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Push four values and print <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">toArray()</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Add <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">prepend(value)</code> — put a node at the <strong>front</strong>. Notice how little work it is</li>
+<li style="margin-bottom:.35em;line-height:1.5">Now write <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">unshift</code>'s equivalent on an array of 100,000 items and think about what the computer had to do</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">prepend</code> is three lines and touches two nodes, no matter how long the list is. Adding to the front of an array moves every single element. That difference <em>is</em> the reason linked lists exist.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>Do not skip <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">toArray()</code>.</strong> It is how you prove the chain is actually linked, and it is your debugging tool for the rest of the module.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">4 · <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Set</code> — the two you will actually use</h3>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">const seen = new Set([1, 2, 2, 3]);
+console.log(seen.size);          // 3 — duplicates are gone
+
+const prices = new Map();
+prices.set("rope", 8);
+console.log(prices.get("rope")); // 8</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Take an array with duplicates and dedupe it in <strong>one line</strong> with a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Set</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Build a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> of name &rarr; price, then loop it with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">for (const [k, v] of prices)</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Try using an <strong>object</strong> as a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> key. Then try the same thing with a plain <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">{}</code> and watch it fail</li>
+<li style="margin-bottom:.35em;line-height:1.5">Print <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">prices.size</code>, then work out how you would get the same number from a plain object</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can state two things a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> does that an object cannot: any key type, and a real <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">size</code>. Item 3 is the one that surprises people.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">5 · Choosing the shape</h3>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead><tr><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">You need to...</th><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Reach for</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Look something up by name, constantly</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Know whether you have seen a value before</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Set</code></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Keep things in order and read them by position</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Array</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Always take the most recent thing</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Stack</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Always take the oldest thing</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Queue</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Insert in the middle over and over</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Linked list</td></tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55">Now use it. You have a list of 500 orders and you need to answer <em>"what is order #4471?"</em> a thousand times.</p>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Do it with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">array.find()</code> — write the line</li>
+<li style="margin-bottom:.35em;line-height:1.5">Do it with a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> keyed by order number — write those lines</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say, in one sentence, what the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> version stopped doing a thousand times</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> Your answer to item 3 mentions <em>searching</em>. <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">find()</code> walks the list every single time; the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> goes straight there.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">Stretch · Make it slow, then measure it</h3>
+<p style="margin:0 0 .9em;line-height:1.55">This is the part that turns Big-O from a definition into something you have seen with your own eyes.</p>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">const N = 100_000;
+const arr = Array.from({ length: N }, (_, i) => i);
+
+console.time("shift");
+while (arr.length) arr.shift();      // re-indexes every time
+console.timeEnd("shift");</code></pre>
+<p style="margin:0 0 .9em;line-height:1.55">Then build a queue that never shifts &mdash; keep a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">head</code> index and move it forward instead of removing from the front:</p>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">class FastQueue {
+  #items = [];
+  #head = 0;
+  enqueue(v) { this.#items.push(v); }
+  dequeue() {
+    if (this.#head >= this.#items.length) return undefined;
+    return this.#items[this.#head++];    // move the pointer, move nothing else
+  }
+}</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Time 100,000 dequeues from <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">FastQueue</code> the same way</li>
+<li style="margin-bottom:.35em;line-height:1.5">Put the two numbers side by side</li>
+<li style="margin-bottom:.35em;line-height:1.5">Try it again at 10,000 and at 1,000,000, and watch how the <em>gap</em> changes</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> The two times are not close, and the gap grows as N grows. That is the entire content of "O(n²) versus O(n)" — you just measured it instead of being told it.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>Do not memorise Big-O tables.</strong> The useful skill is noticing that a loop contains a hidden loop. <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shift()</code> inside a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">while</code> is a loop inside a loop, which is why it fell over.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">✅ Check Yourself</h2>
+<p style="margin:0 0 .9em;line-height:1.55">Can you, <strong>without looking anything up</strong>:</p>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Say what LIFO and FIFO mean, and give one real example of each?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Explain why <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shift()</code> costs more than <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">pop()</code>?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Draw a three-node linked list on paper and label what each node holds?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say one thing a <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Map</code> can do that a plain object cannot?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say when an array is the wrong choice?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Explain what your two timing numbers in the stretch were telling you?</li>
+</ul>
+<p style="margin:0 0 .9em;line-height:1.55">If any box is unchecked, spend twenty minutes on that row's resource. Then check it.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🏁 Done When</h2>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">structures.js</code> runs and covers all five parts</li>
+<li style="margin-bottom:.35em;line-height:1.5">Your <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Stack</code>, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Queue</code>, and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">LinkedList</code> are classes — not loose arrays with comments</li>
+<li style="margin-bottom:.35em;line-height:1.5">You have the two timing numbers from the stretch, written down</li>
+<li style="margin-bottom:.35em;line-height:1.5">Your log entry is written — what you built, what confused you and how you resolved it, any AI use, and the URL of anything you looked up</li>
+<li style="margin-bottom:.35em;line-height:1.5"><strong>Conference:</strong> run it, then talk me through the timing numbers and what they mean. Five minutes.</li>
+</ul>
+<p style="margin:0 0 .9em;line-height:1.55"><em>Next: <strong>Module 8 — ES Modules</strong> — <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">export</code>, and the end of one enormous file. Everything you have written so far has been one script; from here your code lives in pieces that find each other.</em></p>
 </div>
 
 

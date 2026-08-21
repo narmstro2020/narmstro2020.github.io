@@ -6298,10 +6298,148 @@
 
 <h1 id="es-modules">ES Modules<a class="headerlink" href="#es-modules" title="Permanent link">&para;</a></h1>
 <p><em>7253 Software Development Capstone &middot; P1 JavaScript for React &middot; Module 8</em></p>
-<div class="admonition info">
-<p class="admonition-title">Coming soon</p>
-<p>Notes for this module are not published yet.
-Scheduled for <strong>Black</strong> Wed, Aug 26, 2026 &middot; <strong>Gold</strong> Thu, Aug 27, 2026.</p>
+<p>Scheduled <strong>Black</strong> Wed, Aug 26, 2026 &middot; <strong>Gold</strong> Thu, Aug 27, 2026</p>
+<div class="canvas-module">
+<h1>Part 1 · Module 8 — ES Modules</h1>
+<p style="margin:0 0 .9em;line-height:1.55"><em>7253 Software Development Capstone · self-guided · work at your own pace</em></p>
+<hr style="border:0;border-top:1px solid #d7dae0;margin:2em 0">
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🎯 Objective</h2>
+<p style="margin:0 0 .9em;line-height:1.55">By the end of this module you can:</p>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Split one file into several and have them find each other</li>
+<li style="margin-bottom:.35em;line-height:1.5">Use <strong>named exports</strong> and know when to use a <strong>default</strong></li>
+<li style="margin-bottom:.35em;line-height:1.5">Say what <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">"type": "module"</code> in <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package.json</code> does</li>
+<li style="margin-bottom:.35em;line-height:1.5">Import only what you need, and see why that matters later</li>
+<li style="margin-bottom:.35em;line-height:1.5">Recognise a circular import and get yourself out of one</li>
+</ul>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🔑 Why it matters</h2>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>Every file you have written so far has been one long script.</strong> That has been fine. It stops being fine at about two hundred lines.</p>
+<p style="margin:0 0 .9em;line-height:1.55">From here your code lives in pieces. This is the module that makes every React tutorial readable, because the first line of every React file you will ever see is an <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import</code>.</p>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead><tr><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Idea</th><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Where you meet it again</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import</code> / <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">export</code></td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">The first line of literally every React component file</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Named vs default</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import React from</code> vs <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import { useState } from</code> — you have already seen both</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">One job per file</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">How every codebase bigger than a homework assignment is organised</td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Import only what you need</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Bundle size — the thing that decides whether your deployed app loads fast</td></tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>This module is short and it is load-bearing.</strong> Nothing here is difficult. Getting it wrong makes every later module confusing, because the error messages point at import lines rather than at what is actually broken.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">📖 Learn</h2>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead><tr><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Topic</th><th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Go-to resource</th></tr></thead>
+<tbody>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Modules, start to finish</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/modules-intro">javascript.info: Modules, introduction</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Export and import</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://javascript.info/import-export">javascript.info: Export and Import</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Reference</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">MDN: JavaScript modules</a></td></tr>
+<tr><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Node specifics</td><td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://nodejs.org/api/esm.html">Node docs: ECMAScript modules</a></td></tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>Java calls this <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import</code>; Python calls it <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import</code> too.</strong> Same problem, three solutions. If you are in 7184 you have already met the idea — what is different here is that the file path is part of the import, which trips people coming from Java.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">The one idea underneath all of it</h2>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>A module is a file that decides what the outside world can see.</strong></p>
+<p style="margin:0 0 .9em;line-height:1.55">Everything you do not export is private to that file — permanently and automatically. You do not have to do anything to get that; it is the default. What takes effort is deciding what to <em>let out</em>.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">⌨️ Build — <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shop/</code></h2>
+<p style="margin:0 0 .9em;line-height:1.55">This time you are building a <strong>folder</strong>, not a file. In your <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">capstone</code> folder make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shop/</code>, and inside it the files below. Run it with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node shop/main.js</code>.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">1 · Turn modules on</h3>
+<p style="margin:0 0 .9em;line-height:1.55">Node needs telling. In your <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">capstone</code> folder, make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package.json</code>:</p>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">{
+  "name": "capstone",
+  "type": "module"
+}</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Create the file exactly as above</li>
+<li style="margin-bottom:.35em;line-height:1.5">Make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shop/format.js</code> with one line: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">export const money = (n) =&gt; `$${n.toFixed(2)}`;</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shop/main.js</code> that imports it and prints <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">money(8)</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Run <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node shop/main.js</code></li>
+</ol>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">// shop/main.js
+import { money } from "./format.js";
+console.log(money(8));            // $8.00</code></pre>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> It prints <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">$8.00</code>. If you get <em>"Cannot use import statement outside a module"</em>, your <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">package.json</code> is missing, in the wrong folder, or missing the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">"type"</code> line.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>The <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.js</code> on the end of the import is required.</strong> Node will not guess it for you. React projects let you drop it because a bundler is doing the guessing — but here, in plain Node, leave it off and it fails.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">2 · Named exports — the ones you will use most</h3>
+<p style="margin:0 0 .9em;line-height:1.55">Make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shop/inventory.js</code>:</p>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">export const items = [
+  { id: 1, name: "rope",  price: 8 },
+  { id: 2, name: "torch", price: 3 },
+];
+
+export function find(id) {
+  return items.find((i) => i.id === id);
+}
+
+export function total() {
+  return items.reduce((sum, i) => sum + i.price, 0);
+}</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Import <strong>only <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">find</code></strong> into <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">main.js</code> and print <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">find(2)</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Now import <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">total</code> as well, in the same <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">{ }</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Rename one on the way in: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import { total as cartTotal } from "./inventory.js";</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Try to use something you did <strong>not</strong> import and read the error</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can import one thing, several things, or a renamed thing, and the error for the fourth item says <em>not defined</em> — which tells you imports are not automatic.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>The curly braces are not optional decoration.</strong> <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">{ find }</code> means "the export named find". Without braces you are asking for the <em>default</em> export, which this file does not have.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">3 · A default export, and when to bother</h3>
+<p style="margin:0 0 .9em;line-height:1.55">Make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shop/Shop.js</code> with <strong>one</strong> main thing in it:</p>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">export default class Shop {
+  constructor(name) { this.name = name; }
+  open() { return `${this.name} is open`; }
+}</code></pre>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Import it with <strong>no braces</strong> and any name you like: <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import Store from "./Shop.js";</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Prove the name is yours to choose — import it again in a scratch file as <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">Whatever</code></li>
+<li style="margin-bottom:.35em;line-height:1.5">Add a named export to the same file and import both at once</li>
+</ol>
+<pre style="background:#eff0f2;border-radius:5px;padding:.9em 1em;overflow-x:auto;margin:0 0 1.1em"><code style="font-family:Consolas,'Courier New',monospace;background:none;padding:0;line-height:1.45">import Shop, { helper } from "./Shop.js";   // default first, then named</code></pre>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can state the rule in one sentence: <strong>one default per file, as many named as you like</strong> — and you noticed that a default export's name is decided by whoever imports it, which is either convenient or confusing depending on the day.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Prefer named exports.</strong> A default whose name changes between files makes code hard to search. Use a default when the file genuinely <em>is</em> one thing — a single React component, for example, which is exactly why React files use them.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">4 · One job per file</h3>
+<p style="margin:0 0 .9em;line-height:1.55">Right now <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">inventory.js</code> does two jobs: it holds the data <em>and</em> it does the arithmetic. Split it.</p>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Move <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">total()</code> into a new <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">shop/cart.js</code>, which imports <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">items</code> from <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">inventory.js</code></li>
+<li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">main.js</code> now imports from three files and does no work of its own</li>
+<li style="margin-bottom:.35em;line-height:1.5">Draw the arrows on paper: which file imports which?</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">main.js</code> reads like a summary of the program rather than the program itself. That is the whole reason to split files, and it is worth saying out loud.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>Your diagram should have no cycles.</strong> If two arrows point at each other, part 5 is about to happen to you.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">5 · Break it on purpose — the circular import</h3>
+<p style="margin:0 0 .9em;line-height:1.55">Make <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">cart.js</code> import something from <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">inventory.js</code>, and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">inventory.js</code> import something from <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">cart.js</code>. Run it.</p>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Read the error, or the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">undefined</code>, carefully — a circular import often does not crash, it just hands you <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">undefined</code> at the wrong moment, which is worse</li>
+<li style="margin-bottom:.35em;line-height:1.5">Fix it by moving the shared thing into a third file that both import</li>
+<li style="margin-bottom:.35em;line-height:1.5">Re-draw your arrows and confirm the cycle is gone</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You have seen what a circular import looks like <strong>before</strong> it happens to you at 11pm during build season. The fix is always the same shape: pull the shared thing out into its own file.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>This is the one genuinely nasty bug in this module.</strong> It does not announce itself. Recognising the symptom — a value that is <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">undefined</code> when it obviously should not be — is worth more than any syntax here.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">Stretch · Why bundlers exist</h3>
+<p style="margin:0 0 .9em;line-height:1.55">Add <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">export const unused = "nobody imports me";</code> to <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">inventory.js</code> and run again. Nothing changes — Node loads the file regardless.</p>
+<p style="margin:0 0 .9em;line-height:1.55">Now think about a browser. Every <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import</code> is potentially a separate network request, and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">unused</code> would be shipped to a user who never touches it.</p>
+<ol style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Read the first three paragraphs of the <a href="https://vitejs.dev/guide/why.html">Vite: Why Vite</a> page</li>
+<li style="margin-bottom:.35em;line-height:1.5">Write two sentences in your log: what problem a bundler solves, and what "tree shaking" removes</li>
+</ol>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#fce5dc"><strong>Done when:</strong> You can say why a browser project needs a build step and a Node script does not. <strong>Module 10 is where you meet Vite properly</strong> — arriving with this already in your head makes it five minutes instead of an hour.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">✅ Check Yourself</h2>
+<p style="margin:0 0 .9em;line-height:1.55">Can you, <strong>without looking anything up</strong>:</p>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5">Write an <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">export</code> and the matching <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import</code> from memory?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say what <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">"type": "module"</code> does?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Explain the difference between a named and a default export?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say why the <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">.js</code> extension is required in Node imports?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Describe what a circular import does, and how to fix one?</li>
+<li style="margin-bottom:.35em;line-height:1.5">Say what a bundler is for?</li>
+</ul>
+<p style="margin:0 0 .9em;line-height:1.55">If any box is unchecked, spend twenty minutes on that row's resource. Then check it.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🏁 Done When</h2>
+<ul style="margin:0 0 1em;padding-left:1.4em">
+<li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">node shop/main.js</code> runs and prints your inventory work</li>
+<li style="margin-bottom:.35em;line-height:1.5">You have at least <strong>four files</strong> that import from each other, and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">main.js</code> does no arithmetic of its own</li>
+<li style="margin-bottom:.35em;line-height:1.5">You caused a circular import, saw what it did, and fixed it</li>
+<li style="margin-bottom:.35em;line-height:1.5">Your log entry is written — what you built, what confused you and how you resolved it, any AI use, and the URL of anything you looked up</li>
+<li style="margin-bottom:.35em;line-height:1.5"><strong>Conference:</strong> show me your import diagram and talk me through what happened when you made the cycle. Five minutes.</li>
+</ul>
+<p style="margin:0 0 .9em;line-height:1.55"><em>Next: <strong>Module 9 — Async JavaScript</strong> — promises, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code>, and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">fetch</code>. That is the module the Data App is actually built on, and it is the one where code stops running top to bottom.</em></p>
 </div>
 
 
