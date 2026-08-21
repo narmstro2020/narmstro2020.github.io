@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tell me which Indiana state park to visit next.">
+  <title>Contact &mdash; Indiana State Parks</title>
+  <link rel="icon" href="images/favicon.png">
+</head>
+<body>
+
+  <header>
+    <h1>Tell me where to go next</h1>
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="turkey-run.html">Turkey Run</a></li>
+        <li><a href="about.html">About me</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+  <p>I have been to four of Indiana's twenty-four state parks. If you know one worth
+  the drive, tell me.</p>
+
+  <!-- ===== L11 · action and method are named now and explained properly in U6.
+       Nothing is submitted anywhere yet -- there is no backend until spring. ===== -->
+  <form action="#" method="post">
+
+    <!-- L11 · EVERY input gets a label, and for="" must match the input's id.
+         Click the label text -- if the cursor jumps into the box, they match. -->
+    <p>
+      <label for="name">Your name</label><br>
+      <input type="text" id="name" name="name">
+    </p>
+
+    <p>
+      <label for="email">Email</label><br>
+      <input type="text" id="email" name="email">
+    </p>
+
+    <p>
+      <label for="park">Which park?</label><br>
+      <select id="park" name="park">
+        <option value="">-- pick one --</option>
+        <option value="shades">Shades</option>
+        <option value="brown-county">Brown County</option>
+        <option value="clifty-falls">Clifty Falls</option>
+        <option value="indiana-dunes">Indiana Dunes</option>
+        <option value="other">Somewhere else</option>
+      </select>
+    </p>
+
+    <p>
+      <label for="why">Why that one?</label><br>
+      <textarea id="why" name="why" rows="5" cols="40"></textarea>
+    </p>
+
+    <p><button type="submit">Send it</button></p>
+
+  </form>
+
+  <!-- L11 · submitting reloads the page and clears the boxes. That is expected:
+       there is nowhere for the data to go yet. U6 is where that gets wired up. -->
+
+  </main>
+
+  <footer>
+    <p>Built in 7185 Website and Database Development. Photographs are credited on the
+    home page; text is mine.</p>
+  </footer>
+
+</body>
+</html>
