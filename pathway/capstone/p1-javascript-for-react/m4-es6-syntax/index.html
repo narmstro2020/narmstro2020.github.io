@@ -6462,7 +6462,7 @@ console.log(game.price);                   // 20 — the original never moved</c
 const copy = { ...original };
 copy.tags.push("greek");
 console.log(original.tags);   // ["roguelike", "indie", "greek"]  ← !</code></pre>
-<p style="margin:0 0 .9em;line-height:1.55">Run it. <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">copy</code> is a new object, but <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">copy.tags</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">original.tags</code> are <strong>the same array</strong>. Write in your Learning Log what you think is going on. You do not have to solve it — Module 5 is this problem — but you do have to have seen it.</p>
+<p style="margin:0 0 .9em;line-height:1.55">Run it. <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">copy</code> is a new object, but <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">copy.tags</code> and <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">original.tags</code> are <strong>the same array</strong>. Write in your notes what you think is going on. You do not have to solve it — Module 5 is this problem — but you do have to have seen it.</p>
 <h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">5 · Rest</h3>
 <ol style="margin:0 0 1em;padding-left:1.4em">
 <li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">const { title, ...details } = games[0]</code> — what ends up in <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">details</code>?</li>
@@ -6480,7 +6480,7 @@ describe(games[0], null);        // ← and this one</code></pre>
 <p style="margin:0 0 .9em;line-height:1.55">✅ <em>You can say exactly which of the four calls used the default, and why <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">null</code> behaves differently from <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">undefined</code>.</em></p>
 <h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">Stretch · Rewrite Module 3</h3>
 <p style="margin:0 0 .9em;line-height:1.55">Take your chained expression from Module 3 part 5 — <em>"the total hours I've spent on games I haven't finished"</em> — and rewrite it using destructured callback parameters and a template literal for the output.</p>
-<p style="margin:0 0 .9em;line-height:1.55">Put the old version and the new version next to each other in your Learning Log. Same logic, same answer, noticeably less noise. That difference is the entire argument for this module.</p>
+<p style="margin:0 0 .9em;line-height:1.55">Put the old version and the new version next to each other in your notes. Same logic, same answer, noticeably less noise. That difference is the entire argument for this module.</p>
 <hr style="border:0;border-top:1px solid #d7dae0;margin:2em 0">
 <h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">🔭 Looking ahead — pick two APIs</h2>
 <p style="margin:0 0 .9em;line-height:1.55"><strong>Five minutes, and it pays off for the rest of the semester.</strong></p>
@@ -6503,9 +6503,9 @@ describe(games[0], null);        // ← and this one</code></pre>
 <li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">syntax.js</code> runs and covers all six parts</li>
 <li style="margin-bottom:.35em;line-height:1.5">At least one <strong>function parameter</strong> is destructured — not just a variable</li>
 <li style="margin-bottom:.35em;line-height:1.5">Your immutable update produces a new object and you printed the original to prove it is untouched</li>
-<li style="margin-bottom:.35em;line-height:1.5">The shallow-copy surprise is in your Learning Log, in your own words</li>
+<li style="margin-bottom:.35em;line-height:1.5">The shallow-copy surprise is in your notes, in your own words</li>
 <li style="margin-bottom:.35em;line-height:1.5">Your log entry is written — what you built, what confused you and how you got past it, any AI use, and the URL of anything you looked up</li>
-<li style="margin-bottom:.35em;line-height:1.5"><strong>Conference:</strong> run it, show me the immutable update, and tell me what the three dots are doing in two different lines of your file. Five minutes.</li>
+<li style="margin-bottom:.35em;line-height:1.5"><strong>build check:</strong> run it, show me the immutable update, and tell me what the three dots are doing in two different lines of your file. Five minutes.</li>
 </ul>
 <hr style="border:0;border-top:1px solid #d7dae0;margin:2em 0">
 <p style="margin:0 0 .9em;line-height:1.55"><em>Next: <strong>Module 5 — Objects &amp; Immutability</strong> — where the shallow-copy surprise from part 4 stops being a surprise and becomes the whole subject.</em></p>
