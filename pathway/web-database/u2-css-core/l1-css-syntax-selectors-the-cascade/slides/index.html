@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Web Dev U1 L10 — Layout & Semantics</title>
+<title>Web Dev U2 L1 — CSS Syntax, Selectors, the Cascade</title>
 <style>
   :root {
     --ink:      #14161a;
@@ -242,119 +242,96 @@
 <div id="stage-wrap"><div id="stage">
 
 <!-- ============================================================ 1 -->
+<!-- ============================================================ 1 -->
 <section class="slide center">
-<h1 class="small">Today your site<br>will look <em class="hl">exactly the same</em>.</h1>
-<p class="note" style="margin-top:26px">Not one pixel moves.<br>And it is the most important lesson in the unit.</p>
+<h1 class="small">Same site.<br>One new file.</h1>
+<p class="lede">Everything changes at once.</p>
 </section>
 
 <!-- ============================================================ 2 -->
 <section class="slide">
-<div class="eyebrow">Standard D1.2 &mdash; the keystone</div>
-<h1 class="small">These two look identical.<br>They are not.</h1>
-<pre><code>&lt;div id="header"&gt; ... &lt;/div&gt;
-
-&lt;header&gt; ... &lt;/header&gt;</code></pre><div class="callout" style="margin-top:22px">The first is <strong>a box you named</strong>.<br>The second <em class="hl">means header</em> &mdash; to a screen reader, to Google, and to the next person who opens your file.</div>
+<div class="eyebrow">CSS can live in three places</div>
+<table>
+<thead><tr><th>Where</th><th>Looks like</th><th>Cost</th></tr></thead>
+<tbody>
+<tr><td>Inline</td><td><code>style="color:red"</code></td><td>edit every element, forever</td></tr>
+<tr><td>Internal</td><td><code>&lt;style&gt;</code> in the head</td><td>edit every page, forever</td></tr>
+<tr><td><strong>External</strong></td><td><code>style.css</code></td><td><strong>edit one line</strong></td></tr>
+</tbody>
+</table>
+<p class="note">This is arithmetic, not a style rule. The third one is less typing and fewer mistakes.</p>
 </section>
 
 <!-- ============================================================ 3 -->
 <section class="slide">
-<h1 class="small">Who is actually reading your HTML?</h1>
-<table>
-<thead><tr><th>Reader</th><th>What it does with <code>&lt;div id="nav"&gt;</code></th></tr></thead>
-<tbody>
-<tr><td>A person with eyes</td><td>Nothing &mdash; they see the links and use them</td></tr>
-<tr><td><strong>A screen reader</strong></td><td>Nothing. It cannot offer "skip to navigation" because it does not know this is navigation</td></tr>
-<tr><td><strong>Google</strong></td><td>Guesses. Sometimes wrongly</td></tr>
-<tr><td><strong>The next developer</strong></td><td>Reads your id and hopes you meant it</td></tr>
-</tbody>
-</table><p class="note" style="margin-top:18px">Semantic tags are how you tell the ones that cannot see.</p>
+<div class="eyebrow">Anatomy</div>
+<pre><code>h1 {
+  color: #14532d;
+  font-size: 2rem;
+}</code></pre>
+<p><strong>Selector</strong>, then a block, then <strong>property: value;</strong> pairs.</p>
+<p class="note">The semicolon and the closing brace are where today's typos will be. A missing semicolon breaks the rule <em>after</em> it, which is cruel.</p>
 </section>
 
 <!-- ============================================================ 4 -->
 <section class="slide">
-<div class="eyebrow">The seven you need</div>
-<h1 class="small">Your page, named properly</h1>
-<table>
-<thead><tr><th>Element</th><th>Holds</th></tr></thead>
-<tbody>
-<tr><td><code>&lt;header&gt;</code></td><td>The site title and the nav. Top of the page</td></tr>
-<tr><td><code>&lt;nav&gt;</code></td><td>Navigation links. <strong>Only</strong> navigation</td></tr>
-<tr><td><code>&lt;main&gt;</code></td><td>The page's actual content. <strong>Exactly one per page</strong></td></tr>
-<tr><td><code>&lt;section&gt;</code></td><td>A themed chunk with a heading</td></tr>
-<tr><td><code>&lt;article&gt;</code></td><td>Something that would still make sense on its own</td></tr>
-<tr><td><code>&lt;aside&gt;</code></td><td>Related but not essential &mdash; a sidebar</td></tr>
-<tr><td><code>&lt;footer&gt;</code></td><td>Credits, attributions, contact</td></tr>
-</tbody>
-</table>
+<h1 class="small">One line per page.<br>That is the whole trick.</h1>
+<pre><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></pre>
+<p class="callout">Link it from <strong>index.html only</strong> first. Reload. The home page changes and the other three do not. <em>Then</em> link the rest.</p>
 </section>
 
 <!-- ============================================================ 5 -->
 <section class="slide">
-<div class="eyebrow">Build &middot; 55 minutes &mdash; every page</div>
-<h1 class="small">Wrap what you already have</h1>
-<pre><code>&lt;body&gt;
-  &lt;header&gt;
-    &lt;h1&gt;My Site About Indiana State Parks&lt;/h1&gt;
-    &lt;nav&gt;
-      &lt;ul&gt; ...your existing menu... &lt;/ul&gt;
-    &lt;/nav&gt;
-  &lt;/header&gt;
-
-  &lt;main&gt;
-    ...everything that was already here...
-  &lt;/main&gt;
-
-  &lt;footer&gt;
-    &lt;p&gt;Photo credits and attributions&lt;/p&gt;
-  &lt;/footer&gt;
-&lt;/body&gt;</code></pre><p class="note" style="margin-top:16px"><strong>You are not writing new content.</strong> You are wrapping what is there.</p>
+<div class="eyebrow">Three kinds of selector</div>
+<table>
+<thead><tr><th>Write</th><th>Means</th><th>Matches</th></tr></thead>
+<tbody>
+<tr><td><code>h2 { }</code></td><td>element</td><td>every <code>h2</code></td></tr>
+<tr><td><code>.intro { }</code></td><td><strong>class</strong> &mdash; a dot</td><td>anything with <code>class="intro"</code></td></tr>
+<tr><td><code>#parks { }</code></td><td><strong>id</strong> &mdash; a hash</td><td>the one <code>id="parks"</code></td></tr>
+</tbody>
+</table>
+<p class="note">A class can be on many things. An id is on exactly one.</p>
 </section>
 
 <!-- ============================================================ 6 -->
-<section class="slide center">
-<h1 class="small">And that <code>&lt;!-- TODO --&gt;</code><br>from Lesson 8?</h1>
-<pre><code>&lt;!-- TODO: wrap this nav in a &lt;nav&gt; element once we do semantics in Lesson 10 --&gt;</code></pre><div class="callout" style="margin-top:26px"><em class="hl">Delete it.</em> You just did it.</div>
+<section class="slide">
+<h1 class="small">You already wrote the hooks.<br>Five lessons ago.</h1>
+<pre><code>&lt;div class="<span class="warnline">intro</span>"&gt;
+&lt;span class="<span class="warnline">warning</span>"&gt;
+&lt;section id="<span class="warnline">parks</span>"&gt;</code></pre>
+<p class="callout">Lesson 8. Nothing visible happened and it felt like busywork. <strong>This is what they were for.</strong></p>
 </section>
 
 <!-- ============================================================ 7 -->
-<section class="slide">
-<div class="eyebrow">Three rules people break</div>
-<h1 class="small">The ones to get right</h1>
-<ol>
-<li><strong>One <code>&lt;main&gt;</code> per page.</strong> Exactly one. Not zero, not two.</li>
-<li><strong><code>&lt;nav&gt;</code> is for navigation.</strong> Not every list of links &mdash; the credits list at the bottom is not a nav.</li>
-<li><strong><code>&lt;main&gt;</code> excludes the header and footer.</strong> Those repeat on every page; <code>&lt;main&gt;</code> is what makes this page <em>this</em> page.</li>
-</ol>
+<section class="slide center">
+<div class="eyebrow">The cascade</div>
+<pre><code>a { color: #7a5901; }
+a { color: #14532d; }</code></pre>
+<h1 class="small">Which one wins?</h1>
 </section>
 
 <!-- ============================================================ 8 -->
-<section class="slide center">
-<h1 class="big">Reload.</h1>
-<p class="note" style="margin-top:24px">Nothing moved.</p>
-<div class="callout" style="margin-top:26px">Correct. <strong>Semantics are invisible and structural.</strong><br>Appearance is Unit 2, and it will be much easier because of today.</div>
+<section class="slide">
+<h1 class="small">The later one wins</h1>
+<p class="lede">Same selector, same weight &mdash; so the last one read is the one applied.</p>
+<p class="note">That is the whole rule for today. Which selector <em>outranks</em> which is Lesson 14, and dragging it in now buries the simple version.</p>
 </section>
 
 <!-- ============================================================ 9 -->
 <section class="slide">
-<div class="eyebrow">Finished early? See what you built.</div>
-<h1 class="small"><code>F12</code> &rarr; Elements</h1>
-<p class="note" style="margin-top:22px">Collapse everything. Look at the shape of your page: <strong>header, main, footer</strong>.</p>
-<div class="callout" style="margin-top:22px">That outline is what a screen reader reads to someone who cannot see your site. <em class="hl">Yesterday it was a pile of boxes.</em></div>
-</section>
-
-<!-- ============================================================ 10 -->
-<section class="slide">
-<div class="eyebrow">Before you leave</div>
-<h1 class="small">Back up, then one question.</h1>
+<h1 class="small">Before you leave</h1>
 <ul>
-<li>Back up &mdash; <code>Site_U1L10_LastnameF</code></li>
-<li>Submit the build on Canvas</li>
-<li>Exit ticket: <strong>why <code>&lt;header&gt;</code> instead of <code>&lt;div id="header"&gt;</code>?</strong></li>
-</ul><p class="note" style="margin-top:22px">Next: <strong>forms</strong> &mdash; how the web takes input, and where your database gets its data in the spring.</p>
+<li>All four pages linked to <code>style.css</code></li>
+<li>Three element rules, one class, one id</li>
+<li>Still <strong>zero</strong> validator errors</li>
+<li>Backed up</li>
+</ul>
+<p class="note">Exit ticket: two rules for <code>h2</code>, one after the other, different colours. Which shows, and how would you tell a classmate to work it out?</p>
 </section>
 </div></div>
 
-<div id="title-tag">WEB DEV · U1 L10</div>
+<div id="title-tag">WEB DEV · U2 L1</div>
 <div id="counter"></div>
 <div id="bar"><i></i></div>
 <div id="notes"></div>

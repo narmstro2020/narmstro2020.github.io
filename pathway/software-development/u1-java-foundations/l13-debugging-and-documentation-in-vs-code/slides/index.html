@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Web Dev U1 L10 — Layout & Semantics</title>
+<title>Soft Dev U1 L13 — Debugging and Documentation</title>
 <style>
   :root {
     --ink:      #14161a;
@@ -242,119 +242,89 @@
 <div id="stage-wrap"><div id="stage">
 
 <!-- ============================================================ 1 -->
+<!-- ============================================================ 1 -->
 <section class="slide center">
-<h1 class="small">Today your site<br>will look <em class="hl">exactly the same</em>.</h1>
-<p class="note" style="margin-top:26px">Not one pixel moves.<br>And it is the most important lesson in the unit.</p>
+<h1 class="small">Your program will not do<br>one new thing today.</h1>
+<p class="lede">It will be a great deal easier to work on.</p>
 </section>
 
 <!-- ============================================================ 2 -->
 <section class="slide">
-<div class="eyebrow">Standard D1.2 &mdash; the keystone</div>
-<h1 class="small">These two look identical.<br>They are not.</h1>
-<pre><code>&lt;div id="header"&gt; ... &lt;/div&gt;
-
-&lt;header&gt; ... &lt;/header&gt;</code></pre><div class="callout" style="margin-top:22px">The first is <strong>a box you named</strong>.<br>The second <em class="hl">means header</em> &mdash; to a screen reader, to Google, and to the next person who opens your file.</div>
+<div class="eyebrow">The thing we are replacing</div>
+<h1 class="small">Changing things until it works<br>is not debugging</h1>
+<p class="callout warn">A print statement answers <strong>one question you thought to ask</strong>.<br>
+The bug is always in the question you did not think to ask.</p>
 </section>
 
 <!-- ============================================================ 3 -->
 <section class="slide">
-<h1 class="small">Who is actually reading your HTML?</h1>
+<div class="eyebrow">Five tools, one panel</div>
 <table>
-<thead><tr><th>Reader</th><th>What it does with <code>&lt;div id="nav"&gt;</code></th></tr></thead>
+<thead><tr><th>Tool</th><th>Does</th></tr></thead>
 <tbody>
-<tr><td>A person with eyes</td><td>Nothing &mdash; they see the links and use them</td></tr>
-<tr><td><strong>A screen reader</strong></td><td>Nothing. It cannot offer "skip to navigation" because it does not know this is navigation</td></tr>
-<tr><td><strong>Google</strong></td><td>Guesses. Sometimes wrongly</td></tr>
-<tr><td><strong>The next developer</strong></td><td>Reads your id and hopes you meant it</td></tr>
+<tr><td>Breakpoint <span class="note">(click the gutter)</span></td><td>pause here</td></tr>
+<tr><td><code>F10</code> Step Over</td><td>run this line, stay put</td></tr>
+<tr><td><code>F11</code> Step Into</td><td>go inside that method</td></tr>
+<tr><td><code>F5</code> Continue</td><td>run to the next breakpoint</td></tr>
+<tr><td><strong>Variables</strong></td><td><strong>every value, right now</strong></td></tr>
 </tbody>
-</table><p class="note" style="margin-top:18px">Semantic tags are how you tell the ones that cannot see.</p>
+</table>
+<p class="note">Click these. Do not describe them.</p>
 </section>
 
 <!-- ============================================================ 4 -->
-<section class="slide">
-<div class="eyebrow">The seven you need</div>
-<h1 class="small">Your page, named properly</h1>
-<table>
-<thead><tr><th>Element</th><th>Holds</th></tr></thead>
-<tbody>
-<tr><td><code>&lt;header&gt;</code></td><td>The site title and the nav. Top of the page</td></tr>
-<tr><td><code>&lt;nav&gt;</code></td><td>Navigation links. <strong>Only</strong> navigation</td></tr>
-<tr><td><code>&lt;main&gt;</code></td><td>The page's actual content. <strong>Exactly one per page</strong></td></tr>
-<tr><td><code>&lt;section&gt;</code></td><td>A themed chunk with a heading</td></tr>
-<tr><td><code>&lt;article&gt;</code></td><td>Something that would still make sense on its own</td></tr>
-<tr><td><code>&lt;aside&gt;</code></td><td>Related but not essential &mdash; a sidebar</td></tr>
-<tr><td><code>&lt;footer&gt;</code></td><td>Credits, attributions, contact</td></tr>
-</tbody>
-</table>
+<section class="slide center">
+<h1 class="small">Three bugs.<br>Nobody is telling you where.</h1>
+<p class="lede"><code>BuggyArena.java</code></p>
+<p>One the compiler finds for you. One you must find <strong>with a breakpoint</strong>. One looks fine until the very last time round the loop.</p>
 </section>
 
 <!-- ============================================================ 5 -->
 <section class="slide">
-<div class="eyebrow">Build &middot; 55 minutes &mdash; every page</div>
-<h1 class="small">Wrap what you already have</h1>
-<pre><code>&lt;body&gt;
-  &lt;header&gt;
-    &lt;h1&gt;My Site About Indiana State Parks&lt;/h1&gt;
-    &lt;nav&gt;
-      &lt;ul&gt; ...your existing menu... &lt;/ul&gt;
-    &lt;/nav&gt;
-  &lt;/header&gt;
-
-  &lt;main&gt;
-    ...everything that was already here...
-  &lt;/main&gt;
-
-  &lt;footer&gt;
-    &lt;p&gt;Photo credits and attributions&lt;/p&gt;
-  &lt;/footer&gt;
-&lt;/body&gt;</code></pre><p class="note" style="margin-top:16px"><strong>You are not writing new content.</strong> You are wrapping what is there.</p>
+<div class="eyebrow">Bug 2 &mdash; free</div>
+<pre><code>if (hp <span class="warnline">=</span> 0) return "defeated";</code></pre>
+<p class="callout"><code>incompatible types: int cannot be converted to boolean</code></p>
+<p class="note">The compiler takes an entire class of bug off your hands. In some languages this one compiles fine and ruins your afternoon.</p>
 </section>
 
 <!-- ============================================================ 6 -->
-<section class="slide center">
-<h1 class="small">And that <code>&lt;!-- TODO --&gt;</code><br>from Lesson 8?</h1>
-<pre><code>&lt;!-- TODO: wrap this nav in a &lt;nav&gt; element once we do semantics in Lesson 10 --&gt;</code></pre><div class="callout" style="margin-top:26px"><em class="hl">Delete it.</em> You just did it.</div>
+<section class="slide">
+<div class="eyebrow">Bug 1 &mdash; silent</div>
+<pre><code>return hp <span class="warnline">+</span> damage;</code></pre>
+<p class="lede">Nothing crashes. Nothing looks wrong.</p>
+<p class="callout warn">Every enemy just keeps printing <strong>&ldquo;healthy&rdquo;</strong>, because their health is going <strong>up</strong>.<br>
+A breakpoint and one look at Variables finds it in two seconds.</p>
 </section>
 
 <!-- ============================================================ 7 -->
 <section class="slide">
-<div class="eyebrow">Three rules people break</div>
-<h1 class="small">The ones to get right</h1>
-<ol>
-<li><strong>One <code>&lt;main&gt;</code> per page.</strong> Exactly one. Not zero, not two.</li>
-<li><strong><code>&lt;nav&gt;</code> is for navigation.</strong> Not every list of links &mdash; the credits list at the bottom is not a nav.</li>
-<li><strong><code>&lt;main&gt;</code> excludes the header and footer.</strong> Those repeat on every page; <code>&lt;main&gt;</code> is what makes this page <em>this</em> page.</li>
-</ol>
+<div class="eyebrow">Bug 3 &mdash; works until it doesn't</div>
+<pre><code>for (int i = 0; i <span class="warnline">&lt;=</span> enemyHp.length; i++)</code></pre>
+<p class="callout"><code>ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</code></p>
+<p class="note">Correct three times, then fatal. Off-by-one is the most common bug in programming and this is its plainest form.</p>
 </section>
 
 <!-- ============================================================ 8 -->
-<section class="slide center">
-<h1 class="big">Reload.</h1>
-<p class="note" style="margin-top:24px">Nothing moved.</p>
-<div class="callout" style="margin-top:26px">Correct. <strong>Semantics are invisible and structural.</strong><br>Appearance is Unit 2, and it will be much easier because of today.</div>
+<section class="slide">
+<h1 class="small">Now do it to your own game</h1>
+<p class="lede">Breakpoint in the game loop. Step one full turn.</p>
+<p>Watch <code>health</code>, <code>enemyHealth</code> and the turn counter change in the Variables panel.</p>
+<p class="note">Most people find a real bug in their own code here. That is not a detour.</p>
 </section>
 
 <!-- ============================================================ 9 -->
 <section class="slide">
-<div class="eyebrow">Finished early? See what you built.</div>
-<h1 class="small"><code>F12</code> &rarr; Elements</h1>
-<p class="note" style="margin-top:22px">Collapse everything. Look at the shape of your page: <strong>header, main, footer</strong>.</p>
-<div class="callout" style="margin-top:22px">That outline is what a screen reader reads to someone who cannot see your site. <em class="hl">Yesterday it was a pile of boxes.</em></div>
-</section>
-
-<!-- ============================================================ 10 -->
-<section class="slide">
-<div class="eyebrow">Before you leave</div>
-<h1 class="small">Back up, then one question.</h1>
-<ul>
-<li>Back up &mdash; <code>Site_U1L10_LastnameF</code></li>
-<li>Submit the build on Canvas</li>
-<li>Exit ticket: <strong>why <code>&lt;header&gt;</code> instead of <code>&lt;div id="header"&gt;</code>?</strong></li>
-</ul><p class="note" style="margin-top:22px">Next: <strong>forms</strong> &mdash; how the web takes input, and where your database gets its data in the spring.</p>
+<div class="eyebrow">The other half</div>
+<h1 class="small">A comment earns its place by saying<br>what the signature cannot</h1>
+<pre><code>/**
+ * Anything off the grid reads as a wall, so callers
+ * never have to range-check before asking.
+ */</code></pre>
+<p class="note"><code>@param hp the hp</code> is noise. Type <code>/**</code> and press Enter &mdash; the skeleton is generated for you. That is a <strong>code generator</strong>, from Lesson 1.</p>
 </section>
 </div></div>
 
-<div id="title-tag">WEB DEV · U1 L10</div>
+<div id="title-tag">SOFT DEV · U1 L13</div>
 <div id="counter"></div>
 <div id="bar"><i></i></div>
 <div id="notes"></div>
