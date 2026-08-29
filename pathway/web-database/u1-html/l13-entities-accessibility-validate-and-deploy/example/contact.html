@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tell me which Indiana state park to visit next.">
+  <title>Contact &mdash; Indiana State Parks</title>
+  <link rel="icon" href="images/favicon.png">
+</head>
+<body>
+
+  <!-- ===== L13 · the skip link. First focusable thing on the page, so a
+       keyboard or screen-reader user can jump the nav instead of tabbing
+       through it on every single page. Tab into the page to see it. ===== -->
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header>
+    <h1>Tell me where to go next</h1>
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="turkey-run.html">Turkey Run</a></li>
+        <li><a href="about.html">About me</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+
+  <p>I have been to four of Indiana's twenty-four state parks. If you know one worth
+  the drive, tell me.</p>
+
+  <!-- ===== L11 · action and method are named now and explained properly in U6.
+       Nothing is submitted anywhere yet -- there is no backend until spring. ===== -->
+  <form action="#" method="post">
+
+    <!-- L11 · EVERY input gets a label, and for="" must match the input's id.
+         Click the label text -- if the cursor jumps into the box, they match. -->
+    <!-- L12 · required means the browser refuses to submit without it, and
+         says so itself. No JavaScript written. -->
+    <p>
+      <label for="name">Your name</label><br>
+      <input type="text" id="name" name="name"
+             placeholder="First name is fine" required>
+    </p>
+
+    <!-- L12 · type="email" validates the shape AND changes the on-screen
+         keyboard on a phone. type="text" does neither. -->
+    <p>
+      <label for="email">Email</label><br>
+      <input type="email" id="email" name="email"
+             placeholder="you@example.com" required>
+    </p>
+
+    <p>
+      <label for="visits">How many state parks have you been to?</label><br>
+      <input type="number" id="visits" name="visits" min="0" max="24" value="0">
+    </p>
+
+    <p>
+      <label for="when">When would you go?</label><br>
+      <input type="date" id="when" name="when">
+    </p>
+
+    <p>
+      <label for="park">Which park?</label><br>
+      <select id="park" name="park">
+        <option value="">-- pick one --</option>
+        <option value="shades">Shades</option>
+        <option value="brown-county">Brown County</option>
+        <option value="clifty-falls">Clifty Falls</option>
+        <option value="indiana-dunes">Indiana Dunes</option>
+        <option value="other">Somewhere else</option>
+      </select>
+    </p>
+
+    <p>
+      <label for="why">Why that one?</label><br>
+      <textarea id="why" name="why" rows="5" cols="40"></textarea>
+    </p>
+
+    <!-- L12 · a radio GROUP shares one name. Different names = they all stay
+         selectable at once, which is the classic radio-button bug. -->
+    <fieldset>
+      <legend>How far will you drive?</legend>
+      <p>
+        <input type="radio" id="near" name="distance" value="near" checked>
+        <label for="near">Under an hour</label>
+      </p>
+      <p>
+        <input type="radio" id="mid" name="distance" value="mid">
+        <label for="mid">One to three hours</label>
+      </p>
+      <p>
+        <input type="radio" id="far" name="distance" value="far">
+        <label for="far">As far as it takes</label>
+      </p>
+    </fieldset>
+
+    <p>
+      <input type="checkbox" id="ladders" name="ladders" value="yes">
+      <label for="ladders">I am fine with ladders and creek crossings</label>
+    </p>
+
+    <p><button type="submit">Send it</button></p>
+
+  </form>
+
+  <!-- L12 · try submitting this empty, then with a bad email. The browser
+       complains on its own -- that is built-in validation, and it is a preview
+       of the real validation you write in JavaScript in the spring.
+       It still goes nowhere on submit. There is no backend until U6. -->
+
+  </main>
+
+  <footer>
+    <p>&copy;&nbsp;2026 &mdash; Built in 7185 Website and Database Development. Photographs are credited on the
+    home page; text is mine.</p>
+  </footer>
+
+</body>
+</html>

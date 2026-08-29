@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- L9 · charset first. Without it, curly quotes become â€™ -->
+  <meta charset="UTF-8">
+  <!-- L9 · use the phone's real width instead of pretending to be a desktop.
+       Nothing visible changes today; U3 is where this pays off. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- L9 · the grey line under this page in search results. One per PAGE. -->
+  <meta name="description" content="Trail notes, entry fees, and hours for Indiana state parks, written by a student who keeps going back to Turkey Run.">
+  <title>Indiana State Parks</title>
+  <link rel="icon" href="images/favicon.png">
+  <!-- U2 L1 · ONE line per page, and the whole site is styled. This is
+       why the stylesheet is external instead of a style="" on every tag. -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== L13 · the skip link. First focusable thing on the page, so a
+       keyboard or screen-reader user can jump the nav instead of tabbing
+       through it on every single page. Tab into the page to see it. ===== -->
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ===== L10 · <header> means header. A div with id="header" only
+       LOOKS like one -- to a screen reader it is an anonymous box. ===== -->
+  <header>
+    <h1>My Site About Indiana State Parks</h1>
+
+    <!-- L10 · <nav> is reserved for navigation. Not every list of links. -->
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="turkey-run.html">Turkey Run</a></li>
+        <li><a href="about.html">About me</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+  <!-- ===== L8 · a jump link. #parks points at id="parks" further down ===== -->
+  <p><a href="#parks">Skip to the comparison table</a></p>
+
+  <!-- ===== L8 · a classed div groups the intro. class = reusable ===== -->
+  <div class="intro">
+    <p>Welcome. This site is about the state parks in Indiana, which ones are worth
+    the drive, and what you can actually do at each one.</p>
+
+  <!-- ===== the hero image — relative path into the images folder ===== -->
+  <img src="images/turkey-run-rocky-hollow.jpg"
+       alt="A narrow sandstone canyon at Turkey Run with a wooden ladder bolted into the rock face">
+  </div>
+
+  <!-- ===== why I picked this ===== -->
+  <h2>Why I picked this</h2>
+  <p>My family has been going to Turkey Run since I was small, and I found out there
+  are <strong>twenty-three more state parks</strong> I had never heard of. I want to
+  make a page for each one I visit this year.</p>
+  <p>The ones closest to Indianapolis are Fort Harrison and Shades. Both are under an
+  hour, which matters when you are <em>relying on someone else to drive you</em>.</p>
+
+  <!-- ===== what I already know ===== -->
+  <h2>What I already know</h2>
+  <p>Turkey Run has ladders bolted into the rock in some of the canyon trails.
+  <span class="warning">Trail 3 is genuinely hard in wet weather</span> — that is not a warning
+  the sign makes obvious enough.</p>
+
+  <blockquote>
+    Rugged trails, deep sandstone ravines, and hemlock groves make Turkey Run one of
+    Indiana's most scenic state parks.
+  </blockquote>
+  <p><cite>Indiana Department of Natural Resources</cite> &mdash;
+  <a href="https://www.in.gov/dnr/state-parks/" target="_blank">the official park
+  listing</a></p>
+
+  <!-- ===== L7 · an unordered list — order carries no meaning here ===== -->
+  <h2>What to take</h2>
+  <p>Nothing on this list is more important than the others, so it is unordered.</p>
+  <ul>
+    <li>Boots you do not mind soaking &mdash; Trail 3 crosses the creek</li>
+    <li>More water than you think</li>
+    <li>A paper map, because there is no signal in the gorge</li>
+    <li>Cash for the gate</li>
+  </ul>
+
+  <!-- ===== what's coming ===== -->
+  <h2>What's coming</h2>
+  <p>Right now this is one page with no pictures and no colors. That is on purpose.
+  Structure first.</p>
+  <p>By the end of this unit there will be a page for each park, a table of hours and
+  fees, and a form to tell me which one to visit next.</p>
+
+
+
+  <!-- ===== L8 · id="parks" is UNIQUE on this page — the jump link's target ===== -->
+  <section id="parks">
+  <h2>The parks, side by side</h2>
+  <table>
+    <caption>Entry fees and hours at Indiana state parks, 2026</caption>
+    <thead>
+      <tr>
+        <th>Park</th>
+        <th>Hours</th>
+        <th>Entry fee</th>
+        <th>Trails</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Turkey Run</td>
+        <td>7&nbsp;am &ndash; 11&nbsp;pm</td>
+        <td>$7</td>
+        <td>11</td>
+      </tr>
+      <tr>
+        <td>Shades</td>
+        <td>7&nbsp;am &ndash; 11&nbsp;pm</td>
+        <td>$7</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td>Fort Harrison</td>
+        <td>7&nbsp;am &ndash; 11&nbsp;pm</td>
+        <td>$7</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <td colspan="3">Fees waived on free admission days</td>
+        <td>&mdash;</td>
+      </tr>
+    </tbody>
+  </table>
+
+  </section>
+
+  <!-- ===== L8 · same class, different content — that's what class is for ===== -->
+  <section id="credits">
+  <h2>Image credits</h2>
+  <ul>
+    <li>"Turkey Run State Park, Rocky Hollow" by
+      <a href="https://commons.wikimedia.org/wiki/User:ExampleUser">C. Whitaker</a>,
+      via <a href="https://commons.wikimedia.org/wiki/File:Example.jpg">Wikimedia Commons</a>,
+      licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+      Cropped to 3:2.</li>
+    <li>"Sugar Creek from the Shades overlook" by
+      <a href="https://www.flickr.com/people/example">M. Okonkwo</a>,
+      via <a href="https://www.flickr.com/photos/example/12345678">Flickr</a>,
+      licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</li>
+  </ul>
+
+  </section>
+
+
+  <!-- ===== L9 · an iframe embeds someone else's page inside yours. This is the
+       EMBED url from Share -> Embed a map, not the one in the address bar. ===== -->
+  <section id="map">
+  <h2>Where Turkey Run actually is</h2>
+  <p>An hour and a half from Indianapolis, in Parke County, and the last twenty
+  minutes have no signal.</p>
+  <iframe
+    src="https://www.openstreetmap.org/export/embed.html?bbox=-87.22%2C39.86%2C-87.16%2C39.91&amp;layer=mapnik"
+    width="600" height="450"
+    title="Map showing the location of Turkey Run State Park in Parke County, Indiana"
+    loading="lazy"></iframe>
+  <p><a href="https://www.openstreetmap.org/#map=13/39.885/-87.19" target="_blank">View a larger map</a></p>
+  </section>
+
+  <!-- ===== L9 · a button with nowhere to go yet. The behaviour is JavaScript,
+       and that is the spring semester. Labelled for what it WILL do. ===== -->
+  <p><button type="button">Show me a random park</button></p>
+
+  <!-- TODO: add a page for Shades once I've been there -->
+  </main>
+
+  <!-- ===== L10 · <footer> for credits and attributions ===== -->
+  <footer>
+    <p>&copy;&nbsp;2026 &mdash; Built in 7185 Website and Database Development. Photographs are credited on the
+    home page; text is mine.</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- L9 · charset first. Without it, curly quotes become â€™ -->
+  <meta charset="UTF-8">
+  <!-- L9 · use the phone's real width instead of pretending to be a desktop.
+       Nothing visible changes today; U3 is where this pays off. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- L9 · the grey line under this page in search results. One per PAGE. -->
+  <meta name="description" content="Who is writing these Indiana state park notes, and why.">
+  <title>About me — Indiana State Parks</title>
+  <link rel="icon" href="images/favicon.png">
+  <!-- U2 L1 · ONE line per page, and the whole site is styled. This is
+       why the stylesheet is external instead of a style="" on every tag. -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== L13 · the skip link. First focusable thing on the page, so a
+       keyboard or screen-reader user can jump the nav instead of tabbing
+       through it on every single page. Tab into the page to see it. ===== -->
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ===== L10 · <header> means header. A div with id="header" only
+       LOOKS like one -- to a screen reader it is an anonymous box. ===== -->
+  <header>
+    <h1>About me</h1>
+
+    <!-- L10 · <nav> is reserved for navigation. Not every list of links. -->
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="turkey-run.html">Turkey Run</a></li>
+        <li><a href="about.html">About me</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+
+  <!-- ===== L8 · the same "section" class as index.html — reused, not redefined ===== -->
+  <section id="who">
+  <h2>Who is writing this</h2>
+  <p>I am a sophomore at Warren Central and I have been to exactly <strong>three</strong>
+  of Indiana's twenty-four state parks. That is the whole reason this site exists — I
+  want a record of the rest.</p>
+
+  <!-- ===== second image, different page, same folder ===== -->
+  <img src="images/shades-sugar-creek.jpg"
+       alt="A wooded overlook at Shades State Park looking down into Sugar Creek">
+
+  </section>
+
+  <section id="why">
+  <h2>Why this topic</h2>
+  <p>Most park websites tell you the hours and the entrance fee. <span class="warning">None of them tell
+  you whether the trail is worth it.</span> That is the part I am trying to write down
+  while I still remember it.</p>
+
+  <blockquote>
+    Rugged trails, deep sandstone ravines, and hemlock groves make Turkey Run one of
+    Indiana's most scenic state parks.
+  </blockquote>
+  <p><cite>Indiana Department of Natural Resources</cite> &mdash;
+  <a href="https://www.in.gov/dnr/state-parks/" target="_blank">the official park
+  listing</a></p>
+
+  </section>
+
+  <section id="next">
+  <h2>What's next</h2>
+  <p>A page for each park I actually visit, with photos once I learn how to put them in.</p>
+
+
+  </section>
+
+  <section id="credits">
+  <h2>Image credits</h2>
+  <ul>
+    <li>"Turkey Run State Park, Rocky Hollow" by
+      <a href="https://commons.wikimedia.org/wiki/User:ExampleUser">C. Whitaker</a>,
+      via <a href="https://commons.wikimedia.org/wiki/File:Example.jpg">Wikimedia Commons</a>,
+      licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+      Cropped to 3:2.</li>
+    <li>"Sugar Creek from the Shades overlook" by
+      <a href="https://www.flickr.com/people/example">M. Okonkwo</a>,
+      via <a href="https://www.flickr.com/photos/example/12345678">Flickr</a>,
+      licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</li>
+  </ul>
+
+  </section>
+
+  
+  <!-- ===== L13 · entities. The four that matter, and WHY they exist. ===== -->
+  <h2>One thing that caught me out</h2>
+  <p>I wanted to write about the <code>&lt;table&gt;</code> tag on this page and the
+  table just disappeared. The browser was reading my example as a real tag instead of
+  as text.</p>
+  <p>The fix is an <strong>entity</strong> &mdash; a code that stands in for a character
+  the browser would otherwise treat as HTML:</p>
+  <table>
+    <caption>The entities I actually needed</caption>
+    <thead>
+      <tr><th>I type</th><th>The page shows</th><th>Why I need it</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>&amp;lt;</code></td><td>&lt;</td><td>otherwise it starts a tag</td></tr>
+      <tr><td><code>&amp;gt;</code></td><td>&gt;</td><td>otherwise it ends one</td></tr>
+      <tr><td><code>&amp;amp;</code></td><td>&amp;</td><td>otherwise it starts an entity</td></tr>
+      <tr><td><code>&amp;copy;</code></td><td>&copy;</td><td>not on the keyboard</td></tr>
+      <tr><td><code>&amp;nbsp;</code></td><td>a space that never breaks</td><td>keeps
+        &ldquo;7&nbsp;am&rdquo; on one line</td></tr>
+    </tbody>
+  </table>
+  <p>The one that surprised me is <code>&amp;amp;</code>. To write the ampersand code
+  itself I have to escape the ampersand, which felt like a trick question until I
+  thought about it.</p>
+</main>
+
+  <!-- ===== L10 · <footer> for credits and attributions ===== -->
+  <footer>
+    <p>&copy;&nbsp;2026 &mdash; Built in 7185 Website and Database Development. Photographs are credited on the
+    home page; text is mine.</p>
+  </footer>
+
+</body>
+</html>

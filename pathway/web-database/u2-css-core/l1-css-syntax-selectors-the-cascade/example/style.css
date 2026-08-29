@@ -1,0 +1,77 @@
+/* ============================================================
+   U2 L1 — the first stylesheet.
+   ONE file. Every page links to it. Change a rule here and all
+   four pages change at once — that is the whole argument for an
+   EXTERNAL stylesheet over writing style="" on every element.
+   ============================================================ */
+
+/* --- element selector: every <body> on the site --- */
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.6;
+  color: #222222;
+  background-color: #fdfdfb;
+  margin: 0 auto;
+  max-width: 45rem;
+  padding: 1.5rem;
+}
+
+/* --- element selectors: the headings --- */
+h1 {
+  font-size: 2rem;
+  color: #14532d;
+}
+
+h2 {
+  font-size: 1.4rem;
+  color: #14532d;
+  border-bottom: 1px solid #d6d3cc;
+}
+
+/* --- CLASS selector. The dot means "any element with class=intro".
+       We put class="intro" on that div back in L8, for exactly this. --- */
+.intro {
+  background-color: #eef4ee;
+  padding: 1rem;
+}
+
+/* --- another class, already on the page since L8 --- */
+.warning {
+  color: #b3261e;
+  font-weight: bold;
+}
+
+/* --- ID selector. The hash means "the one element with id=parks".
+       An id is unique on a page, so this styles exactly one thing. --- */
+#parks {
+  background-color: #ffffff;
+}
+
+/* --- the skip link from L13. Off-screen until a keyboard user
+       tabs to it, then it appears. Accessibility, styled. --- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background: #14532d;
+  color: #ffffff;
+  padding: .5rem 1rem;
+}
+
+/* ============================================================
+   THE CASCADE — read these two rules in order.
+   Both select the same links. The SECOND one wins, because when
+   two rules have the same specificity the later one is applied.
+   Swap them and the colour changes. That is the cascade.
+   ============================================================ */
+a {
+  color: #7a5901;
+}
+
+a {
+  color: #14532d;
+}
