@@ -5955,6 +5955,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    P1 Data App — Choose your API & prove the fetch
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -5964,6 +5975,34 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example site
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -6333,6 +6372,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example site
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -6353,10 +6409,189 @@
 <h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">Today's learning target</h2>
 <p style="margin:0 0 .9em;line-height:1.55"><strong>I can choose an API, read its documentation, and prove I can get data out of it.</strong></p>
 <p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>One work block. At the end of it, real data from a real API is arriving in your browser.</strong></p>
-<p style="margin:0 0 .9em;line-height:1.55">This is a <strong>work block</strong>, not a module. There is no new lecture — you are
-building Project 1, and the requirement numbers below come straight from the project
-checklist you already have.</p>
-<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">What to get done</h2>
+<p style="margin:0 0 .9em;line-height:1.55">This is a <strong>work block</strong>, not a module. There is no new lecture. Today you
+start <strong>Project 1</strong>, so before the to-do list, here is the whole project: what you are
+building, how the work blocks are laid out, and the checklist it is graded on. The
+requirement numbers on every work block page point back to that checklist.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">Project 1 &mdash; the Data App</h2>
+<p style="margin:0 0 .9em;line-height:1.55">A single-page app, <strong>no framework</strong>, that fetches real data from a public API and
+lets a person <em>do something</em> with it: search it, filter it, sort it, or click into
+one item to see the details. Plain JavaScript, the DOM, and
+<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">fetch</code>.
+Everything from Modules 1 to 10 shows up in it somewhere, which is the point: this is
+proof that you own the fundamentals React is built on.</p>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>There are two projects this semester, and they are the same app.</strong> Project 1 is
+this one, in plain JavaScript. Project 2 is the same app rebuilt in React and made bigger.
+Building it twice is deliberate: the second time through, you feel exactly what React is
+doing for you, because you did it by hand first.</p>
+<p style="padding:.75em 1em;border-radius:5px;margin:0 0 .8em;border-left:4px solid rgba(16,17,20,.22);background:#eaeefa"><strong>Pick something you actually care about.</strong> You choose the API today, and you live with that data until the end of the semester.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">Choosing your API</h3>
+<p style="margin:0 0 .9em;line-height:1.55">Any free public API that returns JSON and does not need a server-side key or a login
+flow. These are known to work; your own idea is welcome if it passes the same check.</p>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead>
+<tr>
+<th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">API</th>
+<th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Data</th>
+<th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://developer.themoviedb.org">TMDB</a></td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Movies and TV</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Free key</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://pokeapi.co">Pok&eacute;API</a></td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Pok&eacute;mon</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">None</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://open-meteo.com">Open-Meteo</a></td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Weather</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">None</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://docs.github.com/en/rest">GitHub REST</a></td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Repos, users</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">None (higher limits with a token)</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://api.nasa.gov">NASA APIs</a></td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Space imagery and data</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Free key</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://www.thesportsdb.com/api.php">TheSportsDB</a></td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Teams, scores</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Free key</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><a href="https://rawg.io/apidocs">RAWG</a></td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Video games</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Free key</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55"><strong>Confirm before you commit to one.</strong> Open the raw URL in a browser tab and see JSON.
+Can you get a list of things, and details about one thing? Is it reachable on the school
+network? That is all Project 1 needs from an API.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">How the work blocks are laid out</h3>
+<p style="margin:0 0 .9em;line-height:1.55">Six work blocks, one app. You keep the same project folder the whole way and each block adds
+to what the last one built.</p>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead>
+<tr>
+<th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Work block</th>
+<th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">What gets built</th>
+<th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><strong>1</strong> Choose your API and prove the fetch (today)</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">api.js</code> fetches the feed; raw JSON on the page</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">1</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><strong>2</strong> Render real data to the page</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">render.js</code> draws a real list; fetching and drawing in separate modules</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">4, 7</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><strong>3</strong> Loading and error states</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">A loading state, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">try</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">catch</code>, a readable error, a Try again button</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">2, 3</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><strong>4</strong> Filter, sort, or search</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">At least one array-method feature the user controls, plus a detail view</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">5, 6</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><strong>5</strong> Polish, responsive, README</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Clean code, a UI that feels finished on a phone, a README that says what it is</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">8</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><strong>6</strong> Deploy to a live URL</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">A URL anyone can open</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">9</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><strong>Due</strong> &mdash; demos and check-ins</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Fri, Sep 25 (Black) &middot; Mon, Sep 28 (Gold)</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">all nine</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55">The block dates are a guide, not a lock. A module that needed a second day took it from
+this stretch, which is where the slack lives. <strong>The due date does not move.</strong></p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">The requirements &mdash; this is the grading checklist</h3>
+<table style="border-collapse:collapse;width:100%;margin:0 0 1.4em">
+<thead>
+<tr>
+<th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">#</th>
+<th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Requirement</th>
+<th style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top;background:#eaeefa;font-weight:700">Module it comes from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">1</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Fetches data from your API with <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">async</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">await</code></td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">9</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">2</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Handles errors: a bad request shows a message and does not crash</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">9</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">3</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Shows a <strong>loading</strong> state while fetching</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">9</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">4</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Renders a list of items into the DOM from the data</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">3</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">5</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">At least one <strong>filter or sort</strong> using array methods (<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">filter</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">sort</code>/<code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">map</code>)</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">3</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">6</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">At least one <strong>detail view</strong>: click an item, see more about it</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">3, 5</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">7</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Code is split into <strong>ES modules</strong>, not one giant file</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">8</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">8</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">Uses <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">const</code> by default, clear function names, no dead code</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">1, 2</td>
+</tr>
+<tr>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">9</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top"><strong>Deployed</strong> to a live URL anyone can open</td>
+<td style="border:1px solid #abaeb5;padding:.5em .7em;text-align:left;vertical-align:top">10</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0 0 .9em;line-height:1.55">Each requirement is checked as working on the deployed app. Then comes the build check: you
+demo it, walk me through one feature end to end, and can explain any line, including anything
+AI helped you write.</p>
+<h3 style="font-size:1.1em;font-weight:700;margin:1.4em 0 .4em">Project 1 is done when</h3>
+<p style="margin:0 0 .9em;line-height:1.55">It is deployed, all nine requirements are met, and you can <strong>explain any line</strong>.
+Then <strong>keep it</strong>. Project 2 starts from this app, not from scratch.</p>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">Today &mdash; what to get done</h2>
 <ol style="margin:0 0 1em;padding-left:1.4em">
 <li style="margin-bottom:.35em;line-height:1.5"><strong>Choose your API.</strong> It must be free, need no server-side key, and return JSON. Pick a subject you actually care about &mdash; you are living with it until the end of the semester.</li>
 <li style="margin-bottom:.35em;line-height:1.5">Open the raw URL <strong>in a browser tab first</strong>. If you cannot see JSON there, nothing you write will help.</li>
@@ -6365,7 +6600,7 @@ checklist you already have.</p>
 <li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">console.log</code> the result and <strong>read the shape</strong>. Find where the array of things actually lives &mdash; it is rarely at the top.</li>
 <li style="margin-bottom:.35em;line-height:1.5">Dump the JSON onto the page so you can see it without the console open.</li>
 </ol>
-<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">Done when</h2>
+<h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">Today is done when</h2>
 <ul style="margin:0 0 1em;padding-left:1.4em">
 <li style="margin-bottom:.35em;line-height:1.5">You can name your API and what one record represents</li>
 <li style="margin-bottom:.35em;line-height:1.5">The raw URL shows JSON in a browser tab</li>
@@ -6374,10 +6609,71 @@ checklist you already have.</p>
 <li style="margin-bottom:.35em;line-height:1.5"><code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">&lt;script type="module"&gt;</code> &mdash; without it, <code style="font-family:Consolas,'Courier New',monospace;background:#eff0f2;padding:.1em .3em;border-radius:3px">import</code> will not work</li>
 </ul>
 <h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">If you are stuck</h2>
-<p style="margin:0 0 .9em;line-height:1.55">Almost every failure today is one of three: the API needs a key it will not give a browser, CORS blocks it, or the array is nested somewhere they have not found. Check the raw URL in a tab before debugging any JavaScript. Requiring a two-tab check up front saves the period.</p>
+<p style="margin:0 0 .9em;line-height:1.55">Almost every failure today is one of three: the API needs a key it will not give a browser, CORS blocks it, or the array is nested somewhere you have not found yet. Check the raw URL in a tab before debugging any JavaScript. Two tabs open before any code is written saves the whole period.</p>
 <h2 style="font-size:1.35em;font-weight:700;line-height:1.25;margin:1.6em 0 .5em">Before you leave</h2>
 <p style="margin:0 0 .9em;line-height:1.55">Commit and push. A work block you cannot get back to is a work block you did not have.</p>
 </div>
+
+<h2 id="example-site">Example site<a class="headerlink" href="#example-site" title="Permanent link">&para;</a></h2>
+<p>One way this work block could turn out. It is built on its own topic and its own API; yours is about your own &mdash; only the <em>structure</em> should match.</p>
+<p><a class="md-button" href="example/" target="_blank">Open the example</a></p>
+<details class="example">
+<summary>index.html</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"en"</span><span class="p">&gt;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"utf-8"</span><span class="p">&gt;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">"viewport"</span> <span class="na">content</span><span class="o">=</span><span class="s">"width=device-width, initial-scale=1"</span><span class="p">&gt;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Quake Watch — proving the fetch<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">body</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span><span class="w"> </span><span class="k">max-width</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="kt">rem</span><span class="w"> </span><span class="mi">1</span><span class="kt">rem</span><span class="p">;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">         </span><span class="k">font</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="o">/</span><span class="mf">1.5</span><span class="w"> </span><span class="o">-</span><span class="n">apple-system</span><span class="p">,</span><span class="w"> </span><span class="s2">"Segoe UI"</span><span class="p">,</span><span class="w"> </span><span class="n">Arial</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">pre</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#eff0f2</span><span class="p">;</span><span class="w"> </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="k">border-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="k">overflow-x</span><span class="p">:</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">.8</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="k">white-space</span><span class="p">:</span><span class="w"> </span><span class="kc">pre-wrap</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Proving the fetch<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>If you can see JSON below, the API works, your key (if any) is right, and CORS
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>is not blocking you. That is the whole job today.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">&lt;</span><span class="nt">pre</span> <span class="na">id</span><span class="o">=</span><span class="s">"output"</span><span class="p">&gt;</span>Loading…<span class="p">&lt;/</span><span class="nt">pre</span><span class="p">&gt;</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">"module"</span> <span class="na">src</span><span class="o">=</span><span class="s">"src/main.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+</details>
+<details class="example">
+<summary>src/api.js</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// api.js — the only file that talks to the network.</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">//</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">// Day one of the project is not about making it look like anything. It is about</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1">// proving you can get real data out of a real API and into your browser.</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kd">const</span><span class="w"> </span><span class="nx">FEED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"</span><span class="p">;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="cm">/** Fetch the feed and hand back the raw JSON, exactly as the API sent it. */</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="k">export</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">loadRaw</span><span class="p">(</span><span class="nx">doFetch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fetch</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">doFetch</span><span class="p">(</span><span class="nx">FEED</span><span class="p">);</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details class="example">
+<summary>src/main.js</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// main.js — today this proves one thing: the data arrives.</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">loadRaw</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"./api.js"</span><span class="p">;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#output"</span><span class="p">);</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">loadRaw</span><span class="p">();</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1">// Look at this in the console FIRST. You cannot render a shape you have not seen.</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="c1">// And on the page, so you can see it without the console open.</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="nx">output</span><span class="p">.</span><span class="nx">textContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">).</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">2000</span><span class="p">);</span>
+</code></pre></div>
+</details>
 
 
 

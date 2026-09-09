@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quake Watch</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>Quake Watch</h1>
+  <p>Every earthquake recorded worldwide in the last 24 hours, from the USGS.</p>
+</header>
+<main id="output">
+  <!-- main.js fills this with the list. Nothing appears until the data arrives. -->
+</main>
+<footer>
+  <p>Data from the <a href="https://earthquake.usgs.gov/earthquakes/feed/">USGS Earthquake Feed</a>.</p>
+</footer>
+<!-- type="module" is what makes import/export work in the browser. Without it
+     you get "Cannot use import statement outside a module". -->
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
