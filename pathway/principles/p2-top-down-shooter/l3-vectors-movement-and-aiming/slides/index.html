@@ -245,7 +245,24 @@
 <!-- ==================== 1 -->
 <section class="slide center">
 <h1 class="small">The first <code>pass</code> gets deleted.</h1>
-<p class="lede">One function body. Your ship moves, and it looks where you point.</p>
+<p class="lede">Three function bodies. Your ship moves, and it looks where you point.</p>
+</section>
+
+<!-- ==================== 1b -->
+<section class="slide">
+<div class="eyebrow">Where it goes</div>
+<pre><code>const SPEED := 320.0
+var alive := true
+
+
+func _process(delta: float) -> void:
+	if not alive:
+		return
+	_handle_hurt(delta)
+	_handle_movement(delta)
+	_handle_aiming()
+	_handle_firing()</code></pre>
+<p><code>_process</code> does no work of its own. It says what happens every frame, in order &mdash; and <strong>you will never open it again</strong>.</p>
 </section>
 
 <!-- ==================== 2 -->
@@ -257,6 +274,7 @@
 
 <!-- ==================== 3 -->
 <section class="slide">
+<div class="eyebrow">_handle_movement</div>
 <pre><code>var dir = Input.get_vector("move_left", "move_right",
                           "move_up", "move_down")
 position += dir * SPEED * delta</code></pre>
@@ -266,7 +284,7 @@ position += dir * SPEED * delta</code></pre>
 
 <!-- ==================== 4 -->
 <section class="slide">
-<div class="eyebrow">Aiming</div>
+<div class="eyebrow">_handle_aiming</div>
 <pre><code>look_at(get_global_mouse_position())</code></pre>
 <p>One line. Works in <strong>global</strong> coordinates.</p>
 <p class="note">Rotation zero points <strong>right</strong> in Godot &mdash; which is why the barrel you drew in Lesson 1 points right. Without it you could not see the ship turning at all.</p>
@@ -277,7 +295,7 @@ position += dir * SPEED * delta</code></pre>
 <div class="eyebrow">Stay on screen</div>
 <pre><code>position.x = clamp(position.x, 24.0, 1128.0)
 position.y = clamp(position.y, 24.0, 624.0)</code></pre>
-<p class="note">Same <code>clamp</code> as Dodger. Two lines, and the arena has walls.</p>
+<p class="note">Same <code>clamp</code> as Dodger. Two more lines in <code>_handle_movement</code>, after the move, and the arena has walls.</p>
 </section>
 
 <!-- ==================== 6 -->
@@ -294,14 +312,14 @@ position.y = clamp(position.y, 24.0, 624.0)</code></pre>
 <p class="lede">Nine times out of ten it is not today's code.</p>
 <ul>
 <li>The script is on the wrong node &mdash; from Lesson 2</li>
-<li>You wrote <code>_ready</code> instead of <code>_process</code></li>
-<li><code>SPEED</code> was never declared</li>
+<li><code>_process</code> still says <code>pass</code>, so <code>_handle_movement</code> is never called</li>
+<li><code>SPEED</code> or <code>alive</code> was never declared</li>
 </ul>
 </section>
 
 <!-- ==================== 8 -->
 <section class="slide center">
-<h1 class="small">31 <code>pass</code> statements left.</h1>
+<h1 class="small">33 <code>pass</code> statements left.</h1>
 <p class="lede">Which function do you think fills in next?</p>
 <p class="note">It is <code>shoot</code>, and you can see it sitting there waiting.</p>
 </section>
