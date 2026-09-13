@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Every earthquake recorded worldwide in the last 24 hours, from the USGS feed. Filter, search, sort, and open the detail of any quake.">
+<title>Quake Watch</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>Quake Watch</h1>
+  <p>Every earthquake recorded worldwide in the last 24 hours, from the USGS.</p>
+</header>
+<main id="output">
+  <!-- main.js fills this: loading, then the controls and the list, or an error with a retry button -->
+</main>
+<footer>
+  <p>Data from the <a href="https://earthquake.usgs.gov/earthquakes/feed/">USGS Earthquake Feed</a>. Times are shown in your local time zone.</p>
+</footer>
+<!-- type="module" is what makes import/export work in the browser. Without it
+     you get "Cannot use import statement outside a module". The path is
+     relative (no leading slash) so it still resolves when the site is served
+     from a sub-folder, which GitHub Pages does. -->
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
