@@ -245,7 +245,8 @@
 <!-- ==================== 1 -->
 <section class="slide center">
 <h1 class="small">Bullets.</h1>
-<p class="lede">And a cooldown, so one click is not sixty bullets.</p>
+<p class="lede">And a cooldown, so one click is not sixty bullets. Then something to shoot at.</p>
+<p class="note">Twelve bodies. <code>Bullet.gd</code>, <code>Enemy.gd</code> and <code>Pickup.gd</code> are finished today.</p>
 </section>
 
 <!-- ==================== 2 -->
@@ -285,10 +286,58 @@
 <div class="eyebrow">Why bullets delete themselves</div>
 <p class="lede">A bullet that misses flies forever.</p>
 <p class="callout warn">After two minutes of play you have thousands of them and the frame rate dies.</p>
-<p>The <code>Lifetime</code> timer you added in Lesson 1 &mdash; <strong>autostart on</strong> &mdash; is what kills it.</p>
+<pre><code>$Lifetime.timeout.connect(queue_free)</code></pre>
+<p>The <code>Lifetime</code> timer you added in Lesson 1 &mdash; <strong>autostart on</strong> &mdash; is what kills it. No parentheses: you are handing <code>queue_free</code> over to be called <em>later</em>.</p>
 </section>
 
 <!-- ==================== 7 -->
+<section class="slide">
+<div class="eyebrow">WEAPONS is a dictionary</div>
+<pre><code>WEAPONS["spread"]["shots"]      # 3
+WEAPONS["spread"]["cooldown"]   # 0.45</code></pre>
+<p><strong>Numbers with labels.</strong> Every number that makes a weapon feel different lives in one place.</p>
+<p class="note">Adding a third weapon is one more line of <em>data</em>, and no new code anywhere.</p>
+</section>
+
+<!-- ==================== 8 -->
+<section class="slide">
+<div class="eyebrow">shoot &mdash; the fan</div>
+<pre><code>for i in shots:
+	var offset := (float(i) - (shots - 1) / 2.0) * spread
+	_spawn_bullet(rotation + offset, spec["damage"])</code></pre>
+<table>
+<thead><tr><th>Weapon</th><th><code>offset</code></th></tr></thead>
+<tbody>
+<tr><td>1 shot &middot; <code>i</code> = 0</td><td>0 &minus; 0 &rarr; <strong>straight</strong></td></tr>
+<tr><td>3 shots &middot; <code>i</code> = 0, 1, 2</td><td>&minus;1, 0, +1 &times; 0.26 &rarr; <strong>left, straight, right</strong></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ==================== 9 -->
+<section class="slide">
+<div class="eyebrow">Enemy.gd &mdash; one condition, two behaviours</div>
+<pre><code>var to_player := (target.global_position - global_position).normalized()
+if float(health) / float(max_health) &lt;= FLEE_BELOW:
+	position -= to_player * FLEE_SPEED * delta
+else:
+	position += to_player * CHASE_SPEED * delta</code></pre>
+<p class="lede">The whole difference between chasing and fleeing is <strong>a minus sign</strong>.</p>
+</section>
+
+<!-- ==================== 10 -->
+<section class="slide">
+<div class="eyebrow">Prove it, then delete it</div>
+<pre><code>var e := enemy_scene.instantiate()
+e.max_health = 100
+e.target = player
+e.position = Vector2(100, 100)
+add_child(e)</code></pre>
+<p>Third hit: it turns orange and runs. Fourth: it dies.</p>
+<p class="callout warn">Ten temporary lines in <code>Main._ready</code>. <strong>Delete every one</strong> and put <code>pass</code> back. <code>_ready</code> is written in Lesson 6, once.</p>
+</section>
+
+<!-- ==================== 11 -->
 <section class="slide">
 <div class="eyebrow">The error you will see today</div>
 <p class="callout warn"><code>Cannot call method on a null value</code></p>
@@ -296,10 +345,11 @@
 <p class="note">The error is three lessons downstream of its cause. That lesson is worth as much as the bullets.</p>
 </section>
 
-<!-- ==================== 8 -->
+<!-- ==================== 12 -->
 <section class="slide center">
-<h1 class="small">Nothing to shoot at.</h1>
-<p class="lede">That is tomorrow.</p>
+<h1 class="small">14 <code>pass</code> statements left.</h1>
+<p class="lede">It chases you. It cannot hurt you yet.</p>
+<p class="note">That is next lesson.</p>
 </section>
 </div></div>
 
