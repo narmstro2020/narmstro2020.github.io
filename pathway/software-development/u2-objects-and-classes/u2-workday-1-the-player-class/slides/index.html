@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Soft Dev Project 1 Workday 1 — Checkpoint 2</title>
+<title>Soft Dev U2 Workday 1 — The Player Class</title>
 <style>
   :root {
     --ink:      #14161a;
@@ -243,62 +243,39 @@
 
 <!-- ==================== 1 -->
 <section class="slide center">
-<h1 class="small">No new material today.</h1>
-<p class="lede">Today is for finishing Tuesday. The backup at the end is Project 1 checkpoint 2.</p>
+<h1 class="small">Finish the refactor.</h1>
+<p class="lede">Compiler first, then <code>TESTS.md</code>. Project 1 is closed &mdash; its backup stays untouched.</p>
 </section>
 
 <!-- ==================== 2 -->
-<section class="slide center">
-<div class="eyebrow">First ten minutes</div>
-<h1 class="small">Audit your own game<br>before you touch anything</h1>
-<p class="note">Open <code>TESTS.md</code> and the Project 1 checklist. Write down what is missing. That list is the period.</p>
+<section class="slide">
+<div class="eyebrow">Let the compiler drive</div>
+<ol>
+<li>Delete the six loose variables. Compile.</li>
+<li>Every red line is a rename: <code>player.</code>something</li>
+<li>Two signatures: <code>openingCeremony</code>, <code>printFighters</code></li>
+<li>It compiles. Now run every case in <code>TESTS.md</code></li>
+<li>Every failure is a behaviour you changed by accident</li>
+</ol>
 </section>
 
 <!-- ==================== 3 -->
 <section class="slide">
-<div class="eyebrow">Today's audit</div>
-<ul>
-<li>Loot table verified &mdash; and the seed taken out</li>
-<li>Three bugs fixed, with notes</li>
-<li>Javadoc on every method from L10&ndash;L12</li>
-<li>A README with one known issue</li>
-<li>Back up as <code>Arena_P1_CP2_LastnameF</code></li>
-</ul>
+<div class="eyebrow">Minute 70</div>
+<h1 class="small">Your partner runs three of your cases.</h1>
+<p class="lede">On your refactored game. Not you.</p>
 </section>
 
 <!-- ==================== 4 -->
-<section class="slide">
-<div class="eyebrow">Where the real problems are</div>
-<table>
-<thead><tr><th>Symptom</th><th>Cause</th></tr></thead>
-<tbody>
-<tr><td>Crashes on a letter</td><td>no validation loop around that <code>nextInt</code> &mdash; Lesson 5</td></tr>
-<tr><td>Health bar breaks</td><td>the clamp is missing from one of the places health changes &mdash; Lesson 12</td></tr>
-<tr><td>Can walk through walls</td><td><code>peek</code> is not consulted before moving &mdash; Lesson 11</td></tr>
-<tr><td>JAR will not start</td><td><code>--main-class</code> left off &mdash; Lesson 13</td></tr>
-</tbody>
-</table>
-<p class="note">A program that does not compile scores 0 on Criterion 1. Fix compile errors before anything else.</p>
-</section>
-
-<!-- ==================== 5 -->
-<section class="slide">
-<div class="eyebrow">Finished?</div>
-<ol>
-<li>Run every case in <code>TESTS.md</code> again, on the JAR, from the Desktop</li>
-<li>Write the break-and-fix paragraph for your portfolio entry now, while you remember it</li>
-<li>Go and sit with somebody whose game still crashes</li>
-</ol>
-</section>
-
-<!-- ==================== 6 -->
 <section class="slide center">
-<h1 class="small">Back up, then commit to a to-do list.</h1>
-<p class="lede">Write down the three things you will do next period. Put them at the top of <code>TESTS.md</code>.</p>
+<div class="eyebrow">Before you leave</div>
+<h1 class="small">What bothers you about <code>Player</code>?</h1>
+<p class="lede">Write one sentence. Most people write the same one. It is the first lesson after the break.</p>
+<p class="note">Back up &mdash; <code>Arena_U2W1_LastnameF</code>. Next lesson, the fields go private.</p>
 </section>
 </div></div>
 
-<div id="title-tag">SOFT DEV · U1 WORKDAY 1</div>
+<div id="title-tag">SOFT DEV · U2 WORKDAY 1</div>
 <div id="counter"></div>
 <div id="bar"><i></i></div>
 <div id="notes"></div>

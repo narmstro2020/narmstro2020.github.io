@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Soft Dev Project 1 Workday 1 — Checkpoint 2</title>
+<title>Soft Dev Project 1 Submission Day — Project 1 Due</title>
 <style>
   :root {
     --ink:      #14161a;
@@ -243,62 +243,70 @@
 
 <!-- ==================== 1 -->
 <section class="slide center">
-<h1 class="small">No new material today.</h1>
-<p class="lede">Today is for finishing Tuesday. The backup at the end is Project 1 checkpoint 2.</p>
+<h1 class="small">Project 1 is due today.</h1>
+<p class="lede">Audit it on the JAR. Explain it. Ship it.</p>
 </section>
 
 <!-- ==================== 2 -->
-<section class="slide center">
+<section class="slide">
 <div class="eyebrow">First ten minutes</div>
-<h1 class="small">Audit your own game<br>before you touch anything</h1>
-<p class="note">Open <code>TESTS.md</code> and the Project 1 checklist. Write down what is missing. That list is the period.</p>
+<h1 class="small">Compile from a clean folder.</h1>
+<pre><code>javac -d out src/Main.java
+jar --create --file ArenaGame.jar --main-class Main -C out .
+java -jar ArenaGame.jar</code></pre>
+<p class="callout warn">Does not compile = <strong>0 of 40</strong> on It Works. Nothing else matters until it does.</p>
 </section>
 
 <!-- ==================== 3 -->
 <section class="slide">
-<div class="eyebrow">Today's audit</div>
-<ul>
-<li>Loot table verified &mdash; and the seed taken out</li>
-<li>Three bugs fixed, with notes</li>
-<li>Javadoc on every method from L10&ndash;L12</li>
-<li>A README with one known issue</li>
-<li>Back up as <code>Arena_P1_CP2_LastnameF</code></li>
-</ul>
+<div class="eyebrow">The eight rows &mdash; 5 points each</div>
+<ol>
+<li>Runs to a win or a loss without crashing</li>
+<li>Every input validated &mdash; letters, out of range, impossible actions</li>
+<li>Every row of the combat-menu spec</li>
+<li>A turn loop with win, lose, and a final report</li>
+<li>Eight methods besides <code>main</code>; <code>main</code> under 40 lines</li>
+<li>Arrays hold the pack and the arena; walls and the enemy block movement</li>
+<li><code>Random</code> combat and a verified loot table</li>
+<li>Javadoc, README, and a runnable JAR</li>
+</ol>
 </section>
 
 <!-- ==================== 4 -->
 <section class="slide">
-<div class="eyebrow">Where the real problems are</div>
-<table>
-<thead><tr><th>Symptom</th><th>Cause</th></tr></thead>
-<tbody>
-<tr><td>Crashes on a letter</td><td>no validation loop around that <code>nextInt</code> &mdash; Lesson 5</td></tr>
-<tr><td>Health bar breaks</td><td>the clamp is missing from one of the places health changes &mdash; Lesson 12</td></tr>
-<tr><td>Can walk through walls</td><td><code>peek</code> is not consulted before moving &mdash; Lesson 11</td></tr>
-<tr><td>JAR will not start</td><td><code>--main-class</code> left off &mdash; Lesson 13</td></tr>
-</tbody>
-</table>
-<p class="note">A program that does not compile scores 0 on Criterion 1. Fix compile errors before anything else.</p>
+<div class="eyebrow">Concepts &mdash; 25 points</div>
+<h1 class="small">Explain one line for each.</h1>
+<ul>
+<li>Control structures</li>
+<li>Methods and parameters</li>
+<li>Arrays</li>
+<li>Algorithm design with <code>Random</code></li>
+<li>Debugging, testing and documentation</li>
+</ul>
+<p class="note">Your partner asks first. Then I do.</p>
 </section>
 
 <!-- ==================== 5 -->
 <section class="slide">
-<div class="eyebrow">Finished?</div>
-<ol>
-<li>Run every case in <code>TESTS.md</code> again, on the JAR, from the Desktop</li>
-<li>Write the break-and-fix paragraph for your portfolio entry now, while you remember it</li>
-<li>Go and sit with somebody whose game still crashes</li>
-</ol>
+<div class="eyebrow">Portfolio entry &mdash; 10 points</div>
+<ul>
+<li>The <strong>runnable JAR</strong> (3)</li>
+<li>A screenshot of a fight (1)</li>
+<li>Three sentences: what it is, how it is built (2)</li>
+<li><strong>One thing that broke, and how you fixed it</strong> (4)</li>
+</ul>
+<p class="note">The silent bug in <code>applyDamage</code> counts. So does the letter at the difficulty prompt.</p>
 </section>
 
 <!-- ==================== 6 -->
 <section class="slide center">
-<h1 class="small">Back up, then commit to a to-do list.</h1>
-<p class="lede">Write down the three things you will do next period. Put them at the top of <code>TESTS.md</code>.</p>
+<h1 class="small">Submit Project 1.</h1>
+<p class="lede">Then back up as <code>Arena_P1_FINAL_LastnameF</code>.</p>
+<p class="note">Eight weeks, one game, every line typed. After the break it gets rebuilt out of objects.</p>
 </section>
 </div></div>
 
-<div id="title-tag">SOFT DEV · U1 WORKDAY 1</div>
+<div id="title-tag">SOFT DEV · U1 SUBMISSION DAY</div>
 <div id="counter"></div>
 <div id="bar"><i></i></div>
 <div id="notes"></div>
