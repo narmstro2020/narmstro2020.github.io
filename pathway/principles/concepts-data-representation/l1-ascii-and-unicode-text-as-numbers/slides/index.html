@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concepts 1 — ASCII and Unicode: Text as Numbers</title>
+<style>
+  :root {
+    --ink:      #14161a;
+    --muted:    #6b7280;
+    --faint:    #c9ced6;
+    --bg:       #fbfaf7;
+    --panel:    #ffffff;
+    --accent:   #2f6bff;
+    --accent-soft: #e3ecff;
+    --warn:     #d1491f;
+    --warn-soft:#fdeae3;
+    --ok:       #0f7a52;
+    --rule:     #e2e0da;
+  }
+  [data-theme="dark"] {
+    --ink:      #f2f4f8;
+    --muted:    #9aa3b2;
+    --faint:    #3a4150;
+    --bg:       #11141a;
+    --panel:    #191d26;
+    --accent:   #6d9bff;
+    --accent-soft: #1e2b47;
+    --warn:     #ff8a63;
+    --warn-soft:#3a2118;
+    --ok:       #4fd39c;
+    --rule:     #2a2f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- fixed 1600x900 stage, scaled to fit any projector ---- */
+  #stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 84px 100px 96px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ---- type ---- */
+  .eyebrow {
+    font-size: 26px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 34px;
+  }
+  h1 { font-size: 92px; line-height: 1.06; margin: 0 0 28px; letter-spacing: -.02em; font-weight: 800; }
+  h1.small { font-size: 68px; }
+  h1.big   { font-size: 112px; }
+  h2 { font-size: 54px; line-height: 1.12; margin: 0 0 24px; font-weight: 750; letter-spacing: -.01em; }
+  p  { font-size: 34px; line-height: 1.42; margin: 0 0 18px; max-width: 26em; }
+  .slide.center p { margin-left: auto; margin-right: auto; }
+  .lede { font-size: 40px; }
+  .note { font-size: 27px; color: var(--muted); font-style: italic; }
+  strong { font-weight: 800; }
+  em.hl { font-style: normal; color: var(--accent); font-weight: 800; }
+  .warnline { color: var(--warn); font-weight: 800; }
+
+  code, .mono {
+    font-family: "Cascadia Mono", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .92em;
+    background: var(--accent-soft); color: var(--ink);
+    padding: .06em .34em; border-radius: 6px; white-space: nowrap;
+  }
+
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul li {
+    font-size: 33px; line-height: 1.34; margin-bottom: 20px;
+    padding-left: 46px; position: relative;
+  }
+  ul li::before {
+    content: ""; position: absolute; left: 8px; top: .52em;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+  }
+  ol.steps { margin: 0; padding: 0; counter-reset: s; list-style: none; }
+  ol.steps li {
+    font-size: 32px; line-height: 1.3; margin-bottom: 22px;
+    padding-left: 64px; position: relative; counter-increment: s;
+  }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 25px; font-weight: 800; display: grid; place-items: center;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .cols.wide-right { grid-template-columns: 0.85fr 1.15fr; }
+  .cols.wide-left  { grid-template-columns: 1.15fr 0.85fr; }
+  .stack > * + * { margin-top: 26px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+  .card {
+    background: var(--panel); border: 3px solid var(--rule); border-radius: 18px;
+    padding: 34px 32px; text-align: left;
+  }
+  .card .term {
+    font-size: 40px; font-weight: 850; letter-spacing: .02em; color: var(--accent);
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .card .def { font-size: 27px; line-height: 1.34; color: var(--ink); }
+
+  table.tbl { border-collapse: collapse; width: 100%; font-size: 29px; }
+  table.tbl td { padding: 20px 22px; border-bottom: 2px solid var(--rule); vertical-align: top; line-height: 1.3; }
+  table.tbl tr:last-child td { border-bottom: none; }
+  table.tbl td:first-child { font-weight: 700; width: 44%; }
+  table.tbl td:last-child { color: var(--muted); }
+
+  .callout {
+    border-left: 10px solid var(--accent); background: var(--accent-soft);
+    padding: 24px 30px; border-radius: 0 14px 14px 0; font-size: 30px; line-height: 1.35;
+  }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  .bigrule { display: block; font-size: 60px; font-weight: 850; line-height: 1.14; letter-spacing: -.015em; }
+  .bigrule + .bigrule { margin-top: 12px; }
+
+  figure { margin: 0; width: 100%; }
+  figure svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 25px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* ---- svg design language ---- */
+  .s-ink   { stroke: var(--ink);   fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .s-mut   { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-dash  { stroke: var(--muted); fill: none; stroke-width: 3;   stroke-dasharray: 10 9; stroke-linecap: round; }
+  .s-acc   { stroke: var(--accent);fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .s-warn  { stroke: var(--warn);  fill: none; stroke-width: 4;   stroke-linecap: round; stroke-linejoin: round; }
+  .f-panel { fill: var(--panel); stroke: var(--rule); stroke-width: 3; }
+  .f-acc   { fill: var(--accent); }
+  .f-accs  { fill: var(--accent-soft); }
+  .f-faint { fill: var(--faint); }
+  .t       { fill: var(--ink);   font-size: 26px; font-weight: 650;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-sm    { fill: var(--muted); font-size: 22px; font-weight: 600;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-lg    { fill: var(--ink);   font-size: 32px; font-weight: 800;
+             font-family: "Segoe UI", system-ui, sans-serif; }
+  .t-mono  { fill: var(--ink);   font-size: 24px; font-weight: 600;
+             font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; }
+  .t-acc   { fill: var(--accent); }
+  .t-warn  { fill: var(--warn); }
+
+  /* ---- chrome ---- */
+  #bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 6px;
+    background: transparent; z-index: 40;
+  }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .18s ease; }
+  #counter {
+    position: fixed; right: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--muted);
+    font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  }
+  #title-tag {
+    position: fixed; left: 26px; bottom: 20px; z-index: 40;
+    font-size: 20px; font-weight: 700; color: var(--faint); letter-spacing: .06em;
+  }
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--ink); color: var(--bg);
+    padding: 22px 34px 30px; font-size: 24px; line-height: 1.4;
+    display: none; border-top: 6px solid var(--accent);
+  }
+  #notes.on { display: block; }
+  #notes b { color: #ffd479; }
+  #help {
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,12,16,.94); color: #f4f6fa;
+    display: none; place-items: center; text-align: left;
+  }
+  #help.on { display: grid; }
+  #help .box { font-size: 26px; line-height: 1.9; }
+  #help kbd {
+    display: inline-block; min-width: 2.4em; text-align: center;
+    background: #2a3040; border: 2px solid #454e63; border-bottom-width: 4px;
+    border-radius: 8px; padding: 2px 10px; margin-right: 18px;
+    font-family: Consolas, monospace; font-size: 22px;
+  }
+  #help h3 { font-size: 34px; margin: 0 0 22px; }
+  #help p { font-size: 21px; color: #9aa3b2; max-width: none; margin-top: 26px; }
+
+  /* ---- print / PDF export ---- */
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: #fff; }
+    #stage-wrap { position: static; display: block; }
+    #stage { width: 1600px; height: auto; transform: none !important; }
+    .slide {
+      position: relative; inset: auto;
+      display: flex !important; width: 1600px; height: 900px;
+      break-after: page; page-break-after: always;
+    }
+    #bar, #counter, #notes, #help, #title-tag { display: none !important; }
+  }
+
+  /* ---- code blocks ---- */
+  /* `code, .mono` above is written for INLINE chips: pill background, padding,
+     and white-space: nowrap. Those rules also match <code> inside <pre>, which
+     collapses a listing onto one unwrapped line. Undo them for blocks and give
+     the block its own frame. Colors are the deck's own tokens, so the dark
+     theme follows automatically. */
+  pre {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border: 2px solid var(--rule);
+    border-left: 6px solid var(--accent);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  pre code, pre .mono {
+    display: block;
+    white-space: pre;
+    tab-size: 4;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div id="stage-wrap"><div id="stage">
+
+<!-- ==================== 1 -->
+<section class="slide center">
+<h1 class="small">Every letter is a number.</h1>
+<p class="lede">Your game only ever stores numbers. Today: how the numbers become text, and why the first system for it ran out.</p>
+<p class="note">No project work today. One scratch script, one worksheet, one exit ticket.</p>
+</section>
+
+<!-- ==================== 2 -->
+<section class="slide center">
+<div class="eyebrow">Prediction</div>
+<h1 class="small">How many different characters can one byte hold?<br>How many does the world need?</h1>
+</section>
+
+<!-- ==================== 3 -->
+<section class="slide">
+<div class="eyebrow">ASCII &mdash; 1963, 7 bits, 128 characters</div>
+<table>
+<thead><tr><th>Codes</th><th>What lives there</th></tr></thead>
+<tbody>
+<tr><td>0 &ndash; 31</td><td>control codes: newline, tab, backspace, a bell</td></tr>
+<tr><td>32</td><td>space</td></tr>
+<tr><td>48 &ndash; 57</td><td>the digits <code>0</code> to <code>9</code></td></tr>
+<tr><td>65 &ndash; 90</td><td><code>A</code> to <code>Z</code></td></tr>
+<tr><td>97 &ndash; 122</td><td><code>a</code> to <code>z</code></td></tr>
+<tr><td>127</td><td>DEL &mdash; punch every hole in the paper tape to erase</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ==================== 4 -->
+<section class="slide">
+<div class="eyebrow">The table was designed, not listed</div>
+<pre><code>A = 65 = 0100 0001
+a = 97 = 0110 0001        one bit apart: 97 - 65 = 32</code></pre>
+<pre><code>"7" is 55.   "0" is 48.   55 - 48 = 7</code></pre>
+<p><strong>Caps lock is one bit.</strong> Turning a digit character into its number is one subtraction. Sixty years later, every language still relies on both.</p>
+</section>
+
+<!-- ==================== 5 -->
+<section class="slide">
+<div class="eyebrow">Hex &mdash; two digits per byte</div>
+<pre><code>0 1 2 3 4 5 6 7 8 9 A B C D E F      16 symbols = 4 bits each
+
+A   = 65  = 0100 0001 = 41
+255       = 1111 1111 = FF</code></pre>
+<p>You have used it already. <code>#FF8800</code> is <strong>three bytes</strong>: red 255, green 136, blue 0. The colour picker was showing you bytes the whole time.</p>
+</section>
+
+<!-- ==================== 6 -->
+<section class="slide">
+<div class="eyebrow">The invisible characters</div>
+<table>
+<thead><tr><th>Code</th><th>Name</th><th>Where you have met it</th></tr></thead>
+<tbody>
+<tr><td>9</td><td>tab</td><td>every indent in every <code>.gd</code> file you have written</td></tr>
+<tr><td>10</td><td>newline</td><td>the <code>\n</code> in a <code>print</code>; the end of every line</td></tr>
+<tr><td>13</td><td>carriage return</td><td>the typewriter lever &mdash; Windows still writes 13 then 10</td></tr>
+<tr><td>7</td><td>bell</td><td>the terminal literally beeps</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ==================== 7 -->
+<section class="slide">
+<div class="eyebrow">Why ASCII was not enough</div>
+<p class="lede">No <code>é</code>. No <code>ñ</code>. No <code>ß</code>, no <code>中</code>, no <code>ع</code>, no <code>😀</code>.</p>
+<p>The eighth bit gave 128 more slots, and <strong>everyone filled them differently.</strong> Byte 233 is <code>é</code> in one table, <code>щ</code> in another, and a box-drawing line in DOS.</p>
+<p class="callout warn">A file is just bytes. Nothing in it says which table to read it with.</p>
+</section>
+
+<!-- ==================== 8 -->
+<section class="slide">
+<div class="eyebrow">What that looks like</div>
+<h1 class="small">Jos<span class="hl">Ã©</span></h1>
+<pre><code>é   stored as   C3 A9
+C3 A9  read one-byte-per-character  =  Ã ©</code></pre>
+<p><strong>The bytes were right. The reader guessed the wrong table.</strong> Its name is <em>mojibake</em>, and you have seen it in a text message, a subtitle, or a shop receipt.</p>
+</section>
+
+<!-- ==================== 9 -->
+<section class="slide">
+<div class="eyebrow">Unicode &mdash; one number for every character, everywhere</div>
+<table>
+<thead><tr><th>Character</th><th>Code point</th><th>Decimal</th></tr></thead>
+<tbody>
+<tr><td><code>A</code></td><td>U+0041</td><td>65 &mdash; ASCII, unchanged</td></tr>
+<tr><td><code>é</code></td><td>U+00E9</td><td>233</td></tr>
+<tr><td><code>中</code></td><td>U+4E2D</td><td>20013</td></tr>
+<tr><td><code>😀</code></td><td>U+1F600</td><td>128512</td></tr>
+</tbody>
+</table>
+<p class="note">More than 150,000 characters have a number. An emoji is a character with a large one.</p>
+</section>
+
+<!-- ==================== 10 -->
+<section class="slide">
+<div class="eyebrow">UTF-8 &mdash; how the number becomes bytes</div>
+<table>
+<thead><tr><th>Character</th><th>Bytes</th><th>Hex</th></tr></thead>
+<tbody>
+<tr><td><code>A</code></td><td>1</td><td><code>41</code></td></tr>
+<tr><td><code>é</code></td><td>2</td><td><code>C3 A9</code></td></tr>
+<tr><td><code>中</code></td><td>3</td><td><code>E4 B8 AD</code></td></tr>
+<tr><td><code>😀</code></td><td>4</td><td><code>F0 9F 98 80</code></td></tr>
+</tbody>
+</table>
+<p><strong>ASCII is unchanged.</strong> Every plain-English file ever saved is already valid UTF-8. That is why it won.</p>
+</section>
+
+<!-- ==================== 11 -->
+<section class="slide">
+<div class="eyebrow">Characters are not bytes</div>
+<pre><code>"Hi 😀"     characters: 4     bytes: 7</code></pre>
+<p>Which one is the <em>length</em>? Depends who is asking. Godot says 4. The disk says 7. A text message says <strong>160 characters &mdash; or 70, if there is one emoji in it</strong>, because the phone switches to a fatter encoding for the whole message.</p>
+</section>
+
+<!-- ==================== 12 -->
+<section class="slide">
+<div class="eyebrow">The box &mdash; □</div>
+<p class="lede">The character is right. The <strong>font</strong> has no drawing for it.</p>
+<table>
+<thead><tr><th>You see</th><th>What went wrong</th></tr></thead>
+<tbody>
+<tr><td><code>JosÃ©</code></td><td>the wrong <strong>table</strong> &mdash; the bytes were read as the wrong characters</td></tr>
+<tr><td><code>Jos□</code></td><td>the right character, no <strong>glyph</strong> &mdash; the font cannot draw it</td></tr>
+</tbody>
+</table>
+<p class="note">Try an emoji in your HUD's Label. Whether it draws depends entirely on the font.</p>
+</section>
+
+<!-- ==================== 13 -->
+<section class="slide">
+<div class="eyebrow">TextLab &mdash; forty minutes</div>
+<ol>
+<li><strong>A letter is a number</strong> &mdash; <code>unicode_at</code>, <code>char</code>, the caps-lock bit, the digit trick</li>
+<li><strong>The whole table</strong> &mdash; one loop prints 32 to 126</li>
+<li><strong>Past 127</strong> &mdash; <code>é</code>, <code>中</code>, <code>😀</code> and their numbers</li>
+<li><strong>Characters versus bytes</strong> &mdash; <code>length()</code> against <code>to_utf8_buffer().size()</code></li>
+<li><strong>Mojibake</strong> &mdash; the same two bytes, read two ways</li>
+</ol>
+<p class="note">New project, not the shooter. Nothing you do today touches your game.</p>
+</section>
+
+<!-- ==================== 14 -->
+<section class="slide center">
+<h1 class="small">Text is numbers.<br>The table has to be agreed.</h1>
+<p class="lede">ASCII agreed on 128. Unicode agreed on all of them. UTF-8 is how the number is written down.</p>
+</section>
+</div></div>
+
+<div id="title-tag">CONCEPTS · TEXT AS NUMBERS</div>
+<div id="counter"></div>
+<div id="bar"><i></i></div>
+<div id="notes"></div>
+
+<div id="help">
+  <div class="box">
+    <h3>Deck controls</h3>
+    <div><kbd>→</kbd> next slide &nbsp;·&nbsp; <kbd>space</kbd> also next</div>
+    <div><kbd>←</kbd> previous slide</div>
+    <div><kbd>F</kbd> fullscreen — use this on the projector</div>
+    <div><kbd>T</kbd> light / dark — dark for a bright room</div>
+    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>?</kbd> close this</div>
+    <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage   = document.getElementById('stage');
+  var notes   = document.getElementById('notes');
+  var help    = document.getElementById('help');
+  var counter = document.getElementById('counter');
+  var barFill = document.querySelector('#bar i');
+  var i = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    barFill.style.width = ((i + 1) / slides.length * 100) + '%';
+    notes.innerHTML = '<b>Slide ' + (i + 1) + '</b> &nbsp; ' +
+      (slides[i].dataset.note || '<span style="opacity:.5">no note</span>');
+    try { location.hash = 's' + (i + 1); } catch (e) {}
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === '?' || e.key === '/') { help.classList.toggle('on'); }
+    else if (e.key === 'Escape') { help.classList.remove('on'); }
+    else if (e.key === 't' || e.key === 'T') {
+      var b = document.body;
+      b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (help.classList.contains('on')) { help.classList.remove('on'); return; }
+    show(e.clientX < window.innerWidth * 0.25 ? i - 1 : i + 1);
+  });
+
+  window.addEventListener('resize', fit);
+  fit();
+
+  var start = parseInt((location.hash || '').replace('#s', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>
