@@ -1,38 +1,46 @@
 /* ============================================================
+   U2 L4 — the ONE rule that lives above everything else.
+   width now INCLUDES padding and border. Every element, every
+   page. It is a reset, not a style, which is why it is first
+   in the file instead of last.
+   ============================================================ */
+* {
+  box-sizing: border-box;
+}
+
+/* ============================================================
    U2 L1 — the first stylesheet.
    ONE file. Every page links to it. Change a rule here and all
    four pages change at once — that is the whole argument for an
    EXTERNAL stylesheet over writing style="" on every element.
+
+   A rule is a SELECTOR, then a block of property: value; pairs.
+   Leave out a semicolon and the rule AFTER it breaks, not this one.
    ============================================================ */
 
-/* --- element selector: every <body> on the site --- */
+/* --- element selector: every <body> on the site.
+       A font, a colour, a line height. Nothing clever. --- */
 body {
   font-family: Georgia, "Times New Roman", serif;
   line-height: 1.6;
   color: #222222;
   background-color: #fdfdfb;
-  margin: 0 auto;
-  max-width: 45rem;
-  padding: 1.5rem;
 }
 
 /* --- element selectors: the headings --- */
 h1 {
-  font-size: 2rem;
   color: #14532d;
+  font-size: 2rem;
 }
 
 h2 {
-  font-size: 1.4rem;
   color: #14532d;
-  border-bottom: 1px solid #d6d3cc;
 }
 
 /* --- CLASS selector. The dot means "any element with class=intro".
        We put class="intro" on that div back in L8, for exactly this. --- */
 .intro {
   background-color: #eef4ee;
-  padding: 1rem;
 }
 
 /* --- another class, already on the page since L8 --- */
@@ -45,21 +53,6 @@ h2 {
        An id is unique on a page, so this styles exactly one thing. --- */
 #parks {
   background-color: #ffffff;
-}
-
-/* --- the skip link from L13. Off-screen until a keyboard user
-       tabs to it, then it appears. Accessibility, styled. --- */
-.skip-link {
-  position: absolute;
-  left: -9999px;
-}
-
-.skip-link:focus {
-  left: 1rem;
-  top: 1rem;
-  background: #14532d;
-  color: #ffffff;
-  padding: .5rem 1rem;
 }
 
 /* ============================================================
@@ -155,9 +148,17 @@ footer {
   margin-top: 1.5rem;
 }
 
+/* --- the body is a box too. The browser gave it 8px of margin; replace
+       that with padding WE chose. A background paints under padding, so
+       L2's photograph now shows all the way round the site. --- */
+body {
+  margin: 0;
+  padding: 1.5rem;
+}
+
 /* --- border: width, STYLE, colour. Leave out the style and nothing draws. --- */
 .intro {
-  padding: 1rem 1.5rem;                 /* later than L1's padding: 1rem, so this wins */
+  padding: 1rem 1.5rem;
   border: 1px solid #c9dcc9;
 }
 
@@ -167,11 +168,13 @@ blockquote {
   border-left: 6px solid #14532d;       /* one side only */
 }
 
-/* --- L1 gave h2 a border-bottom. Now the text gets off the line, and every
-       section gets air above it. --- */
+/* --- a border on ONE side of every heading, the text lifted off the
+       line with padding, and air above every section with margin.
+       All three layers, in one rule. --- */
 h2 {
-  margin-top: 2rem;
+  border-bottom: 1px solid #d6d3cc;
   padding-bottom: .25rem;
+  margin-top: 2rem;
 }
 
 /* --- the nav list: the browser's default margin and padding removed --- */
@@ -227,6 +230,16 @@ iframe {
   padding: .75rem 1.25rem;
 }
 
+/* --- the whole site gets a ceiling too: a reading measure. Then
+       margin: auto splits the leftover space equally, which centres it.
+       (auto was on the W3Schools margin page in L3; it only has space
+       to split once there IS a max-width, which is today.)
+       A later body rule than L3's margin: 0 — the cascade, again. --- */
+body {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
 /* --- OUTLINE is where Tab is. It draws outside the box and takes no
        space. Never remove it without replacing it with something visible. --- */
 a:focus,
@@ -236,4 +249,21 @@ select:focus,
 textarea:focus {
   outline: 3px solid #7a5901;
   outline-offset: 2px;
+}
+
+/* --- the skip link from U1 L13, now that Tab means something. It sits
+       off-screen until a keyboard user tabs to it, then appears at the
+       top of the page. The one line borrowed from later: position is
+       L8, and nothing else on the site is positioned until then. --- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background-color: #14532d;
+  color: #ffffff;
+  padding: .5rem 1rem;
 }

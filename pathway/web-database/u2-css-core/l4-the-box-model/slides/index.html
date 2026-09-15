@@ -288,8 +288,10 @@
 <div class="eyebrow">max-width &mdash; never wider than the space</div>
 <pre><code>img    { max-width: 100%; height: auto; }
 iframe { max-width: 100%; }
-.contents { max-width: 22rem; }</code></pre>
+.contents { max-width: 22rem; }
+body   { max-width: 48rem; margin: 0 auto; }</code></pre>
 <p><code>max-width</code> is a ceiling, not a size. The photo is as big as it can be, and never bigger than the box it is in. Make the window narrow and watch.</p>
+<p class="note">The <code>body</code> line turns the site into a centred column: <code>margin: auto</code> splits the leftover space equally, and today there is leftover space.</p>
 </section>
 
 <!-- ==================== 6 -->
@@ -300,6 +302,7 @@ iframe { max-width: 100%; }
   outline-offset: 2px;
 }</code></pre>
 <p class="callout warn">Outline is not border. It draws <em>outside</em> the box and takes no space. Press Tab and watch it move. <strong>Never write <code>outline: none</code></strong> unless the same rule puts something visible in its place.</p>
+<p class="note">The first Tab on every page is the L13 skip link. Hide it with <code>position: absolute; left: -9999px</code> and bring it back on <code>:focus</code>. <code>position</code> is Lesson 8 &mdash; this is the one line borrowed early.</p>
 </section>
 
 <!-- ==================== 7 -->
@@ -307,8 +310,8 @@ iframe { max-width: 100%; }
 <h1 class="small">Before you leave</h1>
 <ul>
 <li><code>* { box-sizing: border-box; }</code> first in the file</li>
-<li>Photo and map shrink with the window</li>
-<li>A visible focus ring, on everything Tab reaches</li>
+<li>The site is a centred column; photo and map shrink with the window</li>
+<li>A visible focus ring on everything Tab reaches, and the skip link on the first Tab</li>
 <li>Still <strong>zero</strong> validator errors</li>
 <li>Backed up as <code>Site_P1_CP2_LastnameF</code> &mdash; <strong>Project 1 checkpoint 2</strong></li>
 </ul>

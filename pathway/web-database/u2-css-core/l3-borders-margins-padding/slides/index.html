@@ -270,7 +270,8 @@
 <div class="eyebrow">Padding &mdash; room inside</div>
 <pre><code>header { padding: 1.5rem 2rem; }   /* top-and-bottom, then left-and-right */
 main   { padding: 1.5rem 2rem; }
-footer { padding: 1rem 2rem; }</code></pre>
+footer { padding: 1rem 2rem; }
+body   { margin: 0; padding: 1.5rem; }   /* the browser's 8px margin, swapped for padding */</code></pre>
 <p>Padding takes the box's background colour with it. That is how you tell it from margin on the page: <strong>padding is coloured, margin is not.</strong></p>
 </section>
 
@@ -279,7 +280,7 @@ footer { padding: 1rem 2rem; }</code></pre>
 <div class="eyebrow">Border &mdash; the line</div>
 <pre><code>.intro     { border: 1px solid #c9dcc9; }        /* width  style  colour */
 blockquote { border-left: 6px solid #14532d; }   /* one side only */
-h2         { border-bottom: 1px solid #d6d3cc; }  /* you wrote this in L1 */</code></pre>
+h2         { border-bottom: 1px solid #d6d3cc; }  /* under every heading */</code></pre>
 <p class="callout warn">Leave out <code>solid</code> and nothing draws. No error, no line. The style is the part everybody forgets.</p>
 </section>
 

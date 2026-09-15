@@ -3,36 +3,34 @@
    ONE file. Every page links to it. Change a rule here and all
    four pages change at once — that is the whole argument for an
    EXTERNAL stylesheet over writing style="" on every element.
+
+   A rule is a SELECTOR, then a block of property: value; pairs.
+   Leave out a semicolon and the rule AFTER it breaks, not this one.
    ============================================================ */
 
-/* --- element selector: every <body> on the site --- */
+/* --- element selector: every <body> on the site.
+       A font, a colour, a line height. Nothing clever. --- */
 body {
   font-family: Georgia, "Times New Roman", serif;
   line-height: 1.6;
   color: #222222;
   background-color: #fdfdfb;
-  margin: 0 auto;
-  max-width: 45rem;
-  padding: 1.5rem;
 }
 
 /* --- element selectors: the headings --- */
 h1 {
-  font-size: 2rem;
   color: #14532d;
+  font-size: 2rem;
 }
 
 h2 {
-  font-size: 1.4rem;
   color: #14532d;
-  border-bottom: 1px solid #d6d3cc;
 }
 
 /* --- CLASS selector. The dot means "any element with class=intro".
        We put class="intro" on that div back in L8, for exactly this. --- */
 .intro {
   background-color: #eef4ee;
-  padding: 1rem;
 }
 
 /* --- another class, already on the page since L8 --- */
@@ -45,21 +43,6 @@ h2 {
        An id is unique on a page, so this styles exactly one thing. --- */
 #parks {
   background-color: #ffffff;
-}
-
-/* --- the skip link from L13. Off-screen until a keyboard user
-       tabs to it, then it appears. Accessibility, styled. --- */
-.skip-link {
-  position: absolute;
-  left: -9999px;
-}
-
-.skip-link:focus {
-  left: 1rem;
-  top: 1rem;
-  background: #14532d;
-  color: #ffffff;
-  padding: .5rem 1rem;
 }
 
 /* ============================================================
