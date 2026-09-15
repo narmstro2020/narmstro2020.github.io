@@ -289,9 +289,10 @@ header a:hover { background-color: #eef4ee; color: #14532d; }</code></pre>
 ol     { list-style-type: decimal-leading-zero; }
 ul     { list-style-type: square; }
 .contents ul { list-style-position: inside; }
+#credits ul  { list-style-type: none; padding-left: 0; }   /* no marker, no indent */
 dt { font-weight: 700; }
 dd { margin-left: 0; margin-bottom: .75rem; }</code></pre>
-<p class="note">The property goes on the <strong>list</strong>, not the items. <code>none</code> on the nav is step one of a nav bar; step two is next lesson.</p>
+<p class="note">The property goes on the <strong>list</strong>, not the items. <code>none</code> on the nav is step one of a nav bar; step two is next lesson. A list's indent is its <code>padding-left</code>: take the marker away and the indent is just a gap.</p>
 </section>
 
 <!-- ==================== 6 -->
