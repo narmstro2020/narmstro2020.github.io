@@ -2,151 +2,45 @@
  * U1 L11 — ARRAYS AND 2D GAME BOARDS · STARTER CODE
  * 7184 Software Development · Unit 1, Lesson 11
  *
- * ALREADY HERE:  Lesson 10's refactor. Everything is in methods and it works.
- * YOU'RE ADDING: arrays. A pack that holds items, and an arena that is STORED
- *                rather than drawn from a pile of if-statements.
+ * START FROM YOUR OWN LESSON 10 FILE. The code below is the L10 solution, for
+ * anyone who lost theirs. The TODO markers are the same either way.
  *
  *     javac Main.java
  *     java Main
  *
- * ==========================================================================
- * THE SHIFT, IN TWO WORDS
+ * THE ONE IDEA: Lesson 9 DREW the grid with if-statements. Today you STORE it
+ * in a char[][]. Then a hazard is one assignment, and collision is reading the
+ * cell you are about to step into.
  *
- *   Lesson 9  DREW the grid  — a nested loop decided each character
- *   Today you STORE the grid — a char[][] holds the world
+ * SIX TODOs, marked in the code below. Do them in order. Compile after each.
  *
- * Everything today follows from that. A hazard becomes one assignment instead
- * of another else-if. Collision becomes reading the cell you are moving into.
+ *   TODO 1  the pack       two arrays + printInventory + findItem     (add)
+ *   TODO 2  the board      newArena() builds a char[][]                (add)
+ *   TODO 3  drawing        drawArena(char[][]) replaces the L9 loop    (replace)
+ *   TODO 4  moving         peek() + clear / update / set               (replace)
+ *   TODO 5  the log        damageLog[] and average()                   (add)
+ *   TODO 6  break it       two errors on purpose, then undo them
  *
- * ==========================================================================
  * THREE FACTS THAT CAUSE EVERY ARRAY BUG
+ *   new String[5] is five forever.     .length has NO parentheses.
+ *   Indices run 0 to length-1.         String[] starts full of null.
  *
- *   1. Fixed size at creation. new String[5] is five forever.
- *   2. .length is a FIELD, no parentheses -- unlike string.length().
- *      That inconsistency is Java's fault, not yours. It still catches people.
- *   3. Indices run 0 to length-1. An array of 5 has no index 5.
- *
- *   Defaults: int[] -> 0, boolean[] -> false, String[] -> NULL.
- *   That last one is why NullPointerException is about to happen to you.
- *
- * ==========================================================================
- * TODO 1: the pack — two arrays, side by side.
- *
- *           String[] itemNames = new String[5];
- *           int[] itemCounts = new int[5];
- *           int itemSlots = 0;
- *
- *           itemNames[0] = "Potion";  itemCounts[0] = 2;  itemSlots++;
- *           itemNames[1] = "Bomb";    itemCounts[1] = 1;  itemSlots++;
- *
- *         Then a method to show it:
- *
- *           static void printInventory(String[] names, int[] counts, int slots)
- *
- *         Loop to `slots`, NOT to names.length. The rest of the array is still
- *         null, and calling anything on null throws.
- *
- *         Then ask yourself: what happens if you sort the names and forget the
- *         counts? Two arrays kept in step BY HAND. Sit with that -- in Unit 2
- *         these become one array of Item objects and the problem disappears.
- *
- * TODO 2: ***THE BOARD***. This is the lesson.
- *
- *           char[][] arena = new char[5][11];
- *
- *           for (int r = 0; r < arena.length; r++) {
- *               for (int c = 0; c < arena[r].length; c++) {
- *                   boolean edge = (r == 0 || r == arena.length - 1
- *                                || c == 0 || c == arena[r].length - 1);
- *                   arena[r][c] = edge ? '#' : ' ';
- *               }
- *           }
- *           arena[playerRow][playerCol] = '@';
- *           arena[enemyRow][enemyCol]   = 'X';
- *
- *         arena.length     = how many ROWS
- *         arena[r].length  = how many COLUMNS in row r
- *
- *         Drawing is now three lines, because a 2D array is an array of rows:
- *
- *           static void drawArena(char[][] arena) {
- *               for (char[] row : arena) {
- *                   System.out.println(new String(row));
- *               }
- *           }
- *
- * TODO 3: movement is now THREE steps, every time:
- *
- *           1. clear the old cell:  arena[r][c] = ' ';
- *           2. update the position
- *           3. set the new cell:    arena[r][c] = '@';
- *
- *         Miss step 1 and your player leaves a trail of '@' behind it. You
- *         will see it immediately and it is funny. Then fix it.
- *
- *         COLLISION is just checking what is already in the cell you are about
- *         to enter. Write a peek(arena, row, col) that returns that character,
- *         then refuse to move into '#' or 'X'.
- *
- * TODO 4: a damage log and its average.
- *
- *           int[] damageLog = new int[20];
- *           ...
- *           int total = 0;
- *           for (int d : damageLog) total += d;
- *           double average = (double) total / damageLog.length;
- *
- *         The cast is Lesson 3's. Leave it out and every average is a whole
- *         number.
- *
- * TODO 5: BREAK IT ON PURPOSE. Twice, deliberately.
- *
- *           inventory[5]        on a 5-length array
- *              -> ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 5
- *
- *           names[3].length()   on a slot you never assigned
- *              -> NullPointerException
- *
- *         Read both messages out loud. Java's array errors are unusually good
- *         -- the first one tells you the index AND the length, which is the
- *         whole diagnosis.
- *
- * ==========================================================================
- * FINISHED EARLY?
- *
- *   Add a hazard '^' that hurts you and a treasure '$' that pays you.
- *   One line each -- because the grid now STORES the world instead of just
- *   drawing it. That is the entire argument for the 2D array.
+ * FINISHED EARLY?  A hazard '^' that hurts and a treasure '$' that pays. One
+ * line each to place them (see TODO 2) and two branches to react (TODO 4).
  *
  * BEFORE YOU LEAVE: back up as Arena_U1L11_LastnameF and submit.
  */
 
 import java.util.Scanner;
 
-/*
- * U1 L10 — METHODS, PARAMETERS, RETURN VALUES · your Lesson 10 code
- *
- * SAME GAME. SAME BEHAVIOUR. Every output is byte-for-byte what L9 produced.
- * The only thing that changed is where the code lives.
- *
- *   main in L9:  258 lines   (measured, not estimated)
- *   main here:    50 lines   -- an 80% cut, into 31 named methods
- *
- * Those numbers are the lesson. Put both on the board.
- *
- * WHY NOT LOWER? The turn switch mutates five things at once -- health,
- * potions, playerCol, damage and fled. Extracting it would need to return all
- * five, and there is only one return. THAT is the extension, and it is the
- * cliffhanger into U2: you want to return a whole fighter, and you cannot yet.
- */
 public class Main {
 
     static final int MAX_HEALTH = 100;
     static final int STARTING_GOLD = 20;
     static final int ROWS = 5;
     static final int COLS = 11;
+    // TODO 1a · add:   static final int PACK_SLOTS = 5;
 
-    // ================= main: the shape of the program, and nothing else =====
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
@@ -162,12 +56,45 @@ public class Main {
         int enemyHealth = 30 + difficulty * 15;
         int enemyPower = 4 + difficulty * 3;
 
+        // ---- TODO 1b · THE PACK ------------------------------------------
+        // Two arrays side by side, and a count of how many slots are filled:
+        //
+        //     String[] itemNames = new String[PACK_SLOTS];
+        //     int[] itemCounts = new int[PACK_SLOTS];
+        //     int itemSlots = 0;
+        //     itemNames[0] = "Potion";  itemCounts[0] = 2;  itemSlots++;
+        //     itemNames[1] = "Bomb";    itemCounts[1] = 1;  itemSlots++;
+        //
+        // Then delete `potions = 2` from the line above -- the pack holds the
+        // potions now. The "P" case in the switch is TODO 1d.
+        // ------------------------------------------------------------------
+
+        // ---- TODO 5a · THE DAMAGE LOG ------------------------------------
+        //     int[] damageLog = new int[20];
+        //     int loggedTurns = 0;
+        // An int[] starts full of 0, so nothing to fill in.
+        // ------------------------------------------------------------------
+
+        // ---- TODO 2b · BUILD THE BOARD -----------------------------------
+        //     char[][] arena = newArena();          // TODO 2a writes newArena
+        //     arena[playerRow][playerCol] = '@';
+        //     arena[enemyRow][enemyCol]   = 'X';
+        // Extension: arena[3][4] = '^';  arena[1][7] = '$';   -- one line each
+        // ------------------------------------------------------------------
+
         openingCeremony(in, playerName, health, enemyName, enemyHealth);
 
         int turnNumber = 1;
         boolean playing = true, fled = false;
 
         while (playing) {
+            // ---- TODO 3a · REPLACE the drawTurn call with three calls ------
+            //     printBanner("Turn " + turnNumber);
+            //     printFighters(playerName, health, enemyName, enemyHealth);
+            //     drawArena(arena);                 // the board, not positions
+            //     printInventory(itemNames, itemCounts, itemSlots);   // TODO 1c
+            // then delete the drawTurn method below. It only bundled these.
+            // ----------------------------------------------------------------
             drawTurn(turnNumber, playerName, health, enemyName, enemyHealth,
                      playerRow, playerCol, enemyRow, enemyCol);
 
@@ -178,9 +105,41 @@ public class Main {
 
             switch (action) {
                 case "A" -> damage = attack(adjacent, enemyPower, roll);
+
+                // ---- TODO 4a · REPLACE the "L" and "R" cases with ONE case --
+                //     case "L", "R" -> {
+                //         int target = playerCol + (action.equals("L") ? -1 : 1);
+                //         char cell = peek(arena, playerRow, target);   // TODO 4b
+                //         if (cell == '#' || cell == 'X') {
+                //             System.out.println(cell == '#' ? "The wall stops you."
+                //                                            : "The " + enemyName + " blocks your way.");
+                //         } else {
+                //             arena[playerRow][playerCol] = ' ';       // 1. clear the old cell
+                //             playerCol = target;                      // 2. move
+                //             arena[playerRow][playerCol] = '@';       // 3. set the new cell
+                //             System.out.println(action.equals("L") ? "You step left." : "You step right.");
+                //         }
+                //     }
+                // Skip step 1 and the player leaves a trail of '@'. You will see it.
+                // Then delete moveLeft and moveRight below -- the board replaced them.
+                // Extension: before step 2, if cell == '^' take 8 damage; if '$' add gold.
+                // ----------------------------------------------------------------
                 case "L" -> playerCol = moveLeft(playerCol);
                 case "R" -> playerCol = moveRight(playerCol, enemyCol, enemyName);
+
                 case "D" -> health = defend(health);
+
+                // ---- TODO 1d · REPLACE the "P" case: potions live in the pack --
+                //     case "P" -> {
+                //         int slot = findItem(itemNames, itemSlots, "Potion");   // TODO 1c
+                //         if (slot >= 0 && itemCounts[slot] > 0) {
+                //             itemCounts[slot]--;
+                //             health = drinkPotion(health);
+                //         } else {
+                //             System.out.println("You reach for a potion. There are none.");
+                //         }
+                //     }
+                // ----------------------------------------------------------------
                 case "P" -> {
                     if (potions > 0) { potions--; health = drinkPotion(health); }
                     else System.out.println("You reach for a potion. There are none.");
@@ -190,6 +149,13 @@ public class Main {
             }
 
             enemyHealth = applyDamage(enemyHealth, damage);
+
+            // ---- TODO 5b · record this turn's damage ---------------------------
+            //     if (loggedTurns < damageLog.length) {      // < length, never <=
+            //         damageLog[loggedTurns++] = damage;
+            //     }
+            // --------------------------------------------------------------------
+
             health = enemyResponse(fled, adjacent, health, enemyHealth, enemyPower, enemyName);
             printHealthBar(health);
 
@@ -197,10 +163,69 @@ public class Main {
             turnNumber++;
         }
 
+        // ---- TODO 5c · print the average --------------------------------------
+        //     System.out.printf("Average damage per turn: %.1f%n", average(damageLog, loggedTurns));
+        // ------------------------------------------------------------------------
         System.out.printf("%nThe arena empties after %d turns.%n", turnNumber - 1);
     }
 
-    // ================= output: no return value, nothing to get wrong ========
+    // ================= arrays (new today) =================
+    //
+    // ---- TODO 2a · newArena: build the board ---------------------------------
+    //     static char[][] newArena() {
+    //         char[][] arena = new char[ROWS][COLS];
+    //         for (int r = 0; r < arena.length; r++) {              // arena.length    = rows
+    //             for (int c = 0; c < arena[r].length; c++) {       // arena[r].length = columns
+    //                 boolean edge = (r == 0 || r == arena.length - 1
+    //                              || c == 0 || c == arena[r].length - 1);
+    //                 arena[r][c] = edge ? '#' : ' ';
+    //             }
+    //         }
+    //         return arena;
+    //     }
+    //
+    // ---- TODO 4b · peek: what is in a cell, without stepping into it ---------
+    //     static char peek(char[][] arena, int row, int col) {
+    //         if (row < 0 || row >= arena.length) return '#';      // off the board = wall
+    //         if (col < 0 || col >= arena[row].length) return '#';
+    //         return arena[row][col];
+    //     }
+    //     That IS collision detection. Unit 3 does exactly this with sprites.
+    //
+    // ---- TODO 1c · printInventory and findItem -------------------------------
+    //     static void printInventory(String[] names, int[] counts, int slots) {
+    //         System.out.println("-- Pack --");
+    //         for (int i = 0; i < slots; i++) {                     // to slots, NOT names.length
+    //             System.out.printf("  %d) %-10s x%d%n", i + 1, names[i], counts[i]);
+    //         }
+    //         System.out.println("");
+    //     }
+    //
+    //     static int findItem(String[] names, int slots, String wanted) {
+    //         for (int i = 0; i < slots; i++) {
+    //             if (names[i].equals(wanted)) return i;
+    //         }
+    //         return -1;                                             // not in the pack
+    //     }
+    //     Loop to `slots`, not names.length: the tail of the array is still null,
+    //     and null.equals(...) throws.
+    //
+    // ---- TODO 5d · average -----------------------------------------------------
+    //     static double average(int[] log, int used) {
+    //         if (used == 0) return 0.0;
+    //         int total = 0;
+    //         for (int i = 0; i < used; i++) total += log[i];
+    //         return (double) total / used;                          // the L3 cast
+    //     }
+    //
+    // ---- TODO 6 · BREAK IT ON PURPOSE, then put it back ----------------------
+    //     itemNames[5] = "x";        -> ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 5
+    //     itemNames[3].length();     -> NullPointerException (slot 3 was never assigned)
+    //     Read both messages out loud. The first one tells you the index AND the
+    //     length, which is the whole diagnosis.
+    // --------------------------------------------------------------------------
+
+    // ================= output =================
 
     static void printTitle() {
         System.out.print("""
@@ -223,6 +248,7 @@ public class Main {
         System.out.println("");
     }
 
+    // TODO 3a · delete this method once main calls the three parts itself.
     static void drawTurn(int turnNumber, String name, int hp, String enemy, int enemyHp,
                          int playerRow, int playerCol, int enemyRow, int enemyCol) {
         printBanner("Turn " + turnNumber);
@@ -257,7 +283,18 @@ public class Main {
         System.out.println("FIGHT!");
     }
 
-    // L9's nested loop, unchanged — just moved somewhere with a name.
+    // ---- TODO 3b · REPLACE this whole method ------------------------------------
+    // It DRAWS the board from positions. The new one PRINTS the stored board:
+    //
+    //     static void drawArena(char[][] arena) {
+    //         for (char[] row : arena) {               // a 2D array is an array of rows
+    //             System.out.println(new String(row));
+    //         }
+    //         System.out.println("");
+    //     }
+    //
+    // Same name, different parameter. Keep ROWS and COLS -- newArena uses them.
+    // -----------------------------------------------------------------------------
     static void drawArena(int playerRow, int playerCol, int enemyRow, int enemyCol) {
         for (int r = 0; r < ROWS; r++) {
             for (int c = 0; c < COLS; c++) {
@@ -280,8 +317,6 @@ public class Main {
         return name.isEmpty() ? "Challenger" : name;
     }
 
-    // The twelve ugly lines from L8, now one call. THIS is the extraction that
-    // makes the case for methods better than any definition does.
     static int readChoice(Scanner in, int min, int max, String prompt) {
         int choice;
         do {
@@ -331,8 +366,6 @@ public class Main {
         return 0;
     }
 
-    // OVERLOAD: same name, different parameter list. Java picks by what you pass.
-    // Note the parameters differ — a return-type-only difference will not compile.
     static int calculateDamage(int power, int roll, double critMultiplier) {
         if (roll >= 9) return (int) (power * critMultiplier);
         if (roll >= 3) return power;
@@ -359,6 +392,7 @@ public class Main {
         return damage;
     }
 
+    // TODO 4a · delete moveLeft and moveRight once the "L", "R" case uses the board.
     static int moveLeft(int playerCol) {
         if (playerCol - 1 < 1) {
             System.out.println("The wall stops you.");
@@ -396,9 +430,6 @@ public class Main {
         return true;
     }
 
-    // The enemy only answers if you are still here and it can reach you.
-    // Returns the player's new health, clamped — because a method that changes
-    // a parameter changes only its own copy.
     static int enemyResponse(boolean fled, boolean adjacent, int health,
                              int enemyHealth, int enemyPower, String enemyName) {
         if (!fled && isAlive(enemyHealth) && adjacent) {

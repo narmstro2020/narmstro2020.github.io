@@ -2,18 +2,33 @@ import java.util.Random;
 import java.util.Scanner;
 
 /*
- * U1 L12 — RANDOM, MATH, ALGORITHM DESIGN · INSTRUCTOR SOLUTION
+ * U1 L13 — USE-CASE TESTING, PACKAGING, RELEASE · STARTER CODE
+ * 7184 Software Development · Unit 1, Lesson 13 (two days)
  *
- * Three things arrive today:
+ * START FROM YOUR OWN LESSON 12 FILE. The code below is the L12 solution, for
+ * anyone who lost theirs.
  *
- *   1. Math.max/min       the L4 clamp TODO, closed in ONE line
- *   2. Random             combat stops being (turnNumber * 3) % 10
- *   3. The loot algorithm DESIGNED ON PAPER FIRST (D1.12), then verified
- *                         empirically by rolling it a thousand times
+ * NO NEW CODE TODAY unless a test fails. There are no TODO markers in this file.
+ * Today's work is the two files next to it and one command:
  *
- * SEEDING: uncomment the seeded Random below to make a bug reproducible.
- * Comment it back out before anything goes to students, or every playthrough
- * is identical and it looks broken.
+ *   DAY 1  TESTS.md      eight cases, expected column filled in BEFORE the first run;
+ *                        at least three bad-input cases. Run them all. Fix what fails,
+ *                        or log it in README.md as a known issue. Then a partner plays
+ *                        with the README as their only help; log what they break.
+ *
+ *   DAY 2  the JAR       from the project root, three commands:
+ *                            javac -d out src/Main.java
+ *                            jar --create --file ArenaGame.jar --main-class Main -C out .
+ *                            java -jar ArenaGame.jar
+ *                        Copy ArenaGame.jar to the Desktop and run it from a terminal
+ *                        there. If it only runs inside the project, it is not packaged.
+ *          README.md     "How to run it" leads with the JAR; a Testing section points
+ *                        at TESTS.md.
+ *
+ * A fixed seed left in Random makes every game identical. Check before you ship.
+ *
+ * BEFORE YOU LEAVE: back up as Arena_U1L13_LastnameF and submit the zip:
+ * src, TESTS.md, README.md, ArenaGame.jar.
  */
 /**
  * THE ARENA — a turn-based console fight, built one lesson at a time in

@@ -1,124 +1,39 @@
 /*
- * U1 L12 — RANDOM, MATH, ALGORITHM DESIGN · STARTER CODE
- * 7184 Software Development · Unit 1, Lesson 12
+ * U1 L12 — RANDOM, MATH, DEBUGGING, DOCUMENTATION · STARTER CODE
+ * 7184 Software Development · Unit 1, Lesson 12 (two days)
  *
- * ALREADY HERE:  Lesson 11. Arrays, a stored board, an inventory.
- * YOU'RE ADDING: real randomness, one-line clamping, and an algorithm you
- *                design ON PAPER before you type it.
+ * START FROM YOUR OWN LESSON 11 FILE. The code below is the L11 solution, for
+ * anyone who lost theirs. The TODO markers are the same either way.
  *
  *     javac Main.java
  *     java Main
  *
- * ==========================================================================
- * TODAY THE DESIGN HAPPENS ON PAPER FIRST
+ * DAY 1 — five TODOs, marked in the code below. In order. Compile after each.
  *
- * Standard D1.12 is "systematic problem analysis and algorithm development".
- * That is not something you can do in an editor. Four steps, every time:
+ *   TODO 1  clamp       Math.max / Math.min already does it: read it, then TEST it
+ *   TODO 2  Random      one Random, made once, replaces the fake roll        (replace)
+ *   TODO 3  loot        rollLoot + awardLoot, DESIGNED ON PAPER FIRST        (add)
+ *   TODO 4  prove it    verifyLootTable rolls it 1000 times                  (add)
+ *   TODO 5  variance    damage wobbles by -2..+2, never below 0              (edit attack)
  *
- *   1. RESTATE   the problem in one sentence
- *   2. DECOMPOSE it into steps
- *   3. SEQUENCE  them -- what happens first, what depends on what
- *   4. TEST      against cases you chose BEFORE you wrote it
+ * PAPER FIRST, for TODO 3. Four steps, written down before the editor opens:
+ *   RESTATE the problem · DECOMPOSE it into steps · SEQUENCE them · TEST cases
+ * The teacher asks for the paper before looking at the screen.
  *
- * Step 4 is the one people skip and the one that catches the bug.
+ * DAY 2 — no new markers in this file:
+ *   BuggyArena.java   three bugs; fix one at a time; write down HOW you found each
+ *   a breakpoint      in your own game loop; step one full turn in the Variables panel
+ *   TODO 6  Javadoc   type /** and Enter above every method from L10-L12
+ *   README.md         what it is, how to run it, the controls, one known issue
  *
- * ==========================================================================
- * TODO 1: clamp health in ONE line, and delete the Lesson 4 TODO.
- *
- *           health = Math.max(0, Math.min(MAX_HEALTH, health));
- *
- *         Read it inside-out: never above the max, then never below zero.
- *         Test it by over-healing AND by taking a massive hit. The bar has to
- *         survive both.
- *
- * TODO 2: real randomness.
- *
- *           import java.util.Random;
- *           Random rng = new Random();
- *
- *           int r = rng.nextInt(1, 11);     // 1..10  (Java 17+, prefer this)
- *
- *         Replace the fake `(turnNumber * 3) % 10 + 1` roll.
- *
- *         CREATE THE Random ONCE, outside the game loop. One created inside
- *         the loop gets re-created every turn and stops behaving randomly.
- *
- *         SEEDING: new Random(42) gives the same sequence every run. Use a
- *         seed while you are hunting a bug so it happens the same way twice --
- *         then take it out. A bug you cannot reproduce is a bug you cannot fix.
- *
- * TODO 3: ***THE LOOT ALGORITHM***. Paper first. This is the lesson.
- *
- *         SPEC — LOOT DROP
- *           When an enemy dies, roll for loot:
- *             50% Potion, 30% Coin Pouch, 15% Shield, 5% Relic.
- *           A Relic also grants +1 level.
- *           Print what dropped. Add it to the pack if there is room; if the
- *           pack is full, print "Your pack is full!" and drop nothing.
- *
- *         WRITE THE FOUR STEPS DOWN BEFORE YOU OPEN THE EDITOR.
- *
- *         Then, and only then:
- *
- *           static String rollLoot(Random rng) {
- *               int roll = rng.nextInt(100);        // 0..99
- *               if (roll < 50) return "Potion";
- *               if (roll < 80) return "Coin Pouch";
- *               if (roll < 95) return "Shield";
- *               return "Relic";
- *           }
- *
- *         WHY 50 / 80 / 95 AND NOT 50 / 30 / 15?
- *         Work it out before you read on. The thresholds are CUMULATIVE --
- *         each `if` only sees the rolls that already failed the ones above it,
- *         so 50-79 is thirty numbers wide, which is the 30%.
- *
- * TODO 4: TEST IT. Do not trust it.
- *
- *           int[] counts = new int[4];
- *           for (int i = 0; i < 1000; i++) {
- *               String loot = rollLoot(rng);
- *               if (loot.equals("Potion"))          counts[0]++;
- *               else if (loot.equals("Coin Pouch")) counts[1]++;
- *               else if (loot.equals("Shield"))     counts[2]++;
- *               else                                counts[3]++;
- *           }
- *
- *         Print the percentages. You should get something close to
- *         50 / 30 / 15 / 5. Your own numbers proving your own algorithm is a
- *         better result than anyone telling you it is right.
- *
- * TODO 5: damage variance.
- *
- *           int damage = base + rng.nextInt(-2, 3);   // -2 .. +2
- *           damage = Math.max(0, damage);             // never negative
- *
- *         What would negative damage look like on screen? It would HEAL the
- *         enemy. Asking that question is how you catch a bug before it exists.
- *
- * ==========================================================================
- * FINISHED EARLY?
- *
- *   Make brutal mode shift the thresholds toward Relic. Then answer the real
- *   question: does that make the game better, or just easier?
- *
- * BEFORE YOU LEAVE: REMOVE ANY FIXED SEED, back up as Arena_U1L12_LastnameF,
- * and submit. A seeded game plays identically every time and looks broken.
+ * BEFORE YOU LEAVE: remove any fixed seed (a seeded game plays the same every
+ * time and looks broken), back up as Arena_U1L12_LastnameF, and submit.
+ * Day 2's backup is Project 1 checkpoint 2: Arena_P1_CP2_LastnameF.
  */
 
 import java.util.Scanner;
+// TODO 2a · add:   import java.util.Random;
 
-/*
- * U1 L11 — ARRAYS AND 2D GAME BOARDS · your Lesson 11 code
- *
- * THE SHIFT OF THE DAY, in two words:
- *
- *   L9  DREW the grid   — a nested loop decided each character from conditions
- *   L11 STORES the grid — a char[][] holds the world, and drawing just prints it
- *
- * Everything else follows from that. A hazard is one assignment instead of
- * another else-if. Collision is reading the cell you are about to move into.
- */
 public class Main {
 
     static final int MAX_HEALTH = 100;
@@ -130,6 +45,12 @@ public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
+        // ---- TODO 2b · ONE Random for the whole program, made HERE ---------
+        //     Random rng = new Random();
+        //     // Random rng = new Random(42);   // same rolls every run: for bug hunting only
+        // A Random made inside the loop is re-made every turn and stops being random.
+        // ------------------------------------------------------------------
+
         printTitle();
         String playerName = readName(in);
         int difficulty = readChoice(in, 1, 3, "Difficulty (1 = easy, 2 = normal, 3 = brutal)");
@@ -137,6 +58,7 @@ public class Main {
         System.out.println("");
 
         int health = MAX_HEALTH, gold = STARTING_GOLD, playerCol = 1;
+        // TODO 3c · add:   int level = 1;          (a Relic grants +1 level)
         final int playerRow = 2, enemyRow = 2, enemyCol = 9;
 
         String enemyName = "Cave Goblin";
@@ -178,12 +100,15 @@ public class Main {
             printInventory(itemNames, itemCounts, itemSlots);
 
             boolean adjacent = isAdjacent(playerRow, playerCol, enemyRow, enemyCol);
+            // ---- TODO 2c · REPLACE the fake roll with a real one --------------
+            //     int roll = rng.nextInt(1, 11);      // 1..10
+            // ------------------------------------------------------------------
             int roll = (turnNumber * 3) % 10 + 1;
             String action = readAction(in, adjacent, enemyName);
             int damage = 0;
 
             switch (action) {
-                case "A" -> damage = attack(adjacent, enemyPower, roll);
+                case "A" -> damage = attack(adjacent, enemyPower, roll);   // TODO 5b · pass rng too
                 case "L", "R" -> {
                     int target = playerCol + (action.equals("L") ? -1 : 1);
                     char cell = peek(arena, playerRow, target);
@@ -229,6 +154,18 @@ public class Main {
             health = enemyResponse(fled, adjacent, health, enemyHealth, enemyPower, enemyName);
             printHealthBar(health);
 
+            // ---- TODO 3d · REPLACE the line below: loot drops when the enemy dies
+            //     boolean over = endOfFight(fled, health, enemyHealth, enemyName, turnNumber);
+            //     if (over && !fled && !isAlive(enemyHealth)) {
+            //         String loot = rollLoot(rng);                              // TODO 3a
+            //         if (loot.equals("Relic")) {
+            //             level++;
+            //             System.out.println("The relic hums. You reach level " + level + ".");
+            //         }
+            //         itemSlots = awardLoot(loot, itemNames, itemCounts, itemSlots);   // TODO 3b
+            //     }
+            //     playing = !over;
+            // ------------------------------------------------------------------
             playing = !endOfFight(fled, health, enemyHealth, enemyName, turnNumber);
             turnNumber++;
         }
@@ -236,7 +173,58 @@ public class Main {
         System.out.printf("%nGold: %d%n", gold);
         System.out.printf("Average damage per turn: %.1f%n", average(damageLog, loggedTurns));
         System.out.printf("The arena empties after %d turns.%n", turnNumber - 1);
+        // TODO 4b · add:   verifyLootTable(rng, 1000);       (your own numbers, proving TODO 3)
     }
+
+    // ================= loot (new today) =================
+    //
+    // SPEC: when an enemy dies, roll ONE item: 50% Potion, 30% Coin Pouch,
+    // 15% Shield, 5% Relic. Print what dropped. Add it to the pack if there is
+    // room; if the pack is full, print "Your pack is full!" and drop nothing.
+    //
+    // ---- TODO 3a · rollLoot ---------------------------------------------------
+    //     static String rollLoot(Random rng) {
+    //         int roll = rng.nextInt(100);        // 0..99
+    //         if (roll < 50) return "Potion";
+    //         if (roll < 80) return "Coin Pouch";
+    //         if (roll < 95) return "Shield";
+    //         return "Relic";
+    //     }
+    //     Why 50 / 80 / 95 and not 50 / 30 / 15? Each `if` only sees the rolls
+    //     that failed the ones above it. 50-79 is thirty numbers: the 30%.
+    //
+    // ---- TODO 3b · awardLoot: into the pack, stacking if it is already there --
+    //     static int awardLoot(String loot, String[] names, int[] counts, int slots) {
+    //         System.out.printf("The %s drops!%n", loot);
+    //         int existing = findItem(names, slots, loot);
+    //         if (existing >= 0) { counts[existing]++; return slots; }
+    //         if (slots >= names.length) { System.out.println("Your pack is full!"); return slots; }
+    //         names[slots] = loot;
+    //         counts[slots] = 1;
+    //         return slots + 1;
+    //     }
+    //     It RETURNS the new slot count, because a method cannot change main's
+    //     itemSlots -- it only gets a copy. Same lesson as Lesson 10.
+    //
+    // ---- TODO 4a · verifyLootTable: roll it 1000 times and print the percentages
+    //     static void verifyLootTable(Random rng, int rolls) {
+    //         int[] counts = new int[4];
+    //         for (int i = 0; i < rolls; i++) {
+    //             String loot = rollLoot(rng);
+    //             if (loot.equals("Potion"))          counts[0]++;
+    //             else if (loot.equals("Coin Pouch")) counts[1]++;
+    //             else if (loot.equals("Shield"))     counts[2]++;
+    //             else                                counts[3]++;
+    //         }
+    //         String[] labels = {"Potion", "Coin Pouch", "Shield", "Relic"};
+    //         System.out.printf("%n-- Loot table over %d rolls --%n", rolls);
+    //         for (int i = 0; i < labels.length; i++) {
+    //             System.out.printf("  %-11s %5.1f%%%n", labels[i], counts[i] * 100.0 / rolls);
+    //         }
+    //     }
+    //     Expect something close to 50 / 30 / 15 / 5. Wildly off means the
+    //     thresholds in rollLoot are not cumulative.
+    // ---------------------------------------------------------------------------
 
     // ================= arrays =================
 
@@ -396,8 +384,19 @@ public class Main {
 
     static int applyDamage(int hp, int damage) { return hp - damage; }
 
+    // ---- TODO 1 · clamp is already ONE line. Read it inside-out: never above
+    // max, then never below min. Nothing to write. TEST it instead: press D at
+    // 98 HP (must stop at 100) and take a big hit (must stop at 0). If either
+    // fails, find the path that skips enemyResponse, which is where clamp runs.
+    // ----------------------------------------------------------------------
     static int clamp(int value, int min, int max) { return Math.max(min, Math.min(max, value)); }
 
+    // ---- TODO 5a · variance: add `Random rng` as a fourth parameter, then after
+    // the damage line:
+    //     if (damage > 0) damage = Math.max(0, damage + rng.nextInt(-2, 3));   // -2..+2
+    // Why Math.max(0, ...)? Negative damage would HEAL the enemy. Ask that
+    // question before it happens, not after.
+    // ----------------------------------------------------------------------
     static int attack(boolean adjacent, int enemyPower, int roll) {
         if (!adjacent) {
             System.out.println("You swing at empty air. Get closer first.");
