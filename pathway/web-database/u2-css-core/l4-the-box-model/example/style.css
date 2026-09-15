@@ -1,11 +1,27 @@
 /* ============================================================
-   U2 L4 — the ONE rule that lives above everything else.
+   U2 L4 — the ONE rule that lives above everything, even the palette.
    width now INCLUDES padding and border. Every element, every
    page. It is a reset, not a style, which is why it is first
    in the file instead of last.
    ============================================================ */
 * {
   box-sizing: border-box;
+}
+
+/* Palette */
+/* --- U2 L2 · A CSS VARIABLE is a value with a name. Declare it on :root
+       (the whole page) with two dashes in front; use it anywhere with
+       var(). Change a value HERE and every rule that uses it changes.
+       This block lives at the top of the file, above everything, because
+       every colour on the site comes from it. --- */
+:root {
+  --dark:       #14532d;   /* headings, header, links */
+  --light:      #eef4ee;   /* tinted boxes, footer */
+  --background: #fdfdfb;   /* the page, and the box the words sit on */
+  --accent:     #7a5901;   /* the second colour, used rarely */
+  --warning:    #b3261e;   /* only for warnings */
+  --text:       #222222;   /* body text */
+  --line:       #d6d3cc;   /* borders and rules */
 }
 
 /* ============================================================
@@ -19,34 +35,37 @@
 
    Three properties today, and only three: color, background-color,
    font-size. Everything else is a later lesson.
+
+   L2 · the hex codes that were in these rules became var(--name)
+   once the palette went in. The palette is at the top of the file.
    ============================================================ */
 
 /* --- element selector: every <body> on the site --- */
 body {
-  color: #222222;
-  background-color: #fdfdfb;
+  color: var(--text);
+  background-color: var(--background);
 }
 
 /* --- element selectors: the headings. The h1 rule is the one from
        the anatomy slide, typed for real. --- */
 h1 {
-  color: #14532d;
+  color: var(--dark);
   font-size: 2rem;
 }
 
 h2 {
-  color: #14532d;
+  color: var(--dark);
 }
 
 /* --- CLASS selector. The dot means "any element with class=intro".
        We put class="intro" on that div back in L8, for exactly this. --- */
 .intro {
-  background-color: #eef4ee;
+  background-color: var(--light);
 }
 
 /* --- another class, already on the page since L8 --- */
 .warning {
-  color: #b3261e;
+  color: var(--warning);
 }
 
 /* --- ID selector. The hash means "the one element with id=parks".
@@ -62,34 +81,31 @@ h2 {
    Swap them and the colour changes. That is the cascade.
    ============================================================ */
 a {
-  color: #7a5901;
+  color: var(--accent);
 }
 
 a {
-  color: #14532d;
+  color: var(--dark);
 }
 
 /* ============================================================
    U2 L2 — colours and backgrounds.
-
-   PALETTE — every colour on the site comes from this list.
-   dark        #14532d   headings, header, links   hsl(144, 61%, 20%)
-   light       #eef4ee   tinted boxes, footer
-   background  #fdfdfb   the page
-   accent      #7a5901   the second colour, used rarely
-   warning     #b3261e   only for warnings
+   The palette is the :root block at the TOP of this file. Every
+   colour below is var(--something) from it, and so is every colour
+   in the L1 rules now — they were hex codes until today.
 
    One colour, four ways — all of these are the dark green:
-     darkgreen is CLOSE but not it; names are for quick tests only
+     darkgreen            CLOSE but not it; names are for quick tests only
      #14532d              hex: red 14, green 53, blue 2d
      rgb(20, 83, 45)      the same three numbers in decimal
      hsl(144, 61%, 20%)   hue, saturation, lightness
    ============================================================ */
 
 /* --- the header: dark, with white text. Links inside it need their
-       own rule, because the a rules above set them green. --- */
+       own rule, because the a rules above set them green. The space in
+       "header a" means INSIDE: every a inside the header. --- */
 header {
-  background-color: #14532d;
+  background-color: var(--dark);
   color: #ffffff;
 }
 
@@ -99,22 +115,24 @@ header a {
 
 /* --- the footer, on the light tint --- */
 footer {
-  background-color: #eef4ee;
-  color: #3d3d3d;
+  background-color: var(--light);
+  color: var(--text);
 }
 
 /* --- a see-through tint of the dark green. rgba's fourth number is
-       alpha: 0 is invisible, 1 is solid. 0.08 is a whisper of green. --- */
+       alpha: 0 is invisible, 1 is solid. 0.08 is a whisper of green.
+       The three numbers are --dark's, written out: rgba() wants
+       numbers, not a variable. --- */
 blockquote {
   background-color: rgba(20, 83, 45, 0.08);
 }
 
 /* --- A photograph behind the whole site. This is a SECOND body rule:
-       L1's, at the top, set background-color to off-white. This one is
-       later in the file, so it wins. That is the cascade, second time.
-       The url() path is relative to THIS FILE, not to the page. --- */
+       L1's, at the top, set background-color to the page colour. This
+       one is later in the file, so it wins. That is the cascade, second
+       time. The url() path is relative to THIS FILE, not to the page. --- */
 body {
-  background-color: #2f4a3a;              /* shows while the photo loads, and behind it */
+  background-color: var(--dark);          /* shows while the photo loads, and behind it */
   background-image: url("images/turkey-run-rocky-hollow.jpg");
   background-repeat: no-repeat;
   background-position: center top;
@@ -124,7 +142,7 @@ body {
 
 /* --- Words on a photograph are unreadable. Put them on a solid box. --- */
 main {
-  background-color: #fdfdfb;
+  background-color: var(--background);
 }
 
 /* ============================================================
@@ -159,20 +177,20 @@ body {
 /* --- border: width, STYLE, colour. Leave out the style and nothing draws. --- */
 .intro {
   padding: 1rem 1.5rem;
-  border: 1px solid #c9dcc9;
+  border: 1px solid var(--line);
 }
 
 blockquote {
   margin: 1.5rem 0;                     /* space outside: above and below, none at the sides */
   padding: 1rem 1.5rem;                 /* space inside */
-  border-left: 6px solid #14532d;       /* one side only */
+  border-left: 6px solid var(--dark);       /* one side only */
 }
 
 /* --- a border on ONE side of every heading, the text lifted off the
        line with padding, and air above every section with margin.
        All three layers, in one rule. --- */
 h2 {
-  border-bottom: 1px solid #d6d3cc;
+  border-bottom: 1px solid var(--line);
   padding-bottom: .25rem;
   margin-top: 2rem;
 }
@@ -226,7 +244,7 @@ iframe {
 /* --- the on-page contents box on turkey-run.html --- */
 .contents {
   max-width: 22rem;
-  background-color: #eef4ee;
+  background-color: var(--light);
   padding: .75rem 1.25rem;
 }
 
@@ -247,7 +265,7 @@ button:focus,
 input:focus,
 select:focus,
 textarea:focus {
-  outline: 3px solid #7a5901;
+  outline: 3px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -263,7 +281,7 @@ textarea:focus {
 .skip-link:focus {
   left: 1rem;
   top: 1rem;
-  background-color: #14532d;
+  background-color: var(--dark);
   color: #ffffff;
   padding: .5rem 1rem;
 }

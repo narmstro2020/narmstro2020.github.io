@@ -264,24 +264,30 @@
 
 <!-- ==================== 3 -->
 <section class="slide">
-<div class="eyebrow">A palette is five colours</div>
-<pre><code>/* PALETTE
-   dark        #14532d   headings, header, links
-   light       #eef4ee   tinted boxes, footer
-   background  #fdfdfb   the page
-   accent      #7a5901   the second colour, used rarely
-   warning     #b3261e   only for warnings           */</code></pre>
-<p class="callout">Write it at the top of <code>style.css</code> as a comment. Every colour rule from now on takes its value from this list.</p>
+<div class="eyebrow">A palette is five colours &mdash; named once, as variables</div>
+<pre><code>/* Palette */
+:root {
+  --dark:       #14532d;   /* headings, header, links */
+  --light:      #eef4ee;   /* tinted boxes, footer */
+  --background: #fdfdfb;   /* the page */
+  --accent:     #7a5901;   /* the second colour, used rarely */
+  --warning:    #b3261e;   /* only for warnings */
+  --text:       #222222;   /* two greys: body text ... */
+  --line:       #d6d3cc;   /* ... and borders, from Lesson 3 */
+}
+h1 { color: var(--dark); }</code></pre>
+<p><code>:root</code> is the whole page. A name with <strong>two dashes</strong> in front is a <strong>CSS variable</strong>; <code>var(--dark)</code> uses it wherever a colour goes.</p>
+<p class="callout">Write it at the <strong>top</strong> of <code>style.css</code>. Then go back to your Lesson 1 rules and swap every hex code for its variable. Change <code>--dark</code> once and the whole site recolours.</p>
 </section>
 
 <!-- ==================== 4 -->
 <section class="slide">
 <div class="eyebrow">Colouring the parts</div>
-<pre><code>header  { background-color: #14532d; color: #ffffff; }
+<pre><code>header  { background-color: var(--dark); color: #ffffff; }
 header a { color: #ffffff; }
-footer  { background-color: #eef4ee; }
+footer  { background-color: var(--light); }
 blockquote { background-color: rgba(20, 83, 45, 0.08); }</code></pre>
-<p><code>rgba</code> has a fourth number: <strong>alpha</strong>, 0 is invisible and 1 is solid. A see-through tint of your dark colour is a light colour that matches for free.</p>
+<p><code>rgba</code> has a fourth number: <strong>alpha</strong>, 0 is invisible and 1 is solid. A see-through tint of your dark colour is a light colour that matches for free &mdash; the three numbers are your <code>--dark</code>, written out, because <code>rgba()</code> wants numbers.</p>
 <p class="note"><code>header a</code> &mdash; a space between two selectors means <em>inside</em>: every link inside the header. Selectors that combine get their own lesson in Lesson 10.</p>
 </section>
 
@@ -289,7 +295,7 @@ blockquote { background-color: rgba(20, 83, 45, 0.08); }</code></pre>
 <section class="slide">
 <div class="eyebrow">A photograph behind the site</div>
 <pre><code>body {
-  background-color: #2f4a3a;          /* while it loads, and behind it */
+  background-color: var(--dark);      /* while it loads, and behind it */
   background-image: url("images/turkey-run-rocky-hollow.jpg");
   background-repeat: no-repeat;
   background-position: center top;
@@ -310,7 +316,7 @@ blockquote { background-color: rgba(20, 83, 45, 0.08); }</code></pre>
 <section class="slide">
 <div class="eyebrow">Contrast is the job</div>
 <p class="lede">Words on a photograph are a bet you usually lose.</p>
-<pre><code>main { background-color: #fdfdfb; }</code></pre>
+<pre><code>main { background-color: var(--background); }</code></pre>
 <p class="callout warn">Scroll every page. Any word you cannot read is a bug you ship. The fix is a solid box behind the words &mdash; not a prettier photo.</p>
 </section>
 
@@ -318,7 +324,8 @@ blockquote { background-color: rgba(20, 83, 45, 0.08); }</code></pre>
 <section class="slide">
 <h1 class="small">Before you leave</h1>
 <ul>
-<li>A palette comment, five colours, at the top of the file</li>
+<li><code>/* Palette */</code> and a <code>:root</code> block of five variables at the top of the file</li>
+<li>Every colour on the site, Lesson 1's included, is a <code>var()</code> from it</li>
 <li>Header, footer, quote coloured from it</li>
 <li>A photo behind the site, words on a solid box</li>
 <li>Still <strong>zero</strong> validator errors</li>

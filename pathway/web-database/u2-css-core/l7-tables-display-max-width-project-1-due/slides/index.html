@@ -251,10 +251,10 @@
 <section class="slide">
 <div class="eyebrow">A readable table</div>
 <pre><code>table  { border-collapse: collapse; width: 100%; }
-th, td { border: 1px solid #d6d3cc; padding: .5rem .75rem; text-align: left; }
-th     { background-color: #eef4ee; }
-tbody tr:nth-child(even) { background-color: #f6f8f4; }
-tbody tr:hover           { background-color: #fff6d6; }
+th, td { border: 1px solid var(--line); padding: .5rem .75rem; text-align: left; }
+th     { background-color: var(--light); }
+tbody tr:nth-child(even) { background-color: rgba(20, 83, 45, 0.04); }
+tbody tr:hover           { background-color: rgba(122, 89, 1, 0.12); }
 caption { caption-side: top; padding: .5rem 0; }</code></pre>
 <p class="note"><code>nth-child(even)</code> is &ldquo;every even row.&rdquo; You get it properly in Lesson 10; today just use it.</p>
 </section>
