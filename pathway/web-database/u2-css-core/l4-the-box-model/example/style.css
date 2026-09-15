@@ -16,18 +16,19 @@
 
    A rule is a SELECTOR, then a block of property: value; pairs.
    Leave out a semicolon and the rule AFTER it breaks, not this one.
+
+   Three properties today, and only three: color, background-color,
+   font-size. Everything else is a later lesson.
    ============================================================ */
 
-/* --- element selector: every <body> on the site.
-       A font, a colour, a line height. Nothing clever. --- */
+/* --- element selector: every <body> on the site --- */
 body {
-  font-family: Georgia, "Times New Roman", serif;
-  line-height: 1.6;
   color: #222222;
   background-color: #fdfdfb;
 }
 
-/* --- element selectors: the headings --- */
+/* --- element selectors: the headings. The h1 rule is the one from
+       the anatomy slide, typed for real. --- */
 h1 {
   color: #14532d;
   font-size: 2rem;
@@ -46,7 +47,6 @@ h2 {
 /* --- another class, already on the page since L8 --- */
 .warning {
   color: #b3261e;
-  font-weight: bold;
 }
 
 /* --- ID selector. The hash means "the one element with id=parks".

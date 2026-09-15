@@ -6753,37 +6753,37 @@ and <code>?</code> for the full list of keys.</p>
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="c">   A rule is a SELECTOR, then a block of property: value; pairs.</span>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="c">   Leave out a semicolon and the rule AFTER it breaks, not this one.</span>
-<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="c">   ============================================================ */</span>
-<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
-<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="c">/* --- element selector: every &lt;body&gt; on the site.</span>
-<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="c">       A font, a colour, a line height. Nothing clever. --- */</span>
-<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">  </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="n">Georgia</span><span class="p">,</span><span class="w"> </span><span class="s2">"Times New Roman"</span><span class="p">,</span><span class="w"> </span><span class="kc">serif</span><span class="p">;</span>
-<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">  </span><span class="k">line-height</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6</span><span class="p">;</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="c">   Three properties today, and only three: color, background-color,</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="c">   font-size. Everything else is a later lesson.</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="c">   ============================================================ */</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="c">/* --- element selector: every &lt;body&gt; on the site --- */</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#222222</span><span class="p">;</span>
 <a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#fdfdfb</span><span class="p">;</span>
 <a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="p">}</span>
 <a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>
-<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="c">/* --- element selectors: the headings --- */</span>
-<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="nt">h1</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#14532d</span><span class="p">;</span>
-<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="kt">rem</span><span class="p">;</span>
-<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="p">}</span>
-<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>
-<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="nt">h2</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#14532d</span><span class="p">;</span>
-<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="p">}</span>
-<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>
-<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a><span class="c">/* --- CLASS selector. The dot means "any element with class=intro".</span>
-<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a><span class="c">       We put class="intro" on that div back in L8, for exactly this. --- */</span>
-<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a><span class="p">.</span><span class="nc">intro</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#eef4ee</span><span class="p">;</span>
-<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="p">}</span>
-<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>
-<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a><span class="c">/* --- another class, already on the page since L8 --- */</span>
-<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="p">.</span><span class="nc">warning</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a><span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#b3261e</span><span class="p">;</span>
-<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="kc">bold</span><span class="p">;</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="c">/* --- element selectors: the headings. The h1 rule is the one from</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="c">       the anatomy slide, typed for real. --- */</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="nt">h1</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#14532d</span><span class="p">;</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="kt">rem</span><span class="p">;</span>
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="p">}</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="nt">h2</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#14532d</span><span class="p">;</span>
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="p">}</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a><span class="c">/* --- CLASS selector. The dot means "any element with class=intro".</span>
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a><span class="c">       We put class="intro" on that div back in L8, for exactly this. --- */</span>
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="p">.</span><span class="nc">intro</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#eef4ee</span><span class="p">;</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a><span class="p">}</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="c">/* --- another class, already on the page since L8 --- */</span>
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a><span class="p">.</span><span class="nc">warning</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a><span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#b3261e</span><span class="p">;</span>
 <a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a><span class="p">}</span>
 <a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>
 <a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a><span class="c">/* --- ID selector. The hash means "the one element with id=parks".</span>
@@ -7012,70 +7012,77 @@ and <code>?</code> for the full list of keys.</p>
 <a id="__codelineno-3-275" name="__codelineno-3-275" href="#__codelineno-3-275"></a><span class="c">   so the whole site scales when they change it.</span>
 <a id="__codelineno-3-276" name="__codelineno-3-276" href="#__codelineno-3-276"></a><span class="c">   ============================================================ */</span>
 <a id="__codelineno-3-277" name="__codelineno-3-277" href="#__codelineno-3-277"></a>
-<a id="__codelineno-3-278" name="__codelineno-3-278" href="#__codelineno-3-278"></a><span class="c">/* --- the reading face. A later body rule than L1's, so its font-family</span>
-<a id="__codelineno-3-279" name="__codelineno-3-279" href="#__codelineno-3-279"></a><span class="c">       wins. The stack is a list of fallbacks, best first, generic last. --- */</span>
-<a id="__codelineno-3-280" name="__codelineno-3-280" href="#__codelineno-3-280"></a><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-281" name="__codelineno-3-281" href="#__codelineno-3-281"></a><span class="w">  </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lora"</span><span class="p">,</span><span class="w"> </span><span class="n">Georgia</span><span class="p">,</span><span class="w"> </span><span class="s2">"Times New Roman"</span><span class="p">,</span><span class="w"> </span><span class="kc">serif</span><span class="p">;</span>
-<a id="__codelineno-3-282" name="__codelineno-3-282" href="#__codelineno-3-282"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">1.05</span><span class="kt">rem</span><span class="p">;</span>
-<a id="__codelineno-3-283" name="__codelineno-3-283" href="#__codelineno-3-283"></a><span class="w">  </span><span class="k">line-height</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6</span><span class="p">;</span>
-<a id="__codelineno-3-284" name="__codelineno-3-284" href="#__codelineno-3-284"></a><span class="p">}</span>
-<a id="__codelineno-3-285" name="__codelineno-3-285" href="#__codelineno-3-285"></a>
-<a id="__codelineno-3-286" name="__codelineno-3-286" href="#__codelineno-3-286"></a><span class="c">/* --- the heading face, and a size scale: 2.4 / 1.4 / 1.05 --- */</span>
-<a id="__codelineno-3-287" name="__codelineno-3-287" href="#__codelineno-3-287"></a><span class="nt">h1</span><span class="o">,</span>
-<a id="__codelineno-3-288" name="__codelineno-3-288" href="#__codelineno-3-288"></a><span class="nt">h2</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-289" name="__codelineno-3-289" href="#__codelineno-3-289"></a><span class="w">  </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="s2">"Source Sans 3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Segoe UI"</span><span class="p">,</span><span class="w"> </span><span class="n">Arial</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span>
-<a id="__codelineno-3-290" name="__codelineno-3-290" href="#__codelineno-3-290"></a><span class="p">}</span>
-<a id="__codelineno-3-291" name="__codelineno-3-291" href="#__codelineno-3-291"></a>
-<a id="__codelineno-3-292" name="__codelineno-3-292" href="#__codelineno-3-292"></a><span class="nt">h1</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-293" name="__codelineno-3-293" href="#__codelineno-3-293"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">2.4</span><span class="kt">rem</span><span class="p">;</span>
-<a id="__codelineno-3-294" name="__codelineno-3-294" href="#__codelineno-3-294"></a><span class="w">  </span><span class="k">line-height</span><span class="p">:</span><span class="w"> </span><span class="mf">1.15</span><span class="p">;</span>
-<a id="__codelineno-3-295" name="__codelineno-3-295" href="#__codelineno-3-295"></a><span class="w">  </span><span class="k">letter-spacing</span><span class="p">:</span><span class="w"> </span><span class="mf">-.01</span><span class="kt">em</span><span class="p">;</span><span class="w">                </span><span class="c">/* big text tightens slightly */</span>
-<a id="__codelineno-3-296" name="__codelineno-3-296" href="#__codelineno-3-296"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">700</span><span class="p">;</span>
+<a id="__codelineno-3-278" name="__codelineno-3-278" href="#__codelineno-3-278"></a><span class="c">/* --- the reading face: the FIRST font-family on the site. Until today</span>
+<a id="__codelineno-3-279" name="__codelineno-3-279" href="#__codelineno-3-279"></a><span class="c">       every page was in the browser's default serif, on purpose. The stack</span>
+<a id="__codelineno-3-280" name="__codelineno-3-280" href="#__codelineno-3-280"></a><span class="c">       is a list of fallbacks, best first, generic family last.</span>
+<a id="__codelineno-3-281" name="__codelineno-3-281" href="#__codelineno-3-281"></a><span class="c">       A later body rule than L1's, so its font-size wins. --- */</span>
+<a id="__codelineno-3-282" name="__codelineno-3-282" href="#__codelineno-3-282"></a><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-283" name="__codelineno-3-283" href="#__codelineno-3-283"></a><span class="w">  </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lora"</span><span class="p">,</span><span class="w"> </span><span class="n">Georgia</span><span class="p">,</span><span class="w"> </span><span class="s2">"Times New Roman"</span><span class="p">,</span><span class="w"> </span><span class="kc">serif</span><span class="p">;</span>
+<a id="__codelineno-3-284" name="__codelineno-3-284" href="#__codelineno-3-284"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">1.05</span><span class="kt">rem</span><span class="p">;</span>
+<a id="__codelineno-3-285" name="__codelineno-3-285" href="#__codelineno-3-285"></a><span class="w">  </span><span class="k">line-height</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6</span><span class="p">;</span>
+<a id="__codelineno-3-286" name="__codelineno-3-286" href="#__codelineno-3-286"></a><span class="p">}</span>
+<a id="__codelineno-3-287" name="__codelineno-3-287" href="#__codelineno-3-287"></a>
+<a id="__codelineno-3-288" name="__codelineno-3-288" href="#__codelineno-3-288"></a><span class="c">/* --- the warning was red since L1; now it is bold too --- */</span>
+<a id="__codelineno-3-289" name="__codelineno-3-289" href="#__codelineno-3-289"></a><span class="p">.</span><span class="nc">warning</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-290" name="__codelineno-3-290" href="#__codelineno-3-290"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="kc">bold</span><span class="p">;</span>
+<a id="__codelineno-3-291" name="__codelineno-3-291" href="#__codelineno-3-291"></a><span class="p">}</span>
+<a id="__codelineno-3-292" name="__codelineno-3-292" href="#__codelineno-3-292"></a>
+<a id="__codelineno-3-293" name="__codelineno-3-293" href="#__codelineno-3-293"></a><span class="c">/* --- the heading face, and a size scale: 2.4 / 1.4 / 1.05 --- */</span>
+<a id="__codelineno-3-294" name="__codelineno-3-294" href="#__codelineno-3-294"></a><span class="nt">h1</span><span class="o">,</span>
+<a id="__codelineno-3-295" name="__codelineno-3-295" href="#__codelineno-3-295"></a><span class="nt">h2</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-296" name="__codelineno-3-296" href="#__codelineno-3-296"></a><span class="w">  </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="s2">"Source Sans 3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Segoe UI"</span><span class="p">,</span><span class="w"> </span><span class="n">Arial</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span>
 <a id="__codelineno-3-297" name="__codelineno-3-297" href="#__codelineno-3-297"></a><span class="p">}</span>
 <a id="__codelineno-3-298" name="__codelineno-3-298" href="#__codelineno-3-298"></a>
-<a id="__codelineno-3-299" name="__codelineno-3-299" href="#__codelineno-3-299"></a><span class="nt">h2</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-300" name="__codelineno-3-300" href="#__codelineno-3-300"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">1.4</span><span class="kt">rem</span><span class="p">;</span>
-<a id="__codelineno-3-301" name="__codelineno-3-301" href="#__codelineno-3-301"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
-<a id="__codelineno-3-302" name="__codelineno-3-302" href="#__codelineno-3-302"></a><span class="p">}</span>
-<a id="__codelineno-3-303" name="__codelineno-3-303" href="#__codelineno-3-303"></a>
-<a id="__codelineno-3-304" name="__codelineno-3-304" href="#__codelineno-3-304"></a><span class="c">/* --- the nav reads like a nav: small caps, spaced, no underline.</span>
-<a id="__codelineno-3-305" name="__codelineno-3-305" href="#__codelineno-3-305"></a><span class="c">       text-transform changes the look without changing the HTML. --- */</span>
-<a id="__codelineno-3-306" name="__codelineno-3-306" href="#__codelineno-3-306"></a><span class="nt">nav</span><span class="w"> </span><span class="nt">a</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-307" name="__codelineno-3-307" href="#__codelineno-3-307"></a><span class="w">  </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="s2">"Source Sans 3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Segoe UI"</span><span class="p">,</span><span class="w"> </span><span class="n">Arial</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span>
-<a id="__codelineno-3-308" name="__codelineno-3-308" href="#__codelineno-3-308"></a><span class="w">  </span><span class="k">text-transform</span><span class="p">:</span><span class="w"> </span><span class="kc">uppercase</span><span class="p">;</span>
-<a id="__codelineno-3-309" name="__codelineno-3-309" href="#__codelineno-3-309"></a><span class="w">  </span><span class="k">letter-spacing</span><span class="p">:</span><span class="w"> </span><span class="mf">.06</span><span class="kt">em</span><span class="p">;</span>
-<a id="__codelineno-3-310" name="__codelineno-3-310" href="#__codelineno-3-310"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
-<a id="__codelineno-3-311" name="__codelineno-3-311" href="#__codelineno-3-311"></a><span class="w">  </span><span class="k">text-decoration</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
-<a id="__codelineno-3-312" name="__codelineno-3-312" href="#__codelineno-3-312"></a><span class="p">}</span>
-<a id="__codelineno-3-313" name="__codelineno-3-313" href="#__codelineno-3-313"></a>
-<a id="__codelineno-3-314" name="__codelineno-3-314" href="#__codelineno-3-314"></a><span class="c">/* --- the details --- */</span>
-<a id="__codelineno-3-315" name="__codelineno-3-315" href="#__codelineno-3-315"></a><span class="nt">blockquote</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-316" name="__codelineno-3-316" href="#__codelineno-3-316"></a><span class="w">  </span><span class="k">font-style</span><span class="p">:</span><span class="w"> </span><span class="kc">italic</span><span class="p">;</span>
-<a id="__codelineno-3-317" name="__codelineno-3-317" href="#__codelineno-3-317"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">1.15</span><span class="kt">rem</span><span class="p">;</span>
-<a id="__codelineno-3-318" name="__codelineno-3-318" href="#__codelineno-3-318"></a><span class="p">}</span>
-<a id="__codelineno-3-319" name="__codelineno-3-319" href="#__codelineno-3-319"></a>
-<a id="__codelineno-3-320" name="__codelineno-3-320" href="#__codelineno-3-320"></a><span class="nt">cite</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-321" name="__codelineno-3-321" href="#__codelineno-3-321"></a><span class="w">  </span><span class="k">font-style</span><span class="p">:</span><span class="w"> </span><span class="kc">normal</span><span class="p">;</span><span class="w">                    </span><span class="c">/* browsers italicise cite by default */</span>
-<a id="__codelineno-3-322" name="__codelineno-3-322" href="#__codelineno-3-322"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
-<a id="__codelineno-3-323" name="__codelineno-3-323" href="#__codelineno-3-323"></a><span class="p">}</span>
-<a id="__codelineno-3-324" name="__codelineno-3-324" href="#__codelineno-3-324"></a>
-<a id="__codelineno-3-325" name="__codelineno-3-325" href="#__codelineno-3-325"></a><span class="nt">caption</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-326" name="__codelineno-3-326" href="#__codelineno-3-326"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
-<a id="__codelineno-3-327" name="__codelineno-3-327" href="#__codelineno-3-327"></a><span class="w">  </span><span class="k">text-align</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span>
-<a id="__codelineno-3-328" name="__codelineno-3-328" href="#__codelineno-3-328"></a><span class="p">}</span>
-<a id="__codelineno-3-329" name="__codelineno-3-329" href="#__codelineno-3-329"></a>
-<a id="__codelineno-3-330" name="__codelineno-3-330" href="#__codelineno-3-330"></a><span class="nt">code</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-331" name="__codelineno-3-331" href="#__codelineno-3-331"></a><span class="w">  </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="n">Consolas</span><span class="p">,</span><span class="w"> </span><span class="s2">"Courier New"</span><span class="p">,</span><span class="w"> </span><span class="kc">monospace</span><span class="p">;</span>
-<a id="__codelineno-3-332" name="__codelineno-3-332" href="#__codelineno-3-332"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">.95</span><span class="kt">em</span><span class="p">;</span><span class="w">                      </span><span class="c">/* em here: a touch smaller than the text around it */</span>
-<a id="__codelineno-3-333" name="__codelineno-3-333" href="#__codelineno-3-333"></a><span class="p">}</span>
-<a id="__codelineno-3-334" name="__codelineno-3-334" href="#__codelineno-3-334"></a>
-<a id="__codelineno-3-335" name="__codelineno-3-335" href="#__codelineno-3-335"></a><span class="nt">footer</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-336" name="__codelineno-3-336" href="#__codelineno-3-336"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">.85</span><span class="kt">rem</span><span class="p">;</span>
-<a id="__codelineno-3-337" name="__codelineno-3-337" href="#__codelineno-3-337"></a><span class="w">  </span><span class="k">text-align</span><span class="p">:</span><span class="w"> </span><span class="kc">center</span><span class="p">;</span><span class="w">                    </span><span class="c">/* the one thing on the site that is centred */</span>
-<a id="__codelineno-3-338" name="__codelineno-3-338" href="#__codelineno-3-338"></a><span class="p">}</span>
-<a id="__codelineno-3-339" name="__codelineno-3-339" href="#__codelineno-3-339"></a>
-<a id="__codelineno-3-340" name="__codelineno-3-340" href="#__codelineno-3-340"></a><span class="c">/* Paragraphs stay left-aligned. text-align: justify has no hyphenation on</span>
-<a id="__codelineno-3-341" name="__codelineno-3-341" href="#__codelineno-3-341"></a><span class="c">   the web and produces rivers; center cannot be read past two lines. */</span>
+<a id="__codelineno-3-299" name="__codelineno-3-299" href="#__codelineno-3-299"></a><span class="nt">h1</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-300" name="__codelineno-3-300" href="#__codelineno-3-300"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">2.4</span><span class="kt">rem</span><span class="p">;</span>
+<a id="__codelineno-3-301" name="__codelineno-3-301" href="#__codelineno-3-301"></a><span class="w">  </span><span class="k">line-height</span><span class="p">:</span><span class="w"> </span><span class="mf">1.15</span><span class="p">;</span>
+<a id="__codelineno-3-302" name="__codelineno-3-302" href="#__codelineno-3-302"></a><span class="w">  </span><span class="k">letter-spacing</span><span class="p">:</span><span class="w"> </span><span class="mf">-.01</span><span class="kt">em</span><span class="p">;</span><span class="w">                </span><span class="c">/* big text tightens slightly */</span>
+<a id="__codelineno-3-303" name="__codelineno-3-303" href="#__codelineno-3-303"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">700</span><span class="p">;</span>
+<a id="__codelineno-3-304" name="__codelineno-3-304" href="#__codelineno-3-304"></a><span class="p">}</span>
+<a id="__codelineno-3-305" name="__codelineno-3-305" href="#__codelineno-3-305"></a>
+<a id="__codelineno-3-306" name="__codelineno-3-306" href="#__codelineno-3-306"></a><span class="nt">h2</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-307" name="__codelineno-3-307" href="#__codelineno-3-307"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">1.4</span><span class="kt">rem</span><span class="p">;</span>
+<a id="__codelineno-3-308" name="__codelineno-3-308" href="#__codelineno-3-308"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
+<a id="__codelineno-3-309" name="__codelineno-3-309" href="#__codelineno-3-309"></a><span class="p">}</span>
+<a id="__codelineno-3-310" name="__codelineno-3-310" href="#__codelineno-3-310"></a>
+<a id="__codelineno-3-311" name="__codelineno-3-311" href="#__codelineno-3-311"></a><span class="c">/* --- the nav reads like a nav: small caps, spaced, no underline.</span>
+<a id="__codelineno-3-312" name="__codelineno-3-312" href="#__codelineno-3-312"></a><span class="c">       text-transform changes the look without changing the HTML. --- */</span>
+<a id="__codelineno-3-313" name="__codelineno-3-313" href="#__codelineno-3-313"></a><span class="nt">nav</span><span class="w"> </span><span class="nt">a</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-314" name="__codelineno-3-314" href="#__codelineno-3-314"></a><span class="w">  </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="s2">"Source Sans 3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Segoe UI"</span><span class="p">,</span><span class="w"> </span><span class="n">Arial</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span>
+<a id="__codelineno-3-315" name="__codelineno-3-315" href="#__codelineno-3-315"></a><span class="w">  </span><span class="k">text-transform</span><span class="p">:</span><span class="w"> </span><span class="kc">uppercase</span><span class="p">;</span>
+<a id="__codelineno-3-316" name="__codelineno-3-316" href="#__codelineno-3-316"></a><span class="w">  </span><span class="k">letter-spacing</span><span class="p">:</span><span class="w"> </span><span class="mf">.06</span><span class="kt">em</span><span class="p">;</span>
+<a id="__codelineno-3-317" name="__codelineno-3-317" href="#__codelineno-3-317"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
+<a id="__codelineno-3-318" name="__codelineno-3-318" href="#__codelineno-3-318"></a><span class="w">  </span><span class="k">text-decoration</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<a id="__codelineno-3-319" name="__codelineno-3-319" href="#__codelineno-3-319"></a><span class="p">}</span>
+<a id="__codelineno-3-320" name="__codelineno-3-320" href="#__codelineno-3-320"></a>
+<a id="__codelineno-3-321" name="__codelineno-3-321" href="#__codelineno-3-321"></a><span class="c">/* --- the details --- */</span>
+<a id="__codelineno-3-322" name="__codelineno-3-322" href="#__codelineno-3-322"></a><span class="nt">blockquote</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-323" name="__codelineno-3-323" href="#__codelineno-3-323"></a><span class="w">  </span><span class="k">font-style</span><span class="p">:</span><span class="w"> </span><span class="kc">italic</span><span class="p">;</span>
+<a id="__codelineno-3-324" name="__codelineno-3-324" href="#__codelineno-3-324"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">1.15</span><span class="kt">rem</span><span class="p">;</span>
+<a id="__codelineno-3-325" name="__codelineno-3-325" href="#__codelineno-3-325"></a><span class="p">}</span>
+<a id="__codelineno-3-326" name="__codelineno-3-326" href="#__codelineno-3-326"></a>
+<a id="__codelineno-3-327" name="__codelineno-3-327" href="#__codelineno-3-327"></a><span class="nt">cite</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-328" name="__codelineno-3-328" href="#__codelineno-3-328"></a><span class="w">  </span><span class="k">font-style</span><span class="p">:</span><span class="w"> </span><span class="kc">normal</span><span class="p">;</span><span class="w">                    </span><span class="c">/* browsers italicise cite by default */</span>
+<a id="__codelineno-3-329" name="__codelineno-3-329" href="#__codelineno-3-329"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
+<a id="__codelineno-3-330" name="__codelineno-3-330" href="#__codelineno-3-330"></a><span class="p">}</span>
+<a id="__codelineno-3-331" name="__codelineno-3-331" href="#__codelineno-3-331"></a>
+<a id="__codelineno-3-332" name="__codelineno-3-332" href="#__codelineno-3-332"></a><span class="nt">caption</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-333" name="__codelineno-3-333" href="#__codelineno-3-333"></a><span class="w">  </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
+<a id="__codelineno-3-334" name="__codelineno-3-334" href="#__codelineno-3-334"></a><span class="w">  </span><span class="k">text-align</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span>
+<a id="__codelineno-3-335" name="__codelineno-3-335" href="#__codelineno-3-335"></a><span class="p">}</span>
+<a id="__codelineno-3-336" name="__codelineno-3-336" href="#__codelineno-3-336"></a>
+<a id="__codelineno-3-337" name="__codelineno-3-337" href="#__codelineno-3-337"></a><span class="nt">code</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-338" name="__codelineno-3-338" href="#__codelineno-3-338"></a><span class="w">  </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="n">Consolas</span><span class="p">,</span><span class="w"> </span><span class="s2">"Courier New"</span><span class="p">,</span><span class="w"> </span><span class="kc">monospace</span><span class="p">;</span>
+<a id="__codelineno-3-339" name="__codelineno-3-339" href="#__codelineno-3-339"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">.95</span><span class="kt">em</span><span class="p">;</span><span class="w">                      </span><span class="c">/* em here: a touch smaller than the text around it */</span>
+<a id="__codelineno-3-340" name="__codelineno-3-340" href="#__codelineno-3-340"></a><span class="p">}</span>
+<a id="__codelineno-3-341" name="__codelineno-3-341" href="#__codelineno-3-341"></a>
+<a id="__codelineno-3-342" name="__codelineno-3-342" href="#__codelineno-3-342"></a><span class="nt">footer</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-343" name="__codelineno-3-343" href="#__codelineno-3-343"></a><span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">.85</span><span class="kt">rem</span><span class="p">;</span>
+<a id="__codelineno-3-344" name="__codelineno-3-344" href="#__codelineno-3-344"></a><span class="w">  </span><span class="k">text-align</span><span class="p">:</span><span class="w"> </span><span class="kc">center</span><span class="p">;</span><span class="w">                    </span><span class="c">/* the one thing on the site that is centred */</span>
+<a id="__codelineno-3-345" name="__codelineno-3-345" href="#__codelineno-3-345"></a><span class="p">}</span>
+<a id="__codelineno-3-346" name="__codelineno-3-346" href="#__codelineno-3-346"></a>
+<a id="__codelineno-3-347" name="__codelineno-3-347" href="#__codelineno-3-347"></a><span class="c">/* Paragraphs stay left-aligned. text-align: justify has no hyphenation on</span>
+<a id="__codelineno-3-348" name="__codelineno-3-348" href="#__codelineno-3-348"></a><span class="c">   the web and produces rivers; center cannot be read past two lines. */</span>
 </code></pre></div>
 </details>
 <details class="example">
