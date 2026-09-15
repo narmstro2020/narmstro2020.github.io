@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- L9 · charset first. Without it, curly quotes become â€™ -->
+  <!-- charset first. Without it, curly quotes become â€™ -->
   <meta charset="UTF-8">
-  <!-- L9 · use the phone's real width instead of pretending to be a desktop.
-       Nothing visible changes today; U3 is where this pays off. -->
+  <!-- use the phone's real width instead of pretending to be a desktop.
+       Nothing visible changes yet; responsive design is where this pays off. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- L9 · the grey line under this page in search results. One per PAGE. -->
+  <!-- the grey line under this page in search results. One per PAGE. -->
   <meta name="description" content="Trail notes, entry fees, and hours for Indiana state parks, written by a student who keeps going back to Turkey Run.">
   <title>Indiana State Parks</title>
   <link rel="icon" href="images/favicon.png">
 </head>
 <body>
 
-  <!-- ===== L13 · the skip link. First focusable thing on the page, so a
+  <!-- ===== the skip link. First focusable thing on the page, so a
        keyboard or screen-reader user can jump the nav instead of tabbing
        through it on every single page. Tab into the page to see it. ===== -->
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- ===== L10 · <header> means header. A div with id="header" only
+  <!-- ===== <header> means header. A div with id="header" only
        LOOKS like one -- to a screen reader it is an anonymous box. ===== -->
   <header>
     <h1>My Site About Indiana State Parks</h1>
 
-    <!-- L10 · <nav> is reserved for navigation. Not every list of links. -->
+    <!-- <nav> is reserved for navigation. Not every list of links. -->
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
@@ -35,10 +35,10 @@
   </header>
 
   <main id="main">
-  <!-- ===== L8 · a jump link. #parks points at id="parks" further down ===== -->
+  <!-- ===== a jump link. #parks points at id="parks" further down ===== -->
   <p><a href="#parks">Skip to the comparison table</a></p>
 
-  <!-- ===== L8 · a classed div groups the intro. class = reusable ===== -->
+  <!-- ===== a classed div groups the intro. class = reusable ===== -->
   <div class="intro">
     <p>Welcome. This site is about the state parks in Indiana, which ones are worth
     the drive, and what you can actually do at each one.</p>
@@ -70,7 +70,7 @@
   <a href="https://www.in.gov/dnr/state-parks/" target="_blank">the official park
   listing</a></p>
 
-  <!-- ===== L7 · an unordered list — order carries no meaning here ===== -->
+  <!-- ===== an unordered list — order carries no meaning here ===== -->
   <h2>What to take</h2>
   <p>Nothing on this list is more important than the others, so it is unordered.</p>
   <ul>
@@ -89,7 +89,7 @@
 
 
 
-  <!-- ===== L8 · id="parks" is UNIQUE on this page — the jump link's target ===== -->
+  <!-- ===== id="parks" is UNIQUE on this page — the jump link's target ===== -->
   <section id="parks">
   <h2>The parks, side by side</h2>
   <table>
@@ -130,7 +130,7 @@
 
   </section>
 
-  <!-- ===== L8 · same class, different content — that's what class is for ===== -->
+  <!-- ===== same class, different content — that's what class is for ===== -->
   <section id="credits">
   <h2>Image credits</h2>
   <ul>
@@ -148,7 +148,7 @@
   </section>
 
 
-  <!-- ===== L9 · an iframe embeds someone else's page inside yours. This is the
+  <!-- ===== an iframe embeds someone else's page inside yours. This is the
        EMBED url from Share -> Embed a map, not the one in the address bar. ===== -->
   <section id="map">
   <h2>Where Turkey Run actually is</h2>
@@ -162,14 +162,14 @@
   <p><a href="https://www.openstreetmap.org/#map=13/39.885/-87.19" target="_blank">View a larger map</a></p>
   </section>
 
-  <!-- ===== L9 · a button with nowhere to go yet. The behaviour is JavaScript,
+  <!-- ===== a button with nowhere to go yet. The behaviour is JavaScript,
        and that is the spring semester. Labelled for what it WILL do. ===== -->
   <p><button type="button">Show me a random park</button></p>
 
   <!-- TODO: add a page for Shades once I've been there -->
   </main>
 
-  <!-- ===== L10 · <footer> for credits and attributions ===== -->
+  <!-- ===== <footer> for credits and attributions ===== -->
   <footer>
     <p>&copy;&nbsp;2026 &mdash; Built in 7185 Website and Database Development. Photographs are credited on the
     home page; text is mine.</p>

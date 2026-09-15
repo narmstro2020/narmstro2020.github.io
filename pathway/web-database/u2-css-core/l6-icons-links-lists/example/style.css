@@ -1,5 +1,5 @@
 /* ============================================================
-   U2 L4 — the ONE rule that lives above everything, even the palette.
+   The ONE rule that lives above everything, even the palette.
    width now INCLUDES padding and border. Every element, every
    page. It is a reset, not a style, which is why it is first
    in the file instead of last.
@@ -9,7 +9,7 @@
 }
 
 /* Palette */
-/* --- U2 L2 · A CSS VARIABLE is a value with a name. Declare it on :root
+/* --- A CSS VARIABLE is a value with a name. Declare it on :root
        (the whole page) with two dashes in front; use it anywhere with
        var(). Change a value HERE and every rule that uses it changes.
        This block lives at the top of the file, above everything, because
@@ -25,7 +25,7 @@
 }
 
 /* ============================================================
-   U2 L1 — the first stylesheet.
+   Selectors and the cascade.
    ONE file. Every page links to it. Change a rule here and all
    four pages change at once — that is the whole argument for an
    EXTERNAL stylesheet over writing style="" on every element.
@@ -33,11 +33,8 @@
    A rule is a SELECTOR, then a block of property: value; pairs.
    Leave out a semicolon and the rule AFTER it breaks, not this one.
 
-   Three properties today, and only three: color, background-color,
-   font-size. Everything else is a later lesson.
 
-   L2 · the hex codes that were in these rules became var(--name)
-   once the palette went in. The palette is at the top of the file.
+   Every colour below is a var() from the palette at the top of the file.
    ============================================================ */
 
 /* --- element selector: every <body> on the site --- */
@@ -58,12 +55,12 @@ h2 {
 }
 
 /* --- CLASS selector. The dot means "any element with class=intro".
-       We put class="intro" on that div back in L8, for exactly this. --- */
+       The div has class="intro" in the HTML, for exactly this. --- */
 .intro {
   background-color: var(--light);
 }
 
-/* --- another class, already on the page since L8 --- */
+/* --- another class from the HTML --- */
 .warning {
   color: var(--warning);
 }
@@ -89,10 +86,9 @@ a {
 }
 
 /* ============================================================
-   U2 L2 — colours and backgrounds.
+   Colours and backgrounds.
    The palette is the :root block at the TOP of this file. Every
-   colour below is var(--something) from it, and so is every colour
-   in the L1 rules now — they were hex codes until today.
+   colour below is var(--something) from it.
 
    One colour, four ways — all of these are the dark green:
      darkgreen            CLOSE but not it; names are for quick tests only
@@ -128,9 +124,8 @@ blockquote {
 }
 
 /* --- A photograph behind the whole site. This is a SECOND body rule:
-       L1's, at the top, set background-color to the page colour. This
-       one is later in the file, so it wins. That is the cascade, second
-       time. The url() path is relative to THIS FILE, not to the page. --- */
+       the first one, at the top, set background-color to the page colour.
+       This one is later in the file, so it wins. That is the cascade. The url() path is relative to THIS FILE, not to the page. --- */
 body {
   background-color: var(--dark);          /* shows while the photo loads, and behind it */
   background-image: url("images/turkey-run-rocky-hollow.jpg");
@@ -146,7 +141,7 @@ main {
 }
 
 /* ============================================================
-   U2 L3 — padding, border, margin.
+   Padding, border, margin.
    Content, then PADDING (inside the line), then BORDER (the line),
    then MARGIN (outside the line, transparent). In that order, out.
    ============================================================ */
@@ -168,7 +163,7 @@ footer {
 
 /* --- the body is a box too. The browser gave it 8px of margin; replace
        that with padding WE chose. A background paints under padding, so
-       L2's photograph now shows all the way round the site. --- */
+       the photograph now shows all the way round the site. --- */
 body {
   margin: 0;
   padding: 1.5rem;
@@ -216,15 +211,14 @@ img {
    wins and the smaller disappears into it. */
 
 /* ============================================================
-   U2 L4 — the box model, sizing, and outline.
+   The box model, sizing, and outline.
 
-   NOTE: the box-sizing rule for this lesson is at the TOP of this file,
-   above L1's rules, because it is a reset and belongs before everything.
-   Scroll up to see it. Everything else from L4 is here.
+   NOTE: the box-sizing rule is at the TOP of this file, above
+   everything, because it is a reset. Scroll up to see it.
    ============================================================ */
 
-/* --- Break it, then fix it. With padding and a border from L3, width:
-       100% made this box wider than main by exactly padding + border.
+/* --- Break it, then fix it. With its padding and border, width: 100%
+       made this box wider than main by exactly padding + border.
        The * rule at the top of the file is what makes it fit again. --- */
 .intro {
   width: 100%;
@@ -250,9 +244,8 @@ iframe {
 
 /* --- the whole site gets a ceiling too: a reading measure. Then
        margin: auto splits the leftover space equally, which centres it.
-       (auto was on the W3Schools margin page in L3; it only has space
-       to split once there IS a max-width, which is today.)
-       A later body rule than L3's margin: 0 — the cascade, again. --- */
+       (auto only has space to split once there IS a max-width.)
+       A later body rule than the margin: 0 above — the cascade, again. --- */
 body {
   max-width: 48rem;
   margin: 0 auto;
@@ -269,10 +262,9 @@ textarea:focus {
   outline-offset: 2px;
 }
 
-/* --- the skip link from U1 L13, now that Tab means something. It sits
-       off-screen until a keyboard user tabs to it, then appears at the
-       top of the page. The one line borrowed from later: position is
-       L8, and nothing else on the site is positioned until then. --- */
+/* --- the skip link, now that Tab means something. It sits off-screen
+       until a keyboard user tabs to it, then appears at the top of the
+       page. Nothing else on the site is positioned. --- */
 .skip-link {
   position: absolute;
   left: -9999px;
@@ -287,7 +279,7 @@ textarea:focus {
 }
 
 /* ============================================================
-   U2 L5 — text and fonts. Two web fonts (linked in every page's head,
+   Text and fonts. Two web fonts (linked in every page's head,
    above this file): Lora for reading, Source Sans 3 for headings.
    Every size is in rem — a multiple of the user's chosen text size —
    so the whole site scales when they change it.
@@ -296,14 +288,14 @@ textarea:focus {
 /* --- the reading face: the FIRST font-family on the site. Until today
        every page was in the browser's default serif, on purpose. The stack
        is a list of fallbacks, best first, generic family last.
-       A later body rule than L1's, so its font-size wins. --- */
+       A later body rule than the first one, so its font-size wins. --- */
 body {
   font-family: "Lora", Georgia, "Times New Roman", serif;
   font-size: 1.05rem;
   line-height: 1.6;
 }
 
-/* --- the warning was red since L1; now it is bold too --- */
+/* --- the warning was red; now it is bold too --- */
 .warning {
   font-weight: bold;
 }
@@ -366,7 +358,7 @@ footer {
    the web and produces rivers; center cannot be read past two lines. */
 
 /* ============================================================
-   U2 L6 — links, lists, icons.
+   Links, lists, icons.
    ============================================================ */
 
 /* --- LINKS: four pseudo-classes, and the order is not optional. All
@@ -397,7 +389,7 @@ header a:hover {
 
 /* --- LISTS: the property goes on the list, not the items --- */
 nav ul {
-  list-style-type: none;                 /* step one of a nav bar; L7 is step two */
+  list-style-type: none;                 /* step one of a nav bar; display is step two */
 }
 
 ol {

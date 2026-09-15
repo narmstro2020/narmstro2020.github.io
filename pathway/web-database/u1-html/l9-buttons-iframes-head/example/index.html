@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- L9 · charset first. Without it, curly quotes become â€™ -->
+  <!-- charset first. Without it, curly quotes become â€™ -->
   <meta charset="UTF-8">
-  <!-- L9 · use the phone's real width instead of pretending to be a desktop.
-       Nothing visible changes today; U3 is where this pays off. -->
+  <!-- use the phone's real width instead of pretending to be a desktop.
+       Nothing visible changes yet; responsive design is where this pays off. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- L9 · the grey line under this page in search results. One per PAGE. -->
+  <!-- the grey line under this page in search results. One per PAGE. -->
   <meta name="description" content="Trail notes, entry fees, and hours for Indiana state parks, written by a student who keeps going back to Turkey Run.">
   <title>Indiana State Parks</title>
   <link rel="icon" href="images/favicon.png">
@@ -16,16 +16,16 @@
   <!-- ===== page title ===== -->
   <h1>My Site About Indiana State Parks</h1>
 
-  <!-- ===== L7 · the nav — one list of links, identical on every page ===== -->
+  <!-- ===== the nav — one list of links, identical on every page ===== -->
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="turkey-run.html">Turkey Run</a></li>
     <li><a href="about.html">About me</a></li>
   </ul>
-  <!-- ===== L8 · a jump link. #parks points at id="parks" further down ===== -->
+  <!-- ===== a jump link. #parks points at id="parks" further down ===== -->
   <p><a href="#parks">Skip to the comparison table</a></p>
 
-  <!-- ===== L8 · a classed div groups the intro. class = reusable ===== -->
+  <!-- ===== a classed div groups the intro. class = reusable ===== -->
   <div class="intro">
     <p>Welcome. This site is about the state parks in Indiana, which ones are worth
     the drive, and what you can actually do at each one.</p>
@@ -57,7 +57,7 @@
   <a href="https://www.in.gov/dnr/state-parks/" target="_blank">the official park
   listing</a></p>
 
-  <!-- ===== L7 · an unordered list — order carries no meaning here ===== -->
+  <!-- ===== an unordered list — order carries no meaning here ===== -->
   <h2>What to take</h2>
   <p>Nothing on this list is more important than the others, so it is unordered.</p>
   <ul>
@@ -76,7 +76,7 @@
 
 
 
-  <!-- ===== L8 · id="parks" is UNIQUE on this page — the jump link's target ===== -->
+  <!-- ===== id="parks" is UNIQUE on this page — the jump link's target ===== -->
   <div class="section" id="parks">
   <h2>The parks, side by side</h2>
   <table>
@@ -117,7 +117,7 @@
 
   </div>
 
-  <!-- ===== L8 · same class, different content — that's what class is for ===== -->
+  <!-- ===== same class, different content — that's what class is for ===== -->
   <div class="section" id="credits">
   <h2>Image credits</h2>
   <ul>
@@ -135,7 +135,7 @@
   </div>
 
 
-  <!-- ===== L9 · an iframe embeds someone else's page inside yours. This is the
+  <!-- ===== an iframe embeds someone else's page inside yours. This is the
        EMBED url from Share -> Embed a map, not the one in the address bar. ===== -->
   <div class="section" id="map">
   <h2>Where Turkey Run actually is</h2>
@@ -149,12 +149,12 @@
   <p><a href="https://www.openstreetmap.org/#map=13/39.885/-87.19" target="_blank">View a larger map</a></p>
   </div>
 
-  <!-- ===== L9 · a button with nowhere to go yet. The behaviour is JavaScript,
+  <!-- ===== a button with nowhere to go yet. The behaviour is JavaScript,
        and that is the spring semester. Labelled for what it WILL do. ===== -->
   <p><button type="button">Show me a random park</button></p>
 
   <!-- TODO: add a page for Shades once I've been there -->
-  <!-- TODO: wrap this nav in a <nav> element once we do semantics in Lesson 10 -->
+  <!-- TODO: wrap this nav in a <nav> element once we do semantics -->
 
 </body>
 </html>

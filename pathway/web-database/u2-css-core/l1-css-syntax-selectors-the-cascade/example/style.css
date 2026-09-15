@@ -1,5 +1,5 @@
 /* ============================================================
-   U2 L1 — the first stylesheet.
+   Selectors and the cascade.
    ONE file. Every page links to it. Change a rule here and all
    four pages change at once — that is the whole argument for an
    EXTERNAL stylesheet over writing style="" on every element.
@@ -7,8 +7,6 @@
    A rule is a SELECTOR, then a block of property: value; pairs.
    Leave out a semicolon and the rule AFTER it breaks, not this one.
 
-   Three properties today, and only three: color, background-color,
-   font-size. Everything else is a later lesson.
    ============================================================ */
 
 /* --- element selector: every <body> on the site --- */
@@ -29,12 +27,12 @@ h2 {
 }
 
 /* --- CLASS selector. The dot means "any element with class=intro".
-       We put class="intro" on that div back in L8, for exactly this. --- */
+       The div has class="intro" in the HTML, for exactly this. --- */
 .intro {
   background-color: #eef4ee;
 }
 
-/* --- another class, already on the page since L8 --- */
+/* --- another class from the HTML --- */
 .warning {
   color: #b3261e;
 }

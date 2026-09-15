@@ -6,21 +6,21 @@
   <meta name="description" content="Tell me which Indiana state park to visit next.">
   <title>Contact &mdash; Indiana State Parks</title>
   <link rel="icon" href="images/favicon.png">
-  <!-- U2 L1 · ONE line per page, and the whole site is styled. This is
+  <!-- ONE line per page, and the whole site is styled. This is
        why the stylesheet is external instead of a style="" on every tag. -->
-  <!-- U2 L5 · two web fonts from Google Fonts. The preconnect lines let the
+  <!-- two web fonts from Google Fonts. The preconnect lines let the
        browser start the handshake early; the third line is the fonts. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap" rel="stylesheet">
-  <!-- U2 L6 · Font Awesome, the free icon set W3Schools uses. One link, then
+  <!-- Font Awesome, the free icon set W3Schools uses. One link, then
        any icon is a class name on an empty element. -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ===== L13 · the skip link. First focusable thing on the page, so a
+  <!-- ===== the skip link. First focusable thing on the page, so a
        keyboard or screen-reader user can jump the nav instead of tabbing
        through it on every single page. Tab into the page to see it. ===== -->
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -30,7 +30,7 @@
 
     <nav>
       <ul>
-        <!-- U2 L6 · an icon is an empty element with a class. aria-hidden
+        <!-- an icon is an empty element with a class. aria-hidden
              keeps a screen reader from announcing it: the word after it is
              the label, the icon is decoration. -->
         <li><a href="index.html"><span class="fa-solid fa-house" aria-hidden="true"></span> Home</a></li>
@@ -46,13 +46,13 @@
   <p>I have been to four of Indiana's twenty-four state parks. If you know one worth
   the drive, tell me.</p>
 
-  <!-- ===== L11 · action and method are named now and explained properly in U6.
+  <!-- ===== action and method are named now; they matter once there is a backend.
        Nothing is submitted anywhere yet -- there is no backend until spring. ===== -->
   <form action="#" method="post">
 
-    <!-- L11 · EVERY input gets a label, and for="" must match the input's id.
+    <!-- EVERY input gets a label, and for="" must match the input's id.
          Click the label text -- if the cursor jumps into the box, they match. -->
-    <!-- L12 · required means the browser refuses to submit without it, and
+    <!-- required means the browser refuses to submit without it, and
          says so itself. No JavaScript written. -->
     <p>
       <label for="name">Your name</label><br>
@@ -60,7 +60,7 @@
              placeholder="First name is fine" required>
     </p>
 
-    <!-- L12 · type="email" validates the shape AND changes the on-screen
+    <!-- type="email" validates the shape AND changes the on-screen
          keyboard on a phone. type="text" does neither. -->
     <p>
       <label for="email">Email</label><br>
@@ -95,7 +95,7 @@
       <textarea id="why" name="why" rows="5" cols="40"></textarea>
     </p>
 
-    <!-- L12 · a radio GROUP shares one name. Different names = they all stay
+    <!-- a radio GROUP shares one name. Different names = they all stay
          selectable at once, which is the classic radio-button bug. -->
     <fieldset>
       <legend>How far will you drive?</legend>
@@ -122,10 +122,10 @@
 
   </form>
 
-  <!-- L12 · try submitting this empty, then with a bad email. The browser
+  <!-- try submitting this empty, then with a bad email. The browser
        complains on its own -- that is built-in validation, and it is a preview
        of the real validation you write in JavaScript in the spring.
-       It still goes nowhere on submit. There is no backend until U6. -->
+       It still goes nowhere on submit. There is no backend yet. -->
 
   </main>
 
