@@ -2,126 +2,34 @@
  * U1 L6 — CONDITIONALS: if, else if, else · STARTER CODE
  * 7184 Software Development · Unit 1, Lesson 6
  *
- * ALREADY HERE:  Lessons 1-5 finished — the title screen, the status line,
- *                combat math, the health bar, and a Scanner that asks the
- *                player questions.
- * YOU'RE ADDING: decisions. Until today your program ran the same way every
- *                time. Now it branches.
+ * START FROM YOUR OWN LESSON 5 FILE. The code below is the L5 solution, for
+ * anyone who lost theirs. The TODO markers are the same either way.
  *
  *     javac Main.java
  *     java Main
  *
- * ==========================================================================
- * COMING FROM PYTHON? THREE DIFFERENCES
+ * Until today the program ran the same way every time. Today it branches.
  *
- *   parentheses are REQUIRED     if (health > 0)      not  if health > 0
- *   braces, not indentation      { ... }              not  a colon
- *   else if, not elif
+ * FIVE TODOs, marked in the code below, all near the bottom of main. In
+ * order. Compile and run after each.
  *
- * Indentation means NOTHING to the compiler and EVERYTHING to the next person
- * who reads your code. Keep it tidy anyway.
+ *   TODO 1  the attack roll     if / else if / else on a hard-coded roll    (add)
+ *   TODO 2  walk every branch   change the roll to 10, then 5, then 1; run each
+ *   TODO 3  win and lose        the fight can end                            (add)
+ *   TODO 4  the clamp           closes the Lesson 4 TODO on the health bar   (add)
+ *   TODO 5  compound conditions &&  ||  !  -- and why the order matters      (add)
  *
- * ==========================================================================
- * THE NEW IDEA: SHORT-CIRCUIT EVALUATION
+ * COMING FROM PYTHON: parentheses are required, if (health > 0); braces, not
+ * indentation; else if, not elif. Indentation means nothing to the compiler
+ * and everything to the next reader. Keep it tidy anyway.
  *
- *     if (swings > 0 && hits / swings > 0.5) { ... }
+ * BREAK IT ON PURPOSE (after TODO 5): if (alive = false) compiles and silently
+ * sets alive to false. if (health = 0) will NOT compile. One = assigns, two ==
+ * compare; the compiler only catches it when the variable is not a boolean.
+ * Put both back afterwards.
  *
- *   If swings is 0, Java NEVER evaluates the right-hand side, so there is no
- *   divide-by-zero. && stops at the first false; || stops at the first true.
- *
- *   ORDER MATTERS. Flip those two conditions around and the program throws.
- *   Try it once, on purpose, so you have seen it.
- *
- * ==========================================================================
- * TODO 1: the attack roll — if / else if / else
- *
- *           int roll = 7;              // hard-coded on purpose; L12 makes it random
- *           int damage2;
- *
- *           if (roll >= 9) {
- *               damage2 = enemyPower * 2;
- *               System.out.println("CRITICAL HIT!");
- *           } else if (roll >= 3) {
- *               damage2 = enemyPower;
- *               System.out.println("A solid hit.");
- *           } else {
- *               damage2 = 0;
- *               System.out.println("You miss.");
- *           }
- *
- *           enemyHealth -= damage2;
- *
- *         THEN DO THIS, AND DO NOT SKIP IT:
- *         Change roll to 10, run. Change it to 5, run. Change it to 1, run.
- *         WALK ALL THREE BRANCHES. It costs two minutes, and it is the first
- *         real testing you will do in this course.
- *
- * TODO 2: the fight can now end.
- *
- *           if (enemyHealth <= 0) {
- *               System.out.println("The " + enemyName + " falls!");
- *               alive = true;
- *           } else if (health <= 0) {
- *               System.out.println("You have fallen.");
- *               alive = false;
- *           }
- *
- * TODO 3: compound conditions that mean something.
- *
- *           // The guard comes FIRST. Swap these and a zero divisor throws.
- *           if (swings > 0 && hits / swings > 0.5) {
- *               System.out.println("Your aim is holding up.");
- *           }
- *
- *           if (health < MAX_HEALTH / 4 && gold >= 10) {
- *               System.out.println("You should buy a potion.");
- *           }
- *
- *           if (!alive || enemyHealth <= 0) {
- *               System.out.println("The fight is over.");
- *           }
- *
- * TODO 4: BREAK IT ON PURPOSE — = versus ==
- *
- *         Type this and run it:
- *
- *           if (alive = false) { System.out.println("dead"); }
- *
- *         It COMPILES. It also silently sets alive to false and then does the
- *         wrong thing. One equals sign ASSIGNS; two equals signs COMPARE.
- *
- *         Now try:
- *
- *           if (health = 0) { ... }
- *
- *         That one will NOT compile, because an int is not a boolean. Which is
- *         exactly why this bug only bites you with booleans — the compiler
- *         catches every other case and stays silent on the one that matters.
- *
- *         Put both back the way they were when you are done.
- *
- * ==========================================================================
- * TODO 5: close the Lesson 4 TODO at the bottom of this file.
- *
- *         The health bar breaks when health goes above MAX_HEALTH or below 0.
- *         You have been carrying that comment for two lessons. Today you have
- *         the tool:
- *
- *           if (health > MAX_HEALTH) {
- *               health = MAX_HEALTH;
- *           } else if (health < 0) {
- *               health = 0;
- *           }
- *
- *         Test it BOTH ways — drink enough potions to go over, then take
- *         enough damage to go under. The bar has to survive both.
- *
- * ==========================================================================
- * FINISHED EARLY?
- *
- *   Write a condition that decides whether the enemy enrages, using at least
- *   two of && || and !. Then say out loud, to your partner, exactly when it
- *   is true. If you cannot say it in one sentence, it is too complicated.
+ * FINISHED EARLY?  A condition that decides whether the enemy enrages, using at
+ * least two of && || !. Say out loud, in one sentence, exactly when it is true.
  *
  * BEFORE YOU LEAVE: back up as Arena_U1L6_LastnameF and submit.
  */
@@ -258,6 +166,68 @@ public class Main {
         System.out.println("Crit damage (int):    " + applied);
         System.out.println("Lost to the cast:     " + (critDamage - applied));
         System.out.println("");
+
+        // ---- TODO 1 · THE ATTACK ROLL ----------------------------------------
+        // roll is hard-coded on purpose so you can walk every branch by hand.
+        // Lesson 12 makes it random.
+        //
+        //     int roll = 7;
+        //     int damage2;
+        //     if (roll >= 9) {
+        //         damage2 = enemyPower * 2;
+        //         System.out.println("CRITICAL HIT!");
+        //     } else if (roll >= 3) {
+        //         damage2 = enemyPower;
+        //         System.out.println("A solid hit.");
+        //     } else {
+        //         damage2 = 0;
+        //         System.out.println("You miss.");
+        //     }
+        //     enemyHealth -= damage2;
+        //     System.out.printf("%s has %d HP left.%n", enemyName, enemyHealth);
+        // ----------------------------------------------------------------------
+
+        // ---- TODO 2 · WALK EVERY BRANCH ----------------------------------------
+        // Change roll to 10 and run. Then 5 and run. Then 1 and run. All three
+        // messages must appear once. Two minutes, and it is the first real
+        // testing you do in this course. Leave roll at 7 when you are done.
+        // ----------------------------------------------------------------------
+
+        // ---- TODO 3 · WIN AND LOSE ---------------------------------------------
+        //     if (enemyHealth <= 0) {
+        //         System.out.println("The " + enemyName + " falls!");
+        //     } else if (health <= 0) {
+        //         System.out.println("You have fallen.");
+        //         alive = false;
+        //     }
+        // ----------------------------------------------------------------------
+
+        // ---- TODO 5 · COMPOUND CONDITIONS --------------------------------------
+        //     // The guard comes FIRST. Swap these two and a zero divisor throws.
+        //     if (swings > 0 && hits / swings > 0.5) {
+        //         System.out.println("Your aim is holding up.");
+        //     }
+        //     if (health < MAX_HEALTH / 4 && gold >= 10) {
+        //         System.out.println("You should buy a potion.");
+        //     }
+        //     if (!alive || enemyHealth <= 0) {
+        //         System.out.println("The fight is over.");
+        //     }
+        // && stops at the first false and || at the first true, so the right-
+        // hand side is never evaluated when the left already decided. That is
+        // why swings > 0 goes first. Flip it once, on purpose, and watch it throw.
+        // ----------------------------------------------------------------------
+
+        // ---- TODO 4 · THE CLAMP: close the Lesson 4 TODO on the next line ------
+        // Put this ABOVE the health bar, then delete the old TODO comment:
+        //     if (health > MAX_HEALTH) {
+        //         health = MAX_HEALTH;
+        //     } else if (health < 0) {
+        //         health = 0;
+        //     }
+        // Test it BOTH ways: set health to 150 and run; set it to -20 and run.
+        // The bar has to survive both.
+        // ----------------------------------------------------------------------
 
         // ---------- L4 · the health bar ----------
         // TODO clamp health between 0 and MAX_HEALTH

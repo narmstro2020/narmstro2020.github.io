@@ -13,6 +13,16 @@
  * BEFORE YOU CHANGE ANYTHING: run it and type `banana` at the difficulty
  * prompt. It dies. That has been true since Lesson 5 and there is a TODO in
  * this file that says so. Today you close it.
+ *
+ * FIVE TODOs, marked in the code below. In order. Compile and run after each.
+ *
+ *   TODO 1  validate the difficulty   a do-while with hasNextInt()       (replace)
+ *   TODO 2  open and close the loop   two markers: 2a opens, 2b closes    (add)
+ *   TODO 3  what goes inside          once, or every turn? decide line by line
+ *   TODO 4  a varying roll            and the enemy hits back             (replace + add)
+ *   TODO 5  three ways to end         fled, won, lost -- in that order    (replace)
+ *
+ * BEFORE YOU LEAVE: back up as Arena_U1L8_LastnameF and submit.
  */
 
 import java.util.Scanner;
@@ -183,41 +193,32 @@ public class Main {
         System.out.println("");
 
 
-        // TODO 2: wrap the whole combat turn in a game loop.
+        // ---- TODO 2a · OPEN THE GAME LOOP HERE -------------------------------
+        //     int turnNumber = 1;
+        //     boolean playing = true;
         //
-        //              int turnNumber = 1;
-        //              boolean playing = true;
+        //     while (playing) {
+        //         System.out.printf("%n--- Turn %d ---%n", turnNumber);
+        //         System.out.printf("%-12s HP %3d/%3d    %-14s HP %3d%n",
+        //                           playerName, health, MAX_HEALTH, enemyName, enemyHealth);
         //
-        //              while (playing) {
-        //                  ...everything below, indented one more level...
-        //                  turnNumber++;
-        //              }
-        //
-        //          THE HARD PART is deciding what goes INSIDE. Ask yourself,
-        //          line by line: should this happen once, or every turn?
-        //            once  -> title, name, difficulty, starting stats
-        //            every -> status line, menu, switch, clamp, health bar
-        //
-        //          If your name prompt comes back on turn 2, you wrapped too
-        //          much.
+        // Everything from here down to the TODO 2b marker moves INSIDE the
+        // braces (select it, Tab once). Move `int potions = 2;` ABOVE the loop,
+        // next to the other starting stats -- or every turn hands you two new
+        // potions.
+        // ----------------------------------------------------------------------
 
-        // TODO 3: make the roll change each turn, so every turn isn't identical:
-        //              int roll = (turnNumber * 3) % 10 + 1;
-        //          That's % from Lesson 3. L12 makes it properly random.
+        // ---- TODO 3 · WHAT GOES INSIDE -------------------------------------------
+        // Ask it line by line: once, or every turn?
+        //     once        title, name, difficulty, starting stats, potions
+        //     every turn  the roll, the menu, the switch, the enemy's answer,
+        //                 the clamp, the ternaries, the health bar, the ending
+        // If your name prompt comes back on turn 2, you wrapped too much.
+        // ----------------------------------------------------------------------
 
-        // TODO 4: let the enemy hit back, or you can never lose:
-        //              if (alive && enemyHealth > 0) {
-        //                  health -= enemyPower;
-        //                  ...print what happened...
-        //              }
-
-        // TODO 5: three ways the loop ends — fled, won, lost. Check !alive
-        //          FIRST. Put it last instead, then flee on low health, and
-        //          it will tell you that you died.
-
-        // ---------- L6 · the attack roll (now driven by the menu) ----------
-        // roll is still hard-coded so every branch can be walked by hand.
-        // Change it to 10, then 5, then 1 and run each time. L12 makes it random.
+        // ---- TODO 4a · REPLACE the hard-coded roll -----------------------------
+        //     int roll = (turnNumber * 3) % 10 + 1;      // % from Lesson 3; L12 makes it random
+        // ----------------------------------------------------------------------
         int roll = 7;
         int damage2 = 0;
         int potions = 2;
@@ -274,6 +275,33 @@ public class Main {
         System.out.println("You look " + condition + ".");
         System.out.println("");
 
+        // ---- TODO 4b · APPLY THE DAMAGE, then the enemy hits back ---------------
+        // (the first line went missing when the menu arrived -- put it back, or
+        //  the enemy can never lose, and you can never lose without the rest)
+        //     enemyHealth -= damage2;
+        //     if (alive && enemyHealth > 0) {
+        //         health -= enemyPower;
+        //         System.out.printf("The %s strikes back for %d.%n", enemyName, enemyPower);
+        //     }
+        // ----------------------------------------------------------------------
+
+        // ---- TODO 5 · REPLACE the "fight can now end" block below ---------------
+        // Three ways out, checked in THIS order. !alive first: put it last, then
+        // flee on low health, and the game tells you that you died.
+        //     if (!alive) {
+        //         System.out.println("You escape with your life, and nothing else.");
+        //         playing = false;
+        //     } else if (enemyHealth <= 0) {
+        //         System.out.printf("%nThe %s falls! You win on turn %d.%n", enemyName, turnNumber);
+        //         playing = false;
+        //     } else if (health <= 0) {
+        //         System.out.printf("%nYou have fallen on turn %d.%n", turnNumber);
+        //         alive = false;
+        //         playing = false;
+        //     }
+        // Note that this block moves BELOW the clamp and the health bar, so the
+        // last thing a losing player sees is an honest 0% bar.
+        // ----------------------------------------------------------------------
         // ---------- L6 · the fight can now end ----------
         if (enemyHealth <= 0) {
             System.out.println("The " + enemyName + " falls!");
@@ -306,5 +334,11 @@ public class Main {
         int bars = health / 5;
         String bar = "#".repeat(bars) + "-".repeat(20 - bars);
         System.out.printf("[%s] %d%%%n", bar, health);
+
+        // ---- TODO 2b · CLOSE THE GAME LOOP HERE ------------------------------
+        //         turnNumber++;      // miss this and every turn reuses turn 1's roll
+        //     }
+        //     System.out.printf("%nThe arena empties after %d turns.%n", turnNumber - 1);
+        // ----------------------------------------------------------------------
     }
 }

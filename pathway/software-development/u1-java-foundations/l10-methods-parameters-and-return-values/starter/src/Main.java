@@ -2,143 +2,46 @@
  * U1 L10 — METHODS, PARAMETERS, RETURN VALUES · STARTER CODE
  * 7184 Software Development · Unit 1, Lesson 10
  *
- * ALREADY HERE:  Lessons 1-9 finished. It works. It is also 258 lines long
- *                and every one of them is inside main.
- * YOU'RE ADDING: nothing. Today you MOVE things.
+ * START FROM YOUR OWN LESSON 9 FILE. The code below is the L9 solution, for
+ * anyone who lost theirs. The TODO markers are the same either way.
  *
  *     javac Main.java
  *     java Main
  *
- * THE RULE OF THE DAY: BEHAVIOUR MUST NOT CHANGE.
+ * YOU ARE ADDING NOTHING. Today you MOVE code out of main into methods, and
+ * the game must behave EXACTLY as it did before. Run it now, play one fight,
+ * write down what happens. Refactor. Run it again. Any difference is a bug.
  *
- *   1. Run it now. Play one fight. Write down what happens.
- *   2. Refactor.
- *   3. Run it again. If anything is different, you broke it.
+ *   main now:         258 lines       main by the end:  under 60
  *
- * That discipline has a name — refactoring — and it is worth more than the
- * syntax you learn today.
+ * Count both. Both numbers go on the board.
  *
- * ==========================================================================
- * YOUR TARGET
+ * HOW: move ONE block. Compile. Run. Then the next. Six moves then one compile
+ * gives six errors and no idea which move caused which.
  *
- *   main right now:  258 lines
- *   main by the end: under 60
+ * WHERE METHODS GO: at class level, AFTER main's closing brace, never inside
+ * it. Each marker below says which block moves, what the method's signature
+ * is, and what one line replaces the block in main.
  *
- * Count it before and after. Both numbers go on the board.
- * ==========================================================================
+ *   TODO 1  pure output      printTitle, countdown, printBanner, printHealthBar
+ *   TODO 2  values back      isAlive, calculateDamage, applyDamage, clamp
+ *   TODO 3  the arena        drawArena needs FOUR parameters -- that is the point
+ *   TODO 4  the big win      readChoice: Lesson 8's twelve lines become one call
+ *   TODO 5  overload         a second calculateDamage with a different parameter list
+ *   TODO 6  finish the job   readName, difficultyName, readAction, attack, moveLeft,
+ *                            moveRight, defend, drinkPotion, flee, enemyResponse, endOfFight
  *
- * HOW TO DO THIS WITHOUT BREAKING IT
+ * THE ONE THAT WILL CATCH YOU: a method gets a COPY of each argument.
+ *     static void tryToHeal(int hp) { hp += 50; }      // does NOTHING to main's health
+ * If a method needs to change a number in main, it RETURNS the new value and
+ * main assigns it:   health = heal(health, 50);
  *
- *   Move ONE thing. Compile. Run. Then move the next one.
+ * FINISHED EARLY?  Extract the whole enemy turn into one method. You will need
+ * several values back and there is only one return. Sit with that: you want
+ * to return a whole FIGHTER, and in Unit 2 you will.
  *
- *   Moving six methods and then compiling gives you six errors at once and no
- *   idea which change caused which. Moving one gives you one.
- *
- * ==========================================================================
- * THE ORDER TO WORK IN — easiest first, so you get a win early
- *
- * TODO 1: the pure-output ones. No return value; nothing to get subtly wrong.
- *
- *           static void printBanner(String text) {
- *               System.out.println("=".repeat(40));
- *               System.out.printf("  %s%n", text);
- *           }
- *
- *           static void printHealthBar(int hp) { ... }
- *           static void printTitle() { ... }
- *           static void countdown(int from) { ... }
- *
- *         Methods go at CLASS level — as siblings of main, not inside it.
- *         Look at where main's closing brace is and put them after it.
- *
- * TODO 2: the ones that hand a value back.
- *
- *           static boolean isAlive(int hp) {
- *               return hp > 0;
- *           }
- *
- *           static int calculateDamage(int power, int roll) {
- *               if (roll >= 9) return power * 2;
- *               if (roll >= 3) return power;
- *               return 0;
- *           }
- *
- *           static int applyDamage(int hp, int damage) { return hp - damage; }
- *
- *         Three returns in one method is fine. The first one that runs wins.
- *
- * TODO 3: the arena. It is the biggest single block in main and it moves
- *         without changing a character:
- *
- *           static void drawArena(int playerRow, int playerCol,
- *                                 int enemyRow, int enemyCol) { ... }
- *
- *         It needs FOUR parameters because a method cannot see main's local
- *         variables. That is not a limitation to work around — it is the
- *         entire point. The method works for any positions you hand it.
- *
- * TODO 4: the big win — the input validation from Lesson 8.
- *
- *           static int readChoice(Scanner in, int min, int max) {
- *               int choice;
- *               do {
- *                   System.out.printf("Choose %d-%d: ", min, max);
- *                   while (!in.hasNextInt()) {
- *                       in.next();
- *                       System.out.printf("Numbers only. Choose %d-%d: ", min, max);
- *                   }
- *                   choice = in.nextInt();
- *                   in.nextLine();
- *               } while (choice < min || choice > max);
- *               return choice;
- *           }
- *
- *         Twelve lines you fought for in Lesson 8, now one call — and you can
- *         use it anywhere you need a number in a range. THAT is abstraction.
- *
- * TODO 5: OVERLOAD calculateDamage with a crit-multiplier version.
- *
- *           static int calculateDamage(int power, int roll, double critMultiplier)
- *
- *         Same name, different PARAMETER LIST. Two methods that differ only in
- *         return type will not compile — try it once so you see the error.
- *
- * ==========================================================================
- * THE ONE THAT WILL CATCH YOU
- *
- *   static void tryToHeal(int hp) { hp += 50; }   // does NOTHING
- *
- *   Java hands the method a COPY. Changing the copy does not change yours.
- *   The fix is to give it back:
- *
- *       health = heal(health, 50);
- *
- *   When a method "does nothing", this is why. Every time.
- *
- * ==========================================================================
- * FINISHED EARLY?
- *
- *   Extract the entire enemy turn into one method.
- *
- *   You will find you need several values back — the enemy's health, the
- *   damage dealt, whether it is still standing — and there is only one
- *   return. Sit with that for five minutes.
- *
- *   You want to return a whole FIGHTER. In Unit 2 you will.
- *
- * ==========================================================================
- * WHAT TO SUBMIT — THIS IS CHECKPOINT 1
- *
- *   Back up as Arena_CP1_LastnameF and submit it on Canvas.
- *   Your game must behave exactly as it did this morning.
+ * WHAT TO SUBMIT — THIS IS CHECKPOINT 1: back up as Arena_CP1_LastnameF.
  */
-
-// ---------------------------------------------------------------------------
-// Your Lesson 9 file goes below, unchanged. Start from YOUR OWN code — the
-// point of today is refactoring what you wrote, not typing something new.
-//
-// If you have lost your L9 work, ask, and start from the L9 solution instead.
-// ---------------------------------------------------------------------------
 
 import java.util.Scanner;
 
@@ -152,6 +55,8 @@ public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
+        // ---- TODO 1a · MOVE the next 7 lines into   static void printTitle()
+        //      and REPLACE them with:   printTitle();
         System.out.print("""
                 ========================
                      THE ARENA
@@ -161,12 +66,20 @@ public class Main {
         System.out.println("The gate opens.");
         System.out.println("");
 
+        // ---- TODO 6a · MOVE into   static String readName(Scanner in)
+        //      it RETURNS the name;  REPLACE with:   String playerName = readName(in);
         System.out.print("What is your name, challenger? ");
         String playerName = in.nextLine().trim();
         if (playerName.isEmpty()) {
             playerName = "Challenger";
         }
 
+        // ---- TODO 4 · THE BIG WIN. MOVE the do-while into
+        //          static int readChoice(Scanner in, int min, int max, String prompt)
+        //      Inside it, use min, max and prompt instead of 1, 3 and the text.
+        //      REPLACE these 10 lines with ONE:
+        //          int difficulty = readChoice(in, 1, 3, "Difficulty (1 = easy, 2 = normal, 3 = brutal)");
+        //      Lesson 8's twelve lines, now reusable for any number in any range.
         int difficulty;
         do {
             System.out.print("Difficulty (1 = easy, 2 = normal, 3 = brutal): ");
@@ -178,6 +91,8 @@ public class Main {
         } while (difficulty < 1 || difficulty > 3);
         in.nextLine();
 
+        // ---- TODO 6b · MOVE the switch into   static String difficultyName(int difficulty)
+        //      (return the switch)  REPLACE with:   System.out.println("Difficulty: " + difficultyName(difficulty));
         String difficultyName = switch (difficulty) {
             case 1 -> "Easy";
             case 2 -> "Normal";
@@ -206,6 +121,8 @@ public class Main {
         in.nextLine();
         System.out.println("");
 
+        // ---- TODO 1b · MOVE the countdown into   static void countdown(int from)
+        //      (loop from `from`, not from 3)  REPLACE with:   countdown(3);
         for (int i = 3; i > 0; i--) {
             System.out.println(i + "...");
         }
@@ -217,12 +134,21 @@ public class Main {
         boolean fled = false;
 
         while (playing) {
+            // ---- TODO 1c · MOVE these 2 lines into   static void printBanner(String text)
+            //      REPLACE with:   printBanner("Turn " + turnNumber);
             System.out.println("=".repeat(40));
             System.out.printf("  Turn %d%n", turnNumber);
             System.out.printf("%-12s HP %3d/%3d    %-14s HP %3d%n",
                               playerName, health, MAX_HEALTH, enemyName, enemyHealth);
             System.out.println("");
 
+            // ---- TODO 3 · THE ARENA. MOVE the nested loop (through the blank
+            //      println after it) into
+            //          static void drawArena(int playerRow, int playerCol, int enemyRow, int enemyCol)
+            //      REPLACE with:   drawArena(playerRow, playerCol, enemyRow, enemyCol);
+            //      It needs FOUR parameters because a method cannot see main's
+            //      variables. That is not a limitation -- it is the point: the
+            //      method draws ANY positions you hand it.
             for (int r = 0; r < ROWS; r++) {
                 for (int c = 0; c < COLS; c++) {
                     if (r == playerRow && c == playerCol)      System.out.print('@');
@@ -235,10 +161,16 @@ public class Main {
             }
             System.out.println("");
 
+            // ---- TODO 6c · MOVE into   static boolean isAdjacent(int r1, int c1, int r2, int c2)
+            //      REPLACE with:   boolean adjacent = isAdjacent(playerRow, playerCol, enemyRow, enemyCol);
             boolean adjacent = (playerRow == enemyRow) && (Math.abs(playerCol - enemyCol) == 1);
             int roll = (turnNumber * 3) % 10 + 1;
             int damage = 0;
 
+            // ---- TODO 6d · MOVE the prompt into
+            //          static String readAction(Scanner in, boolean adjacent, String enemyName)
+            //      (it returns the trimmed, upper-cased answer)
+            //      REPLACE with:   String action = readAction(in, adjacent, enemyName);
             if (adjacent) {
                 System.out.print("[A]ttack  [D]efend  [P]otion  [L]eft  [R]ight  [F]lee: ");
             } else {
@@ -248,6 +180,18 @@ public class Main {
             String action = in.nextLine().trim().toUpperCase();
 
             switch (action) {
+                // ---- TODO 2b · the roll-to-damage rule becomes
+                //          static int calculateDamage(int power, int roll)
+                //      three returns: roll >= 9 gives power * 2, roll >= 3 gives
+                //      power, otherwise 0. The first return that runs wins.
+                // ---- TODO 5 · OVERLOAD it: same name, a third parameter
+                //          static int calculateDamage(int power, int roll, double critMultiplier)
+                //      Java picks by the parameter list. Two methods that differ
+                //      only in return type will not compile -- try it once.
+                // ---- TODO 6e · then MOVE this whole case body into
+                //          static int attack(boolean adjacent, int enemyPower, int roll)
+                //      (it returns the damage; call calculateDamage inside it)
+                //      REPLACE with:   case "A" -> damage = attack(adjacent, enemyPower, roll);
                 case "A" -> {
                     if (!adjacent) {
                         System.out.println("You swing at empty air. Get closer first.");
@@ -261,6 +205,9 @@ public class Main {
                         System.out.println("You miss.");
                     }
                 }
+                // ---- TODO 6f · MOVE into   static int moveLeft(int playerCol)
+                //      it RETURNS the new column (or the old one, if the wall stops you)
+                //      REPLACE with:   case "L" -> playerCol = moveLeft(playerCol);
                 case "L" -> {
                     if (playerCol - 1 < 1) {
                         System.out.println("The wall stops you.");
@@ -269,6 +216,8 @@ public class Main {
                         System.out.println("You step left.");
                     }
                 }
+                // ---- TODO 6g · MOVE into   static int moveRight(int playerCol, int enemyCol, String enemyName)
+                //      REPLACE with:   case "R" -> playerCol = moveRight(playerCol, enemyCol, enemyName);
                 case "R" -> {
                     if (playerCol + 1 > COLS - 2) {
                         System.out.println("The wall stops you.");
@@ -279,10 +228,19 @@ public class Main {
                         System.out.println("You step right.");
                     }
                 }
+                // ---- TODO 6h · MOVE into   static int defend(int health)   -- returns health + 5
+                //      REPLACE with:   case "D" -> health = defend(health);
+                //      Why return it? Because `health += 5` inside a method changes a COPY.
                 case "D" -> {
                     health += 5;
                     System.out.println("You raise your guard and recover 5 HP.");
                 }
+                // ---- TODO 6i · MOVE the two healing lines into   static int drinkPotion(int health)
+                //      the potions-- and the if stay in main:
+                //          case "P" -> {
+                //              if (potions > 0) { potions--; health = drinkPotion(health); }
+                //              else System.out.println("You reach for a potion. There are none.");
+                //          }
                 case "P" -> {
                     if (potions > 0) {
                         potions--;
@@ -292,6 +250,8 @@ public class Main {
                         System.out.println("You reach for a potion. There are none.");
                     }
                 }
+                // ---- TODO 6j · MOVE into   static boolean flee()   -- prints, returns true
+                //      REPLACE with:   case "F" -> fled = flee();
                 case "F" -> {
                     fled = true;
                     System.out.println("You run for the gate. The crowd howls.");
@@ -299,23 +259,43 @@ public class Main {
                 default -> System.out.println("The crowd jeers. You hesitate and lose the turn.");
             }
 
+            // ---- TODO 2c · static int applyDamage(int hp, int damage)   -- returns hp - damage
+            //      REPLACE with:   enemyHealth = applyDamage(enemyHealth, damage);
             enemyHealth -= damage;
 
+            // ---- TODO 6k · MOVE the counter-attack AND the clamp below into
+            //          static int enemyResponse(boolean fled, boolean adjacent, int health,
+            //                                   int enemyHealth, int enemyPower, String enemyName)
+            //      it returns the player's new health, already clamped.
+            //      REPLACE both blocks with:
+            //          health = enemyResponse(fled, adjacent, health, enemyHealth, enemyPower, enemyName);
             if (!fled && enemyHealth > 0 && adjacent) {
                 health -= enemyPower;
                 System.out.printf("The %s strikes back for %d.%n", enemyName, enemyPower);
             }
 
+            // ---- TODO 2d · static int clamp(int value, int min, int max)
+            //      one line inside:   return Math.max(min, Math.min(max, value));
+            //      REPLACE with:   health = clamp(health, 0, MAX_HEALTH);
             if (health > MAX_HEALTH) {
                 health = MAX_HEALTH;
             } else if (health < 0) {
                 health = 0;
             }
 
+            // ---- TODO 1d · MOVE into   static void printHealthBar(int hp)
+            //      REPLACE with:   printHealthBar(health);
             int bars = health / 5;
             String bar = "#".repeat(bars) + "-".repeat(20 - bars);
             System.out.printf("[%s] %d%%%n", bar, health);
 
+            // ---- TODO 2a · static boolean isAlive(int hp)   -- return hp > 0;
+            //      then write   enemyHealth <= 0   as   !isAlive(enemyHealth)   below.
+            // ---- TODO 6l · MOVE the three-way ending into
+            //          static boolean endOfFight(boolean fled, int health, int enemyHealth,
+            //                                    String enemyName, int turnNumber)
+            //      it returns true when the fight is over.
+            //      REPLACE with:   playing = !endOfFight(fled, health, enemyHealth, enemyName, turnNumber);
             if (fled) {
                 System.out.println("You escape with your life, and nothing else.");
                 playing = false;
@@ -332,4 +312,23 @@ public class Main {
 
         System.out.printf("%nThe arena empties after %d turns.%n", turnNumber - 1);
     }
+
+    // =========================================================================
+    // METHODS GO HERE: after main's closing brace, inside the class. Each one
+    // is `static`, because main is. Fill this in as you work through the
+    // markers above -- easiest first:
+    //
+    //   TODO 1  static void printTitle()
+    //           static void countdown(int from)
+    //           static void printBanner(String text)
+    //           static void printHealthBar(int hp)
+    //   TODO 2  static boolean isAlive(int hp)
+    //           static int calculateDamage(int power, int roll)
+    //           static int applyDamage(int hp, int damage)
+    //           static int clamp(int value, int min, int max)
+    //   TODO 3  static void drawArena(int playerRow, int playerCol, int enemyRow, int enemyCol)
+    //   TODO 4  static int readChoice(Scanner in, int min, int max, String prompt)
+    //   TODO 5  static int calculateDamage(int power, int roll, double critMultiplier)
+    //   TODO 6  the rest, one at a time, each followed by a compile and a run
+    // =========================================================================
 }
