@@ -278,8 +278,9 @@ a:link  { color: green; }</code></pre>
 a:visited { color: var(--accent); }
 a:hover   { text-decoration: underline; }
 a:active  { color: var(--warning); }
+header a:link, header a:visited { color: #ffffff; }
 header a:hover { background-color: var(--light); color: var(--dark); }</code></pre>
-<p class="callout">Header links are white on green, so their hover needs its own rule. That is the L2 <code>header a</code> rule, one state further.</p>
+<p class="callout">Header links are white on green. <code>a:link</code> has a pseudo-class and the L2 <code>header a</code> does not, so it wins and the header goes green on green &mdash; restate the white on the same two states, then give hover its own rule. Lesson 14 is the full story.</p>
 </section>
 
 <!-- ==================== 5 -->

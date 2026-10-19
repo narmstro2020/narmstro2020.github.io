@@ -109,6 +109,12 @@ header a {
   color: #ffffff;
 }
 
+/* --- the h1 too: L1's h1 rule made it green, and green on green is
+       invisible. A later rule for the same element wins. --- */
+header h1 {
+  color: #ffffff;
+}
+
 /* --- the footer, on the light tint --- */
 footer {
   background-color: var(--light);
@@ -381,7 +387,15 @@ a:active {
   color: var(--warning);                        /* the instant of the click */
 }
 
-/* --- the header's links are white on green; their hover needs its own rule --- */
+/* --- the header's links are white on green. a:link and a:visited above
+       carry a pseudo-class, which outweighs the plain "header a" from L2
+       (Lesson 14 is the full rule), so the white has to be restated on the
+       same two states — and BEFORE hover, for the same LVHA reason. --- */
+header a:link,
+header a:visited {
+  color: #ffffff;
+}
+
 header a:hover {
   background-color: var(--light);
   color: var(--dark);

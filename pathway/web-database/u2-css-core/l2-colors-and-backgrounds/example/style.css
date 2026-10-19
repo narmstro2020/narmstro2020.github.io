@@ -99,6 +99,12 @@ header a {
   color: #ffffff;
 }
 
+/* --- the h1 too: L1's h1 rule made it green, and green on green is
+       invisible. A later rule for the same element wins. --- */
+header h1 {
+  color: #ffffff;
+}
+
 /* --- the footer, on the light tint --- */
 footer {
   background-color: var(--light);
