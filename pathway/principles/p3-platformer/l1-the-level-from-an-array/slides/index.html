@@ -252,7 +252,7 @@
 <section class="slide">
 <div class="eyebrow">The rule</div>
 <h1 class="small">One <code>Main.tscn</code>. One <code>Node2D</code>.<br>That is the last node you add by hand.</h1>
-<p><code>Tile.new(x, y, 1)</code> makes a tile. An array in Main remembers it. That is all a group ever was.</p>
+<p><code>Tile.new(Vector2(64, 672), 1)</code> makes a tile. An array in Main remembers it. That is all a group ever was.</p>
 </section>
 
 <!-- ==================== 3 -->
@@ -262,7 +262,7 @@
 <thead><tr><th></th><th>Means</th><th>Today</th></tr></thead>
 <tbody>
 <tr><td><strong>class</strong></td><td>the blueprint</td><td><code>Tile</code></td></tr>
-<tr><td><strong>object</strong></td><td>one thing built from it, with <code>.new()</code></td><td><code>Tile.new(64, 672, 2)</code></td></tr>
+<tr><td><strong>object</strong></td><td>one thing built from it, with <code>.new()</code></td><td><code>Tile.new(Vector2(64, 672), 2)</code></td></tr>
 <tr><td><strong>extends</strong></td><td>start as a copy of that class, add to it</td><td><code>Tile extends Entity extends Node2D</code></td></tr>
 </tbody>
 </table>
@@ -285,7 +285,7 @@ tile_map[17][20] = 9</code></pre>
 	for j in tile_map[i].size():
 		match tile_map[i][j]:
 			1, 2, 3, 4, 5:
-				add_tile(j * 32, i * 32, tile_map[i][j])</code></pre>
+				add_tile(Vector2(j, i) * Tile.SIZE, tile_map[i][j])</code></pre>
 <p><code>i</code> walks down the rows. <code>j</code> walks across. 23 rows &times; 40 columns = 920 looks, 176 tiles.</p>
 </section>
 
