@@ -271,25 +271,35 @@
 <!-- ==================== 4 -->
 <section class="slide">
 <div class="eyebrow">The level is data</div>
-<pre><code>for i in TILE_MAP.size():
-	for j in TILE_MAP[i].size():
-		match TILE_MAP[i][j]:
-			1, 2, 3, 4, 5:
-				add_tile(j * 32, i * 32, TILE_MAP[i][j])</code></pre>
-<p><code>i</code> walks down the rows. <code>j</code> walks across. 23 rows &times; 40 columns = 920 looks, 176 tiles.</p>
+<h1 class="small">All zeros. Then the few that are not.</h1>
+<pre><code>put_platform(8, 11, 28)
+fill_row(21, 2)
+tile_map[17][20] = 9</code></pre>
+<p>920 cells, 738 of them <code>0</code>. <code>make_map</code> writes the 182 that matter in 16 lines.</p>
 </section>
 
 <!-- ==================== 5 -->
+<section class="slide">
+<div class="eyebrow">The level is data</div>
+<pre><code>for i in tile_map.size():
+	for j in tile_map[i].size():
+		match tile_map[i][j]:
+			1, 2, 3, 4, 5:
+				add_tile(j * 32, i * 32, tile_map[i][j])</code></pre>
+<p><code>i</code> walks down the rows. <code>j</code> walks across. 23 rows &times; 40 columns = 920 looks, 176 tiles.</p>
+</section>
+
+<!-- ==================== 6 -->
 <section class="slide">
 <div class="eyebrow">Why the background goes first</div>
 <h1 class="small">In Godot, child order is draw order.</h1>
 <p class="lede"><code>add_child(background)</code> before <code>build_level()</code>, or the dirt is behind the sky.</p>
 </section>
 
-<!-- ==================== 6 -->
+<!-- ==================== 7 -->
 <section class="slide center">
-<h1 class="small">Change one number.<br>Run it.</h1>
-<p class="lede">A tile appears exactly where you put the <code>4</code>. The level is the array; the code only reads it.</p>
+<h1 class="small">Add one line.<br>Run it.</h1>
+<p class="lede"><code>tile_map[12][20] = 4</code> &mdash; say where the tile will land, then run. Row 12, column 20. The level is the array; the code only reads it.</p>
 <p class="note">Next: the knight &mdash; vectors, gravity, and the first class that moves.</p>
 </section>
 </div></div>
