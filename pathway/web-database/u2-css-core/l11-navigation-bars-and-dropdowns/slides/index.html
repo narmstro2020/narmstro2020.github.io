@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Web Dev U2 L11 — Navigation Bars and Dropdowns</title>
+<title>Web Dev U2 L11 — A Nav Bar With a Dropdown</title>
 <style>
   :root {
     --ink:      #14161a;
@@ -240,110 +240,118 @@
 <body data-theme="light">
 
 <div id="stage-wrap"><div id="stage">
-
 <!-- ==================== 1 -->
 <section class="slide center">
-<h1 class="small">A nav that is a bar.</h1>
-<p class="lede">Blocks, not words. The page you are on. A menu that drops down &mdash; for the mouse <em>and</em> the keyboard.</p>
+<h1 class="small">A nav bar<br>with a dropdown.</h1>
+<p class="lede">A practice page of its own. Nothing today is new.</p>
 </section>
 
 <!-- ==================== 2 -->
 <section class="slide">
-<div class="eyebrow">A nav bar is five things you already own</div>
+<div class="eyebrow">Five things a nav bar is</div>
 <table class="tbl">
 <tbody>
-<tr><td>a bar</td><td>background, no bullets, items in a row &mdash; L6, L7, L8. Done</td></tr>
-<tr><td>links as blocks</td><td><code>display: block</code> and padding on the <code>a</code>, so the whole box is the link &mdash; L7</td></tr>
-<tr><td>the page you are on</td><td>a class on that page's item &mdash; L1</td></tr>
-<tr><td>a menu that drops down</td><td>hidden, <code>position: absolute</code> under its item &mdash; L7, L8</td></tr>
-<tr><td>shown on hover <em>and</em> keyboard</td><td><code>:hover</code>, <code>:focus-within</code> &mdash; L6, L10</td></tr>
+<tr><td>A bar</td><td>a background on the <code>nav</code>, a list with no markers &mdash; L6, L2</td></tr>
+<tr><td>Links as blocks</td><td><code>display: block</code> so the whole row is the link &mdash; L7</td></tr>
+<tr><td>The page you are on</td><td>a class on one item &mdash; L1, with L10's <code>&gt;</code></td></tr>
+<tr><td>A menu that drops down</td><td>hidden, absolute, measured from its item &mdash; L7, L8</td></tr>
+<tr><td>Shown on hover <em class="hl">and</em> keyboard</td><td><code>:hover</code>, <code>:focus-within</code> &mdash; L10</td></tr>
 </tbody>
 </table>
 </section>
 
 <!-- ==================== 3 -->
 <section class="slide">
-<div class="eyebrow">Step 1 &mdash; blocks, and the current page</div>
-<pre><code>nav {                                   /* a SECOND nav block: later wins */
-  padding: 0 1rem;
-  li { margin-right: 0; padding: 0; position: relative; }
-  a  { display: block; padding: .75rem 1rem; }
-  .current &gt; a { background-color: var(--accent); }
+<div class="eyebrow">Step 1 &mdash; a vertical bar</div>
+<pre><code>nav {
+  background-color: var(--dark);
+  width: 12rem;                          /* for thirty seconds */
+
+  ul { list-style-type: none; margin: 0; padding: 0; }
+
+  a {
+    display: block;                      /* the whole row is the link */
+    padding: .75rem 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    &amp;:link, &amp;:visited { color: #ffffff; }
+    &amp;:hover { background-color: var(--light); color: var(--dark); }
+  }
 }</code></pre>
-<p>In the HTML, put <code>class="current"</code> on each page's <strong>own</strong> item. Four pages, four different items.</p>
-<p class="note"><code>position: relative</code> on the <code>li</code> changes nothing you can see. It is the box the menu will measure from. You know this one.</p>
 </section>
 
 <!-- ==================== 4 -->
 <section class="slide">
-<div class="eyebrow">Step 2 &mdash; the markup, every page</div>
-<pre><code>&lt;li class="has-menu"&gt;
-  &lt;a href="turkey-run.html"&gt;&lt;span class="fa-solid fa-tree" aria-hidden="true"&gt;&lt;/span&gt; Turkey Run&lt;/a&gt;
-  &lt;ul class="menu"&gt;
-    &lt;li&gt;&lt;a href="turkey-run.html#route"&gt;Rocky Hollow, in order&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="turkey-run.html#trails"&gt;Trails by difficulty&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="turkey-run.html#glossary"&gt;Words the signs use&lt;/a&gt;&lt;/li&gt;
-    &lt;li class="soon"&gt;Shades &amp;mdash; coming soon&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/li&gt;</code></pre>
-<p class="note">The item's own link still works. A phone cannot hover, and it loses nothing.</p>
+<div class="eyebrow">Steps 2 and 3 &mdash; sideways, and the page you are on</div>
+<pre><code>nav {
+  /* width: 12rem;  gone */
+  li {
+    display: inline-block;               /* beside, not under */
+    position: relative;                  /* step 4 measures from here */
+  }
+
+  .current &gt; a { background-color: var(--accent); }
+}</code></pre>
+<p class="note"><code>class="current"</code> on the Home item. The <code>&gt;</code> reaches the item's own link and not the links in a menu inside it.</p>
 </section>
 
 <!-- ==================== 5 -->
 <section class="slide">
-<div class="eyebrow">Step 3 &mdash; the menu</div>
+<div class="eyebrow">Step 4 &mdash; the dropdown</div>
 <pre><code>nav {
   .menu {
     display: none;
-    position: absolute; top: 100%; left: 0;     /* hangs below its item */
+    position: absolute; top: 100%; left: 0;   /* just under my item */
     min-width: 14rem; margin: 0; padding: .25rem 0;
-    background-color: rgba(20, 83, 45, 0.95);
-    li { display: block; }                       /* stacked again */
-    a  { text-transform: none; letter-spacing: 0; font-weight: 400; padding: .5rem 1rem; }
+    background-color: rgba(31, 58, 95, 0.95);
+    li { display: block; }
+    a  { font-weight: 400; padding: .5rem 1rem; }
   }
 
   .has-menu:hover .menu,
   .has-menu:focus-within .menu { display: block; }
+
+  .has-menu &gt; a::after { content: " \25BE"; font-size: .8em; }
 }</code></pre>
 </section>
 
 <!-- ==================== 6 -->
 <section class="slide">
-<div class="eyebrow">Opacity</div>
-<div class="cols">
-<div>
-<pre><code>.soon {
-  opacity: .55;
-}</code></pre>
-<p>Fades the <strong>whole element</strong>: text, border, everything in it.</p>
-</div>
-<div>
-<pre><code>.menu {
-  background-color: rgba(20, 83, 45, 0.95);
-}</code></pre>
-<p>Fades <strong>one colour</strong>. The text on it stays solid.</p>
-</div>
-</div>
-<p class="note">Text at <code>opacity: .55</code> is hard to read. It is right for &ldquo;not yet,&rdquo; and wrong for anything someone has to read.</p>
+<div class="eyebrow">The keyboard test</div>
+<span class="bigrule">Click the address bar. Tab until you reach Trails.</span>
+<span class="bigrule">Does the menu open?</span>
+<p class="callout warn">Delete the <code>:focus-within</code> half and Tab again. The menu never opens &mdash; <code>display: none</code> cannot take focus. Put it back. <span class="warnline">Half the web fails this.</span></p>
 </section>
 
 <!-- ==================== 7 -->
-<section class="slide center">
-<div class="eyebrow">The test</div>
-<h1 class="small">Put the mouse down.<br>Tab through it.</h1>
-<p class="callout warn">Delete the <code>:focus-within</code> line and Tab again. The menu never opens, and its three links do not exist to the keyboard &mdash; <code>display: none</code> cannot take focus. Put it back.</p>
+<section class="slide">
+<div class="eyebrow">Step 6 &mdash; two kinds of fade</div>
+<div class="cols">
+<div>
+<p><strong><code>rgba(31, 58, 95, 0.95)</code></strong></p>
+<p>One colour, 95% solid. The text on it stays white.</p>
+</div>
+<div>
+<p><strong><code>opacity: .55</code></strong></p>
+<p>The element and <em class="hl">everything in it</em>. Right for &ldquo;coming soon&rdquo;. Wrong for anything someone has to read.</p>
+</div>
+</div>
+<pre><code>figure {
+  img:hover { opacity: .8; }             /* the caption is outside the img */
+}</code></pre>
 </section>
 
 <!-- ==================== 8 -->
 <section class="slide">
 <h1 class="small">Before you leave</h1>
 <ul>
-<li>Links are blocks; the page you are on is marked, on all four pages</li>
-<li>The menu drops down on hover <strong>and</strong> on Tab, with a small arrow on its item</li>
-<li>One thing faded with <code>opacity</code>, one with <code>rgba</code>, and you can say the difference</li>
-<li>Still <strong>zero</strong> validator errors. Back up as <code>Site_U2L11_LastnameF</code></li>
+<li>Four links on a dark bar; the <strong>whole</strong> link changes on hover</li>
+<li>Home in the accent colour; the menu links are not</li>
+<li>Hover Trails: the menu drops; the bar does not get taller</li>
+<li>Tab to Trails: the same menu opens</li>
+<li>&ldquo;Winter routes&rdquo; faded; the picture fades, its caption does not</li>
+<li>Push. Live URL + <code>/practice/u2l11/</code>. Submit the URL and the zip. Back up</li>
 </ul>
-<p class="note">Exit ticket: the menu opens on <code>:hover</code>. Why is <code>:focus-within</code> in the same rule, and what happens to a keyboard user without it?</p>
 </section>
 </div></div>
 

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="A ridge line at sunrise, drawn in flat colours">
+  <rect width="600" height="400" fill="#f3c178"/>
+  <circle cx="440" cy="150" r="58" fill="#fff1c2"/>
+  <path d="M0 250 L90 190 L170 230 L260 160 L340 215 L430 170 L520 225 L600 185 L600 400 L0 400 Z" fill="#6b7f99"/>
+  <path d="M0 300 L70 265 L150 295 L240 250 L330 290 L420 255 L510 300 L600 270 L600 400 L0 400 Z" fill="#3e5a7a"/>
+  <path d="M0 345 L80 320 L160 340 L250 310 L350 345 L440 320 L540 350 L600 330 L600 400 L0 400 Z" fill="#1f3a5f"/>
+</svg>
