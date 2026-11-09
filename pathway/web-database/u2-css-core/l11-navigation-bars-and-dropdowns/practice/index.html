@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ridgeline Trails</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 id="top">Ridgeline Trails</h1>
+    <p>A one-page practice site. The nav bar below is a plain list until you style it.</p>
+  </header>
+
+  <!-- The nav. Four items. The second one holds its own link AND a second
+       list: that second list is the dropdown. Nothing here changes except
+       one class you add in step 3. -->
+  <nav>
+    <ul>
+      <li><a href="#top">Home</a></li>
+      <li class="has-menu">
+        <a href="#trails">Trails</a>
+        <ul class="menu">
+          <li><a href="#easy">Easy loops</a></li>
+          <li><a href="#ridge">The ridge walk</a></li>
+          <li><a href="#rules">Trail rules</a></li>
+          <li class="soon">Winter routes &mdash; coming soon</li>
+        </ul>
+      </li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="trails">
+      <h2>Trails</h2>
+      <p>Three routes leave from the same gravel lot. Pick by how much climbing you want, not by distance: the short one is the steep one.</p>
+
+      <figure>
+        <img src="images/ridge.svg" alt="A ridge line at sunrise, drawn in flat colours" width="600" height="400">
+        <figcaption>The ridge from the lower lot. Hover the picture after step 6.</figcaption>
+      </figure>
+
+      <h3 id="easy">Easy loops</h3>
+      <p>Two loops of about a mile each, mostly flat, packed gravel the whole way. Strollers manage both.</p>
+
+      <h3 id="ridge">The ridge walk</h3>
+      <p>Four miles out and back with one long climb at the start. The top is the reason to come.</p>
+
+      <h3 id="rules">Trail rules</h3>
+      <ul>
+        <li>Stay on the marked path &mdash; the edges are eroding.</li>
+        <li>Dogs on a lead, and carry out what you carry in.</li>
+        <li>The lot gate locks at dusk.</li>
+      </ul>
+    </section>
+
+    <section id="events">
+      <h2>Events</h2>
+      <p>A guided sunrise walk on the first Saturday of every month. Meet at the lot at 6:30. No sign-up, just turn up.</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Trail conditions are posted on the board at the lot. For anything else, the ranger station is open 9 to 4.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>U2 L11 practice &middot; Ridgeline Trails is not a real place.</p>
+  </footer>
+</body>
+</html>

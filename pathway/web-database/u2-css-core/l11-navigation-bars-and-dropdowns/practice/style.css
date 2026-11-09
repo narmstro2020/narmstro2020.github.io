@@ -1,0 +1,78 @@
+/* ============================================================
+   U2 L11 practice: Ridgeline Trails
+   Everything above the line at the bottom is already written. It
+   is the same kind of stylesheet your site has: the reset, a
+   palette, the page, headings, the four link states, a figure,
+   a footer. Your rules for today go BELOW that line.
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --dark:       #1f3a5f;   /* headings, the nav bar */
+  --light:      #e8eef7;   /* hovered links */
+  --background: #fbfbf8;   /* the page */
+  --accent:     #b7791f;   /* the current page, and hovered text */
+  --text:       #222222;
+  --line:       #d6d3cc;
+}
+
+body {
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+  max-width: 52rem;
+  color: var(--text);
+  background-color: var(--background);
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  color: var(--dark);
+  line-height: 1.2;
+}
+
+header {
+  padding: 1.5rem 0 .5rem;
+}
+
+header p {
+  margin: 0 0 1rem;
+}
+
+/* the four link states, in LVHA order, from Lesson 6 */
+a:link    { color: var(--dark); }
+a:visited { color: #5b4a7a; }
+a:hover   { color: var(--accent); }
+a:active  { color: var(--accent); }
+
+figure {
+  margin: 1.5rem 0;
+}
+
+figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+}
+
+figcaption {
+  font-size: .9rem;
+  color: #555555;
+  padding: .35rem 0;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  margin-top: 2rem;
+  padding-top: .75rem;
+  font-size: .9rem;
+}
+
+/* ============================================================
+   YOUR RULES GO BELOW THIS LINE
+   ============================================================ */
+

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="A grey placeholder picture">
+  <rect width="600" height="400" fill="#c9ced6"/>
+  <path d="M0 0 L600 400 M600 0 L0 400" stroke="#8d99ae" stroke-width="3"/>
+  <rect x="210" y="165" width="180" height="70" fill="#c9ced6"/>
+  <text x="300" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#2b2d42">600 × 400</text>
+</svg>
