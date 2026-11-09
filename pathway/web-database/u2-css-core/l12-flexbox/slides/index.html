@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Web Dev U2 L12 — Image Galleries and Sprites</title>
+<title>Web Dev U2 L12 — Flexbox</title>
 <style>
   :root {
     --ink:      #14161a;
@@ -240,113 +240,127 @@
 <body data-theme="light">
 
 <div id="stage-wrap"><div id="stage">
-
 <!-- ==================== 1 -->
 <section class="slide center">
-<h1 class="small">A gallery, a crop,<br>and selectors that read your attributes.</h1>
-<p class="lede">Two things you already own, used again. One new thing that stays.</p>
+<h1 class="small">Flexbox.</h1>
+<p class="lede">One line on the parent, and its children line up.</p>
 </section>
 
 <!-- ==================== 2 -->
 <section class="slide">
-<div class="eyebrow">Gallery &mdash; the markup</div>
-<pre><code>&lt;div class="gallery"&gt;
-  &lt;figure class="tile"&gt;
-    &lt;a href="turkey-run.html"&gt;&lt;img src="images/turkey-run-rocky-hollow.jpg" alt="..."&gt;&lt;/a&gt;
-    &lt;figcaption&gt;Turkey Run&lt;/figcaption&gt;
-  &lt;/figure&gt;
-  &lt;figure class="tile"&gt;
-    &lt;img src="images/shades-sugar-creek.jpg" alt="..."&gt;
-    &lt;figcaption&gt;Shades&lt;/figcaption&gt;
-  &lt;/figure&gt;
-  ...
-&lt;/div&gt;</code></pre>
-<p class="note">Every new photo gets a credit in the credits list. Openverse writes it for you &mdash; Lesson 5.</p>
+<div class="eyebrow">Four things you built the hard way</div>
+<table class="tbl">
+<tbody>
+<tr><td>Nav items in a row</td><td><code>inline-block</code> on every item &mdash; L11</td></tr>
+<tr><td>Three cards in a row</td><td><code>width: 32%</code>, because 33.3% wrapped; <code>vertical-align: top</code> &mdash; L9</td></tr>
+<tr><td>A picture beside text</td><td><code>float</code>, then <code>flow-root</code> to contain it &mdash; L9</td></tr>
+<tr><td>Centred up <em class="hl">and</em> down</td><td>padding, and guessing &mdash; L9</td></tr>
+</tbody>
+</table>
+<p class="note">Today, all four are the same line.</p>
 </section>
 
 <!-- ==================== 3 -->
 <section class="slide">
-<div class="eyebrow">Gallery &mdash; the rules</div>
-<pre><code>.gallery {
-  display: flow-root;                    /* contain the floats: L9 */
-
-  .tile {
-    float: left;
-    /* four across: floats ignore the space between tags */
-    width: 25%;
-    margin: 0;
-    padding: .5rem;
-    img { display: block; width: 100%; border: 1px solid var(--line); }
-    figcaption { text-align: center; font-size: .9rem; padding: .35rem 0; }
-    &amp;:hover img { opacity: .85; }      /* L11 */
-  }
-}</code></pre>
+<div class="eyebrow">The one idea</div>
+<span class="bigrule"><code>display: flex</code> goes on the parent.</span>
+<span class="bigrule">Its children become a row.</span>
+<p class="callout">The parent is the <strong>flex container</strong>. Its <em class="hl">direct</em> children are the <strong>flex items</strong>. Grandchildren are not: they stay as they were.</p>
 </section>
 
 <!-- ==================== 4 -->
-<section class="slide center">
-<div class="eyebrow">Photos are different shapes</div>
-<h1 class="small">Crop before you upload.<br>3 : 2, every photo.</h1>
-<p class="note">A tall photo makes a tall tile and the next row snags on it. <code>object-fit</code> fixes it properly in Unit 3, Lesson 5. Today, the crop tool.</p>
+<section class="slide">
+<div class="eyebrow">Steps 1 and 2 &mdash; the header, then the nav</div>
+<pre><code>header {
+  display: flex;                         /* logo and nav: a row */
+  justify-content: space-between;        /* ALONG the row */
+  align-items: center;                   /* ACROSS the row */
+}
+
+nav {
+  ul {
+    display: flex;                       /* the four items: a row */
+    gap: .5rem;                          /* space BETWEEN items only */
+  }
+}</code></pre>
 </section>
 
 <!-- ==================== 5 -->
 <section class="slide">
-<div class="eyebrow">A sprite is one image, many crops</div>
-<pre><code>&lt;figure class="detail"&gt;
-  &lt;div class="crop"&gt;&lt;/div&gt;
-  &lt;figcaption&gt;The ladder section, cropped by CSS.&lt;/figcaption&gt;
-&lt;/figure&gt;
-
-.detail {
-  .crop {
-    height: 10rem;
-    background-image: url("images/turkey-run-rocky-hollow.jpg");
-    background-size: 300%;               /* zoom: three times the box wide */
-    background-position: 60% 35%;        /* which part shows */
-  }
-}</code></pre>
-<p class="note">Before icon fonts, every icon on a site lived in one image and each box showed one piece. Font Awesome (L6) replaced that. The crop is still useful.</p>
-</section>
-
-<!-- ==================== 6 -->
-<section class="slide">
-<div class="eyebrow">Attribute selectors</div>
+<div class="eyebrow">Try each one on the header</div>
 <table class="tbl">
 <tbody>
-<tr><td><code>img[alt]</code></td><td>has the attribute at all</td></tr>
-<tr><td><code>a[aria-current="page"]</code></td><td>exactly that value</td></tr>
-<tr><td><code>a[href^="http"]</code></td><td>value <strong>begins</strong> with</td></tr>
-<tr><td><code>a[href$=".pdf"]</code></td><td>value <strong>ends</strong> with</td></tr>
-<tr><td><code>a[href*="turkey"]</code></td><td>value <strong>contains</strong></td></tr>
+<tr><td><code>flex-start</code></td><td>packed at the start &mdash; what you get if you write nothing</td></tr>
+<tr><td><code>center</code></td><td>packed in the middle</td></tr>
+<tr><td><code>flex-end</code></td><td>packed at the end</td></tr>
+<tr><td><code>space-between</code></td><td>first at one end, last at the other, the spare room between</td></tr>
+<tr><td><code>space-around</code></td><td>the spare room around every item</td></tr>
 </tbody>
 </table>
 </section>
 
+<!-- ==================== 6 -->
+<section class="slide">
+<div class="eyebrow">Step 3 &mdash; centred both ways</div>
+<pre><code>.hero {
+  display: flex;
+  justify-content: center;               /* along */
+  align-items: center;                   /* across */
+}</code></pre>
+<p class="callout">The hero has <strong>one</strong> child: the <code>div</code>. That one box is what gets centred.</p>
+</section>
+
 <!-- ==================== 7 -->
 <section class="slide">
-<div class="eyebrow">Three rules</div>
-<pre><code>nav {
-  a[aria-current="page"] { background-color: var(--accent); }   /* was .current > a */
-}
+<div class="eyebrow">Steps 4 and 5 &mdash; cards that share, then wrap</div>
+<pre><code>.cards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;                       /* step 5: no room? new row */
 
-a[href^="http"]::after { content: " \2197"; font-size: .8em; }   /* leaves the site */
-
-img:not([alt]) { outline: 4px solid var(--warning); }   /* a check: no alt, red ring */</code></pre>
-<p class="callout">Replace <code>class="current"</code> with <code>aria-current="page"</code> on each page's own link. The attribute means something to the browser and to a screen reader. The class only meant something to you.</p>
+  .card {
+    flex: 1;                             /* step 4: equal shares */
+    flex: 1 1 12rem;                     /* step 5 replaces it */
+  }
+}</code></pre>
+<p class="note"><code>flex: 1 1 12rem</code> is three answers: may I grow? may I shrink? what size do I start from?</p>
 </section>
 
 <!-- ==================== 8 -->
 <section class="slide">
+<div class="eyebrow">Step 6 &mdash; a column inside each card</div>
+<pre><code>.cards {
+  .card {
+    display: flex;                       /* an item AND a container */
+    flex-direction: column;              /* a stack, not a row */
+
+    a { margin-top: auto; }              /* soak up the spare room */
+  }
+}</code></pre>
+<p class="note">An <code>auto</code> margin takes all the spare room, exactly as <code>margin: 0 auto</code> did in Lesson 4.</p>
+</section>
+
+<!-- ==================== 9 -->
+<section class="slide">
+<div class="eyebrow">Step 7 &mdash; on your own</div>
+<ol class="steps">
+<li><strong>The feature.</strong> The picture beside the words, a gap between them, the words lined up with the middle of the picture. The picture is 40% wide; the words take what is left.</li>
+<li><strong>The footer.</strong> Its two paragraphs at opposite ends of one row.</li>
+</ol>
+<p class="callout">No new properties. Which box is the container? Which are the items?</p>
+</section>
+
+<!-- ==================== 10 -->
+<section class="slide">
 <h1 class="small">Before you leave</h1>
 <ul>
-<li>A gallery of four or more photos, four across, each with a caption and a credit</li>
-<li>One crop made with <code>background-position</code>, and you can say what a sprite was</li>
-<li><code>aria-current="page"</code> on each page's own link, and no <code>class="current"</code> left</li>
-<li>External links carry an arrow; delete an <code>alt</code> and a red ring appears</li>
-<li>Still <strong>zero</strong> validator errors. Back up as <code>Site_U2L12_LastnameF</code></li>
+<li>Site name at the left, four links in a row at the right</li>
+<li>The hero text in the middle of its box, both ways</li>
+<li>Four cards, equal widths, equal heights, &ldquo;Read more&rdquo; along the bottom</li>
+<li>Drag the window narrow: the cards wrap, nothing squashes</li>
+<li>Picture beside the words; the footer's two halves at opposite ends</li>
+<li>Push. Live URL + <code>/practice/u2l12/</code>. Submit the URL and the zip. Back up</li>
 </ul>
-<p class="note">Exit ticket: the CSS could already mark the current page with the class. Why replace it with <code>aria-current="page"</code>?</p>
 </section>
 </div></div>
 
@@ -362,7 +376,7 @@ img:not([alt]) { outline: 4px solid var(--warning); }   /* a check: no alt, red 
     <div><kbd>←</kbd> previous slide</div>
     <div><kbd>F</kbd> fullscreen — use this on the projector</div>
     <div><kbd>T</kbd> light / dark — dark for a bright room</div>
-    <div><kbd>1-9</kbd> jump to a slide &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
+    <div><kbd>1-9</kbd> <kbd>0</kbd> jump to a slide (0 is the tenth) &nbsp;·&nbsp; <kbd>Home</kbd> <kbd>End</kbd> first / last</div>
     <div><kbd>?</kbd> close this</div>
     <p>To export a PDF: Ctrl+P → Landscape → Margins <em>None</em> → Background graphics <em>on</em>.</p>
   </div>
@@ -409,6 +423,7 @@ img:not([alt]) { outline: 4px solid var(--warning); }   /* a check: no alt, red 
       else { document.documentElement.requestFullscreen(); }
     }
     else if (e.key >= '1' && e.key <= '9') { show(parseInt(e.key, 10) - 1); }
+    else if (e.key === '0') { show(9); }
   });
 
   document.addEventListener('click', function (e) {
