@@ -6,15 +6,21 @@
    those rules go BELOW that line.
    ============================================================ */
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 :root {
-  --dark:       #2b2d42;   /* headings, the hero */
-  --light:      #edf2f4;   /* cards, hovered links */
-  --background: #ffffff;   /* the page */
-  --accent:     #d1495b;   /* hovered text */
-  --text:       #222222;
-  --line:       #c9ced6;
+  --dark: #2b2d42;
+  /* headings, the hero */
+  --light: #edf2f4;
+  /* cards, hovered links */
+  --background: #ffffff;
+  /* the page */
+  --accent: #d1495b;
+  /* hovered text */
+  --text: #222222;
+  --line: #c9ced6;
 }
 
 body {
@@ -27,26 +33,59 @@ body {
   line-height: 1.6;
 }
 
-h1, h2, h3 { color: var(--dark); line-height: 1.2; }
+h1,
+h2,
+h3 {
+  color: var(--dark);
+  line-height: 1.2;
+}
 
 /* the four link states, in LVHA order, from Lesson 6 */
-a:link    { color: var(--dark); }
-a:visited { color: #5b4a7a; }
-a:hover   { color: var(--accent); }
-a:active  { color: var(--accent); }
+a:link {
+  color: var(--dark);
+}
+
+a:visited {
+  color: #5b4a7a;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+a:active {
+  color: var(--accent);
+}
 
 header {
   padding: .75rem 0;
   border-bottom: 2px solid var(--dark);
 
-  .logo { margin: 0; font-size: 1.5rem; font-weight: 700; }
+  .logo {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
 }
 
 /* Lesson 11, step 1: no markers, and every link is a block */
 nav {
-  ul { list-style-type: none; margin: 0; padding: 0; }
-  a  { display: block; padding: .5rem .75rem; text-decoration: none; font-weight: 600; }
-  a:hover { background-color: var(--light); }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    display: block;
+    padding: .5rem .75rem;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  a:hover {
+    background-color: var(--light);
+  }
 }
 
 .hero {
@@ -55,17 +94,28 @@ nav {
   background-color: var(--dark);
   text-align: center;
 
-  h1, p { margin: 0 0 .5rem; color: #ffffff; }
+  h1,
+  p {
+    margin: 0 0 .5rem;
+    color: #ffffff;
+  }
 }
 
 .card {
   padding: 1rem;
   background-color: var(--light);
   border: 1px solid var(--line);
-  h3 { margin-top: 0; }
+
+  h3 {
+    margin-top: 0;
+  }
 }
 
-.feature img { display: block; max-width: 100%; height: auto; }
+.feature img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
 
 footer {
   border-top: 1px solid var(--line);
@@ -105,11 +155,13 @@ nav {
 /* ---- Steps 4 to 6: the cards. */
 .cards {
   display: flex;
-  flex-wrap: wrap;            /* step 5: a card that does not fit starts a new row */
+  flex-wrap: wrap;
+  /* step 5: a card that does not fit starts a new row */
   gap: 1rem;
 
   .card {
-    flex: 1 1 12rem;          /* step 4 was flex: 1. Grow, shrink, start from 12rem */
+    flex: 1 1 12rem;
+    /* step 4 was flex: 1. Grow, shrink, start from 12rem */
 
     /* Step 6: a card is a flex ITEM of .cards and a flex CONTAINER for its
        own three children. column turns the row into a stack. */
@@ -117,7 +169,9 @@ nav {
     flex-direction: column;
 
     /* an auto margin soaks up the spare room, like margin: 0 auto in Lesson 4 */
-    a { margin-top: auto; }
+    a {
+      margin-top: auto;
+    }
   }
 }
 
@@ -127,8 +181,15 @@ nav {
   gap: 1.5rem;
   align-items: center;
 
-  img    { width: 40%; }
-  .words { flex: 1; }         /* the words take the room that is left */
+  img {
+    width: 40%;
+  }
+
+  .words {
+    flex: 1;
+  }
+
+  /* the words take the room that is left */
 }
 
 /* ...and the footer's two paragraphs at opposite ends. */
